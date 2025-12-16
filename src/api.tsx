@@ -160,18 +160,18 @@ apiRoutes.post('/messages', async (c) => {
   })
 })
 
-// Marketplace
-apiRoutes.get('/marketplace/packages', (c) => {
+// CareSelect™ Journeys (formerly Marketplace)
+apiRoutes.get('/careselect/packages', (c) => {
   return c.json({
     packages: [
-      { id: 1, name: 'SelectCare', price: 6500, currency: 'EUR', features: ['Surgery', 'Hospital stay', 'Basic accommodation', 'Transfers', 'Follow-up'] },
-      { id: 2, name: 'SelectCare+', price: 12000, currency: 'EUR', features: ['Surgery', '5-star resort', 'Personal coordinator', 'Family accommodation', 'Wellness'], featured: true },
-      { id: 3, name: 'SelectCrown', price: 22000, currency: 'EUR', features: ['Surgery', 'Private villa', 'Chef', '24/7 care', 'Yacht', 'Spa'] }
+      { id: 1, name: 'Essential Journey', price: 6500, currency: 'EUR', features: ['German-certified surgeon', 'Hospital stay (3-5 days)', 'Basic accommodation', 'Airport transfers', 'Digital follow-up'] },
+      { id: 2, name: 'Premium Journey', price: 12000, currency: 'EUR', features: ['All Essential features', '5-star resort recovery', 'Personal care coordinator', 'Family accommodation', 'Wellness treatments'], featured: true },
+      { id: 3, name: 'Crown Journey', price: 22000, currency: 'EUR', features: ['All Premium features', 'Private villa with chef', '24/7 medical supervision', 'Yacht excursions', 'VIP spa & concierge'] }
     ]
   })
 })
 
-apiRoutes.get('/marketplace/accommodations', (c) => {
+apiRoutes.get('/careselect/accommodations', (c) => {
   return c.json({
     accommodations: [
       { id: 1, name: 'Steigenberger Resort', type: '5-Star Hotel', price: 180, currency: 'EUR', rating: 4.9 },
@@ -181,7 +181,7 @@ apiRoutes.get('/marketplace/accommodations', (c) => {
   })
 })
 
-apiRoutes.get('/marketplace/excursions', (c) => {
+apiRoutes.get('/careselect/excursions', (c) => {
   return c.json({
     excursions: [
       { id: 1, name: 'Yacht Day Trip', duration: '6 hours', price: 350, currency: 'EUR' },
@@ -194,7 +194,7 @@ apiRoutes.get('/marketplace/excursions', (c) => {
   })
 })
 
-apiRoutes.get('/marketplace/wellness', (c) => {
+apiRoutes.get('/careselect/wellness', (c) => {
   return c.json({
     treatments: [
       { id: 1, name: 'IV Vitamin Therapy', desc: 'Energy boost infusion', price: 150, duration: '45 min' },
@@ -204,6 +204,12 @@ apiRoutes.get('/marketplace/wellness', (c) => {
     ]
   })
 })
+
+// Backward compatibility - Redirect old marketplace routes to new careselect routes
+apiRoutes.get('/marketplace/packages', (c) => c.redirect('/api/careselect/packages'))
+apiRoutes.get('/marketplace/accommodations', (c) => c.redirect('/api/careselect/accommodations'))
+apiRoutes.get('/marketplace/excursions', (c) => c.redirect('/api/careselect/excursions'))
+apiRoutes.get('/marketplace/wellness', (c) => c.redirect('/api/careselect/wellness'))
 
 // AI / Risk calculators
 apiRoutes.get('/ai/risk-calculators', (c) => {

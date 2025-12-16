@@ -55,7 +55,7 @@ apiRoutes.get('/health', (c) => {
   return c.json({ 
     status: 'healthy', 
     version: '1.0.0',
-    platform: 'SelectCareOS',
+    platform: 'German Select',
     timestamp: new Date().toISOString()
   })
 })
@@ -194,7 +194,7 @@ apiRoutes.post('/risk-calculator', async (c) => {
   }
 })
 
-// Marketplace API
+// CareSelect™ Journeys API (formerly Marketplace)
 apiRoutes.get('/procedures', (c) => {
   const category = c.req.query('category')
   let filtered = procedures
@@ -378,9 +378,9 @@ apiRoutes.get('/memberships', (c) => {
 // Surgery packages
 apiRoutes.get('/surgery-packages', (c) => {
   const packages = [
-    { id: 'essential', name: 'Essential', price: 6500, includes: ['Surgery', '5 nights', 'Transfers', 'Follow-up'] },
-    { id: 'premium', name: 'Premium', price: 12000, includes: ['Surgery', '10 nights 5-star', 'VIP transfers', 'Spa access', 'Excursion'] },
-    { id: 'platinum', name: 'Platinum', price: 22000, includes: ['Surgery', '14 nights villa', 'Private transfers', 'Full wellness program', 'Companion package'] }
+    { id: 'essential', name: 'Essential Journey', price: 6500, includes: ['German-certified surgeon', 'Hospital stay (3-5 days)', 'Airport transfers', 'Digital follow-up'] },
+    { id: 'premium', name: 'Premium Journey', price: 12000, includes: ['All Essential features', '5-star resort recovery', 'Personal coordinator', 'Wellness treatments'] },
+    { id: 'crown', name: 'Crown Journey', price: 22000, includes: ['All Premium features', 'Private villa with chef', '24/7 supervision', 'Yacht excursions'] }
   ]
   return c.json({ success: true, data: packages })
 })

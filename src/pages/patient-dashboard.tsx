@@ -4,7 +4,7 @@ import { Header, BottomNav, PageWrapper, Card, ProgressCircle, QuickAction, Doct
 export const patientDashboard = (c: Context) => {
   return c.render(
     <PageWrapper active="home">
-      <Header title="SelectCareOS™" />
+      <Header title="German Select" />
       
       <main class="px-4 py-4 space-y-6">
         {/* Surgery Preparation Status */}
@@ -180,7 +180,7 @@ export const patientDashboard = (c: Context) => {
         </div>
         
         <div class="grid grid-cols-4 gap-3">
-          <QuickAction icon="fa-shopping-bag" label="Marketplace" href="/patient/marketplace" color="gs-gold" />
+          <QuickAction icon="fa-shopping-bag" label="CareSelect™" href="/patient/marketplace" color="gs-gold" />
           <QuickAction icon="fa-spa" label="Wellness" href="/patient/wellness" color="gs-teal" />
           <QuickAction icon="fa-user-md" label="Care Team" href="/patient/care-team" color="gs-navy" />
           <QuickAction icon="fa-comment-medical" label="Messages" href="/patient/messages" color="gs-blue" />
@@ -301,10 +301,10 @@ export const patientDashboard = (c: Context) => {
           </div>
         </Card>
         
-        {/* Marketplace Preview */}
+        {/* CareSelect™ Preview */}
         <div>
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-gs-navy">Explore Red Sea Recovery</h3>
+            <h3 class="font-bold text-gs-navy">CareSelect™ Journeys</h3>
             <a href="/patient/marketplace" class="text-xs text-gs-gold hover:underline">View All</a>
           </div>
           <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">

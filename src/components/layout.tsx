@@ -9,20 +9,27 @@ export const patientNavItems = [
   { icon: 'fa-user', label: 'Profile', href: '/patient/profile', id: 'profile' }
 ]
 
-// Header component
-export const Header = ({ title = 'SelectCareOS™', showBack = false, showProfile = true, backHref = '/patient' }: { title?: string, showBack?: boolean, showProfile?: boolean, backHref?: string }) => (
-  <header class="bg-gs-navy text-white px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-gs">
+// Header component with German Select branding
+export const Header = ({ title = 'German Select', showBack = false, showProfile = true, backHref = '/patient' }: { title?: string, showBack?: boolean, showProfile?: boolean, backHref?: string }) => (
+  <header class="bg-gs-black text-white px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-gs">
     <div class="flex items-center gap-3">
       {showBack && (
         <a href={backHref} class="text-white hover:text-gs-gold transition-colors">
           <i class="fas fa-arrow-left text-lg"></i>
         </a>
       )}
-      <h1 class="text-lg font-semibold tracking-wide">{title}</h1>
+      {!showBack ? (
+        <div class="flex flex-col leading-none">
+          <span class="text-[10px] font-bold tracking-[0.2em] text-gs-silver uppercase">GERMAN</span>
+          <span class="text-sm font-playfair font-semibold text-gs-gold">Select</span>
+        </div>
+      ) : (
+        <h1 class="text-lg font-semibold tracking-wide">{title}</h1>
+      )}
     </div>
     {showProfile && (
-      <a href="/patient/profile" class="w-9 h-9 rounded-full bg-gs-gold flex items-center justify-center hover:bg-gs-gold-dark transition-colors">
-        <i class="fas fa-user text-gs-navy text-sm"></i>
+      <a href="/patient/profile" class="w-9 h-9 rounded-full bg-gradient-to-r from-gs-gold-light to-gs-gold flex items-center justify-center hover:from-gs-gold hover:to-gs-bronze transition-all">
+        <i class="fas fa-user text-gs-black text-sm"></i>
       </a>
     )}
   </header>
