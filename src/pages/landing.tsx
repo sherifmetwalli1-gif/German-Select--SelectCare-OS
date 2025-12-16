@@ -67,65 +67,245 @@ export const landingPage = (c: Context) => {
               </div>
             </div>
             
-            {/* App Preview */}
+            {/* Enhanced App Mockup Preview */}
             <div class="hidden md:flex justify-center">
               <div class="relative">
-                <div class="absolute -inset-4 bg-gs-gold/20 rounded-3xl blur-2xl"></div>
-                <div class="relative bg-gs-navy-dark rounded-3xl p-3 shadow-2xl border border-white/10">
-                  <div class="w-72 bg-gs-cream rounded-2xl overflow-hidden">
-                    {/* Mini app preview */}
-                    <div class="bg-gs-navy p-3 flex items-center justify-between">
-                      <span class="text-white text-sm font-semibold">SelectCareOS™</span>
-                      <div class="w-7 h-7 bg-gs-gold rounded-full flex items-center justify-center">
-                        <i class="fas fa-user text-gs-navy text-xs"></i>
-                      </div>
-                    </div>
-                    <div class="p-3 space-y-3">
-                      {/* Surgery prep card */}
-                      <div class="bg-gs-navy/10 rounded-lg p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                          <div class="w-6 h-6 bg-gs-gold rounded-full flex items-center justify-center">
-                            <i class="fas fa-running text-gs-navy text-xs"></i>
+                {/* Glow effect */}
+                <div class="absolute -inset-8 bg-gs-gold/30 rounded-[3rem] blur-3xl animate-pulse"></div>
+                <div class="absolute -inset-4 bg-gs-navy/50 rounded-[2.5rem] blur-xl"></div>
+                
+                {/* Phone frame */}
+                <div class="relative">
+                  {/* Phone outer frame */}
+                  <div class="bg-gray-900 rounded-[2.5rem] p-2 shadow-2xl">
+                    {/* Phone screen border */}
+                    <div class="bg-black rounded-[2rem] p-1">
+                      {/* Phone screen */}
+                      <div class="w-80 bg-gs-cream rounded-[1.75rem] overflow-hidden relative">
+                        {/* Status bar / Notch */}
+                        <div class="bg-gs-navy px-4 pt-2 pb-0">
+                          <div class="flex justify-center">
+                            <div class="w-24 h-6 bg-black rounded-b-xl"></div>
                           </div>
-                          <span class="text-xs font-semibold text-gs-navy">SURGERY PREPARATION</span>
                         </div>
-                        <p class="text-xs text-gray-500">Status: Completed - Oct 12</p>
-                      </div>
-                      
-                      {/* Recovery phase */}
-                      <div class="bg-gradient-to-r from-gs-gold to-gs-gold-dark rounded-lg p-3">
-                        <div class="flex items-center gap-2 text-gs-navy">
-                          <i class="fas fa-check-circle"></i>
-                          <span class="text-xs font-bold">RECOVERY PHASE: POST-OP REHAB</span>
-                        </div>
-                        <div class="flex items-center gap-4 mt-3">
-                          <div class="relative w-14 h-14">
-                            <svg class="transform -rotate-90" viewBox="0 0 36 36">
-                              <circle cx="18" cy="18" r="16" fill="none" stroke="#ffffff30" stroke-width="3"/>
-                              <circle cx="18" cy="18" r="16" fill="none" stroke="#1A2E4A" stroke-width="3" stroke-dasharray="75, 100" stroke-linecap="round"/>
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                              <span class="text-xs font-bold text-gs-navy">75%</span>
+                        
+                        {/* App Header */}
+                        <div class="bg-gs-navy px-4 py-3 flex items-center justify-between">
+                          <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-gs-gold rounded-full flex items-center justify-center">
+                              <i class="fas fa-heartbeat text-gs-navy text-sm"></i>
+                            </div>
+                            <span class="text-white font-bold text-sm tracking-wide">SelectCareOS™</span>
+                          </div>
+                          <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-gs-gold/20 rounded-full flex items-center justify-center">
+                              <i class="fas fa-bell text-gs-gold text-xs"></i>
+                            </div>
+                            <div class="w-8 h-8 bg-gs-gold rounded-full flex items-center justify-center">
+                              <i class="fas fa-user text-gs-navy text-xs"></i>
                             </div>
                           </div>
-                          <div class="flex-1 h-1.5 bg-white/30 rounded-full">
-                            <div class="w-3/4 h-full bg-gs-navy rounded-full"></div>
+                        </div>
+                        
+                        {/* App Content */}
+                        <div class="p-4 space-y-3 h-[420px] overflow-hidden">
+                          {/* Surgery Preparation Card */}
+                          <div class="bg-white rounded-xl p-3 shadow-md border-l-4 border-gs-green">
+                            <div class="flex items-center gap-3">
+                              <div class="w-10 h-10 bg-gs-gold rounded-full flex items-center justify-center">
+                                <i class="fas fa-running text-gs-navy"></i>
+                              </div>
+                              <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                  <span class="text-xs font-bold text-gs-navy uppercase tracking-wide">Surgery Preparation</span>
+                                  <i class="fas fa-check-circle text-gs-green text-xs"></i>
+                                </div>
+                                <p class="text-xs text-gray-500">Completed - Oct 12</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Recovery Phase Card - Gold Gradient */}
+                          <div class="bg-gradient-to-r from-gs-gold via-gs-gold to-gs-gold-dark rounded-xl p-4 shadow-lg">
+                            <div class="flex items-center gap-2 mb-3">
+                              <i class="fas fa-check-circle text-gs-navy"></i>
+                              <span class="text-xs font-bold text-gs-navy uppercase tracking-wider">Recovery Phase: Post-Op Rehab</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                              {/* Circular Progress */}
+                              <div class="relative w-16 h-16 flex-shrink-0">
+                                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                  <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+                                  <circle cx="18" cy="18" r="15" fill="none" stroke="#1A2E4A" stroke-width="3" stroke-dasharray="70.65, 94.2" stroke-linecap="round"/>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                  <span class="text-lg font-bold text-gs-navy leading-none">75%</span>
+                                  <span class="text-[8px] text-gs-navy/70 uppercase">Complete</span>
+                                </div>
+                              </div>
+                              {/* Linear Progress */}
+                              <div class="flex-1">
+                                <div class="relative h-2 bg-white/40 rounded-full overflow-hidden">
+                                  <div class="absolute inset-y-0 left-0 w-3/4 bg-gs-navy rounded-full"></div>
+                                  <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-3 h-3 bg-white border-2 border-gs-navy rounded-full shadow"></div>
+                                </div>
+                                <div class="flex justify-between mt-1 text-[10px] text-gs-navy/70 font-medium">
+                                  <span>Start</span>
+                                  <span>12 weeks</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Timeline Section */}
+                          <div class="space-y-0">
+                            {/* Week 1: Initial Assessment */}
+                            <div class="flex gap-3">
+                              <div class="flex flex-col items-center">
+                                <div class="w-8 h-8 bg-gs-gold rounded-full flex items-center justify-center shadow-md">
+                                  <i class="fas fa-clipboard-list text-gs-navy text-xs"></i>
+                                </div>
+                                <div class="w-0.5 h-12 bg-gray-300"></div>
+                              </div>
+                              <div class="flex-1 pb-2">
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                  <span class="text-[10px] font-bold text-gs-gold uppercase">Week 1:</span>
+                                  <h4 class="text-xs font-bold text-gs-navy">INITIAL ASSESSMENT</h4>
+                                  <p class="text-[10px] text-gray-500">Oct 15 - 21</p>
+                                  <p class="text-[10px] text-gray-600 mt-1">Dr. L. Weber, Orthopedics</p>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Appointment: Cardiology */}
+                            <div class="flex gap-3">
+                              <div class="flex flex-col items-center">
+                                <div class="w-0.5 h-2 bg-gray-300"></div>
+                                <div class="w-8 h-8 bg-gs-navy rounded-full flex items-center justify-center shadow-md">
+                                  <i class="fas fa-heart text-gs-gold text-xs"></i>
+                                </div>
+                                <div class="w-0.5 h-8 bg-gray-300"></div>
+                              </div>
+                              <div class="flex-1 pb-2 flex justify-end">
+                                <div class="w-5/6 bg-gs-navy rounded-lg p-3 shadow-md">
+                                  <span class="text-[10px] font-medium text-gs-gold">APPOINTMENT:</span>
+                                  <h4 class="text-xs font-bold text-white">CARDIOLOGY CONSULT</h4>
+                                  <p class="text-[10px] text-white/70">Oct 22, 10:00 AM</p>
+                                  <div class="flex items-center gap-2 mt-1">
+                                    <div class="w-5 h-5 bg-gs-gold/20 rounded-full flex items-center justify-center">
+                                      <i class="fas fa-user-md text-gs-gold text-[8px]"></i>
+                                    </div>
+                                    <div>
+                                      <p class="text-[10px] text-white font-medium">Dr. K. Müller</p>
+                                      <p class="text-[8px] text-white/50">Cardiologist</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Upcoming Label */}
+                            <div class="flex gap-3">
+                              <div class="flex flex-col items-center w-8">
+                                <div class="w-0.5 h-4 bg-gray-300"></div>
+                              </div>
+                              <div class="pb-2">
+                                <span class="text-[10px] font-bold text-gs-navy border border-gs-navy px-2 py-0.5 rounded-full">
+                                  UPCOMING MILESTONES
+                                </span>
+                              </div>
+                            </div>
+                            
+                            {/* Week 3: Mobility */}
+                            <div class="flex gap-3">
+                              <div class="flex flex-col items-center">
+                                <div class="w-8 h-8 border-2 border-gs-navy/30 rounded-full flex items-center justify-center">
+                                  <i class="fas fa-walking text-gs-navy/50 text-xs"></i>
+                                </div>
+                              </div>
+                              <div class="flex-1">
+                                <div class="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
+                                  <span class="text-[10px] font-bold text-gs-gold uppercase">Week 3:</span>
+                                  <h4 class="text-xs font-bold text-gs-navy">MOBILITY TRAINING</h4>
+                                  <p class="text-[10px] text-gray-500">Oct 29 - Nov 4</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Bottom Navigation */}
+                        <div class="bg-white border-t border-gray-200 px-2 py-2">
+                          <div class="flex justify-around items-center">
+                            <div class="flex flex-col items-center">
+                              <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="fas fa-home text-gs-gold text-sm"></i>
+                              </div>
+                              <span class="text-[9px] text-gs-gold font-medium">Home</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                              <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="fas fa-clock text-gray-400 text-sm"></i>
+                              </div>
+                              <span class="text-[9px] text-gray-400">Timeline</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                              <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="fas fa-comments text-gray-400 text-sm"></i>
+                              </div>
+                              <span class="text-[9px] text-gray-400">Messages</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                              <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="fas fa-user-md text-gray-400 text-sm"></i>
+                              </div>
+                              <span class="text-[9px] text-gray-400">Care Team</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                              <div class="w-6 h-6 flex items-center justify-center">
+                                <i class="fas fa-user text-gray-400 text-sm"></i>
+                              </div>
+                              <span class="text-[9px] text-gray-400">Profile</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      
-                      {/* Milestone */}
-                      <div class="flex gap-2">
-                        <div class="flex flex-col items-center">
-                          <div class="w-6 h-6 bg-gs-navy rounded-full flex items-center justify-center">
-                            <i class="fas fa-clipboard-list text-gs-gold text-xs"></i>
-                          </div>
-                          <div class="w-0.5 h-8 bg-gray-200"></div>
-                        </div>
-                        <div class="bg-white rounded-lg p-2 flex-1 shadow-sm">
-                          <p class="text-xs font-bold text-gs-navy">WEEK 1: INITIAL ASSESSMENT</p>
-                          <p class="text-xs text-gray-500">Oct 15 - 21</p>
-                        </div>
+                    </div>
+                  </div>
+                  
+                  {/* Floating elements for visual appeal */}
+                  <div class="absolute -right-12 top-20 bg-white rounded-xl p-3 shadow-lg animate-bounce" style="animation-duration: 3s;">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 bg-gs-green/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-heart text-gs-green text-sm"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-bold text-gs-navy">72 BPM</p>
+                        <p class="text-[10px] text-gray-500">Heart Rate</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute -left-16 bottom-32 bg-white rounded-xl p-3 shadow-lg animate-bounce" style="animation-duration: 4s; animation-delay: 1s;">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 bg-gs-gold/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-star text-gs-gold text-sm"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-bold text-gs-navy">SelectScore™</p>
+                        <p class="text-[10px] text-gs-gold font-bold">85 Excellent</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="absolute -right-8 bottom-16 bg-gs-navy rounded-xl p-3 shadow-lg animate-bounce" style="animation-duration: 3.5s; animation-delay: 0.5s;">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 bg-gs-gold/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-video text-gs-gold text-sm"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-bold text-white">Dr. Weber</p>
+                        <p class="text-[10px] text-gs-gold">Available Now</p>
                       </div>
                     </div>
                   </div>
