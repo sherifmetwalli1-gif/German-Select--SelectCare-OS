@@ -1,288 +1,248 @@
-# SelectCareOS™ | German Select Health Digital Platform
+# SelectCareOS™ - German Select Health Digital Platform
 
-## Project Overview
-- **Name**: SelectCareOS™
-- **Version**: 1.0.0
-- **Goal**: World-class digital health platform for German Select Health - combining German medical excellence with Red Sea recovery
-- **Launch Target**: 2026
+A world-class mobile + web healthcare platform combining German medical excellence with Red Sea recovery and digital care integration.
 
-## Live Demo URLs
-- **Development**: https://3000-iyay96oin17ul70j5b8qe-b32ec7bb.sandbox.novita.ai
+## 🌐 Live Demo
 
-## Features Implemented
+**Production URL**: https://3000-iyay96oin17ul70j5b8qe-b32ec7bb.sandbox.novita.ai
 
-### Patient Dashboard (`/patient`)
-- Recovery timeline visualization with milestones
-- Progress tracking (75% complete indicator)
-- Surgery preparation status
-- Upcoming appointments
-- Care team overview
-- Health summary vitals
-- SelectScore™ readiness indicator
-- Quick actions navigation
-- Today's tasks checklist
+### Quick Access Links
+- **Landing Page**: `/`
+- **Patient Dashboard**: `/patient`
+- **Doctor Dashboard**: `/doctor`
+- **Login**: `/login`
 
-### Recovery Timeline (`/patient/timeline`)
-- Complete surgery timeline from pre-op to follow-up
-- Week-by-week milestones
-- Phase progress tracking
-- Appointment integration
+## 🏥 Project Overview
 
-### Care Team (`/patient/care-team`)
-- German board-certified doctors listing
-- Video call integration
-- Message functionality
-- Specialty search
-- Emergency contact support
-- Doctor profiles with ratings
+**Name**: SelectCareOS™  
+**Organization**: German Select Health  
+**Launch Target**: 2026  
 
-### Telemedicine (`/patient/telemedicine`)
-- Video consultation scheduling
-- Available doctors with wait times
-- Consultation history
-- Pre-call checklist
-- Multi-language support
-- Technical support integration
+**Mission**: Deliver German-standard surgery at 60% less cost through a revolutionary hybrid care model combining elite German board-certified surgeons with a proprietary digital health platform in JCI-certified Egyptian facilities near the therapeutic Red Sea environment.
 
-### Remote Patient Monitoring (`/patient/rpm`)
-- Real-time vitals tracking (Heart rate, BP, Temperature, SpO2, Weight, Glucose)
-- Activity summary (Steps, Calories, Active minutes)
-- Sleep analysis with stages
-- Heart rate trends
-- Connected devices management (Apple Watch, Withings, Oura)
-- Health goals tracking
+## ✅ Implemented Features
 
-### AI Health Assistant (`/patient/ai-diagnostics`)
-- Risk calculators (ASCVD, Diabetes, BMI, eGFR)
-- Document/image analysis upload
-- AI chat interface
-- Evidence-based recommendations
-- Health insights with sources
+### Patient Portal
+- **Home Dashboard** - Recovery progress, vitals overview, task management, SelectScore™
+- **Timeline** - Complete surgery journey visualization (pre-op to follow-up milestones)
+- **Care Team** - Doctor profiles, availability status, video call & messaging
+- **Messages** - Secure communication with care team members
+- **Profile** - Personal info, medical data, connected devices, settings
 
-### Wellness Hub (`/patient/wellness`)
-- Nutrition tracking with macros
-- Meal planning
-- Exercise tracking
-- Mood journaling
-- Sleep hygiene tools
-- Wellness resources library
-- Activity streaks
+### Telemedicine & Connectivity
+- **Video Consultations** - HD telemedicine interface with German specialists
+- **Instant Call** - Connect with available doctors immediately
+- **Scheduling** - Book consultations by specialty, doctor, date/time
+- **Consultation History** - Past visits with notes and prescriptions
 
-### Booking System (`/patient/booking`)
-- Telemedicine/Onsite selection
-- Specialty filtering
-- Doctor selection with availability
-- Calendar date picker
-- Time slot selection
-- Consultation type selection
-- Booking summary
+### Remote Patient Monitoring (RPM)
+- **Vitals Dashboard** - Heart rate, blood pressure, SpO2, temperature
+- **Wearable Integration** - Apple Watch, Fitbit, Garmin, Oura, Withings support
+- **Health Charts** - Historical trends and data visualization
+- **Alerts System** - Threshold-based health notifications
+- **Device Sync** - Real-time data synchronization
 
-### Marketplace (`/patient/marketplace`)
-- Surgery packages (SelectCare, SelectCare+, SelectCrown)
-- Red Sea accommodations
-- Excursions & activities (Yacht, Snorkeling, Desert Safari)
-- Anti-aging & wellness treatments
-- Membership tiers (Silver, Gold, Platinum)
-- Cart functionality
+### AI Health Assistant
+- **Risk Calculators** - ASCVD, ADA diabetes, BMI, eGFR kidney function
+- **Document Analysis** - Upload and analyze medical records
+- **AI Chat** - Evidence-based health Q&A with source citations
+- **Personalized Insights** - Heart health, weight management, sleep analysis
 
-### User Profile (`/patient/profile`)
-- Personal information
-- Medical information
-- Connected devices management
-- Membership status
-- Settings
-
-### Doctor Dashboard (`/doctor`)
-- Today's schedule overview
-- RPM alerts
-- Patient panel with status
-- Appointment management
-- Care pathway templates
-- Partner commission tracking
-
-### Landing Page (`/`)
-- Service overview
-- How it works steps
-- Package pricing
-- Platform features
-- Trust indicators
-
-## API Endpoints
-
-### Health Check
-- `GET /api/health` - System status
-
-### Patient Data
-- `GET /api/patients` - List patients
-- `GET /api/patients/:id` - Patient details
-
-### Appointments
-- `GET /api/appointments` - List appointments
-- `POST /api/appointments` - Create appointment
-
-### Care Plan
-- `GET /api/timeline` - Recovery timeline
-- `GET /api/tasks` - Daily tasks
-- `POST /api/tasks/:id/complete` - Complete task
-
-### Vitals & RPM
-- `GET /api/vitals` - Current vitals
-- `POST /api/vitals` - Record vitals
-
-### Care Team
-- `GET /api/care-team` - Patient's care team
-- `GET /api/doctors` - All doctors
-
-### Messaging
-- `GET /api/messages` - Conversations
-- `POST /api/messages` - Send message
+### Booking System
+- **Multi-type Appointments** - Telemedicine and onsite visits
+- **Specialty Selection** - Browse by medical specialty
+- **Doctor Selection** - Compare availability, ratings, pricing
+- **Calendar Integration** - Visual date/time picker
+- **Consultation Types** - Initial, follow-up, second opinion
 
 ### Marketplace
-- `GET /api/marketplace/packages` - Surgery packages
-- `GET /api/marketplace/accommodations` - Hotels/villas
-- `GET /api/marketplace/excursions` - Activities
-- `GET /api/marketplace/wellness` - Treatments
+- **Surgery Packages** - SelectCare (€6,500), SelectCare+ (€12,000), SelectCrown (€22,000)
+- **Accommodations** - 5-star hotels, private villas, medical spas
+- **Excursions** - Yacht trips, snorkeling, desert safari, diving, spa days
+- **Wellness Treatments** - IV therapy, anti-aging, detox programs
+- **Membership Tiers** - Silver (€49), Gold (€99), Platinum (€199)
 
-### AI Services
-- `GET /api/ai/risk-calculators` - Risk scores
-- `POST /api/ai/chat` - AI assistant
+### Wellness & Lifestyle
+- **Daily Goals** - Hydration, steps, nutrition, exercise, medication tracking
+- **Nutrition Plans** - Calorie tracking, macros, meal logging
+- **Exercise Programs** - Recovery-appropriate workouts with physiotherapy
+- **Mood Journal** - Emotional tracking with CBT-style prompts
+- **Sleep Tracking** - Quality scores, patterns, duration analysis
 
-### User Data
-- `GET /api/selectscore` - SelectScore
-- `GET /api/memberships` - Membership info
-- `GET /api/devices` - Connected devices
+### Doctor Dashboard
+- **Patient Management** - Active patient panels with progress tracking
+- **RPM Alerts** - Priority-based vital sign notifications
+- **Schedule Management** - Daily appointments with status tracking
+- **Quick Actions** - E-prescribe, add patient, schedule, analytics
+- **Performance Metrics** - Satisfaction rates, consultations, ratings
 
-### Telemedicine
-- `GET /api/telemedicine/available` - Available doctors
-- `POST /api/telemedicine/start` - Start session
+## 🛠 Technical Stack
 
-## Tech Stack
-- **Framework**: Hono (TypeScript)
-- **Platform**: Cloudflare Pages/Workers
-- **Styling**: Tailwind CSS
+- **Framework**: Hono (Cloudflare Workers optimized)
+- **Frontend**: Tailwind CSS + Custom Design System
+- **Runtime**: Cloudflare Pages/Workers
+- **Build Tool**: Vite
 - **Icons**: Font Awesome 6
-- **Typography**: Inter (Google Fonts)
 - **Charts**: Chart.js
-- **Date**: Day.js
+- **Date/Time**: Day.js
 
-## Design System
+## 📁 Project Structure
+
+```
+webapp/
+├── src/
+│   ├── index.tsx              # Main app entry, routes
+│   ├── renderer.tsx           # HTML template with Tailwind config
+│   ├── api/
+│   │   └── index.ts           # REST API endpoints
+│   ├── components/
+│   │   └── layout.tsx         # Reusable UI components
+│   └── pages/
+│       ├── landing.tsx        # Public landing page
+│       ├── login.tsx          # Authentication
+│       ├── patient-dashboard.tsx
+│       ├── doctor-dashboard.tsx
+│       ├── timeline.tsx
+│       ├── care-team.tsx
+│       ├── messages.tsx
+│       ├── profile.tsx
+│       ├── booking.tsx
+│       ├── marketplace.tsx
+│       ├── ai-diagnostics.tsx
+│       ├── rpm.tsx
+│       ├── wellness.tsx
+│       └── telemedicine.tsx
+├── public/
+│   └── static/
+│       ├── style.css          # Custom CSS
+│       └── app.js             # Frontend JavaScript
+├── ecosystem.config.cjs        # PM2 configuration
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── wrangler.jsonc
+```
+
+## 🎨 Design System
 
 ### Brand Colors
 - **Navy** (Primary): `#1A2E4A`
 - **Gold** (Accent): `#C9A962`
 - **Cream** (Background): `#FDF9F3`
-- **Teal**: `#4A9B9B`
-- **Red**: `#E74C3C`
-- **Green**: `#27AE60`
-- **Blue**: `#3498DB`
-- **Purple**: `#9B59B6`
+- **Supporting**: Teal, Red, Green, Blue, Purple
 
 ### Typography
-- Font Family: Inter
-- Weights: 300, 400, 500, 600, 700, 800
+- **Font Family**: Inter (Google Fonts)
+- **Weights**: 300-800
 
-## Project Structure
-```
-webapp/
-├── src/
-│   ├── index.tsx           # Main app routes
-│   ├── renderer.tsx        # HTML renderer
-│   ├── api.tsx             # API routes
-│   ├── pages/              # Page components
-│   │   ├── landing.tsx
-│   │   ├── login.tsx
-│   │   ├── patient-dashboard.tsx
-│   │   ├── doctor-dashboard.tsx
-│   │   ├── timeline.tsx
-│   │   ├── care-team.tsx
-│   │   ├── messages.tsx
-│   │   ├── profile.tsx
-│   │   ├── booking.tsx
-│   │   ├── marketplace.tsx
-│   │   ├── ai-diagnostics.tsx
-│   │   ├── rpm.tsx
-│   │   ├── wellness.tsx
-│   │   └── telemedicine.tsx
-│   └── components/
-│       └── layout.tsx      # Reusable components
-├── public/
-│   └── static/
-│       ├── style.css       # Custom styles
-│       └── app.js          # Client-side JS
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── wrangler.jsonc
-└── ecosystem.config.cjs    # PM2 config
-```
+### Components
+- Cards with shadow system (`shadow-gs`, `shadow-gs-lg`)
+- Progress circles and bars
+- Status badges
+- Doctor and appointment cards
+- Vital monitoring cards
+- Bottom navigation
 
-## Development Commands
+## 🔌 API Endpoints
+
+### Health & Vitals
+- `GET /api/health` - Health check
+- `GET /api/vitals` - Current vital signs
+- `GET /api/vitals/history` - Historical vital data
+
+### Patients & Appointments
+- `GET /api/patients` - Patient list
+- `GET /api/patients/:id` - Patient details
+- `GET /api/appointments` - Appointments list
+- `POST /api/appointments` - Create appointment
+
+### Care Team
+- `GET /api/care-team` - Primary and support team
+
+### Timeline
+- `GET /api/timeline` - Recovery journey phases
+
+### Marketplace
+- `GET /api/marketplace/packages` - Surgery packages
+- `GET /api/marketplace/accommodations` - Hotels & villas
+- `GET /api/marketplace/excursions` - Activities & tours
+
+### AI Features
+- `GET /api/ai/risk-scores` - Calculated risk scores
+- `POST /api/ai/chat` - AI health assistant chat
+
+### Wellness
+- `GET /api/wellness/goals` - Daily wellness goals
+- `GET /api/wellness/nutrition` - Nutrition data
+
+### Messaging
+- `GET /api/messages` - Conversation list
+- `POST /api/messages` - Send message
+
+### Memberships
+- `GET /api/memberships` - Membership tiers
+
+## 🚀 Development
+
+### Prerequisites
+- Node.js 18+
+- npm or pnpm
+
+### Installation
 ```bash
-# Install dependencies
 npm install
+```
 
-# Build
+### Development Server
+```bash
 npm run build
-
-# Development server (sandbox)
 npm run dev:sandbox
+```
 
-# Deploy to Cloudflare
+### Production Build
+```bash
+npm run build
 npm run deploy
 ```
 
-## Features Not Yet Implemented
-- [ ] Real database integration (D1 recommended)
-- [ ] User authentication (Auth0/Clerk)
-- [ ] Real-time video calling (Jitsi/Twilio)
-- [ ] Wearable device integration
-- [ ] Push notifications
-- [ ] Payment processing (Stripe)
-- [ ] E-learning modules
-- [ ] Partner portal
-- [ ] Multi-language support (DE/AR)
+## 📱 Mobile-First Design
 
-## Recommended Next Steps
-1. **Database Setup**: Configure Cloudflare D1 for data persistence
-2. **Authentication**: Integrate Auth0 or Clerk for secure login
-3. **Video Integration**: Add Jitsi or Twilio for telemedicine
-4. **Wearable APIs**: Connect HealthKit/Health Connect
-5. **Payment Gateway**: Integrate Stripe for subscriptions
-6. **Notifications**: Add Firebase/APNs for push
-7. **i18n**: Add German and Arabic translations
-8. **Testing**: Add Playwright e2e tests
+The application is designed mobile-first with:
+- Responsive breakpoints (sm, md, lg, xl)
+- Safe area insets for notched devices
+- Touch-optimized interactions
+- Bottom navigation for easy thumb access
+- Pull-to-refresh support ready
 
-## User Guide
+## 🔒 Security & Compliance Ready
 
-### For Patients
-1. Visit the landing page and click "Get Started"
-2. Create an account or sign in
-3. Access your dashboard to view:
-   - Recovery progress
-   - Upcoming appointments
-   - Daily tasks
-4. Use quick actions for:
-   - Telemedicine consultations
-   - Booking appointments
-   - Health monitoring
-   - AI assistance
-5. Explore marketplace for packages and activities
+Designed with regulatory compliance in mind:
+- GDPR data handling patterns
+- HIPAA-aware architecture
+- Consent management ready
+- Audit logging structure
+- PHI/PII separation patterns
 
-### For Doctors
-1. Access `/doctor` for the doctor dashboard
-2. View today's schedule and RPM alerts
-3. Manage patient consultations
-4. Track referral commissions
+## 📊 Target Markets
 
-## Deployment Status
-- **Platform**: Cloudflare Pages (pending deployment)
-- **Status**: Development Ready
-- **Last Updated**: December 2024
+- **Primary**: Germany (DACH), UK, EU
+- **Secondary**: GCC, Middle East
+- **Procedures**: Bariatric, Orthopedic, Aesthetic, Dental, Anti-Aging
+- **Recovery**: Red Sea therapeutic environment
 
-## Contact
+## 🏆 Value Propositions
+
+1. **60% Cost Savings** vs. Western European prices
+2. **100% German Board-Certified** surgeons
+3. **JCI-Accredited** partner facilities
+4. **Red Sea Therapeutic Recovery** environment
+5. **Integrated Digital Platform** for continuous care
+
+## 📞 Contact
+
 - **Website**: www.germanselect.org
 - **Email**: info@germanselect.org
 
 ---
-© 2024 German Select Health. All rights reserved.
-GDPR Compliant | JCI Certified Partners
+
+© 2024 German Select Health. SelectCareOS™ is a trademark of German Select Health.
