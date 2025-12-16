@@ -295,7 +295,23 @@ apiRoutes.get('/messages', (c) => {
   return c.json({ success: true, data: messages })
 })
 
-// Timeline API
+// Timeline API - Get all timelines
+apiRoutes.get('/timeline', (c) => {
+  const timeline = [
+    { week: '-4', title: 'Initial Consultation', status: 'completed', date: 'Sep 15-21' },
+    { week: '-2', title: 'Pre-Op Optimization', status: 'completed', date: 'Sep 29 - Oct 5' },
+    { week: '-1', title: 'Final Preparation', status: 'completed', date: 'Oct 6-11' },
+    { week: '0', title: 'Surgery', status: 'completed', date: 'Oct 12' },
+    { week: '1', title: 'Initial Assessment', status: 'completed', date: 'Oct 15-21' },
+    { week: '2', title: 'Basic Rehabilitation', status: 'current', date: 'Oct 22-28' },
+    { week: '3', title: 'Mobility Training', status: 'upcoming', date: 'Oct 29 - Nov 4' },
+    { week: '6', title: 'Advanced Strengthening', status: 'upcoming', date: 'Nov 19-25' },
+    { week: '12', title: '3-Month Assessment', status: 'upcoming', date: 'Jan 12, 2025' }
+  ]
+  return c.json({ success: true, data: timeline })
+})
+
+// Timeline API - Get by patient ID
 apiRoutes.get('/timeline/:patientId', (c) => {
   const timeline = [
     { week: '-4', title: 'Initial Consultation', status: 'completed', date: 'Sep 15-21' },
@@ -311,7 +327,26 @@ apiRoutes.get('/timeline/:patientId', (c) => {
   return c.json({ success: true, data: timeline })
 })
 
-// SelectScore API
+// SelectScore API - Get default score
+apiRoutes.get('/selectscore', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      score: 85,
+      trend: '+5',
+      category: 'Excellent',
+      breakdown: {
+        adherence: 90,
+        vitals: 85,
+        activity: 80,
+        nutrition: 85
+      },
+      lastUpdated: new Date().toISOString()
+    }
+  })
+})
+
+// SelectScore API - Get by patient ID
 apiRoutes.get('/selectscore/:patientId', (c) => {
   return c.json({
     success: true,
@@ -328,4 +363,24 @@ apiRoutes.get('/selectscore/:patientId', (c) => {
       lastUpdated: new Date().toISOString()
     }
   })
+})
+
+// Membership tiers
+apiRoutes.get('/memberships', (c) => {
+  const memberships = [
+    { id: 'silver', name: 'Silver', price: 49, currency: 'EUR', period: 'month', features: ['Basic telemedicine', 'Health tracking', 'Email support'] },
+    { id: 'gold', name: 'Gold', price: 99, currency: 'EUR', period: 'month', features: ['Unlimited telemedicine', 'AI diagnostics', 'Priority support', 'RPM devices'] },
+    { id: 'platinum', name: 'Platinum', price: 199, currency: 'EUR', period: 'month', features: ['All Gold features', '24/7 concierge', 'Personal care coordinator', 'Exclusive discounts'] }
+  ]
+  return c.json({ success: true, data: memberships })
+})
+
+// Surgery packages
+apiRoutes.get('/surgery-packages', (c) => {
+  const packages = [
+    { id: 'essential', name: 'Essential', price: 6500, includes: ['Surgery', '5 nights', 'Transfers', 'Follow-up'] },
+    { id: 'premium', name: 'Premium', price: 12000, includes: ['Surgery', '10 nights 5-star', 'VIP transfers', 'Spa access', 'Excursion'] },
+    { id: 'platinum', name: 'Platinum', price: 22000, includes: ['Surgery', '14 nights villa', 'Private transfers', 'Full wellness program', 'Companion package'] }
+  ]
+  return c.json({ success: true, data: packages })
 })

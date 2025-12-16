@@ -9,6 +9,7 @@ export const renderer = jsxRenderer(({ children }) => {
         <meta name="theme-color" content="#1A2E4A" />
         <meta name="description" content="SelectCareOS - German Medical Excellence, Red Sea Recovery & Digital Care Integration" />
         <title>SelectCareOS™ | German Select Health</title>
+        <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
         
         {/* Tailwind CSS */}
         <script src="https://cdn.tailwindcss.com"></script>
