@@ -1,33 +1,45 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "webapp",
+  "name": "selectcareos",
   "compatibility_date": "2025-12-16",
   "pages_build_output_dir": "./dist",
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  // Environment variables
+  "vars": {
+    "ENVIRONMENT": "production",
+    "APP_NAME": "German Select Health Platform",
+    "APP_VERSION": "1.0.0"
+  },
+  // D1 Database - SQLite at the edge
+  // Create with: npx wrangler d1 create selectcareos-production
+  // Then update the database_id below
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "selectcareos-production",
+      "database_id": "placeholder-id-replace-after-creation",
+      "migrations_dir": "migrations"
+    }
   ]
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
+  // KV Namespace - For caching and session storage (uncomment when needed)
+  // Create with: npx wrangler kv:namespace create selectcareos_KV
   // "kv_namespaces": [
   //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  //     "binding": "KV",
+  //     "id": "placeholder-id-replace-after-creation"
   //   }
   // ],
+  // R2 Bucket - For file storage (medical documents, images)
+  // Create with: npx wrangler r2 bucket create selectcareos-files
   // "r2_buckets": [
   //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
+  //     "binding": "R2",
+  //     "bucket_name": "selectcareos-files"
   //   }
   // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
+  // Cloudflare AI - For AI-powered features
   // "ai": {
   //   "binding": "AI"
   // }
