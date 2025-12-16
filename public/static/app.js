@@ -3,21 +3,20 @@
 // API Base URL
 const API_BASE = '/api';
 
-// Toast notification
-function showToast(message, type = 'info') {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.style.background = type === 'success' ? '#27AE60' : type === 'error' ? '#E74C3C' : '#1A2E4A';
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.style.animation = 'toast-out 0.3s ease forwards';
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
+// State management
+const state = {
+  user: null,
+  vitals: [],
+  appointments: [],
+  messages: [],
+  notifications: []
+};
 
-// API helper
+// Utility functions
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
+
+// API Helper
 async function api(endpoint, options = {}) {
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -27,308 +26,324 @@ async function api(endpoint, options = {}) {
       },
       ...options
     });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
     return await response.json();
   } catch (error) {
     console.error('API Error:', error);
-    showToast('Something went wrong. Please try again.', 'error');
-    throw error;
+    return { success: false, error: error.message };
   }
 }
 
-// Load vitals data
-async function loadVitals() {
-  const data = await api('/vitals');
-  return data.vitals;
+// Toast notifications
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `fixed top-4 right-4 px-4 py-3 rounded-lg shadow-lg z-50 animate-slideIn ${
+    type === 'success' ? 'bg-green-500 text-white' :
+    type === 'error' ? 'bg-red-500 text-white' :
+    type === 'warning' ? 'bg-yellow-500 text-white' :
+    'bg-gs-navy text-white'
+  }`;
+  toast.innerHTML = `
+    <div class="flex items-center gap-2">
+      <i class="fas ${
+        type === 'success' ? 'fa-check-circle' :
+        type === 'error' ? 'fa-exclamation-circle' :
+        type === 'warning' ? 'fa-exclamation-triangle' :
+        'fa-info-circle'
+      }"></i>
+      <span>${message}</span>
+    </div>
+  `;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.classList.add('opacity-0', 'transition-opacity');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
 }
 
-// Load appointments
-async function loadAppointments() {
-  const data = await api('/appointments');
-  return data;
-}
-
-// Load care team
-async function loadCareTeam() {
-  const data = await api('/care-team');
-  return data;
-}
-
-// Load timeline
-async function loadTimeline() {
-  const data = await api('/timeline');
-  return data;
-}
-
-// Load marketplace packages
-async function loadMarketplacePackages() {
-  const data = await api('/marketplace/packages');
-  return data.packages;
-}
-
-// Load wellness data
-async function loadWellnessData() {
-  const data = await api('/wellness/goals');
-  return data;
-}
-
-// Book appointment
-async function bookAppointment(appointmentData) {
-  const data = await api('/appointments', {
-    method: 'POST',
-    body: JSON.stringify(appointmentData)
+// Modal helper
+function showModal(content, options = {}) {
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop';
+  modal.innerHTML = `
+    <div class="bg-white rounded-2xl shadow-lg max-w-md w-full max-h-[90vh] overflow-auto animate-scaleIn">
+      ${options.title ? `
+        <div class="p-4 border-b flex items-center justify-between">
+          <h3 class="font-bold text-gs-navy">${options.title}</h3>
+          <button onclick="this.closest('.fixed').remove()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+            <i class="fas fa-times text-gray-500"></i>
+          </button>
+        </div>
+      ` : ''}
+      <div class="p-4">
+        ${content}
+      </div>
+    </div>
+  `;
+  
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
   });
-  showToast('Appointment booked successfully!', 'success');
-  return data;
+  
+  document.body.appendChild(modal);
+  return modal;
 }
 
-// Send message
-async function sendMessage(conversationId, message) {
-  const data = await api('/messages', {
-    method: 'POST',
-    body: JSON.stringify({ conversationId, message })
+// Loading state
+function setLoading(element, loading = true) {
+  if (loading) {
+    element.classList.add('opacity-50', 'pointer-events-none');
+    element.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + element.innerHTML;
+  } else {
+    element.classList.remove('opacity-50', 'pointer-events-none');
+    element.innerHTML = element.innerHTML.replace(/<i class="fas fa-spinner fa-spin mr-2"><\/i>/g, '');
+  }
+}
+
+// Format date/time
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+function formatTime(dateString) {
+  const options = { hour: 'numeric', minute: '2-digit', hour12: true };
+  return new Date(dateString).toLocaleTimeString('en-US', options);
+}
+
+function timeAgo(dateString) {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diff = now - date;
+  
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes} min ago`;
+  if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  return `${days} day${days > 1 ? 's' : ''} ago`;
+}
+
+// Vitals Chart (if Chart.js is loaded)
+function initVitalsChart(canvasId, data) {
+  if (typeof Chart === 'undefined') return;
+  
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: data.label,
+        data: data.values,
+        borderColor: '#C9A962',
+        backgroundColor: 'rgba(201, 169, 98, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: false },
+        x: { display: true }
+      }
+    }
   });
-  return data;
 }
 
-// AI Chat
+// Health score animation
+function animateScore(element, targetScore) {
+  let current = 0;
+  const duration = 1000;
+  const start = performance.now();
+  
+  function update(timestamp) {
+    const elapsed = timestamp - start;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    current = Math.floor(progress * targetScore);
+    element.textContent = current;
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// Form validation
+function validateForm(formElement) {
+  const inputs = formElement.querySelectorAll('[required]');
+  let isValid = true;
+  
+  inputs.forEach(input => {
+    if (!input.value.trim()) {
+      isValid = false;
+      input.classList.add('border-red-500');
+      input.classList.remove('border-gray-200');
+    } else {
+      input.classList.remove('border-red-500');
+      input.classList.add('border-gray-200');
+    }
+  });
+  
+  return isValid;
+}
+
+// Booking functions
+async function bookAppointment(doctorId, date, time, type) {
+  const result = await api('/appointments', {
+    method: 'POST',
+    body: JSON.stringify({
+      doctorId,
+      date,
+      time,
+      type,
+      patientId: '1' // Demo patient
+    })
+  });
+  
+  if (result.success) {
+    showToast('Appointment booked successfully!', 'success');
+    return result.data;
+  } else {
+    showToast('Failed to book appointment', 'error');
+    return null;
+  }
+}
+
+// Risk calculator
+async function calculateRisk(type, params) {
+  const result = await api('/risk-calculator', {
+    method: 'POST',
+    body: JSON.stringify({
+      calculatorType: type,
+      ...params
+    })
+  });
+  
+  return result.success ? result.data : null;
+}
+
+// BMI Calculator
+function calculateBMI(weight, height) {
+  const bmi = weight / Math.pow(height / 100, 2);
+  let category = 'Normal';
+  let color = 'gs-green';
+  
+  if (bmi < 18.5) {
+    category = 'Underweight';
+    color = 'gs-blue';
+  } else if (bmi >= 25 && bmi < 30) {
+    category = 'Overweight';
+    color = 'gs-gold';
+  } else if (bmi >= 30) {
+    category = 'Obese';
+    color = 'gs-red';
+  }
+  
+  return { value: bmi.toFixed(1), category, color };
+}
+
+// AI Chat helper
 async function sendAIMessage(message) {
-  const data = await api('/ai/chat', {
+  const result = await api('/ai/chat', {
     method: 'POST',
     body: JSON.stringify({ message })
   });
-  return data;
-}
-
-// Mark goal complete
-function markGoalComplete(goalId) {
-  showToast('Goal marked as complete!', 'success');
-  const goalElement = document.querySelector(`[data-goal-id="${goalId}"]`);
-  if (goalElement) {
-    goalElement.classList.add('line-through', 'text-gray-400');
-  }
-}
-
-// Toggle password visibility
-function togglePassword() {
-  const input = document.getElementById('passwordInput');
-  const icon = document.getElementById('passwordToggleIcon');
-  if (input && icon) {
-    if (input.type === 'password') {
-      input.type = 'text';
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    } else {
-      input.type = 'password';
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
-    }
-  }
-}
-
-// Handle authentication
-function handleAuth(e) {
-  e.preventDefault();
-  // Demo: redirect to patient dashboard
-  window.location.href = '/patient';
-}
-
-// Initialize charts (placeholder)
-function initCharts() {
-  // Heart rate chart
-  const heartRateChart = document.getElementById('heartRateChart');
-  if (heartRateChart) {
-    // Chart would be initialized here with Chart.js
-    console.log('Heart rate chart initialized');
-  }
-}
-
-// Handle form submissions
-document.addEventListener('submit', (e) => {
-  const form = e.target;
   
-  if (form.id === 'authForm') {
-    handleAuth(e);
-  }
-  
-  if (form.id === 'bookingForm') {
-    e.preventDefault();
-    const formData = new FormData(form);
-    bookAppointment(Object.fromEntries(formData));
-  }
-  
-  if (form.id === 'messageForm') {
-    e.preventDefault();
-    const input = form.querySelector('input[type="text"]');
-    if (input && input.value.trim()) {
-      sendMessage('current', input.value);
-      input.value = '';
-    }
-  }
-});
+  return result.success ? result.data : null;
+}
 
-// Handle click events
-document.addEventListener('click', (e) => {
-  // Handle goal completion
-  if (e.target.closest('[data-action="complete-goal"]')) {
-    const goalId = e.target.closest('[data-action="complete-goal"]').dataset.goalId;
-    markGoalComplete(goalId);
-  }
-  
-  // Handle quick actions
-  if (e.target.closest('[data-action="quick-log"]')) {
-    const type = e.target.closest('[data-action="quick-log"]').dataset.type;
-    showToast(`Opening ${type} logger...`, 'info');
-  }
-});
-
-// Service Worker registration (for PWA support)
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    // Service worker would be registered here for offline support
-    console.log('PWA ready');
+// Package builder
+async function buildPackage(procedureId, accommodationId, excursionIds, nights) {
+  const result = await api('/packages/build', {
+    method: 'POST',
+    body: JSON.stringify({
+      procedureId,
+      accommodationId,
+      excursionIds,
+      nights
+    })
   });
+  
+  return result.success ? result.data : null;
 }
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   console.log('SelectCareOS initialized');
   
-  // Initialize charts if on RPM page
-  initCharts();
-  
-  // Add smooth scrolling to all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+  // Add smooth scroll to all anchor links
+  $$('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
+      const target = $(this.getAttribute('href'));
       if (target) {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
   
-  // Add loading states to buttons
-  document.querySelectorAll('button[type="submit"]').forEach(button => {
-    button.addEventListener('click', function() {
-      if (!this.disabled) {
-        const originalText = this.innerHTML;
-        this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
-        setTimeout(() => {
-          this.innerHTML = originalText;
-        }, 2000);
+  // Initialize any score animations
+  $$('[data-animate-score]').forEach(el => {
+    const target = parseInt(el.dataset.animateScore);
+    animateScore(el, target);
+  });
+  
+  // Form submissions
+  $$('form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      if (!validateForm(form)) {
+        e.preventDefault();
+        showToast('Please fill in all required fields', 'warning');
       }
+    });
+  });
+  
+  // Initialize tooltips (if any)
+  $$('[data-tooltip]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'absolute bg-gs-navy text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50';
+      tooltip.textContent = el.dataset.tooltip;
+      el.appendChild(tooltip);
+    });
+    el.addEventListener('mouseleave', () => {
+      el.querySelector('.absolute')?.remove();
     });
   });
 });
 
-// Wearable device integration helpers
-const WearableIntegration = {
-  // Apple HealthKit
-  async connectAppleHealth() {
-    showToast('Connecting to Apple Health...', 'info');
-    // Integration would happen here
-    return { connected: true, provider: 'apple_health' };
-  },
-  
-  // Google Health Connect
-  async connectGoogleHealth() {
-    showToast('Connecting to Google Health Connect...', 'info');
-    return { connected: true, provider: 'google_health_connect' };
-  },
-  
-  // Fitbit
-  async connectFitbit() {
-    showToast('Connecting to Fitbit...', 'info');
-    return { connected: true, provider: 'fitbit' };
-  },
-  
-  // Garmin
-  async connectGarmin() {
-    showToast('Connecting to Garmin...', 'info');
-    return { connected: true, provider: 'garmin' };
-  },
-  
-  // Oura
-  async connectOura() {
-    showToast('Connecting to Oura Ring...', 'info');
-    return { connected: true, provider: 'oura' };
-  },
-  
-  // Withings
-  async connectWithings() {
-    showToast('Connecting to Withings...', 'info');
-    return { connected: true, provider: 'withings' };
-  },
-  
-  // Sync all connected devices
-  async syncAll() {
-    showToast('Syncing all devices...', 'info');
-    return { synced: true, timestamp: new Date().toISOString() };
-  }
-};
+// Service Worker registration (for PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Service worker would be registered here for offline support
+    // navigator.serviceWorker.register('/sw.js');
+  });
+}
 
-// Risk Calculator helpers
-const RiskCalculators = {
-  // BMI Calculator
-  calculateBMI(weight, height) {
-    const bmi = weight / Math.pow(height / 100, 2);
-    let status = 'Normal';
-    if (bmi < 18.5) status = 'Underweight';
-    else if (bmi >= 25 && bmi < 30) status = 'Overweight';
-    else if (bmi >= 30) status = 'Obese';
-    return { value: bmi.toFixed(1), status };
-  },
-  
-  // ASCVD Risk (simplified)
-  calculateASCVD(age, systolic, cholesterol, hdl, smoker, diabetic) {
-    // Simplified calculation - real implementation would use Pooled Cohort Equations
-    let risk = 0;
-    risk += (age - 40) * 0.5;
-    risk += (systolic - 120) * 0.1;
-    risk += (cholesterol - 200) * 0.05;
-    risk -= (hdl - 50) * 0.1;
-    if (smoker) risk += 5;
-    if (diabetic) risk += 3;
-    return Math.max(0, Math.min(100, risk)).toFixed(1);
-  },
-  
-  // Diabetes Risk (ADA)
-  calculateDiabetesRisk(age, bmi, familyHistory, hypertension, physicallyActive) {
-    let score = 0;
-    if (age >= 40 && age < 50) score += 1;
-    else if (age >= 50 && age < 60) score += 2;
-    else if (age >= 60) score += 3;
-    
-    if (bmi >= 25 && bmi < 30) score += 1;
-    else if (bmi >= 30 && bmi < 40) score += 2;
-    else if (bmi >= 40) score += 3;
-    
-    if (familyHistory) score += 1;
-    if (hypertension) score += 1;
-    if (!physicallyActive) score += 1;
-    
-    return score;
-  }
-};
-
-// Export for use in other modules
+// Export for global use
 window.SelectCareOS = {
   api,
   showToast,
-  WearableIntegration,
-  RiskCalculators,
-  loadVitals,
-  loadAppointments,
-  loadCareTeam,
-  loadTimeline,
-  loadMarketplacePackages,
-  loadWellnessData,
+  showModal,
+  formatDate,
+  formatTime,
+  timeAgo,
+  calculateBMI,
   bookAppointment,
-  sendMessage,
-  sendAIMessage
+  calculateRisk,
+  sendAIMessage,
+  buildPackage
 };
