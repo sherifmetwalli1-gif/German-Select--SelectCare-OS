@@ -1,0 +1,172 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  
+  // Production Configuration
+  // German Select Health Platform - SelectCareOS
+  
+  "name": "selectcareos-prod",
+  "main": "dist/_worker.js",
+  "compatibility_date": "2025-12-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "./dist",
+  
+  // =========================================================================
+  // MULTI-REGION DEPLOYMENT
+  // Cloudflare automatically deploys to 300+ data centers globally
+  // Configure route hints for optimal latency
+  // =========================================================================
+  
+  "placement": {
+    // Smart placement routes requests to the closest data center
+    "mode": "smart"
+  },
+  
+  // Route configuration for geographic optimization
+  "routes": [
+    {
+      // Primary route - Europe (Germany, Austria, Switzerland)
+      "pattern": "selectcareos.com/*",
+      "zone_name": "selectcareos.com"
+    },
+    {
+      // DACH region subdomain
+      "pattern": "eu.selectcareos.com/*",
+      "zone_name": "selectcareos.com"
+    },
+    {
+      // Middle East / Egypt region
+      "pattern": "mena.selectcareos.com/*",
+      "zone_name": "selectcareos.com"
+    }
+  ],
+  
+  // =========================================================================
+  // D1 DATABASE (Production)
+  // =========================================================================
+  
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "selectcareos-production",
+      "database_id": "YOUR_PRODUCTION_DATABASE_ID"
+      // Create with: npx wrangler d1 create selectcareos-production
+    }
+  ],
+  
+  // =========================================================================
+  // KV NAMESPACES
+  // Used for caching, sessions, and rate limiting
+  // =========================================================================
+  
+  "kv_namespaces": [
+    {
+      "binding": "SESSIONS",
+      "id": "YOUR_SESSIONS_KV_ID"
+      // Create with: npx wrangler kv:namespace create SESSIONS
+    },
+    {
+      "binding": "CACHE",
+      "id": "YOUR_CACHE_KV_ID"
+      // Create with: npx wrangler kv:namespace create CACHE
+    },
+    {
+      "binding": "RATE_LIMITS",
+      "id": "YOUR_RATE_LIMITS_KV_ID"
+      // Create with: npx wrangler kv:namespace create RATE_LIMITS
+    }
+  ],
+  
+  // =========================================================================
+  // R2 STORAGE
+  // Used for medical documents, images, and file uploads
+  // =========================================================================
+  
+  "r2_buckets": [
+    {
+      "binding": "DOCUMENTS",
+      "bucket_name": "selectcareos-documents"
+      // Create with: npx wrangler r2 bucket create selectcareos-documents
+    },
+    {
+      "binding": "MEDIA",
+      "bucket_name": "selectcareos-media"
+      // Create with: npx wrangler r2 bucket create selectcareos-media
+    }
+  ],
+  
+  // =========================================================================
+  // SECRETS (Configure via wrangler secret put)
+  // =========================================================================
+  // 
+  // Required secrets:
+  // npx wrangler secret put JWT_SECRET
+  // npx wrangler secret put REFRESH_SECRET
+  // npx wrangler secret put STRIPE_SECRET_KEY
+  // npx wrangler secret put STRIPE_WEBHOOK_SECRET
+  // npx wrangler secret put ENCRYPTION_KEY
+  // npx wrangler secret put OPENAI_API_KEY (optional)
+  // npx wrangler secret put SENDGRID_API_KEY (optional)
+  //
+  // =========================================================================
+  
+  // =========================================================================
+  // ENVIRONMENT VARIABLES (Non-sensitive)
+  // =========================================================================
+  
+  "vars": {
+    "ENVIRONMENT": "production",
+    "LOG_LEVEL": "info",
+    "CORS_ORIGIN": "https://selectcareos.com",
+    "API_VERSION": "v1",
+    "COMPANY_NAME": "German Select Health",
+    "SUPPORT_EMAIL": "support@selectcareos.com",
+    "HIPAA_COMPLIANCE": "true",
+    "GDPR_COMPLIANCE": "true",
+    "DATA_REGION": "EU"
+  },
+  
+  // =========================================================================
+  // TRIGGERS & CRON JOBS
+  // =========================================================================
+  
+  "triggers": {
+    "crons": [
+      // Daily health check at 6 AM UTC
+      "0 6 * * *",
+      // Hourly alert escalation check
+      "0 * * * *",
+      // Daily database maintenance at 3 AM UTC
+      "0 3 * * *",
+      // Weekly analytics report on Sundays at midnight
+      "0 0 * * 0"
+    ]
+  },
+  
+  // =========================================================================
+  // ANALYTICS
+  // =========================================================================
+  
+  "analytics_engine_datasets": [
+    {
+      "binding": "ANALYTICS",
+      "dataset": "selectcareos_analytics"
+    }
+  ],
+  
+  // =========================================================================
+  // OBSERVABILITY
+  // =========================================================================
+  
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  
+  // =========================================================================
+  // LIMITS
+  // =========================================================================
+  
+  "limits": {
+    "cpu_ms": 50
+  }
+}

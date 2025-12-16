@@ -1,6 +1,35 @@
+/**
+ * API Routes Index
+ * German Select Health Platform - SelectCareOS
+ * 
+ * Route Structure:
+ * /api/health - Health check
+ * /api/auth/* - Authentication (login, register, refresh, etc.)
+ * /api/payments/* - Payment processing (Stripe)
+ * /api/telemedicine-v2/* - Advanced telemedicine (WebRTC)
+ * /api/rpm/* - Remote Patient Monitoring
+ * /api/* - Core API routes (patients, doctors, etc.)
+ */
+
 import { Hono } from 'hono'
+import { authRoutes } from './auth'
+import { paymentRoutes } from './payments'
+import { telemedicineRoutes } from './telemedicine-live'
+import { rpmRoutes } from './rpm'
+import { alertRoutes } from './alerts'
 
 export const apiRoutes = new Hono()
+
+// Mount specialized API routes
+apiRoutes.route('/auth', authRoutes)
+apiRoutes.route('/payments', paymentRoutes)
+apiRoutes.route('/telemedicine-v2', telemedicineRoutes)
+apiRoutes.route('/rpm', rpmRoutes)
+apiRoutes.route('/alerts', alertRoutes)
+
+// ============================================================================
+// CORE API ROUTES (Mock data for demo)
+// ============================================================================
 
 // Mock data
 const patients = [
@@ -49,16 +78,6 @@ const excursions = [
   { id: '3', name: 'Desert Safari', duration: '5 hours', price: 120 },
   { id: '4', name: 'Sunset Cruise', duration: '3 hours', price: 95 }
 ]
-
-// Health status endpoint
-apiRoutes.get('/health', (c) => {
-  return c.json({ 
-    status: 'healthy', 
-    version: '1.0.0',
-    platform: 'German Select',
-    timestamp: new Date().toISOString()
-  })
-})
 
 // Patients API
 apiRoutes.get('/patients', (c) => {
@@ -122,7 +141,7 @@ apiRoutes.post('/appointments', async (c) => {
   }
 })
 
-// Vitals API
+// Vitals API (basic - use /rpm/* for advanced)
 apiRoutes.get('/vitals', (c) => {
   const patientId = c.req.query('patientId')
   const type = c.req.query('type')
@@ -157,7 +176,6 @@ apiRoutes.post('/risk-calculator', async (c) => {
     const body = await c.req.json()
     const { calculatorType, ...params } = body
     
-    // Mock risk calculations
     let result: { score: number; risk: string; recommendations: string[] }
     
     switch (calculatorType) {
@@ -175,8 +193,7 @@ apiRoutes.post('/risk-calculator', async (c) => {
         break
       
       case 'cardiovascular':
-        // Simplified ASCVD calculation
-        const cvRisk = Math.random() * 15 // Mock calculation
+        const cvRisk = Math.random() * 15
         result = {
           score: parseFloat(cvRisk.toFixed(1)),
           risk: cvRisk < 5 ? 'Low' : cvRisk < 10 ? 'Moderate' : 'High',
@@ -194,7 +211,7 @@ apiRoutes.post('/risk-calculator', async (c) => {
   }
 })
 
-// CareSelect™ Journeys API (formerly Marketplace)
+// CareSelect™ Journeys API
 apiRoutes.get('/procedures', (c) => {
   const category = c.req.query('category')
   let filtered = procedures
@@ -250,13 +267,31 @@ apiRoutes.post('/packages/build', async (c) => {
   }
 })
 
-// AI Chat API (mock)
+// AI Chat API with guardrails
 apiRoutes.post('/ai/chat', async (c) => {
   try {
     const body = await c.req.json()
     const { message } = body
     
-    // Mock AI response
+    // Import guardrails dynamically to avoid circular deps
+    const { analyzeMessageSafety, wrapAIResponse, MEDICAL_DISCLAIMER } = await import('../lib/ai-guardrails')
+    
+    // Check message safety
+    const safety = analyzeMessageSafety(message)
+    
+    if (safety.action === 'emergency' || safety.action === 'block') {
+      return c.json({
+        success: true,
+        data: {
+          response: safety.responseOverride,
+          isEmergency: safety.action === 'emergency',
+          disclaimer: MEDICAL_DISCLAIMER.short,
+          timestamp: new Date().toISOString()
+        }
+      })
+    }
+    
+    // Mock AI responses
     const responses: { [key: string]: string } = {
       'blood pressure': 'Blood pressure readings are categorized as follows: Normal (<120/80), Elevated (120-129/<80), High Stage 1 (130-139/80-89), High Stage 2 (≥140/≥90). Always consult your healthcare provider for personalized advice.',
       'recovery': 'Recovery timelines vary by procedure. Generally: Week 1-2 focuses on rest and wound healing, Weeks 3-4 on gentle mobility, Weeks 5-8 on strengthening. Follow your care team\'s specific guidance.',
@@ -272,11 +307,15 @@ apiRoutes.post('/ai/chat', async (c) => {
       }
     }
     
+    // Wrap response with safety disclaimer
+    const wrapped = wrapAIResponse(response, { confidence: 0.85 })
+    
     return c.json({
       success: true,
       data: {
-        response,
-        disclaimer: 'This information is for educational purposes only. Always consult your healthcare provider for medical advice.',
+        response: wrapped.response,
+        disclaimer: wrapped.disclaimer,
+        metadata: wrapped.metadata,
         timestamp: new Date().toISOString()
       }
     })
@@ -295,7 +334,7 @@ apiRoutes.get('/messages', (c) => {
   return c.json({ success: true, data: messages })
 })
 
-// Timeline API - Get all timelines
+// Timeline API
 apiRoutes.get('/timeline', (c) => {
   const timeline = [
     { week: '-4', title: 'Initial Consultation', status: 'completed', date: 'Sep 15-21' },
@@ -311,23 +350,17 @@ apiRoutes.get('/timeline', (c) => {
   return c.json({ success: true, data: timeline })
 })
 
-// Timeline API - Get by patient ID
 apiRoutes.get('/timeline/:patientId', (c) => {
   const timeline = [
     { week: '-4', title: 'Initial Consultation', status: 'completed', date: 'Sep 15-21' },
-    { week: '-2', title: 'Pre-Op Optimization', status: 'completed', date: 'Sep 29 - Oct 5' },
-    { week: '-1', title: 'Final Preparation', status: 'completed', date: 'Oct 6-11' },
     { week: '0', title: 'Surgery', status: 'completed', date: 'Oct 12' },
-    { week: '1', title: 'Initial Assessment', status: 'completed', date: 'Oct 15-21' },
     { week: '2', title: 'Basic Rehabilitation', status: 'current', date: 'Oct 22-28' },
-    { week: '3', title: 'Mobility Training', status: 'upcoming', date: 'Oct 29 - Nov 4' },
-    { week: '6', title: 'Advanced Strengthening', status: 'upcoming', date: 'Nov 19-25' },
-    { week: '12', title: '3-Month Assessment', status: 'upcoming', date: 'Jan 12, 2025' }
+    { week: '3', title: 'Mobility Training', status: 'upcoming', date: 'Oct 29 - Nov 4' }
   ]
   return c.json({ success: true, data: timeline })
 })
 
-// SelectScore API - Get default score
+// SelectScore API
 apiRoutes.get('/selectscore', (c) => {
   return c.json({
     success: true,
@@ -346,7 +379,6 @@ apiRoutes.get('/selectscore', (c) => {
   })
 })
 
-// SelectScore API - Get by patient ID
 apiRoutes.get('/selectscore/:patientId', (c) => {
   return c.json({
     success: true,

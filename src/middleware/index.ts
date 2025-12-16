@@ -91,3 +91,18 @@ export {
   sanitizeHtml,
   sanitizeSql
 } from './validation'
+
+// Authentication
+export {
+  authMiddleware,
+  optionalAuth,
+  requireRole,
+  requirePatient,
+  requireDoctor,
+  requireAdmin,
+  requireProvider,
+  requireSelfOrAdmin,
+  requireCareTeamAccess,
+  apiKeyAuth,
+  auditLog
+} from './auth'
