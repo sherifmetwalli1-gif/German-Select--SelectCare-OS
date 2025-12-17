@@ -12,11 +12,11 @@ export const renderer = jsxRenderer(({ children }) => {
         <title>SelectCare OS | German Select Health</title>
         <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
         
-        {/* Tailwind CSS */}
-        <script src="https://cdn.tailwindcss.com"></script>
+        {/* Tailwind CSS Play CDN - with referrerpolicy for better compatibility */}
+        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio" referrerpolicy="no-referrer"></script>
         
         {/* Font Awesome Icons */}
-        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" />
         
         {/* Google Fonts - Premium Typography */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,10 +24,10 @@ export const renderer = jsxRenderer(({ children }) => {
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
         
         {/* Chart.js */}
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
         
         {/* Day.js */}
-        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js" crossorigin="anonymous"></script>
         
         {/* Custom Styles */}
         <link href="/static/style.css" rel="stylesheet" />
