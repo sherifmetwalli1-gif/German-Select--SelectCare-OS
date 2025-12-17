@@ -260,28 +260,111 @@ export const patientDashboard = (c: Context) => {
           </div>
         </div>
 
-        {/* CareSelect™ Journey Preview */}
+        {/* CareSelect™ Journey Preview - Enhanced with Hurghada & Luxor */}
         <div>
-          <SectionHeader title="CareSelect™ Journeys" action="Explore" actionHref="/patient/marketplace" />
+          <SectionHeader title="CareSelect™ Journeys" action="Explore All" actionHref="/patient/marketplace" />
           <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 no-scrollbar">
-            {[
-              { title: 'Wellness Retreat', desc: '5-day recovery program', price: '€2,500', icon: 'fa-spa', color: 'from-teal-400 to-teal-600' },
-              { title: 'Yacht Excursion', desc: 'Day trip on Red Sea', price: '€350', icon: 'fa-ship', color: 'from-info-400 to-info-600' },
-              { title: 'Snorkeling Tour', desc: 'Coral reef experience', price: '€85', icon: 'fa-water', color: 'from-success-400 to-success-600' }
-            ].map((item) => (
-              <div class="flex-shrink-0 w-44">
-                <Card hover className="overflow-hidden">
-                  <div class={`h-24 bg-gradient-to-br ${item.color} flex items-center justify-center`}>
-                    <i class={`fas ${item.icon} text-white text-3xl`}></i>
+            {/* Hurghada Activities */}
+            <a href="/patient/marketplace" class="flex-shrink-0 w-44 group">
+              <Card hover className="overflow-hidden">
+                <div class="h-24 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center relative">
+                  <i class="fas fa-anchor text-white text-3xl group-hover:scale-110 transition-transform"></i>
+                  <span class="absolute top-2 right-2 bg-white/90 text-teal-700 text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span>
+                </div>
+                <div class="p-3">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span class="text-[10px] font-bold text-teal-600 uppercase tracking-wide">Hurghada</span>
                   </div>
-                  <div class="p-3">
-                    <h5 class="font-semibold text-sm text-navy-900">{item.title}</h5>
-                    <p class="text-xs text-slate-500">{item.desc}</p>
-                    <p class="text-brand-600 font-bold text-sm mt-2">{item.price}</p>
+                  <h5 class="font-semibold text-sm text-navy-900">Red Sea Activities</h5>
+                  <p class="text-xs text-slate-500">12 experiences</p>
+                  <p class="text-brand-600 font-bold text-sm mt-2">From €45</p>
+                </div>
+              </Card>
+            </a>
+            
+            {/* Luxor Tours */}
+            <a href="/patient/marketplace" class="flex-shrink-0 w-44 group">
+              <Card hover className="overflow-hidden">
+                <div class="h-24 bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center relative">
+                  <i class="fas fa-landmark text-white text-3xl group-hover:scale-110 transition-transform"></i>
+                  <span class="absolute top-2 right-2 bg-white/90 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span>
+                </div>
+                <div class="p-3">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wide">Luxor</span>
                   </div>
-                </Card>
+                  <h5 class="font-semibold text-sm text-navy-900">Ancient Wonders</h5>
+                  <p class="text-xs text-slate-500">14 attractions</p>
+                  <p class="text-brand-600 font-bold text-sm mt-2">From €20</p>
+                </div>
+              </Card>
+            </a>
+            
+            {/* Hot Air Balloon - Featured */}
+            <a href="/patient/marketplace" class="flex-shrink-0 w-44 group">
+              <Card hover className="overflow-hidden ring-2 ring-rose-400">
+                <div class="h-24 bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center relative">
+                  <i class="fas fa-hot-air-balloon text-white text-3xl group-hover:scale-110 transition-transform"></i>
+                  <span class="absolute top-2 right-2 bg-navy-900 text-brand-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="fas fa-star text-[8px]"></i>5.0
+                  </span>
+                </div>
+                <div class="p-3">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span class="text-[10px] font-bold text-rose-600 uppercase tracking-wide">Featured</span>
+                  </div>
+                  <h5 class="font-semibold text-sm text-navy-900">Sunrise Balloon</h5>
+                  <p class="text-xs text-slate-500">Luxor aerial view</p>
+                  <p class="text-brand-600 font-bold text-sm mt-2">€125</p>
+                </div>
+              </Card>
+            </a>
+            
+            {/* Sunset Yacht */}
+            <a href="/patient/marketplace" class="flex-shrink-0 w-44 group">
+              <Card hover className="overflow-hidden">
+                <div class="h-24 bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center relative">
+                  <i class="fas fa-sailboat text-navy-900 text-3xl group-hover:scale-110 transition-transform"></i>
+                  <span class="absolute top-2 left-2 bg-teal-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Recovery OK</span>
+                </div>
+                <div class="p-3">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wide">Hurghada</span>
+                  </div>
+                  <h5 class="font-semibold text-sm text-navy-900">Sunset Yacht</h5>
+                  <p class="text-xs text-slate-500">3 hour cruise</p>
+                  <p class="text-brand-600 font-bold text-sm mt-2">€120</p>
+                </div>
+              </Card>
+            </a>
+            
+            {/* Valley of Kings */}
+            <a href="/patient/marketplace" class="flex-shrink-0 w-44 group">
+              <Card hover className="overflow-hidden">
+                <div class="h-24 bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
+                  <i class="fas fa-crown text-white text-3xl group-hover:scale-110 transition-transform"></i>
+                </div>
+                <div class="p-3">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wide">Luxor</span>
+                  </div>
+                  <h5 class="font-semibold text-sm text-navy-900">Valley of Kings</h5>
+                  <p class="text-xs text-slate-500">Royal tombs tour</p>
+                  <p class="text-brand-600 font-bold text-sm mt-2">€55</p>
+                </div>
+              </Card>
+            </a>
+            
+            {/* See All Card */}
+            <a href="/patient/marketplace" class="flex-shrink-0 w-36 group">
+              <div class="h-full bg-gradient-to-br from-navy-800 to-navy-900 rounded-2xl p-4 flex flex-col items-center justify-center text-center border border-navy-700 hover:border-brand-500 transition-all">
+                <div class="w-12 h-12 rounded-xl bg-brand-500/20 flex items-center justify-center mb-3 group-hover:bg-brand-500/30 transition-colors">
+                  <i class="fas fa-arrow-right text-brand-400 text-lg group-hover:translate-x-1 transition-transform"></i>
+                </div>
+                <p class="text-white font-semibold text-sm">See All</p>
+                <p class="text-slate-400 text-xs mt-1">26+ activities</p>
               </div>
-            ))}
+            </a>
           </div>
         </div>
 
