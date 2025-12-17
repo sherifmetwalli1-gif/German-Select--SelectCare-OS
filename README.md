@@ -1,19 +1,20 @@
-# SelectCareOS - German Select Health Digital Platform
+# SelectCare OS - Premium Digital Healthcare Platform
 
-**Version:** 1.0.0  
+**Version:** 2.0.0  
 **Status:** Production Ready  
-**Last Updated:** 2025-12-16
+**Last Updated:** 2025-12-17
 
 ---
 
 ## 🏥 Project Overview
 
-SelectCareOS is a comprehensive digital healthcare platform for German Select Health, providing end-to-end patient care management, telemedicine, remote patient monitoring (RPM), and medical tourism coordination.
+SelectCare OS is a world-class digital healthcare platform providing German medical excellence with Red Sea recovery. The platform features a premium UI/UX design with comprehensive patient care management, telemedicine, remote patient monitoring (RPM), and medical tourism coordination.
 
 ### Key Features
 
+- **🎨 Premium UI/UX** - World-class visual hierarchy with SelectCare OS branding
 - **🔐 Secure Authentication** - JWT-based auth with PBKDF2 password hashing
-- **👥 Patient Dashboard** - Timeline, vitals tracking, care team communication
+- **👥 Patient Dashboard** - Redesigned with premium components, vitals tracking, care team
 - **📹 Telemedicine** - WebRTC video consultations with virtual waiting rooms
 - **📊 RPM Integration** - Apple HealthKit, Google Health Connect, device sync
 - **🚨 Alert Engine** - Real-time vital monitoring with escalation support
@@ -29,6 +30,26 @@ SelectCareOS is a comprehensive digital healthcare platform for German Select He
 |-------------|-----|
 | **Sandbox** | https://3000-iyay96oin17ul70j5b8qe-b32ec7bb.sandbox.novita.ai |
 | **GitHub** | https://github.com/sherifmetwalli1-gif/German-Select--SelectCare-OS |
+
+### Page Routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Premium landing page with visual hierarchy |
+| `/login` | Split-screen auth with branding sidebar |
+| `/login?register=1` | Account creation flow |
+| `/patient` | Patient dashboard with SelectScore™ |
+| `/patient/telemedicine` | Video consultation |
+| `/patient/rpm` | Remote patient monitoring |
+| `/patient/timeline` | Recovery timeline |
+| `/patient/care-team` | Care team contacts |
+| `/patient/marketplace` | CareSelect™ Journeys |
+| `/patient/wellness` | Wellness tracking |
+| `/patient/messages` | Secure messaging |
+| `/patient/booking` | Appointment booking |
+| `/patient/ai-diagnostics` | AI health assistant |
+| `/patient/profile` | User profile |
+| `/doctor` | Doctor dashboard |
 
 ### API Endpoints
 
@@ -48,13 +69,40 @@ SelectCareOS is a comprehensive digital healthcare platform for German Select He
 
 ---
 
+## 🎨 Design System
+
+### Brand Colors
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| **Brand Gold** | `#D4A51A` | Primary accent, CTAs |
+| **Navy** | `#0A1628` | Primary text, dark backgrounds |
+| **Teal** | `#00CCBA` | Success states, medical accent |
+| **Slate** | `#F8FAFC` | Light backgrounds |
+
+### Typography
+
+- **Primary:** Inter (sans-serif)
+- **Display:** Playfair Display (serif)
+- **Mono:** JetBrains Mono
+
+### Components
+
+- **Cards:** Soft shadows, rounded corners (2xl/3xl)
+- **Buttons:** Gradient backgrounds with glow effects
+- **Inputs:** Rounded with icon prefixes
+- **Navigation:** Floating glass-morphism bottom nav
+- **Badges:** Status-based color coding
+
+---
+
 ## 🛠 Tech Stack
 
 - **Framework:** Hono (lightweight, edge-optimized)
 - **Runtime:** Cloudflare Workers/Pages
 - **Database:** Cloudflare D1 (SQLite)
 - **Storage:** Cloudflare KV, R2
-- **Frontend:** Vanilla JS + Tailwind CSS (CDN)
+- **Frontend:** Tailwind CSS (CDN), Font Awesome icons
 - **Authentication:** JWT (HS256)
 - **Payments:** Stripe API
 
@@ -66,6 +114,9 @@ SelectCareOS is a comprehensive digital healthcare platform for German Select He
 webapp/
 ├── src/
 │   ├── index.tsx           # Main application entry
+│   ├── renderer.tsx        # HTML/JSX renderer with design system
+│   ├── components/
+│   │   └── layout.tsx      # Premium UI components
 │   ├── api/
 │   │   ├── index.tsx       # API routes index
 │   │   ├── auth.ts         # Authentication
@@ -85,15 +136,19 @@ webapp/
 │   │   ├── validation.ts   # Input validation
 │   │   └── error-handler.ts # Error handling
 │   └── pages/              # HTML page renderers
+│       ├── landing.tsx     # Premium landing page
+│       ├── login.tsx       # Split-screen auth
+│       ├── patient-dashboard.tsx  # Patient home
+│       └── ...             # Other pages
 ├── migrations/
-│   └── 0001_initial_schema.sql  # D1 schema
+│   └── 0001_initial_schema.sql
 ├── docs/
-│   ├── SECURITY_AUDIT.md   # Security checklist
-│   └── COMPLIANCE_CHECKLIST.md  # HIPAA/GDPR
+│   ├── SECURITY_AUDIT.md
+│   └── COMPLIANCE_CHECKLIST.md
 ├── scripts/
 │   └── deploy-production.sh
-├── wrangler.jsonc          # Development config
-├── wrangler.prod.jsonc     # Production config
+├── wrangler.jsonc
+├── wrangler.prod.jsonc
 ├── package.json
 └── README.md
 ```
@@ -272,6 +327,14 @@ curl -X POST http://localhost:3000/api/alerts/process-vitals \
 - GDPR checklist
 - Launch prep
 
+### ✅ UI/UX Redesign (Completed)
+- SelectCare OS branding throughout
+- Premium landing page with visual hierarchy
+- Redesigned patient dashboard
+- World-class component library
+- Split-screen login page
+- Responsive design optimization
+
 ---
 
 ## 🔄 Next Steps
@@ -295,14 +358,14 @@ curl -X POST http://localhost:3000/api/alerts/process-vitals \
 
 ## 📞 Support
 
-- **Technical:** tech@germanselect.org
-- **Medical:** medical@germanselect.org
-- **General:** support@selectcareos.com
+- **Technical:** tech@selectcare.health
+- **Medical:** medical@selectcare.health
+- **General:** support@selectcare.health
 
 ---
 
 ## 📄 License
 
-Proprietary - German Select Health GmbH © 2025
+Proprietary - SelectCare Health GmbH © 2025
 
 All rights reserved. Unauthorized use prohibited.

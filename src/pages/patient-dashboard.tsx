@@ -1,228 +1,247 @@
 import { Context } from 'hono'
-import { Header, BottomNav, PageWrapper, Card, ProgressCircle, QuickAction, DoctorCard, AppointmentCard, StatusBadge } from '../components/layout'
+import { Header, BottomNav, PageWrapper, Card, ProgressCircle, QuickAction, DoctorCard, AppointmentCard, StatusBadge, SectionHeader, VitalCard } from '../components/layout'
 
 export const patientDashboard = (c: Context) => {
   return c.render(
     <PageWrapper active="home">
-      <Header title="German Select" />
+      <Header />
       
       <main class="px-4 py-4 space-y-6">
-        {/* Surgery Preparation Status */}
-        <Card className="p-4">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gs-gold flex items-center justify-center">
-              <i class="fas fa-running text-gs-navy text-lg"></i>
-            </div>
-            <div class="flex-1">
-              <h3 class="font-bold text-gs-navy flex items-center gap-2">
-                SURGERY PREPARATION
-                <i class="fas fa-check-circle text-gs-green text-sm"></i>
-              </h3>
-              <p class="text-sm text-gray-500">Status: Completed - Oct 12</p>
-            </div>
+        {/* Welcome Section */}
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-slate-500 text-sm">Good morning</p>
+            <h1 class="text-2xl font-bold text-navy-900">Max Mustermann</h1>
           </div>
-        </Card>
-        
-        {/* Recovery Phase Card - Gold Gradient */}
-        <Card gold className="p-5">
-          <div class="flex items-center gap-2 mb-4">
-            <i class="fas fa-check-circle text-gs-navy"></i>
-            <h3 class="font-bold text-gs-navy uppercase tracking-wide text-sm">Recovery Phase: Post-Op Rehab</h3>
-          </div>
-          
-          <div class="flex items-center gap-6">
-            <ProgressCircle percent={75} />
-            
-            <div class="flex-1">
-              <div class="relative h-2 bg-white/40 rounded-full overflow-hidden">
-                <div class="absolute inset-y-0 left-0 w-3/4 bg-gs-navy rounded-full"></div>
-                <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-3 h-3 bg-white border-2 border-gs-navy rounded-full"></div>
-              </div>
-              <div class="flex justify-between mt-2 text-xs text-gs-navy/70">
-                <span>Start</span>
-                <span>12 weeks</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="mt-4 pt-4 border-t border-gs-navy/10">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <i class="fas fa-calendar-alt text-gs-navy"></i>
-                <span class="text-sm text-gs-navy font-medium">Next: Mobility Training</span>
-              </div>
-              <span class="text-xs bg-gs-navy text-white px-2 py-1 rounded-full">Oct 29</span>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Timeline Preview */}
-        <div class="space-y-1">
-          {/* Week 1 */}
-          <div class="flex gap-4">
-            <div class="flex flex-col items-center">
-              <div class="w-10 h-10 rounded-full bg-gs-gold text-gs-navy flex items-center justify-center">
-                <i class="fas fa-clipboard-list"></i>
-              </div>
-              <div class="w-0.5 h-full bg-gray-200 mt-2"></div>
-            </div>
-            <div class="flex-1 pb-6">
-              <Card className="p-4">
-                <div class="flex items-start justify-between">
-                  <div>
-                    <span class="text-xs font-bold text-gs-gold uppercase tracking-wide">Week 1:</span>
-                    <h4 class="font-bold text-gs-navy mt-1">INITIAL ASSESSMENT</h4>
-                    <p class="text-xs text-gray-500 mt-1">Oct 15 - 21</p>
-                    <div class="mt-2 text-xs text-gray-600">
-                      <p>Dr. L. Weber, Orthopedics.</p>
-                      <p>Follow-up: Oct 19</p>
-                    </div>
-                  </div>
-                  <StatusBadge status="success" text="Completed" />
-                </div>
-              </Card>
-            </div>
-          </div>
-          
-          {/* Appointment Card - Right Side */}
-          <div class="flex gap-4">
-            <div class="w-10 flex flex-col items-center">
-              <div class="w-0.5 h-full bg-gray-200"></div>
-            </div>
-            <div class="flex-1 flex justify-end pb-6">
-              <div class="w-4/5">
-                <AppointmentCard 
-                  type="APPOINTMENT:"
-                  title="CARDIOLOGY CONSULT"
-                  datetime="Oct 22, 10:00 AM"
-                  doctor="Dr. K. Müller"
-                  specialty="Cardiologist"
-                  isUpcoming={true}
-                />
-              </div>
-            </div>
-          </div>
-          
-          {/* Upcoming Milestones Label */}
-          <div class="flex gap-4">
-            <div class="w-10 flex flex-col items-center">
-              <div class="w-0.5 h-8 bg-gray-200"></div>
-            </div>
-            <div class="pb-2">
-              <span class="text-xs font-bold text-gs-navy border-2 border-gs-navy px-3 py-1 rounded-full">
-                UPCOMING MILESTONES
-              </span>
-            </div>
-          </div>
-          
-          {/* Week 3 */}
-          <div class="flex gap-4">
-            <div class="flex flex-col items-center">
-              <div class="w-10 h-10 rounded-full border-2 border-gs-navy/30 text-gs-navy flex items-center justify-center">
-                <i class="fas fa-walking"></i>
-              </div>
-              <div class="w-0.5 h-full bg-gray-200 mt-2"></div>
-            </div>
-            <div class="flex-1 pb-6">
-              <Card className="p-4">
-                <span class="text-xs font-bold text-gs-gold uppercase tracking-wide">Week 3:</span>
-                <h4 class="font-bold text-gs-navy mt-1">MOBILITY TRAINING</h4>
-                <p class="text-xs text-gray-500 mt-1">Oct 29 - Nov 4</p>
-              </Card>
-            </div>
-          </div>
-          
-          {/* Appointment - Nutrition */}
-          <div class="flex gap-4">
-            <div class="w-10 flex flex-col items-center">
-              <div class="w-0.5 h-full bg-gray-200"></div>
-            </div>
-            <div class="flex-1 flex justify-end pb-6">
-              <div class="w-4/5">
-                <AppointmentCard 
-                  type="APPOINTMENT:"
-                  title="NUTRITION PLAN"
-                  datetime="Nov 5, 2:00 PM"
-                  doctor="Dr. A. Schmidt"
-                  specialty="Nutritionist"
-                  isUpcoming={true}
-                />
-              </div>
-            </div>
-          </div>
-          
-          {/* Week 6 */}
-          <div class="flex gap-4">
-            <div class="flex flex-col items-center">
-              <div class="w-10 h-10 rounded-full border-2 border-gs-navy/30 text-gs-navy flex items-center justify-center">
-                <i class="fas fa-dumbbell"></i>
-              </div>
-            </div>
-            <div class="flex-1 pb-6">
-              <Card className="p-4">
-                <span class="text-xs font-bold text-gs-gold uppercase tracking-wide">Week 6:</span>
-                <h4 class="font-bold text-gs-navy mt-1">ADVANCED STRENGTHENING</h4>
-                <p class="text-xs text-gray-500 mt-1">Nov 19 - 25</p>
-              </Card>
+          <div class="flex items-center gap-2">
+            <div class="px-3 py-1.5 bg-teal-50 text-teal-700 rounded-full text-xs font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+              Recovery Day 12
             </div>
           </div>
         </div>
-        
-        {/* Quick Actions */}
+
+        {/* Recovery Progress - Hero Card */}
+        <Card variant="gold" padding="large">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="fas fa-chart-line"></i>
+            <h3 class="font-bold uppercase tracking-wide text-sm">Recovery Progress</h3>
+            <StatusBadge status="success" text="On Track" size="small" />
+          </div>
+          
+          <div class="flex items-center gap-6">
+            <ProgressCircle percent={75} size={90} color="teal" labelSize="default" />
+            
+            <div class="flex-1">
+              <h4 class="font-semibold mb-2">Post-Op Rehabilitation</h4>
+              <div class="relative h-2.5 bg-navy-900/20 rounded-full overflow-hidden">
+                <div class="absolute inset-y-0 left-0 w-3/4 bg-navy-900 rounded-full transition-all duration-700"></div>
+              </div>
+              <div class="flex justify-between mt-2 text-xs opacity-70">
+                <span>Week 3 of 4</span>
+                <span>9 days left</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 pt-4 border-t border-navy-900/10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar-check"></i>
+              <span class="text-sm font-medium">Next: Mobility Training</span>
+            </div>
+            <span class="text-xs bg-navy-900 text-white px-3 py-1 rounded-full font-semibold">Oct 29</span>
+          </div>
+        </Card>
+
+        {/* SelectScore Card */}
+        <div class="bg-navy-900 rounded-2xl p-5 shadow-soft-lg relative overflow-hidden">
+          {/* Background glow */}
+          <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/20 rounded-full blur-3xl"></div>
+          
+          <div class="relative flex items-center gap-4">
+            <div class="relative">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-glow-brand">
+                <div class="text-center">
+                  <span class="text-3xl font-bold text-navy-900">85</span>
+                </div>
+              </div>
+              <div class="absolute -top-1 -right-1 w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center border-2 border-navy-900">
+                <i class="fas fa-arrow-up text-white text-xs"></i>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <h4 class="font-bold text-white">SelectScore™</h4>
+                <span class="px-2 py-0.5 bg-teal-500/20 text-teal-400 text-xs rounded-full font-semibold">Excellent</span>
+              </div>
+              <p class="text-sm text-slate-400 mb-2">Your recovery readiness based on vitals, adherence, and progress.</p>
+              <div class="flex items-center gap-4 text-xs">
+                <span class="text-teal-400 flex items-center gap-1">
+                  <i class="fas fa-arrow-up"></i> +5 from last week
+                </span>
+                <span class="text-slate-500">Top 15% of patients</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions Grid */}
         <div>
-          <h3 class="text-sm font-bold text-gs-navy mb-3">Quick Actions</h3>
+          <SectionHeader title="Quick Actions" />
           <div class="grid grid-cols-4 gap-3">
             <QuickAction icon="fa-video" label="Telemedicine" href="/patient/telemedicine" color="gs-blue" />
             <QuickAction icon="fa-calendar-plus" label="Book" href="/patient/booking" color="gs-green" />
-            <QuickAction icon="fa-heartbeat" label="RPM" href="/patient/rpm" color="gs-red" />
+            <QuickAction icon="fa-heartbeat" label="Vitals" href="/patient/rpm" color="gs-red" />
             <QuickAction icon="fa-robot" label="AI Assist" href="/patient/ai-diagnostics" color="gs-purple" />
           </div>
         </div>
         
         <div class="grid grid-cols-4 gap-3">
-          <QuickAction icon="fa-shopping-bag" label="CareSelect™" href="/patient/marketplace" color="gs-gold" />
+          <QuickAction icon="fa-gem" label="CareSelect™" href="/patient/marketplace" color="gs-gold" />
           <QuickAction icon="fa-spa" label="Wellness" href="/patient/wellness" color="gs-teal" />
-          <QuickAction icon="fa-user-md" label="Care Team" href="/patient/care-team" color="gs-navy" />
-          <QuickAction icon="fa-comment-medical" label="Messages" href="/patient/messages" color="gs-blue" />
+          <QuickAction icon="fa-user-doctor" label="Care Team" href="/patient/care-team" color="gs-navy" />
+          <QuickAction icon="fa-comments" label="Messages" href="/patient/messages" color="gs-blue" badge="2" />
         </div>
-        
-        {/* Today's Tasks */}
-        <Card className="p-4">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="font-bold text-gs-navy">Today's Tasks</h3>
-            <a href="/patient/timeline" class="text-xs text-gs-gold hover:underline">View All</a>
-          </div>
-          <div class="space-y-3">
-            {[
-              { icon: 'fa-pills', title: 'Take morning medication', time: '8:00 AM', done: true },
-              { icon: 'fa-walking', title: 'Light mobility exercises', time: '10:00 AM', done: true },
-              { icon: 'fa-utensils', title: 'Log breakfast', time: '9:00 AM', done: false },
-              { icon: 'fa-dumbbell', title: 'Physiotherapy session', time: '2:00 PM', done: false }
-            ].map((task) => (
-              <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <div class={`w-8 h-8 rounded-full flex items-center justify-center ${task.done ? 'bg-gs-green/10 text-gs-green' : 'bg-gray-100 text-gray-400'}`}>
-                  <i class={`fas ${task.done ? 'fa-check' : task.icon} text-sm`}></i>
-                </div>
-                <div class="flex-1">
-                  <p class={`text-sm ${task.done ? 'text-gray-400 line-through' : 'text-gs-navy font-medium'}`}>{task.title}</p>
-                  <p class="text-xs text-gray-400">{task.time}</p>
-                </div>
-                {!task.done && (
-                  <button class="text-gs-gold hover:text-gs-gold-dark">
-                    <i class="fas fa-check-circle"></i>
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-        </Card>
-        
-        {/* Your Care Team Preview */}
+
+        {/* Health Vitals Summary */}
         <div>
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-gs-navy">Your Care Team</h3>
-            <a href="/patient/care-team" class="text-xs text-gs-gold hover:underline">View All</a>
+          <SectionHeader title="Today's Vitals" action="View All" actionHref="/patient/rpm" />
+          <div class="grid grid-cols-2 gap-3">
+            <VitalCard icon="fa-heart" label="Heart Rate" value="72" unit="bpm" status="normal" trend="stable" />
+            <VitalCard icon="fa-droplet" label="Blood Pressure" value="120/80" unit="mmHg" status="normal" trend="stable" />
+            <VitalCard icon="fa-weight-scale" label="Weight" value="78.5" unit="kg" status="normal" trend="down" />
+            <VitalCard icon="fa-person-walking" label="Steps" value="4,230" unit="/ 8,000" status="normal" trend="up" />
           </div>
+        </div>
+
+        {/* Timeline Preview */}
+        <div>
+          <SectionHeader title="Recovery Timeline" action="Full Timeline" actionHref="/patient/timeline" />
+          
+          <div class="space-y-1">
+            {/* Completed - Week 1 */}
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-navy-900 flex items-center justify-center shadow-soft">
+                  <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div class="w-0.5 h-full bg-slate-200 mt-2"></div>
+              </div>
+              <div class="flex-1 pb-4">
+                <Card padding="small">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wide">Week 1</span>
+                      <h4 class="font-semibold text-navy-900 text-sm">Initial Assessment</h4>
+                      <p class="text-xs text-slate-500 mt-0.5">Oct 15 - 21 • Dr. L. Weber</p>
+                    </div>
+                    <StatusBadge status="success" text="Done" size="small" />
+                  </div>
+                </Card>
+              </div>
+            </div>
+            
+            {/* Upcoming Appointment */}
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center">
+                <div class="w-10 h-10 rounded-xl bg-navy-900 text-brand-400 flex items-center justify-center shadow-soft">
+                  <i class="fas fa-heart-pulse"></i>
+                </div>
+                <div class="w-0.5 h-full bg-slate-200 mt-2"></div>
+              </div>
+              <div class="flex-1 pb-4 flex justify-end">
+                <div class="w-[90%]">
+                  <AppointmentCard 
+                    type="Today"
+                    title="Cardiology Consult"
+                    datetime="2:00 PM"
+                    doctor="Dr. K. Müller"
+                    specialty="Cardiologist"
+                    isUpcoming={true}
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Upcoming Label */}
+            <div class="flex gap-3 items-center">
+              <div class="w-10 flex justify-center">
+                <div class="w-0.5 h-6 bg-slate-200"></div>
+              </div>
+              <span class="text-xs font-bold text-navy-900 border border-navy-200 bg-navy-50 px-3 py-1 rounded-full">
+                UPCOMING
+              </span>
+            </div>
+            
+            {/* Week 3 */}
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center">
+                <div class="w-10 h-10 rounded-xl border-2 border-slate-300 text-slate-400 flex items-center justify-center">
+                  <i class="fas fa-person-walking"></i>
+                </div>
+                <div class="w-0.5 h-full bg-slate-200 mt-2"></div>
+              </div>
+              <div class="flex-1 pb-4">
+                <Card padding="small" className="border-dashed">
+                  <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wide">Week 3</span>
+                  <h4 class="font-semibold text-navy-900 text-sm">Mobility Training</h4>
+                  <p class="text-xs text-slate-500 mt-0.5">Oct 29 - Nov 4</p>
+                </Card>
+              </div>
+            </div>
+            
+            {/* Week 4 */}
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center">
+                <div class="w-10 h-10 rounded-xl border-2 border-slate-300 text-slate-400 flex items-center justify-center">
+                  <i class="fas fa-dumbbell"></i>
+                </div>
+              </div>
+              <div class="flex-1">
+                <Card padding="small" className="border-dashed">
+                  <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wide">Week 4</span>
+                  <h4 class="font-semibold text-navy-900 text-sm">Advanced Strengthening</h4>
+                  <p class="text-xs text-slate-500 mt-0.5">Nov 5 - 11</p>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Today's Tasks */}
+        <div>
+          <SectionHeader title="Today's Tasks" action="3 of 5 done" actionHref="/patient/timeline" />
+          <Card padding="default">
+            <div class="space-y-3">
+              {[
+                { icon: 'fa-pills', title: 'Morning medication', time: '8:00 AM', done: true },
+                { icon: 'fa-person-walking', title: 'Light mobility exercises', time: '10:00 AM', done: true },
+                { icon: 'fa-bowl-food', title: 'Log breakfast nutrition', time: '9:00 AM', done: true },
+                { icon: 'fa-dumbbell', title: 'Physiotherapy session', time: '2:00 PM', done: false },
+                { icon: 'fa-moon', title: 'Evening medication', time: '8:00 PM', done: false }
+              ].map((task) => (
+                <div class={`flex items-center gap-3 p-2.5 rounded-xl transition-all ${task.done ? 'bg-success-50/50' : 'bg-slate-50 hover:bg-slate-100'}`}>
+                  <div class={`w-9 h-9 rounded-xl flex items-center justify-center ${task.done ? 'bg-success-500 text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>
+                    <i class={`fas ${task.done ? 'fa-check' : task.icon} text-sm`}></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class={`text-sm font-medium ${task.done ? 'text-slate-400 line-through' : 'text-navy-900'}`}>{task.title}</p>
+                    <p class="text-xs text-slate-400">{task.time}</p>
+                  </div>
+                  {!task.done && (
+                    <button class="w-8 h-8 rounded-lg border-2 border-brand-400 text-brand-500 hover:bg-brand-50 flex items-center justify-center transition-all active:scale-95">
+                      <i class="fas fa-check text-sm"></i>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        {/* Care Team */}
+        <div>
+          <SectionHeader title="Your Care Team" action="View All" actionHref="/patient/care-team" />
           <div class="space-y-3">
             <DoctorCard 
               name="Dr. L. Weber"
@@ -240,92 +259,45 @@ export const patientDashboard = (c: Context) => {
             />
           </div>
         </div>
-        
-        {/* Health Summary */}
-        <Card className="p-4">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="font-bold text-gs-navy">Health Summary</h3>
-            <a href="/patient/rpm" class="text-xs text-gs-gold hover:underline">View Details</a>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-gs-navy/5 rounded-lg p-3">
-              <div class="flex items-center gap-2 mb-2">
-                <i class="fas fa-heart text-gs-red text-sm"></i>
-                <span class="text-xs text-gray-500">Heart Rate</span>
-              </div>
-              <p class="text-xl font-bold text-gs-navy">72 <span class="text-xs font-normal text-gray-400">bpm</span></p>
-            </div>
-            <div class="bg-gs-navy/5 rounded-lg p-3">
-              <div class="flex items-center gap-2 mb-2">
-                <i class="fas fa-tint text-gs-blue text-sm"></i>
-                <span class="text-xs text-gray-500">Blood Pressure</span>
-              </div>
-              <p class="text-xl font-bold text-gs-navy">120/80 <span class="text-xs font-normal text-gray-400">mmHg</span></p>
-            </div>
-            <div class="bg-gs-navy/5 rounded-lg p-3">
-              <div class="flex items-center gap-2 mb-2">
-                <i class="fas fa-weight text-gs-gold text-sm"></i>
-                <span class="text-xs text-gray-500">Weight</span>
-              </div>
-              <p class="text-xl font-bold text-gs-navy">78.5 <span class="text-xs font-normal text-gray-400">kg</span></p>
-            </div>
-            <div class="bg-gs-navy/5 rounded-lg p-3">
-              <div class="flex items-center gap-2 mb-2">
-                <i class="fas fa-shoe-prints text-gs-green text-sm"></i>
-                <span class="text-xs text-gray-500">Steps Today</span>
-              </div>
-              <p class="text-xl font-bold text-gs-navy">4,230 <span class="text-xs font-normal text-gray-400">/ 8,000</span></p>
-            </div>
-          </div>
-        </Card>
-        
-        {/* SelectScore */}
-        <Card gold className="p-4">
-          <div class="flex items-center gap-4">
-            <div class="relative">
-              <div class="w-20 h-20 rounded-full border-4 border-gs-navy flex items-center justify-center">
-                <div class="text-center">
-                  <span class="text-2xl font-bold text-gs-navy">85</span>
-                  <span class="text-xs text-gs-navy/70 block">Score</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex-1">
-              <h4 class="font-bold text-gs-navy">SelectScore™</h4>
-              <p class="text-xs text-gs-navy/70 mt-1">Your recovery readiness score based on vitals, adherence, and progress.</p>
-              <div class="flex items-center gap-2 mt-2">
-                <span class="px-2 py-0.5 bg-gs-navy text-white text-xs rounded-full">Excellent</span>
-                <span class="text-xs text-gs-navy/60">+5 from last week</span>
-              </div>
-            </div>
-          </div>
-        </Card>
-        
-        {/* CareSelect™ Preview */}
+
+        {/* CareSelect™ Journey Preview */}
         <div>
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-gs-navy">CareSelect™ Journeys</h3>
-            <a href="/patient/marketplace" class="text-xs text-gs-gold hover:underline">View All</a>
-          </div>
-          <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
+          <SectionHeader title="CareSelect™ Journeys" action="Explore" actionHref="/patient/marketplace" />
+          <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 no-scrollbar">
             {[
-              { title: 'Wellness Retreat', desc: '5-day recovery program', price: '€2,500', image: 'fa-spa' },
-              { title: 'Yacht Excursion', desc: 'Day trip on Red Sea', price: '€350', image: 'fa-ship' },
-              { title: 'Snorkeling Tour', desc: 'Coral reef experience', price: '€85', image: 'fa-water' }
+              { title: 'Wellness Retreat', desc: '5-day recovery program', price: '€2,500', icon: 'fa-spa', color: 'from-teal-400 to-teal-600' },
+              { title: 'Yacht Excursion', desc: 'Day trip on Red Sea', price: '€350', icon: 'fa-ship', color: 'from-info-400 to-info-600' },
+              { title: 'Snorkeling Tour', desc: 'Coral reef experience', price: '€85', icon: 'fa-water', color: 'from-success-400 to-success-600' }
             ].map((item) => (
-              <div class="flex-shrink-0 w-40">
-                <Card className="overflow-hidden">
-                  <div class="h-24 bg-gs-navy flex items-center justify-center">
-                    <i class={`fas ${item.image} text-gs-gold text-3xl`}></i>
+              <div class="flex-shrink-0 w-44">
+                <Card hover className="overflow-hidden">
+                  <div class={`h-24 bg-gradient-to-br ${item.color} flex items-center justify-center`}>
+                    <i class={`fas ${item.icon} text-white text-3xl`}></i>
                   </div>
                   <div class="p-3">
-                    <h5 class="font-semibold text-sm text-gs-navy">{item.title}</h5>
-                    <p class="text-xs text-gray-500">{item.desc}</p>
-                    <p class="text-gs-gold font-bold text-sm mt-2">{item.price}</p>
+                    <h5 class="font-semibold text-sm text-navy-900">{item.title}</h5>
+                    <p class="text-xs text-slate-500">{item.desc}</p>
+                    <p class="text-brand-600 font-bold text-sm mt-2">{item.price}</p>
                   </div>
                 </Card>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Emergency Contact Banner */}
+        <div class="bg-danger-50 border border-danger-200 rounded-2xl p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-danger-100 flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-phone-volume text-danger-600 text-lg"></i>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-danger-900">Emergency Support</h4>
+              <p class="text-xs text-danger-700 mt-0.5">24/7 medical assistance available</p>
+            </div>
+            <a href="tel:+4912345678" class="w-11 h-11 rounded-xl bg-danger-500 text-white flex items-center justify-center shadow-lg shadow-danger-500/30 hover:bg-danger-600 transition-all active:scale-95">
+              <i class="fas fa-phone"></i>
+            </a>
           </div>
         </div>
       </main>
