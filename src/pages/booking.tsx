@@ -42,36 +42,147 @@ export const bookingPage = (c: Context) => {
           </div>
         </div>
         
-        {/* Select Doctor */}
+        {/* Select Doctor - Premium Enhanced */}
         <div>
-          <h3 class="text-sm font-bold text-gs-navy mb-3">Available Doctors</h3>
-          <div class="space-y-3">
+          <h3 class="text-sm font-bold text-navy-900 mb-3 flex items-center gap-2">
+            <i class="fas fa-user-doctor text-brand-500"></i>
+            Available Doctors
+          </h3>
+          <div class="space-y-4">
             {[
-              { name: 'Dr. L. Weber', specialty: 'Orthopedic Surgeon', nextSlot: 'Today, 3:00 PM', rating: 4.9, price: '€150' },
-              { name: 'Dr. K. Müller', specialty: 'Cardiologist', nextSlot: 'Tomorrow, 10:00 AM', rating: 4.8, price: '€180' },
-              { name: 'Dr. A. Schmidt', specialty: 'Nutritionist', nextSlot: 'Today, 5:30 PM', rating: 4.7, price: '€90' }
+              { 
+                name: 'Dr. L. Weber', 
+                initials: 'LW',
+                specialty: 'Orthopedic Surgeon', 
+                specialtyColor: 'brand',
+                nextSlot: 'Today, 3:00 PM', 
+                rating: 4.9, 
+                reviewCount: 420,
+                price: '€150',
+                experience: '15+ years',
+                certifications: ['Board Certified', 'German License'],
+                availability: 'high',
+                bio: 'Specialized in joint replacement and sports medicine. Trained in Berlin.'
+              },
+              { 
+                name: 'Dr. K. Müller', 
+                initials: 'KM',
+                specialty: 'Cardiologist', 
+                specialtyColor: 'teal',
+                nextSlot: 'Tomorrow, 10:00 AM', 
+                rating: 4.8, 
+                reviewCount: 380,
+                price: '€180',
+                experience: '20+ years',
+                certifications: ['Board Certified', 'EU Recognition'],
+                availability: 'medium',
+                bio: 'Expert in interventional cardiology. Munich University graduate.'
+              },
+              { 
+                name: 'Dr. A. Schmidt', 
+                initials: 'AS',
+                specialty: 'Nutritionist', 
+                specialtyColor: 'emerald',
+                nextSlot: 'Today, 5:30 PM', 
+                rating: 4.7, 
+                reviewCount: 290,
+                price: '€90',
+                experience: '10+ years',
+                certifications: ['Certified Nutritionist', 'Bariatric Specialist'],
+                availability: 'high',
+                bio: 'Focus on medical nutrition therapy and weight management programs.'
+              }
             ].map((doctor) => (
-              <Card className="p-4 cursor-pointer hover:shadow-gs-lg hover:border-gs-gold border-2 border-transparent transition-all">
-                <div class="flex items-start gap-3">
-                  <div class="w-12 h-12 rounded-full bg-gs-gold/20 flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-user-md text-gs-gold"></i>
+              <div class="group relative">
+                <Card className="p-5 cursor-pointer hover:shadow-card-hover hover:border-brand-500 border-2 border-transparent transition-all card-lift overflow-hidden">
+                  {/* Availability Heat Indicator */}
+                  <div class="absolute top-3 right-3 z-10">
+                    {doctor.availability === 'high' ? (
+                      <div class="px-3 py-1 bg-gradient-to-r from-emerald-400 to-emerald-600 text-white text-[10px] font-bold rounded-full flex items-center gap-1.5 shadow-soft">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        High Availability
+                      </div>
+                    ) : (
+                      <div class="px-3 py-1 bg-gradient-to-r from-amber-400 to-amber-600 text-white text-[10px] font-bold rounded-full flex items-center gap-1.5 shadow-soft">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        Limited Slots
+                      </div>
+                    )}
                   </div>
-                  <div class="flex-1">
-                    <h4 class="font-semibold text-gs-navy">{doctor.name}</h4>
-                    <p class="text-xs text-gs-gold">{doctor.specialty}</p>
-                    <div class="flex items-center gap-2 mt-2">
-                      <i class="fas fa-star text-gs-gold text-xs"></i>
-                      <span class="text-xs">{doctor.rating}</span>
-                      <span class="text-xs text-gray-400">•</span>
-                      <span class="text-xs text-gs-green">{doctor.nextSlot}</span>
+                  
+                  <div class="flex items-start gap-4">
+                    {/* Premium Gradient Avatar */}
+                    <div class="relative flex-shrink-0">
+                      <div class={`w-16 h-16 rounded-2xl bg-gradient-to-br from-${doctor.specialtyColor}-400 to-${doctor.specialtyColor}-600 flex items-center justify-center text-white text-xl font-extrabold shadow-soft group-hover:scale-105 transition-transform`}>
+                        {doctor.initials}
+                      </div>
+                      {/* Verification Badge */}
+                      <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center shadow-soft border-2 border-white">
+                        <i class="fas fa-badge-check text-white text-xs"></i>
+                      </div>
+                    </div>
+                    
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-start justify-between gap-2 mb-2">
+                        <div class="flex-1">
+                          <h4 class="font-bold text-navy-900 text-base mb-0.5">{doctor.name}</h4>
+                          <p class={`text-xs text-${doctor.specialtyColor}-600 font-semibold mb-1`}>{doctor.specialty}</p>
+                          
+                          {/* Certifications */}
+                          <div class="flex items-center gap-1.5 flex-wrap mb-2">
+                            <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-medium rounded-full">{doctor.experience}</span>
+                            {doctor.certifications.map(cert => (
+                              <span class="px-2 py-0.5 bg-teal-50 text-teal-700 text-[10px] font-medium rounded-full flex items-center gap-1">
+                                <i class="fas fa-certificate text-[8px]"></i>{cert}
+                              </span>
+                            ))}
+                          </div>
+                          
+                          {/* Rating & Reviews */}
+                          <div class="flex items-center gap-3 text-xs mb-2">
+                            <div class="flex items-center gap-1">
+                              <i class="fas fa-star text-amber-400"></i>
+                              <span class="font-bold text-navy-900">{doctor.rating}</span>
+                              <span class="text-slate-400">({doctor.reviewCount} reviews)</span>
+                            </div>
+                          </div>
+                          
+                          {/* Next Slot with Urgency */}
+                          <div class="flex items-center gap-2 text-xs">
+                            <i class="fas fa-clock text-emerald-500"></i>
+                            <span class="font-semibold text-emerald-600">{doctor.nextSlot}</span>
+                            {doctor.nextSlot.includes('Today') && (
+                              <span class="px-2 py-0.5 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 text-[10px] font-bold rounded-full">
+                                Available Now
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div class="text-right">
+                          <p class="text-2xl font-extrabold text-navy-900">{doctor.price}</p>
+                          <p class="text-xs text-slate-400">per session</p>
+                        </div>
+                      </div>
+                      
+                      {/* Expandable Bio on Hover */}
+                      <div class="max-h-0 group-hover:max-h-20 overflow-hidden transition-all duration-300">
+                        <div class="pt-3 border-t border-slate-200 mt-3">
+                          <p class="text-xs text-slate-600 leading-relaxed italic">{doctor.bio}</p>
+                          <div class="flex items-center gap-2 mt-2">
+                            <button class="px-4 py-2 bg-navy-900 text-white text-xs font-bold rounded-xl hover:bg-navy-800 transition-colors shadow-soft">
+                              Book Appointment
+                            </button>
+                            <button class="px-4 py-2 bg-slate-100 text-navy-900 text-xs font-bold rounded-xl hover:bg-slate-200 transition-colors">
+                              View Profile
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="text-right">
-                    <p class="font-bold text-gs-navy">{doctor.price}</p>
-                    <p class="text-xs text-gray-400">per session</p>
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </div>
             ))}
           </div>
         </div>

@@ -113,6 +113,150 @@ export const landingPage = (c: Context) => {
                   <div class="text-sm text-slate-500">Procedures/Year</div>
                 </div>
               </div>
+              
+              {/* Social Proof Section */}
+              <div class="mt-12 pt-12 border-t border-white/10">
+                {/* Scrolling Testimonial Carousel */}
+                <div class="mb-8">
+                  <div class="flex items-center gap-2 mb-6">
+                    <i class="fas fa-quote-left text-brand-400 text-lg"></i>
+                    <span class="text-sm text-slate-400 font-semibold uppercase tracking-wider">Patient Stories</span>
+                  </div>
+                  
+                  <div class="space-y-4">
+                    {/* Testimonial 1 */}
+                    <div class="glass-dark rounded-2xl p-5 animate-fade-in">
+                      <div class="flex items-start gap-4 mb-3">
+                        <div class="relative flex-shrink-0">
+                          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-navy-900 font-bold text-lg shadow-soft">
+                            SK
+                          </div>
+                          <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-teal-500 rounded-full flex items-center justify-center border-2 border-navy-900">
+                            <i class="fas fa-badge-check text-white text-[8px]"></i>
+                          </div>
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2 mb-1">
+                            <span class="text-white font-bold text-sm">Sarah K.</span>
+                            <span class="flex items-center gap-0.5">
+                              {Array(5).fill(0).map(() => <i class="fas fa-star text-amber-400 text-xs"></i>)}
+                            </span>
+                          </div>
+                          <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <img src="https://flagcdn.com/w20/gb.png" alt="UK" class="w-4 h-3 rounded-sm" />
+                            <span>United Kingdom</span>
+                            <span>•</span>
+                            <span>Hip Replacement</span>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-slate-300 text-sm leading-relaxed italic">"Best decision ever! German quality at Egyptian prices. The Red Sea recovery was paradise. 10/10 would recommend!"</p>
+                    </div>
+                    
+                    {/* Testimonial 2 */}
+                    <div class="glass-dark rounded-2xl p-5 animate-fade-in stagger-1">
+                      <div class="flex items-start gap-4 mb-3">
+                        <div class="relative flex-shrink-0">
+                          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-soft">
+                            MR
+                          </div>
+                          <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-brand-500 rounded-full flex items-center justify-center border-2 border-navy-900">
+                            <i class="fas fa-badge-check text-navy-900 text-[8px]"></i>
+                          </div>
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2 mb-1">
+                            <span class="text-white font-bold text-sm">Michael R.</span>
+                            <span class="flex items-center gap-0.5">
+                              {Array(5).fill(0).map(() => <i class="fas fa-star text-amber-400 text-xs"></i>)}
+                            </span>
+                          </div>
+                          <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <img src="https://flagcdn.com/w20/us.png" alt="USA" class="w-4 h-3 rounded-sm" />
+                            <span>United States</span>
+                            <span>•</span>
+                            <span>Knee Surgery</span>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-slate-300 text-sm leading-relaxed italic">"Saved $45,000 compared to US prices. Dr. Weber is world-class. The entire team made me feel safe and cared for."</p>
+                    </div>
+                    
+                    {/* Testimonial 3 */}
+                    <div class="glass-dark rounded-2xl p-5 animate-fade-in stagger-2">
+                      <div class="flex items-start gap-4 mb-3">
+                        <div class="relative flex-shrink-0">
+                          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-soft">
+                            AL
+                          </div>
+                          <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-navy-900">
+                            <i class="fas fa-badge-check text-white text-[8px]"></i>
+                          </div>
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-2 mb-1">
+                            <span class="text-white font-bold text-sm">Anna L.</span>
+                            <span class="flex items-center gap-0.5">
+                              {Array(5).fill(0).map(() => <i class="fas fa-star text-amber-400 text-xs"></i>)}
+                            </span>
+                          </div>
+                          <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <img src="https://flagcdn.com/w20/de.png" alt="Germany" class="w-4 h-3 rounded-sm" />
+                            <span>Germany</span>
+                            <span>•</span>
+                            <span>Spinal Surgery</span>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-slate-300 text-sm leading-relaxed italic">"As a German, I was skeptical. But the quality exceeded my expectations. Plus the recovery resort was incredible!"</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Real-time Booking Counter & Trust Badges */}
+                <div class="grid grid-cols-2 gap-4">
+                  {/* Live Booking Counter */}
+                  <div class="glass-dark rounded-2xl p-4 flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center animate-pulse">
+                      <i class="fas fa-calendar-check text-white text-xl"></i>
+                    </div>
+                    <div>
+                      <div class="text-2xl font-bold text-gradient-gold">127</div>
+                      <div class="text-[10px] text-slate-400 uppercase tracking-wider">Booked This Week</div>
+                    </div>
+                  </div>
+                  
+                  {/* Trust Badges */}
+                  <div class="glass-dark rounded-2xl p-4">
+                    <div class="flex flex-col gap-2">
+                      <div class="group relative flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center">
+                          <i class="fas fa-certificate text-brand-400 text-sm"></i>
+                        </div>
+                        <span class="text-white text-xs font-semibold">ISO 9001</span>
+                        {/* Tooltip */}
+                        <div class="absolute left-full ml-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                          <div class="glass-dark rounded-lg px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                            Quality Management
+                          </div>
+                        </div>
+                      </div>
+                      <div class="group relative flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-teal-500/20 flex items-center justify-center">
+                          <i class="fas fa-shield-halved text-teal-400 text-sm"></i>
+                        </div>
+                        <span class="text-white text-xs font-semibold">TÜV Certified</span>
+                        {/* Tooltip */}
+                        <div class="absolute left-full ml-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                          <div class="glass-dark rounded-lg px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                            German Standards
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             
             {/* Right Content - Premium App Preview */}

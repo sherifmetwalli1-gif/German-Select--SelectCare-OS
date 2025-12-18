@@ -7,16 +7,99 @@ export const patientDashboard = (c: Context) => {
       <Header />
       
       <main class="px-4 py-4 space-y-6">
-        {/* Welcome Section */}
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-slate-500 text-sm">Good morning</p>
-            <h1 class="text-2xl font-bold text-navy-900">Max Mustermann</h1>
+        {/* Premium Welcome Hero Card */}
+        <div class="glass-gold rounded-3xl p-6 shadow-soft-lg border border-brand-200/50 card-luxury relative overflow-hidden animate-fade-in">
+          {/* Animated Background Particles */}
+          <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-teal-400/15 rounded-full blur-2xl animate-pulse-slow" style="animation-delay: 1s;"></div>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="px-3 py-1.5 bg-teal-50 text-teal-700 rounded-full text-xs font-semibold flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
-              Recovery Day 12
+          
+          <div class="relative flex items-start justify-between gap-4">
+            {/* Left: Patient Info */}
+            <div class="flex items-center gap-4 flex-1">
+              {/* Premium Avatar with Verification */}
+              <div class="relative group">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-400 via-brand-500 to-brand-600 flex items-center justify-center text-navy-900 text-2xl font-extrabold shadow-glow-brand group-hover:scale-105 transition-transform">
+                  MM
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center shadow-soft border-2 border-white">
+                  <i class="fas fa-badge-check text-white text-xs"></i>
+                </div>
+                {/* Online Status Indicator */}
+                <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></div>
+              </div>
+              
+              <div class="flex-1">
+                {/* Dynamic Greeting */}
+                <p class="text-sm text-slate-600 font-medium mb-1 flex items-center gap-2">
+                  <i class="fas fa-sun text-amber-500 animate-pulse"></i>
+                  <span>Good morning</span>
+                </p>
+                <h1 class="text-3xl font-extrabold text-navy-900 mb-2 tracking-tight">Max Mustermann</h1>
+                <p class="text-xs text-slate-600 leading-relaxed">Welcome back! Your recovery is progressing excellently.</p>
+                
+                {/* Achievement Badges */}
+                <div class="flex items-center gap-2 mt-3 flex-wrap">
+                  <div class="group relative">
+                    <div class="px-3 py-1.5 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-soft hover:shadow-soft-lg transition-all cursor-pointer">
+                      <i class="fas fa-fire text-sm"></i>
+                      <span>12 Day Streak</span>
+                    </div>
+                    {/* Tooltip */}
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <div class="glass-dark rounded-xl px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                        Keep it up! 🔥
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-navy-900/80 rotate-45 -mt-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="group relative">
+                    <div class="px-3 py-1.5 bg-gradient-to-r from-teal-400 to-teal-600 text-white rounded-full text-xs font-bold flex items-center gap-1.5 shadow-soft hover:shadow-soft-lg transition-all cursor-pointer">
+                      <i class="fas fa-trophy text-sm"></i>
+                      <span>Milestone</span>
+                    </div>
+                    {/* Tooltip */}
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <div class="glass-dark rounded-xl px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                        Week 2 Complete! 🏆
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-navy-900/80 rotate-45 -mt-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="group relative">
+                    <div class="px-3 py-1.5 bg-gradient-to-r from-purple-400 to-purple-600 text-white rounded-full text-xs font-bold flex items-center gap-1.5 shadow-soft hover:shadow-soft-lg transition-all cursor-pointer">
+                      <i class="fas fa-star text-sm"></i>
+                      <span>Top 15%</span>
+                    </div>
+                    {/* Tooltip */}
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <div class="glass-dark rounded-xl px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                        Top performer! ⭐
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-navy-900/80 rotate-45 -mt-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right: Recovery Status */}
+            <div class="flex flex-col items-end gap-2">
+              <div class="px-4 py-2 glass-dark rounded-2xl text-xs font-bold flex items-center gap-2 shadow-soft">
+                <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                <span class="text-white">Recovery Day 12</span>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-slate-500 mb-0.5">Next Milestone</p>
+                <p class="text-sm font-bold text-navy-900">Week 3 Complete</p>
+                <p class="text-[10px] text-teal-600 flex items-center gap-1 justify-end mt-1">
+                  <i class="fas fa-clock"></i>
+                  <span>5 days remaining</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
