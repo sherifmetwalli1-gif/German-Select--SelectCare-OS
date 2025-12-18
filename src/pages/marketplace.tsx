@@ -4,45 +4,49 @@ import { Logo } from '../components/layout'
 export const marketplacePage = (c: Context) => {
   return c.render(
     <div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 pb-32">
-      {/* Premium Marketplace Header */}
+      {/* Ultra-Luxury Marketplace Header */}
       <header class="bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-mesh-gold opacity-10"></div>
-        <div class="absolute top-0 right-0 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
-        <div class="absolute bottom-0 left-0 w-64 h-64 bg-teal-500/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4"></div>
+        <div class="absolute inset-0 bg-mesh-gold opacity-15 shimmer"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/25 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 float" style="animation-delay: 0s;"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4 float" style="animation-delay: 1.5s;"></div>
+        <div class="absolute top-1/3 left-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl float" style="animation-delay: 3s;"></div>
         
-        <div class="relative px-4 pt-4 pb-8">
-          {/* Top Bar */}
-          <div class="flex items-center justify-between mb-6">
-            <a href="/patient" class="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all border border-white/10">
+        <div class="relative px-4 pt-4 pb-10">
+          {/* Top Bar with Enhanced Buttons */}
+          <div class="flex items-center justify-between mb-8 animate-fade-in">
+            <a href="/patient" class="w-11 h-11 rounded-2xl glass-dark flex items-center justify-center hover:scale-105 transition-transform duration-300 btn-press">
               <i class="fas fa-arrow-left text-white/90"></i>
             </a>
             <Logo size="small" theme="dark" />
-            <button class="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all border border-white/10 relative">
+            <button class="w-11 h-11 rounded-2xl glass-dark flex items-center justify-center hover:scale-105 transition-transform duration-300 btn-press relative glow">
               <i class="fas fa-shopping-cart text-white/90"></i>
-              <span class="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg">3</span>
+              <span class="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 text-[10px] font-bold rounded-full flex items-center justify-center shadow-glow-brand animate-pulse">3</span>
             </button>
           </div>
           
-          {/* Hero Content */}
-          <div class="text-center mb-6">
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-brand-500/20 rounded-full mb-4">
-              <i class="fas fa-gem text-brand-400"></i>
-              <span class="text-xs font-bold text-brand-400 uppercase tracking-wider">CareSelect™ Journeys</span>
+          {/* Hero Content with Luxury Typography */}
+          <div class="text-center mb-8 animate-slide-up">
+            <div class="inline-flex items-center gap-2.5 px-5 py-2.5 glass-gold rounded-2xl mb-5 glow">
+              <i class="fas fa-gem text-brand-400 text-sm"></i>
+              <span class="text-xs font-extrabold text-brand-400 uppercase tracking-luxury">CareSelect™ Journeys</span>
             </div>
-            <h1 class="text-3xl font-bold mb-2">Curated Healthcare<br/>Experiences</h1>
-            <p class="text-slate-400 text-sm max-w-xs mx-auto">German medical excellence combined with Red Sea luxury recovery</p>
+            <h1 class="text-4xl font-extrabold mb-3 tracking-tight leading-none">
+              <span class="text-gradient-gold">Curated Healthcare</span><br/>
+              <span class="text-white">Experiences</span>
+            </h1>
+            <p class="text-slate-300 text-sm max-w-sm mx-auto font-medium leading-relaxed">German medical excellence combined with Red Sea luxury recovery</p>
           </div>
           
-          {/* Trust Badges */}
-          <div class="flex justify-center gap-3 flex-wrap">
-            <span class="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs font-medium flex items-center gap-1.5 border border-white/10">
-              <i class="fas fa-shield-alt text-brand-400"></i>German Standards
+          {/* Trust Badges with Glass-Morphism */}
+          <div class="flex justify-center gap-3 flex-wrap animate-fade-in stagger-2">
+            <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
+              <i class="fas fa-shield-halved text-brand-400"></i>German Standards
             </span>
-            <span class="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs font-medium flex items-center gap-1.5 border border-white/10">
+            <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
               <i class="fas fa-umbrella-beach text-teal-400"></i>Red Sea Recovery
             </span>
-            <span class="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs font-medium flex items-center gap-1.5 border border-white/10">
-              <i class="fas fa-star text-warning-400"></i>4.9 Rating
+            <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
+              <i class="fas fa-star text-amber-400"></i>4.9 Rating
             </span>
           </div>
         </div>
@@ -56,48 +60,54 @@ export const marketplacePage = (c: Context) => {
           <span class="text-navy-900 font-semibold">Marketplace</span>
         </nav>
         
-        {/* Search Bar with Enhanced Design */}
-        <div class="relative -mt-4">
-          <div class="relative">
+        {/* Ultra-Luxury Search Bar with Glass-Morphism */}
+        <div class="relative -mt-4 animate-fade-in stagger-3">
+          <div class="relative card-luxury">
             <input 
               type="text" 
               placeholder="Search treatments, activities, accommodations..." 
-              class="w-full pl-12 pr-24 py-4 bg-white rounded-2xl shadow-card border-2 border-slate-200 focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 outline-none text-sm transition-all hover:border-slate-300"
+              class="w-full pl-14 pr-24 py-5 glass rounded-3xl shadow-soft-lg border border-white/30 focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none text-sm transition-all duration-300 hover:border-brand-300 hover:shadow-soft-xl placeholder:text-slate-400"
             />
-            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
-            <button class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-br from-navy-900 to-navy-800 rounded-xl flex items-center justify-center hover:from-navy-800 hover:to-navy-700 transition-all shadow-soft">
+            <div class="absolute left-5 top-1/2 -translate-y-1/2 w-7 h-7 bg-gradient-to-br from-brand-400 to-brand-600 rounded-xl flex items-center justify-center shadow-soft">
+              <i class="fas fa-search text-navy-900 text-xs"></i>
+            </div>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-gradient-to-br from-navy-900 to-navy-800 rounded-2xl flex items-center justify-center hover:from-navy-800 hover:to-navy-700 transition-all duration-300 shadow-soft btn-press glow">
               <i class="fas fa-sliders-h text-brand-400 text-sm"></i>
             </button>
           </div>
-          <div class="flex items-center gap-2 mt-2 text-xs text-slate-500">
-            <i class="fas fa-lightbulb text-amber-400"></i>
-            <span>Try searching: <span class="font-semibold text-navy-900">"knee surgery"</span>, <span class="font-semibold text-navy-900">"yacht"</span>, or <span class="font-semibold text-navy-900">"spa"</span></span>
+          <div class="flex items-center gap-2 mt-3 px-2 text-xs text-slate-500">
+            <div class="w-5 h-5 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-lightbulb text-white text-[10px]"></i>
+            </div>
+            <span class="leading-tight">Try: <span class="font-bold text-navy-900">"knee surgery"</span>, <span class="font-bold text-navy-900">"yacht"</span>, or <span class="font-bold text-navy-900">"spa"</span></span>
           </div>
         </div>
         
-        {/* Category Tabs with Item Counts */}
-        <div class="sticky top-0 z-30 bg-gradient-to-b from-slate-50 to-slate-100 -mx-4 px-4 py-3 mb-4">
-          <div class="flex items-center gap-2 mb-2">
-            <i class="fas fa-filter text-slate-400 text-xs"></i>
-            <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Browse Categories</span>
+        {/* Ultra-Luxury Category Tabs with Glass-Morphism */}
+        <div class="sticky top-0 z-30 glass backdrop-blur-2xl -mx-4 px-4 py-4 mb-4 shadow-soft-sm animate-fade-in stagger-4">
+          <div class="flex items-center gap-2.5 mb-3">
+            <div class="w-6 h-6 bg-gradient-to-br from-brand-400 to-brand-600 rounded-lg flex items-center justify-center shadow-soft">
+              <i class="fas fa-filter text-navy-900 text-xs"></i>
+            </div>
+            <span class="text-xs font-extrabold text-navy-900 uppercase tracking-luxury">Browse Categories</span>
           </div>
-          <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-gradient-to-r from-navy-800 to-navy-900 text-brand-400 shadow-soft ring-2 ring-brand-400/30">
-              <i class="fas fa-box-open"></i>
+          <div class="flex gap-2.5 overflow-x-auto pb-2 no-scrollbar">
+            <button class="flex items-center gap-2.5 px-6 py-3 rounded-2xl whitespace-nowrap text-sm font-bold bg-gradient-to-br from-navy-800 to-navy-900 text-brand-400 shadow-soft-lg ring-2 ring-brand-400/40 hover:shadow-soft-xl hover:scale-105 transition-all duration-300 btn-press shimmer">
+              <i class="fas fa-gem text-lg"></i>
               <span>Journeys</span>
-              <span class="ml-1 px-1.5 py-0.5 bg-brand-400/20 rounded-full text-[10px]">3</span>
+              <span class="ml-1 px-2 py-0.5 bg-brand-400/25 rounded-full text-[10px] font-extrabold">3</span>
             </button>
-            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
-              <i class="fas fa-procedures"></i>
+            <button class="flex items-center gap-2.5 px-6 py-3 rounded-2xl whitespace-nowrap text-sm font-bold glass border border-slate-200 text-slate-700 hover:border-navy-900 hover:shadow-soft-lg hover:scale-105 transition-all duration-300 btn-press">
+              <i class="fas fa-procedures text-lg"></i>
               <span>Surgery</span>
-              <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">8</span>
+              <span class="ml-1 px-2 py-0.5 bg-slate-100 rounded-full text-[10px] font-extrabold">8</span>
             </button>
-            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
-              <i class="fas fa-spa"></i>
+            <button class="flex items-center gap-2.5 px-6 py-3 rounded-2xl whitespace-nowrap text-sm font-bold glass border border-slate-200 text-slate-700 hover:border-teal-500 hover:shadow-soft-lg hover:scale-105 transition-all duration-300 btn-press">
+              <i class="fas fa-spa text-lg"></i>
               <span>Wellness</span>
-              <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">5</span>
+              <span class="ml-1 px-2 py-0.5 bg-slate-100 rounded-full text-[10px] font-extrabold">5</span>
             </button>
-            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
+            <button class="flex items-center gap-2.5 px-6 py-3 rounded-2xl whitespace-nowrap text-sm font-bold glass border border-slate-200 text-slate-700 hover:border-brand-500 hover:shadow-soft-lg hover:scale-105 transition-all duration-300 btn-press">
               <i class="fas fa-hotel"></i>
               <span>Stay</span>
               <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">5</span>
