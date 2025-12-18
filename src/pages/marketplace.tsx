@@ -37,17 +37,57 @@ export const marketplacePage = (c: Context) => {
             <p class="text-slate-300 text-sm max-w-sm mx-auto font-medium leading-relaxed">German medical excellence combined with Red Sea luxury recovery</p>
           </div>
           
-          {/* Trust Badges with Glass-Morphism */}
+          {/* Trust Badges with Glass-Morphism & Tooltips */}
           <div class="flex justify-center gap-3 flex-wrap animate-fade-in stagger-2">
-            <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
-              <i class="fas fa-shield-halved text-brand-400"></i>German Standards
-            </span>
-            <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
-              <i class="fas fa-umbrella-beach text-teal-400"></i>Red Sea Recovery
-            </span>
-            <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
-              <i class="fas fa-star text-amber-400"></i>4.9 Rating
-            </span>
+            <div class="group relative">
+              <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <i class="fas fa-shield-halved text-brand-400"></i>German Standards
+              </span>
+              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div class="glass-dark rounded-xl px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                  TÜV & ISO Certified
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-navy-900/80 rotate-45 -mt-1"></div>
+                </div>
+              </div>
+            </div>
+            <div class="group relative">
+              <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <i class="fas fa-umbrella-beach text-teal-400"></i>Red Sea Recovery
+              </span>
+              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div class="glass-dark rounded-xl px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                  5★ Resort Experience
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-navy-900/80 rotate-45 -mt-1"></div>
+                </div>
+              </div>
+            </div>
+            <div class="group relative">
+              <span class="px-4 py-2 glass-dark rounded-2xl text-xs font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <i class="fas fa-star text-amber-400"></i>4.9 Rating
+              </span>
+              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div class="glass-dark rounded-xl px-3 py-2 text-[10px] text-white whitespace-nowrap shadow-soft-lg">
+                  2,847 Reviews
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-navy-900/80 rotate-45 -mt-1"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Social Proof Stats */}
+          <div class="grid grid-cols-3 gap-4 mt-6 px-4 animate-fade-in stagger-3">
+            <div class="text-center">
+              <div class="text-2xl font-extrabold text-gradient-gold mb-1">3,500+</div>
+              <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Happy Patients</div>
+            </div>
+            <div class="text-center border-x border-white/10">
+              <div class="text-2xl font-extrabold text-gradient-teal mb-1">98%</div>
+              <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Satisfaction</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-extrabold text-white mb-1">15+</div>
+              <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">German Surgeons</div>
+            </div>
           </div>
         </div>
       </header>
@@ -147,52 +187,111 @@ export const marketplacePage = (c: Context) => {
             </a>
           </div>
           
-          {/* Value Proposition Banner */}
-          <div class="bg-gradient-to-r from-teal-50 via-emerald-50 to-teal-50 border border-teal-200 rounded-2xl p-4 mb-5">
-            <div class="flex items-center justify-between">
+          {/* Value Proposition Banner with Social Proof */}
+          <div class="glass border border-teal-200/50 rounded-3xl p-5 mb-6 card-luxury shadow-soft-lg">
+            <div class="flex items-start justify-between mb-4">
               <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center">
-                  <i class="fas fa-badge-check text-white text-xl"></i>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-soft-lg glow">
+                  <i class="fas fa-badge-check text-white text-2xl"></i>
                 </div>
                 <div>
-                  <p class="font-bold text-navy-900 text-sm">All-Inclusive Packages</p>
-                  <p class="text-xs text-slate-600">Surgery + Recovery + Activities • Save up to 40%</p>
+                  <p class="font-extrabold text-navy-900 text-base mb-0.5">All-Inclusive Packages</p>
+                  <p class="text-xs text-slate-600 leading-tight">Surgery + Recovery + Activities • Save up to 40%</p>
+                  <div class="flex items-center gap-1 mt-1.5">
+                    <div class="flex -space-x-2">
+                      <div class="w-5 h-5 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 border-2 border-white"></div>
+                      <div class="w-5 h-5 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 border-2 border-white"></div>
+                      <div class="w-5 h-5 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white"></div>
+                      <div class="w-5 h-5 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white flex items-center justify-center text-[8px] text-white font-bold">+3K</div>
+                    </div>
+                    <span class="text-[10px] text-slate-500 ml-1">booked this month</span>
+                  </div>
                 </div>
               </div>
               <div class="text-right">
-                <p class="text-xs text-slate-500">Starting from</p>
-                <p class="text-2xl font-bold text-brand-600">€6.5k</p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Starting from</p>
+                <p class="text-3xl font-extrabold text-gradient-gold">€6.5k</p>
+                <div class="flex items-center justify-end gap-1 mt-1">
+                  <i class="fas fa-star text-amber-400 text-xs"></i>
+                  <span class="text-xs font-bold text-navy-900">4.9</span>
+                  <span class="text-[10px] text-slate-400">(2.8k)</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Progress Indicator */}
+            <div class="relative">
+              <div class="flex items-center justify-between text-[10px] mb-1.5">
+                <span class="text-slate-600 font-semibold">Limited Availability</span>
+                <span class="text-navy-900 font-bold">Only 3 slots left this quarter</span>
+              </div>
+              <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 rounded-full" style="width: 85%; animation: shimmer 2s infinite;"></div>
               </div>
             </div>
           </div>
           
           <div class="space-y-4">
             {/* Essential Journey */}
-            <div class="bg-white rounded-2xl shadow-card overflow-hidden border border-slate-100 hover:shadow-card-hover transition-all">
-              <div class="h-28 bg-gradient-to-r from-navy-800 via-navy-700 to-navy-800 flex items-center justify-between px-6 relative overflow-hidden">
-                <div class="absolute inset-0 bg-mesh-gold opacity-5"></div>
+            <div class="bg-white rounded-2xl shadow-card overflow-hidden border border-slate-100 hover:shadow-card-hover transition-all card-lift group">
+              <div class="h-32 bg-gradient-to-r from-navy-800 via-navy-700 to-navy-800 flex items-center justify-between px-6 relative overflow-hidden">
+                <div class="absolute inset-0 bg-mesh-gold opacity-5 group-hover:opacity-10 transition-opacity"></div>
+                <div class="absolute top-3 right-3 glass-dark px-3 py-1.5 rounded-full flex items-center gap-1.5 z-20">
+                  <i class="fas fa-users text-teal-400 text-xs"></i>
+                  <span class="text-white text-[10px] font-bold">850+ patients</span>
+                </div>
                 <div class="relative z-10">
                   <span class="text-xs text-brand-400 font-bold uppercase tracking-wider">Essential</span>
-                  <h3 class="text-white font-bold text-xl">Essential Journey</h3>
+                  <h3 class="text-white font-bold text-xl mb-1">Essential Journey</h3>
                   <p class="text-slate-400 text-xs">Complete surgery with recovery basics</p>
                 </div>
-                <div class="w-16 h-16 bg-brand-500/20 rounded-full flex items-center justify-center relative z-10">
+                <div class="w-16 h-16 bg-brand-500/20 rounded-full flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform">
                   <i class="fas fa-star text-brand-400 text-2xl"></i>
                 </div>
               </div>
               <div class="p-5">
+                {/* Patient Review Snippet */}
+                <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                  <div class="flex items-center gap-2 mb-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-xs font-bold">MK</div>
+                    <div class="flex-1">
+                      <div class="flex items-center gap-1">
+                        <span class="text-xs font-bold text-navy-900">Michael K.</span>
+                        <span class="text-[10px] text-slate-400">• 2 weeks ago</span>
+                      </div>
+                      <div class="flex items-center gap-0.5">
+                        {Array(5).fill(0).map((_, i) => <i class="fas fa-star text-amber-400 text-[10px]"></i>)}
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-xs text-slate-600 italic leading-relaxed">"Professional care, smooth process. Great value for the quality of service received."</p>
+                </div>
+                
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">German Surgeon</span>
-                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">Hospital 3-5 days</span>
-                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">Airport Transfers</span>
-                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">Digital Follow-up</span>
+                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-user-md text-brand-500"></i>German Surgeon
+                  </span>
+                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-hospital text-blue-500"></i>Hospital 3-5 days
+                  </span>
+                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-plane text-teal-500"></i>Airport Transfers
+                  </span>
+                  <span class="px-3 py-1.5 bg-slate-100 text-slate-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-laptop-medical text-purple-500"></i>Digital Follow-up
+                  </span>
                 </div>
                 <div class="flex items-center justify-between">
                   <div>
                     <span class="text-3xl font-bold text-navy-900">€6,500</span>
                     <span class="text-sm text-slate-400 ml-1">starting</span>
+                    <div class="flex items-center gap-1 mt-1">
+                      <i class="fas fa-star text-amber-400 text-xs"></i>
+                      <span class="text-xs font-bold text-navy-900">4.7</span>
+                      <span class="text-[10px] text-slate-400">(850)</span>
+                    </div>
                   </div>
-                  <button class="px-6 py-3 bg-navy-900 text-white text-sm font-bold rounded-xl hover:bg-navy-800 transition-colors shadow-soft active:scale-95">
+                  <button class="px-6 py-3 bg-navy-900 text-white text-sm font-bold rounded-xl hover:bg-navy-800 transition-all shadow-soft btn-press hover:shadow-soft-lg">
                     Select Journey →
                   </button>
                 </div>
@@ -200,34 +299,74 @@ export const marketplacePage = (c: Context) => {
             </div>
             
             {/* Premium Journey */}
-            <div class="bg-white rounded-2xl shadow-card overflow-hidden ring-2 ring-brand-500 hover:shadow-card-hover transition-all relative">
-              <div class="absolute top-4 left-4 z-20 bg-gradient-to-r from-danger-500 to-danger-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+            <div class="bg-white rounded-2xl shadow-card-hover overflow-hidden ring-2 ring-brand-500 hover:ring-4 transition-all relative card-luxury group">
+              <div class="absolute top-4 left-4 z-20 bg-gradient-to-r from-danger-500 to-danger-600 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-1.5 animate-pulse">
                 <i class="fas fa-fire"></i>Most Popular
               </div>
-              <div class="h-32 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 flex items-center justify-between px-6 relative overflow-hidden">
-                <div class="absolute inset-0 bg-mesh-gold opacity-10"></div>
-                <div class="relative z-10 pt-4">
+              <div class="absolute top-4 right-4 z-20 glass-gold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                <i class="fas fa-users text-brand-600 text-xs"></i>
+                <span class="text-navy-900 text-[10px] font-bold">1.2K+ patients</span>
+              </div>
+              <div class="h-36 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 flex items-center justify-between px-6 relative overflow-hidden">
+                <div class="absolute inset-0 bg-mesh-gold opacity-15 shimmer"></div>
+                <div class="relative z-10 pt-6">
                   <span class="text-xs text-navy-900 font-bold uppercase tracking-wider">Premium</span>
-                  <h3 class="text-navy-900 font-bold text-xl">Premium Journey</h3>
-                  <p class="text-navy-800 text-xs">5-star resort recovery experience</p>
+                  <h3 class="text-navy-900 font-bold text-2xl mb-1">Premium Journey</h3>
+                  <p class="text-navy-800 text-xs font-medium">5-star resort recovery experience</p>
                 </div>
-                <div class="w-16 h-16 bg-navy-900/20 rounded-full flex items-center justify-center relative z-10">
-                  <i class="fas fa-crown text-navy-900 text-2xl"></i>
+                <div class="w-20 h-20 bg-navy-900/20 rounded-full flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform glow">
+                  <i class="fas fa-crown text-navy-900 text-3xl"></i>
                 </div>
               </div>
               <div class="p-5">
+                {/* Featured Patient Review */}
+                <div class="mb-4 p-4 glass-gold rounded-2xl border border-brand-200 shadow-soft">
+                  <div class="flex items-center gap-2 mb-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold">SB</div>
+                    <div class="flex-1">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-sm font-bold text-navy-900">Sarah B.</span>
+                        <i class="fas fa-circle-check text-brand-600 text-xs"></i>
+                        <span class="text-[10px] text-slate-500">• 1 week ago</span>
+                      </div>
+                      <div class="flex items-center gap-0.5">
+                        {Array(5).fill(0).map((_, i) => <i class="fas fa-star text-amber-400 text-xs"></i>)}
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-xs text-slate-700 leading-relaxed font-medium mb-2">"Absolutely exceeded expectations! The 5-star resort was paradise, and the medical team was world-class. Worth every penny!"</p>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                    <span class="flex items-center gap-1"><i class="fas fa-thumbs-up text-brand-500"></i> 127 helpful</span>
+                    <span>•</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-badge-check text-teal-500"></i> Verified Patient</span>
+                  </div>
+                </div>
+                
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full">5★ Resort Hurghada</span>
-                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full">Care Coordinator</span>
-                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full">Wellness Spa</span>
-                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full">24/7 Support</span>
+                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-hotel text-brand-600"></i>5★ Resort Hurghada
+                  </span>
+                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-concierge-bell text-brand-600"></i>Care Coordinator
+                  </span>
+                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-spa text-teal-600"></i>Wellness Spa
+                  </span>
+                  <span class="px-3 py-1.5 bg-brand-100 text-brand-700 text-xs font-medium rounded-full flex items-center gap-1.5">
+                    <i class="fas fa-headset text-purple-600"></i>24/7 Support
+                  </span>
                 </div>
                 <div class="flex items-center justify-between">
                   <div>
-                    <span class="text-3xl font-bold text-navy-900">€12,000</span>
+                    <span class="text-4xl font-extrabold text-gradient-gold">€12,000</span>
                     <span class="text-sm text-slate-400 ml-1">starting</span>
+                    <div class="flex items-center gap-1 mt-1">
+                      <i class="fas fa-star text-amber-400 text-sm"></i>
+                      <span class="text-sm font-bold text-navy-900">4.9</span>
+                      <span class="text-xs text-slate-400">(1,247)</span>
+                    </div>
                   </div>
-                  <button class="px-6 py-3 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 text-sm font-bold rounded-xl hover:from-brand-500 hover:to-brand-700 transition-all shadow-glow-brand active:scale-95">
+                  <button class="px-7 py-3.5 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 text-sm font-bold rounded-xl hover:from-brand-500 hover:to-brand-700 transition-all shadow-glow-brand btn-press hover:shadow-soft-xl">
                     Select Journey →
                   </button>
                 </div>
@@ -266,6 +405,103 @@ export const marketplacePage = (c: Context) => {
                     Select Journey →
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Team Showcase Section */}
+        <section class="py-8">
+          <div class="glass rounded-3xl p-6 shadow-soft-lg border border-slate-200/50">
+            <div class="flex items-center justify-between mb-5">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-navy-800 to-navy-900 flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-doctor text-brand-400 text-xl"></i>
+                </div>
+                <div>
+                  <h2 class="font-extrabold text-navy-900 text-xl">Meet Our German Surgeons</h2>
+                  <p class="text-xs text-slate-500">Board-certified specialists with 15+ years experience</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-4">
+              {/* Doctor 1 */}
+              <div class="text-center group">
+                <div class="relative mb-3">
+                  <div class="w-full aspect-square bg-gradient-to-br from-brand-400 to-brand-600 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-soft group-hover:shadow-soft-lg transition-all group-hover:scale-105">
+                    LW
+                  </div>
+                  <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center shadow-soft border-2 border-white">
+                    <i class="fas fa-badge-check text-white text-xs"></i>
+                  </div>
+                </div>
+                <h4 class="font-bold text-navy-900 text-sm mb-0.5">Dr. L. Weber</h4>
+                <p class="text-[10px] text-slate-500 mb-2">Orthopedic Surgery</p>
+                <div class="flex items-center justify-center gap-1">
+                  <i class="fas fa-star text-amber-400 text-xs"></i>
+                  <span class="text-xs font-bold text-navy-900">4.9</span>
+                  <span class="text-[10px] text-slate-400">(420)</span>
+                </div>
+              </div>
+              
+              {/* Doctor 2 */}
+              <div class="text-center group">
+                <div class="relative mb-3">
+                  <div class="w-full aspect-square bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-soft group-hover:shadow-soft-lg transition-all group-hover:scale-105">
+                    MS
+                  </div>
+                  <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center shadow-soft border-2 border-white">
+                    <i class="fas fa-badge-check text-navy-900 text-xs"></i>
+                  </div>
+                </div>
+                <h4 class="font-bold text-navy-900 text-sm mb-0.5">Dr. M. Schmidt</h4>
+                <p class="text-[10px] text-slate-500 mb-2">Cardiac Surgery</p>
+                <div class="flex items-center justify-center gap-1">
+                  <i class="fas fa-star text-amber-400 text-xs"></i>
+                  <span class="text-xs font-bold text-navy-900">5.0</span>
+                  <span class="text-[10px] text-slate-400">(380)</span>
+                </div>
+              </div>
+              
+              {/* Doctor 3 */}
+              <div class="text-center group">
+                <div class="relative mb-3">
+                  <div class="w-full aspect-square bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-soft group-hover:shadow-soft-lg transition-all group-hover:scale-105">
+                    AK
+                  </div>
+                  <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center shadow-soft border-2 border-white">
+                    <i class="fas fa-badge-check text-white text-xs"></i>
+                  </div>
+                </div>
+                <h4 class="font-bold text-navy-900 text-sm mb-0.5">Dr. A. Krause</h4>
+                <p class="text-[10px] text-slate-500 mb-2">Plastic Surgery</p>
+                <div class="flex items-center justify-center gap-1">
+                  <i class="fas fa-star text-amber-400 text-xs"></i>
+                  <span class="text-xs font-bold text-navy-900">4.8</span>
+                  <span class="text-[10px] text-slate-400">(510)</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-5 pt-5 border-t border-slate-200">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="flex -space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 border-2 border-white"></div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 border-2 border-white"></div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white"></div>
+                    <div class="w-10 h-10 rounded-full bg-navy-900 border-2 border-white flex items-center justify-center text-white text-xs font-bold">+12</div>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-navy-900">15 Board-Certified Surgeons</p>
+                    <p class="text-xs text-slate-500">All German-trained with international certifications</p>
+                  </div>
+                </div>
+                <a href="/patient/care-team" class="px-5 py-2.5 bg-navy-900 text-white text-xs font-bold rounded-xl hover:bg-navy-800 transition-all shadow-soft btn-press flex items-center gap-2">
+                  View All Doctors
+                  <i class="fas fa-arrow-right text-xs"></i>
+                </a>
               </div>
             </div>
           </div>
