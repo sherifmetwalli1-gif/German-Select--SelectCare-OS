@@ -48,6 +48,89 @@ export const landingPage = (c: Context) => {
         </nav>
       </header>
 
+      {/* ========== COST COMPARISON BANNER ========== */}
+      <section class="relative bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 overflow-hidden mt-16 lg:mt-20">
+        <div class="absolute inset-0 bg-mesh-gold opacity-10"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div class="flex flex-col lg:flex-row items-center gap-8">
+            {/* Left: Headline */}
+            <div class="flex-1 text-center lg:text-left">
+              <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
+                <i class="fas fa-piggy-bank text-white"></i>
+                <span class="text-sm font-bold text-white">Smart Healthcare Savings</span>
+              </div>
+              <h2 class="text-3xl lg:text-4xl font-extrabold text-white mb-3">
+                Save up to <span class="text-gradient-gold bg-white px-2 rounded-lg">60%</span> on Medical Procedures
+              </h2>
+              <p class="text-emerald-100 text-sm lg:text-base max-w-2xl">
+                German quality at Egyptian prices. Compare what you'd pay at home vs. with SelectCare OS.
+              </p>
+            </div>
+            
+            {/* Right: Comparison Table */}
+            <div class="w-full lg:w-auto">
+              <div class="glass rounded-3xl p-6 shadow-soft-xl border border-white/20 min-w-[320px]">
+                <h3 class="text-sm font-bold text-navy-900 mb-4 text-center">Cost Comparison Example</h3>
+                
+                <div class="space-y-3 mb-4">
+                  {/* Germany Cost */}
+                  <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <div class="flex items-center gap-3">
+                      <img src="https://flagcdn.com/w20/de.png" alt="Germany" class="w-6 h-4 rounded-sm" />
+                      <span class="text-sm font-semibold text-slate-700">Germany</span>
+                    </div>
+                    <span class="text-xl font-extrabold text-slate-900">€25,000</span>
+                  </div>
+                  
+                  {/* SelectCare Cost */}
+                  <div class="flex items-center justify-between p-3 bg-gradient-to-r from-brand-50 to-teal-50 rounded-xl border-2 border-brand-400">
+                    <div class="flex items-center gap-3">
+                      <div class="w-6 h-6 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center">
+                        <span class="text-white font-bold text-xs">S</span>
+                      </div>
+                      <span class="text-sm font-semibold text-navy-900">SelectCare OS</span>
+                    </div>
+                    <span class="text-xl font-extrabold text-gradient-gold">€10,000</span>
+                  </div>
+                </div>
+                
+                {/* Savings Highlight */}
+                <div class="p-4 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl text-white text-center mb-4">
+                  <div class="text-xs font-semibold uppercase tracking-wider mb-1">You Save</div>
+                  <div class="text-4xl font-extrabold mb-1">€15,000</div>
+                  <div class="text-sm font-bold">60% Cost Savings</div>
+                </div>
+                
+                {/* Includes */}
+                <div class="mb-4">
+                  <p class="text-xs text-slate-500 font-semibold mb-2 uppercase tracking-wider">Includes:</p>
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2 text-xs text-slate-700">
+                      <i class="fas fa-check-circle text-emerald-500"></i>
+                      <span>Surgery with German Surgeon</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-slate-700">
+                      <i class="fas fa-check-circle text-emerald-500"></i>
+                      <span>5-Star Resort Recovery (7 days)</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-slate-700">
+                      <i class="fas fa-check-circle text-emerald-500"></i>
+                      <span>Airport Transfers & Accommodation</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* CTA */}
+                <button class="w-full py-3 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 font-bold rounded-xl hover:shadow-glow-brand transition-all flex items-center justify-center gap-2 btn-press">
+                  <i class="fas fa-calculator"></i>
+                  Calculate Your Savings
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* ========== HERO SECTION ========== */}
       <section class="relative min-h-screen bg-navy-900 overflow-hidden">
         {/* Background Effects */}

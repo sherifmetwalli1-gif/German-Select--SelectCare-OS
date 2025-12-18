@@ -6,7 +6,7 @@ export const patientDashboard = (c: Context) => {
     <PageWrapper active="home">
       <Header />
       
-      <main class="px-4 py-4 space-y-6">
+      <main class="max-w-7xl mx-auto px-4 py-6 space-y-10">
         {/* Premium Welcome Hero Card */}
         <div class="glass-gold rounded-3xl p-6 shadow-soft-lg border border-brand-200/50 card-luxury relative overflow-hidden animate-fade-in">
           {/* Animated Background Particles */}
@@ -168,22 +168,108 @@ export const patientDashboard = (c: Context) => {
           </div>
         </div>
 
-        {/* Quick Actions Grid */}
+        {/* Smart Quick Actions - Contextual & Personalized */}
         <div>
-          <SectionHeader title="Quick Actions" />
-          <div class="grid grid-cols-4 gap-3">
-            <QuickAction icon="fa-video" label="Telemedicine" href="/patient/telemedicine" color="gs-blue" />
-            <QuickAction icon="fa-calendar-plus" label="Book" href="/patient/booking" color="gs-green" />
-            <QuickAction icon="fa-heartbeat" label="Vitals" href="/patient/rpm" color="gs-red" />
-            <QuickAction icon="fa-robot" label="AI Assist" href="/patient/ai-diagnostics" color="gs-purple" />
+          <div class="flex items-center justify-between mb-4">
+            <SectionHeader title="Smart Actions" />
+            <span class="text-xs text-slate-500">Personalized for you</span>
+          </div>
+          
+          {/* Priority Actions - Contextual */}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            {/* Resume Booking - Abandoned Cart */}
+            <div class="glass-gold rounded-2xl p-4 border border-brand-200 shadow-soft card-luxury group cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform">
+                  <i class="fas fa-rotate-right text-navy-900 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-600 font-semibold mb-0.5 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    In Progress
+                  </p>
+                  <h4 class="font-bold text-navy-900 mb-1">Resume Booking</h4>
+                  <p class="text-xs text-slate-600">Dr. K. Müller • Tomorrow 10:00 AM</p>
+                </div>
+                <i class="fas fa-arrow-right text-brand-600 group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            
+            {/* Rebook Previous Doctor */}
+            <div class="glass-teal rounded-2xl p-4 border border-teal-200 shadow-soft card-luxury group cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform">
+                  <i class="fas fa-user-doctor text-white text-xl"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-600 font-semibold mb-0.5">Quick Rebook</p>
+                  <h4 class="font-bold text-navy-900 mb-1">Dr. L. Weber</h4>
+                  <p class="text-xs text-slate-600">Last visit: Oct 15 • 4.9★</p>
+                </div>
+                <i class="fas fa-arrow-right text-teal-600 group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+          </div>
+          
+          {/* Recommended Action */}
+          <div class="glass rounded-2xl p-4 border border-purple-200 shadow-soft mb-4 relative overflow-hidden">
+            <div class="absolute top-2 right-2 px-3 py-1 bg-gradient-to-r from-purple-400 to-purple-600 text-white text-[10px] font-bold rounded-full flex items-center gap-1">
+              <i class="fas fa-sparkles"></i>
+              Recommended
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-soft">
+                <i class="fas fa-heartbeat text-white text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-navy-900 mb-1">Recommended: Cardiology Follow-up</h4>
+                <p class="text-xs text-slate-600 mb-2">Based on your recovery progress and vitals</p>
+                <div class="flex items-center gap-2">
+                  <button class="px-4 py-2 bg-purple-600 text-white text-xs font-bold rounded-xl hover:bg-purple-700 transition-colors">
+                    Book Now
+                  </button>
+                  <button class="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200 transition-colors">
+                    Learn More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* One-Click Telemedicine */}
+          <div class="glass rounded-2xl p-4 border border-emerald-200 shadow-soft relative overflow-hidden group cursor-pointer card-lift">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="relative flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform relative">
+                <i class="fas fa-video text-white text-xl"></i>
+                <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
+              </div>
+              <div class="flex-1">
+                <p class="text-xs text-emerald-600 font-bold mb-0.5 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  3 Doctors Available Now
+                </p>
+                <h4 class="font-bold text-navy-900 mb-1">Instant Telemedicine</h4>
+                <p class="text-xs text-slate-600">Connect with available doctor in &lt;30 seconds</p>
+              </div>
+              <div class="text-right">
+                <button class="px-5 py-2.5 bg-gradient-to-r from-emerald-400 to-emerald-600 text-white font-bold rounded-xl hover:shadow-soft-lg transition-all btn-press">
+                  Start Now
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div class="grid grid-cols-4 gap-3">
-          <QuickAction icon="fa-gem" label="CareSelect™" href="/patient/marketplace" color="gs-gold" />
-          <QuickAction icon="fa-spa" label="Wellness" href="/patient/wellness" color="gs-teal" />
-          <QuickAction icon="fa-user-doctor" label="Care Team" href="/patient/care-team" color="gs-navy" />
-          <QuickAction icon="fa-comments" label="Messages" href="/patient/messages" color="gs-blue" badge="2" />
+        {/* Standard Quick Actions Grid */}
+        <div>
+          <SectionHeader title="More Actions" />
+          <div class="grid grid-cols-4 gap-3">
+            <QuickAction icon="fa-gem" label="CareSelect™" href="/patient/marketplace" color="gs-gold" />
+            <QuickAction icon="fa-spa" label="Wellness" href="/patient/wellness" color="gs-teal" />
+            <QuickAction icon="fa-user-doctor" label="Care Team" href="/patient/care-team" color="gs-navy" />
+            <QuickAction icon="fa-comments" label="Messages" href="/patient/messages" color="gs-blue" badge="2" />
+          </div>
         </div>
 
         {/* Health Vitals Summary */}

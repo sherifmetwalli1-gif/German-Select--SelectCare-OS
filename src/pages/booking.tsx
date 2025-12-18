@@ -6,7 +6,96 @@ export const bookingPage = (c: Context) => {
     <PageWrapper active="home" showNav={true}>
       <Header title="Book Appointment" showBack={true} />
       
-      <main class="px-4 py-4 space-y-6">
+      {/* Sticky Progress Indicator */}
+      <div class="sticky top-0 z-40 glass backdrop-blur-2xl border-b border-slate-200 shadow-soft-sm animate-fade-in">
+        <div class="max-w-4xl mx-auto px-4 py-4">
+          {/* Progress Steps */}
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-3 flex-1">
+              {/* Step 1 - Active */}
+              <div class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-navy-900 font-bold flex items-center justify-center shadow-soft relative">
+                  <span>1</span>
+                  <div class="absolute -inset-1 bg-brand-400/20 rounded-xl animate-pulse"></div>
+                </div>
+                <div class="hidden sm:block">
+                  <p class="text-xs font-bold text-navy-900">Select Specialty</p>
+                  <p class="text-[10px] text-slate-500">Choose your area</p>
+                </div>
+              </div>
+              
+              {/* Connector */}
+              <div class="flex-1 h-1 bg-gradient-to-r from-brand-400 to-slate-200 rounded-full max-w-[80px]"></div>
+              
+              {/* Step 2 - Upcoming */}
+              <div class="flex items-center gap-2 group opacity-60">
+                <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 font-bold flex items-center justify-center">
+                  <span>2</span>
+                </div>
+                <div class="hidden sm:block">
+                  <p class="text-xs font-bold text-slate-600">Choose Doctor</p>
+                  <p class="text-[10px] text-slate-400">Pick specialist</p>
+                </div>
+              </div>
+              
+              {/* Connector */}
+              <div class="flex-1 h-1 bg-slate-200 rounded-full max-w-[80px]"></div>
+              
+              {/* Step 3 - Upcoming */}
+              <div class="flex items-center gap-2 group opacity-60">
+                <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 font-bold flex items-center justify-center">
+                  <span>3</span>
+                </div>
+                <div class="hidden sm:block">
+                  <p class="text-xs font-bold text-slate-600">Pick Time</p>
+                  <p class="text-[10px] text-slate-400">Select slot</p>
+                </div>
+              </div>
+              
+              {/* Connector */}
+              <div class="flex-1 h-1 bg-slate-200 rounded-full max-w-[80px]"></div>
+              
+              {/* Step 4 - Upcoming */}
+              <div class="flex items-center gap-2 group opacity-60">
+                <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-600 font-bold flex items-center justify-center">
+                  <span>4</span>
+                </div>
+                <div class="hidden sm:block">
+                  <p class="text-xs font-bold text-slate-600">Confirm</p>
+                  <p class="text-[10px] text-slate-400">Review & book</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Time Estimate & Actions */}
+            <div class="ml-4 flex items-center gap-3">
+              <div class="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-200">
+                <i class="fas fa-clock text-emerald-600 text-sm"></i>
+                <div>
+                  <p class="text-xs font-bold text-emerald-700">Only 2 min left</p>
+                  <p class="text-[10px] text-emerald-600">Complete booking</p>
+                </div>
+              </div>
+              
+              <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all flex items-center gap-2 shadow-soft">
+                <i class="fas fa-save text-sm"></i>
+                <span class="hidden sm:inline">Save & Continue Later</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Visual Progress Bar */}
+          <div class="relative h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 rounded-full transition-all duration-500" style="width: 25%;"></div>
+          </div>
+          <div class="flex justify-between mt-1">
+            <span class="text-[10px] font-bold text-navy-900">25% Complete</span>
+            <span class="text-[10px] text-slate-500">Step 1 of 4</span>
+          </div>
+        </div>
+      </div>
+      
+      <main class="max-w-7xl mx-auto px-4 py-6 space-y-10">
         {/* Booking Type Tabs */}
         <div class="grid grid-cols-2 gap-3">
           <button class="p-4 bg-gs-navy text-white rounded-xl text-center">
