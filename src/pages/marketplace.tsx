@@ -49,49 +49,75 @@ export const marketplacePage = (c: Context) => {
       </header>
       
       <main class="px-4 py-6 space-y-10 max-w-4xl mx-auto">
-        {/* Search Bar */}
+        {/* Breadcrumb Navigation */}
+        <nav class="flex items-center gap-2 text-xs -mt-2 mb-4">
+          <a href="/patient" class="text-slate-500 hover:text-navy-900 transition-colors">Dashboard</a>
+          <i class="fas fa-chevron-right text-slate-300 text-[10px]"></i>
+          <span class="text-navy-900 font-semibold">Marketplace</span>
+        </nav>
+        
+        {/* Search Bar with Enhanced Design */}
         <div class="relative -mt-4">
-          <input 
-            type="text" 
-            placeholder="Search treatments, activities, accommodations..." 
-            class="w-full pl-12 pr-12 py-4 bg-white rounded-2xl shadow-card border border-slate-200 focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 outline-none text-sm transition-all"
-          />
-          <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <button class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-navy-900 rounded-xl flex items-center justify-center hover:bg-navy-800 transition-colors">
-            <i class="fas fa-sliders-h text-brand-400 text-sm"></i>
-          </button>
+          <div class="relative">
+            <input 
+              type="text" 
+              placeholder="Search treatments, activities, accommodations..." 
+              class="w-full pl-12 pr-24 py-4 bg-white rounded-2xl shadow-card border-2 border-slate-200 focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 outline-none text-sm transition-all hover:border-slate-300"
+            />
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-br from-navy-900 to-navy-800 rounded-xl flex items-center justify-center hover:from-navy-800 hover:to-navy-700 transition-all shadow-soft">
+              <i class="fas fa-sliders-h text-brand-400 text-sm"></i>
+            </button>
+          </div>
+          <div class="flex items-center gap-2 mt-2 text-xs text-slate-500">
+            <i class="fas fa-lightbulb text-amber-400"></i>
+            <span>Try searching: <span class="font-semibold text-navy-900">"knee surgery"</span>, <span class="font-semibold text-navy-900">"yacht"</span>, or <span class="font-semibold text-navy-900">"spa"</span></span>
+          </div>
         </div>
         
-        {/* Category Tabs */}
-        <div class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 no-scrollbar">
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-gradient-to-r from-navy-800 to-navy-900 text-brand-400 shadow-soft">
-            <i class="fas fa-box-open"></i>
-            <span>Journeys</span>
-          </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100">
-            <i class="fas fa-procedures"></i>
-            <span>Surgery</span>
-          </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100">
-            <i class="fas fa-spa"></i>
-            <span>Wellness</span>
-          </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100">
-            <i class="fas fa-hotel"></i>
-            <span>Stay</span>
-          </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 shadow-card border border-teal-200">
-            <i class="fas fa-anchor"></i>
-            <span>Hurghada</span>
-          </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 shadow-card border border-amber-200">
-            <i class="fas fa-landmark"></i>
-            <span>Luxor</span>
-          </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100">
-            <i class="fas fa-leaf"></i>
-            <span>Anti-Aging</span>
-          </button>
+        {/* Category Tabs with Item Counts */}
+        <div class="sticky top-0 z-30 bg-gradient-to-b from-slate-50 to-slate-100 -mx-4 px-4 py-3 mb-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-filter text-slate-400 text-xs"></i>
+            <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Browse Categories</span>
+          </div>
+          <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-gradient-to-r from-navy-800 to-navy-900 text-brand-400 shadow-soft ring-2 ring-brand-400/30">
+              <i class="fas fa-box-open"></i>
+              <span>Journeys</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-brand-400/20 rounded-full text-[10px]">3</span>
+            </button>
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
+              <i class="fas fa-procedures"></i>
+              <span>Surgery</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">8</span>
+            </button>
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
+              <i class="fas fa-spa"></i>
+              <span>Wellness</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">5</span>
+            </button>
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
+              <i class="fas fa-hotel"></i>
+              <span>Stay</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">5</span>
+            </button>
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 shadow-card border border-teal-200 hover:border-teal-300 transition-all">
+              <i class="fas fa-anchor"></i>
+              <span>Hurghada</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-teal-200/50 rounded-full text-[10px]">12</span>
+            </button>
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 shadow-card border border-amber-200 hover:border-amber-300 transition-all">
+              <i class="fas fa-landmark"></i>
+              <span>Luxor</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-amber-200/50 rounded-full text-[10px]">14</span>
+            </button>
+            <button class="flex items-center gap-2 px-5 py-2.5 rounded-2xl whitespace-nowrap text-sm font-semibold bg-white text-slate-600 hover:bg-slate-50 shadow-card border border-slate-100 hover:border-slate-300 transition-all">
+              <i class="fas fa-leaf"></i>
+              <span>Anti-Aging</span>
+              <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded-full text-[10px]">5</span>
+            </button>
+          </div>
         </div>
         
         {/* Featured Journeys */}
@@ -106,9 +132,28 @@ export const marketplacePage = (c: Context) => {
                 <p class="text-xs text-slate-500">Complete medical tourism packages</p>
               </div>
             </div>
-            <a href="#" class="text-sm text-brand-600 font-semibold hover:text-brand-700 flex items-center gap-1 group bg-brand-50 px-3 py-1.5 rounded-full">
+            <a href="#" class="text-sm text-brand-600 font-semibold hover:text-brand-700 flex items-center gap-1 group bg-brand-50 px-3 py-1.5 rounded-full hover:bg-brand-100 transition-all">
               View All <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
             </a>
+          </div>
+          
+          {/* Value Proposition Banner */}
+          <div class="bg-gradient-to-r from-teal-50 via-emerald-50 to-teal-50 border border-teal-200 rounded-2xl p-4 mb-5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center">
+                  <i class="fas fa-badge-check text-white text-xl"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-navy-900 text-sm">All-Inclusive Packages</p>
+                  <p class="text-xs text-slate-600">Surgery + Recovery + Activities • Save up to 40%</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-slate-500">Starting from</p>
+                <p class="text-2xl font-bold text-brand-600">€6.5k</p>
+              </div>
+            </div>
           </div>
           
           <div class="space-y-4">
@@ -245,25 +290,31 @@ export const marketplacePage = (c: Context) => {
           
           <div class="grid grid-cols-2 gap-3">
             {/* Glass Bottom Boat */}
-            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-card hover:shadow-card-hover transition-all cursor-pointer group">
-              <div class="flex items-start justify-between mb-3">
-                <div class="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <i class="fas fa-ship text-teal-600 text-lg"></i>
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-card hover:shadow-card-hover hover:border-teal-300 transition-all cursor-pointer group relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-br from-teal-50/0 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="relative">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center group-hover:scale-110 group-hover:bg-teal-200 transition-all">
+                    <i class="fas fa-ship text-teal-600 text-lg"></i>
+                  </div>
+                  <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-full group-hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star text-amber-400 text-xs"></i>
+                    <span class="text-xs font-bold text-slate-700">4.8</span>
+                  </div>
                 </div>
-                <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-full">
-                  <i class="fas fa-star text-amber-400 text-xs"></i>
-                  <span class="text-xs font-bold text-slate-700">4.8</span>
+                <h4 class="font-bold text-navy-900 text-sm mb-1 group-hover:text-teal-700 transition-colors">Glass Bottom Boat</h4>
+                <p class="text-xs text-slate-500 mb-2">View marine life without getting wet</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-xs text-slate-400 flex items-center gap-1"><i class="far fa-clock"></i>3 hrs</span>
+                  <span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-[10px] font-bold rounded-full">Recovery OK</span>
                 </div>
-              </div>
-              <h4 class="font-bold text-navy-900 text-sm mb-1">Glass Bottom Boat</h4>
-              <p class="text-xs text-slate-500 mb-2">View marine life without getting wet</p>
-              <div class="flex items-center gap-2 mb-3">
-                <span class="text-xs text-slate-400 flex items-center gap-1"><i class="far fa-clock"></i>3 hrs</span>
-                <span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-[10px] font-bold rounded-full">Recovery OK</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-lg font-bold text-brand-600">€45</span>
-                <button class="px-3 py-1.5 bg-slate-100 text-navy-900 text-xs font-semibold rounded-lg hover:bg-navy-900 hover:text-white transition-colors">Add +</button>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-lg font-bold text-brand-600">€45</span>
+                    <span class="text-xs text-slate-400 ml-1">/person</span>
+                  </div>
+                  <button class="px-3 py-1.5 bg-slate-100 text-navy-900 text-xs font-semibold rounded-lg hover:bg-navy-900 hover:text-white transition-colors active:scale-95">Add +</button>
+                </div>
               </div>
             </div>
             
@@ -755,18 +806,35 @@ export const marketplacePage = (c: Context) => {
         </section>
       </main>
       
-      {/* Sticky Cart */}
+      {/* Floating Action Buttons */}
+      <div class="fixed bottom-28 right-4 z-40 flex flex-col gap-3">
+        <button class="w-14 h-14 bg-white rounded-full shadow-soft-lg border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-all group">
+          <i class="fas fa-balance-scale text-navy-900 group-hover:scale-110 transition-transform"></i>
+        </button>
+        <button class="w-14 h-14 bg-white rounded-full shadow-soft-lg border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-all group">
+          <i class="fas fa-heart text-slate-400 group-hover:text-rose-500 group-hover:scale-110 transition-all"></i>
+        </button>
+      </div>
+      
+      {/* Enhanced Sticky Cart */}
       <div class="fixed bottom-24 left-0 right-0 px-4 z-40">
         <div class="max-w-lg mx-auto">
-          <div class="bg-gradient-to-r from-navy-900 to-navy-800 text-white rounded-2xl p-4 shadow-soft-lg border border-white/10">
+          <div class="bg-gradient-to-r from-navy-900 to-navy-800 text-white rounded-2xl p-4 shadow-soft-lg border border-white/10 backdrop-blur-xl">
             <div class="flex items-center justify-between">
-              <div>
-                <p class="text-xs text-brand-400 font-semibold">Your Journey Selection</p>
-                <p class="font-bold text-lg">3 items • €2,850</p>
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <i class="fas fa-shopping-bag text-brand-400 text-xs"></i>
+                  <p class="text-xs text-brand-400 font-semibold uppercase tracking-wider">Your Journey</p>
+                </div>
+                <p class="font-bold text-lg mb-1">3 items • €2,850</p>
+                <div class="flex gap-2">
+                  <span class="px-2 py-0.5 bg-white/10 text-[10px] font-medium rounded-full">Premium Journey</span>
+                  <span class="px-2 py-0.5 bg-white/10 text-[10px] font-medium rounded-full">2 Activities</span>
+                </div>
               </div>
-              <button class="px-6 py-3 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 font-bold rounded-xl hover:from-brand-500 hover:to-brand-700 transition-all shadow-glow-brand flex items-center gap-2 active:scale-95">
-                <i class="fas fa-shopping-cart"></i>
+              <button class="px-6 py-3 bg-gradient-to-r from-brand-400 to-brand-600 text-navy-900 font-bold rounded-xl hover:from-brand-500 hover:to-brand-700 transition-all shadow-glow-brand flex items-center gap-2 active:scale-95 whitespace-nowrap">
                 <span>View Cart</span>
+                <i class="fas fa-arrow-right text-xs"></i>
               </button>
             </div>
           </div>
