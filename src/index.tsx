@@ -500,6 +500,408 @@ app.get('/api/analytics/overview', (c) => {
   })
 })
 
+// Health Vitals API - Real-time patient monitoring
+app.get('/api/vitals/current', (c) => {
+  // Simulated real-time vitals with slight variations
+  const baseHR = 72
+  const baseSystolic = 120
+  const baseDiastolic = 80
+  const baseSpO2 = 98
+  const baseSteps = 5240
+  const baseGlucose = 95
+  
+  return c.json({
+    success: true,
+    data: {
+      timestamp: new Date().toISOString(),
+      heart_rate: {
+        value: baseHR + Math.floor(Math.random() * 6) - 3,
+        unit: 'bpm',
+        status: 'normal',
+        trend: 'stable'
+      },
+      blood_pressure: {
+        systolic: baseSystolic + Math.floor(Math.random() * 10) - 5,
+        diastolic: baseDiastolic + Math.floor(Math.random() * 6) - 3,
+        unit: 'mmHg',
+        status: 'normal',
+        trend: 'stable'
+      },
+      oxygen_saturation: {
+        value: baseSpO2 + Math.floor(Math.random() * 3) - 1,
+        unit: '%',
+        status: 'normal'
+      },
+      steps: {
+        value: baseSteps + Math.floor(Math.random() * 500),
+        target: 7500,
+        unit: 'steps'
+      },
+      glucose: {
+        value: baseGlucose + Math.floor(Math.random() * 10) - 5,
+        unit: 'mg/dL',
+        status: 'normal',
+        trend: 'decreasing'
+      },
+      weight: {
+        current: 82.4,
+        initial: 90.0,
+        target: 75.0,
+        unit: 'kg',
+        change: -7.6
+      },
+      sleep: {
+        duration: 7.2,
+        quality: 'good',
+        deep_sleep: 1.8,
+        rem_sleep: 2.1,
+        unit: 'hours'
+      }
+    },
+    alerts: [],
+    last_sync: new Date().toISOString()
+  })
+})
+
+// Health history for charts
+app.get('/api/vitals/history', (c) => {
+  const days = parseInt(c.req.query('days') || '7')
+  const metric = c.req.query('metric') || 'heart_rate'
+  
+  const generateData = (baseValue: number, variance: number) => {
+    const data = []
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date()
+      date.setDate(date.getDate() - i)
+      data.push({
+        date: date.toISOString().split('T')[0],
+        value: baseValue + Math.floor(Math.random() * variance * 2) - variance,
+        min: baseValue - variance,
+        max: baseValue + variance + Math.floor(Math.random() * 5)
+      })
+    }
+    return data
+  }
+  
+  const metrics: Record<string, { base: number, variance: number, unit: string }> = {
+    heart_rate: { base: 72, variance: 8, unit: 'bpm' },
+    weight: { base: 84, variance: 0.5, unit: 'kg' },
+    steps: { base: 5000, variance: 2000, unit: 'steps' },
+    glucose: { base: 98, variance: 10, unit: 'mg/dL' },
+    blood_pressure_systolic: { base: 120, variance: 8, unit: 'mmHg' }
+  }
+  
+  const config = metrics[metric] || metrics['heart_rate']
+  
+  return c.json({
+    success: true,
+    metric,
+    unit: config.unit,
+    period: `${days} days`,
+    data: generateData(config.base, config.variance),
+    summary: {
+      average: config.base,
+      min: config.base - config.variance,
+      max: config.base + config.variance,
+      trend: 'stable'
+    }
+  })
+})
+
+// Connected devices API
+app.get('/api/devices', (c) => {
+  return c.json({
+    success: true,
+    data: [
+      {
+        id: 'device-1',
+        name: 'Apple Watch Series 9',
+        type: 'smartwatch',
+        brand: 'Apple',
+        connected: true,
+        last_sync: new Date().toISOString(),
+        metrics: ['heart_rate', 'steps', 'sleep', 'ecg'],
+        battery: 78
+      },
+      {
+        id: 'device-2',
+        name: 'Withings Body+ Scale',
+        type: 'scale',
+        brand: 'Withings',
+        connected: true,
+        last_sync: new Date(Date.now() - 3600000).toISOString(),
+        metrics: ['weight', 'bmi', 'body_fat'],
+        battery: null
+      },
+      {
+        id: 'device-3',
+        name: 'Omron Blood Pressure Monitor',
+        type: 'blood_pressure',
+        brand: 'Omron',
+        connected: true,
+        last_sync: new Date(Date.now() - 7200000).toISOString(),
+        metrics: ['blood_pressure', 'pulse'],
+        battery: 92
+      },
+      {
+        id: 'device-4',
+        name: 'SelectTech CGM',
+        type: 'glucose_monitor',
+        brand: 'SelectTech',
+        connected: true,
+        last_sync: new Date().toISOString(),
+        metrics: ['glucose'],
+        battery: 65
+      }
+    ]
+  })
+})
+
+// AI Health Analysis API
+app.get('/api/ai/analysis', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      overall_score: 85,
+      score_change: 5,
+      analysis_date: new Date().toISOString(),
+      risk_factors: [
+        {
+          name: 'Cardiovascular Risk',
+          score: 15,
+          level: 'low',
+          trend: 'improving',
+          recommendation: 'Continue current exercise routine. Consider adding 10 more minutes of cardio daily.'
+        },
+        {
+          name: 'Metabolic Health',
+          score: 45,
+          level: 'moderate',
+          trend: 'improving',
+          recommendation: 'Blood sugar levels improving. Consider reducing carbohydrate intake by 10% further.'
+        },
+        {
+          name: 'Recovery Progress',
+          score: 85,
+          level: 'excellent',
+          trend: 'ahead_of_schedule',
+          recommendation: 'Post-operative recovery is 25% ahead of typical timeline. Continue current protocol.'
+        },
+        {
+          name: 'Sleep Quality',
+          score: 72,
+          level: 'good',
+          trend: 'stable',
+          recommendation: 'Sleep duration is adequate. Consider consistent bedtime for improved deep sleep.'
+        }
+      ],
+      recommendations: [
+        {
+          category: 'Activity',
+          title: 'Increase Daily Steps',
+          description: 'Studies show 7,500+ daily steps improve post-bariatric outcomes by 23%',
+          source: 'NIH Clinical Guidelines 2024',
+          priority: 'medium',
+          action: 'Add 500 steps to daily target'
+        },
+        {
+          category: 'Nutrition',
+          title: 'Protein Timing',
+          description: 'Consuming protein within 30 minutes post-exercise enhances muscle recovery',
+          source: 'ASMBS Guidelines',
+          priority: 'high',
+          action: 'Schedule protein shake after morning walk'
+        },
+        {
+          category: 'Sleep',
+          title: 'Sleep Optimization',
+          description: '7-9 hours of sleep accelerates surgical recovery by up to 40%',
+          source: 'Sleep Medicine Reviews',
+          priority: 'medium',
+          action: 'Maintain consistent 10:30 PM bedtime'
+        }
+      ],
+      next_assessment: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    }
+  })
+})
+
+// Appointments/Bookings API
+app.get('/api/appointments', (c) => {
+  const status = c.req.query('status') // upcoming, past, all
+  
+  const appointments = [
+    {
+      id: 'apt-001',
+      type: 'video_call',
+      title: 'Cardiology Follow-up',
+      doctor: {
+        id: 'dr-muller',
+        name: 'Dr. K. Müller',
+        specialization: 'Cardiology',
+        avatar: 'KM'
+      },
+      date: '2024-10-22',
+      time: '10:00',
+      duration: 30,
+      status: 'upcoming',
+      notes: 'Post-surgery cardiac evaluation'
+    },
+    {
+      id: 'apt-002',
+      type: 'in_person',
+      title: 'Nutrition Plan Review',
+      doctor: {
+        id: 'dr-schmidt',
+        name: 'Dr. A. Schmidt',
+        specialization: 'Nutritionist',
+        avatar: 'AS'
+      },
+      date: '2024-11-05',
+      time: '14:00',
+      duration: 45,
+      status: 'upcoming',
+      notes: 'Week 4 dietary adjustments'
+    },
+    {
+      id: 'apt-003',
+      type: 'video_call',
+      title: 'Surgical Follow-up',
+      doctor: {
+        id: 'dr-fischer',
+        name: 'Dr. H. Fischer',
+        specialization: 'Bariatric Surgery',
+        avatar: 'HF'
+      },
+      date: '2024-10-19',
+      time: '09:00',
+      duration: 20,
+      status: 'completed',
+      notes: 'Incision healing check'
+    }
+  ]
+  
+  let filtered = appointments
+  if (status === 'upcoming') {
+    filtered = appointments.filter(a => a.status === 'upcoming')
+  } else if (status === 'past') {
+    filtered = appointments.filter(a => a.status === 'completed')
+  }
+  
+  return c.json({
+    success: true,
+    data: filtered,
+    total: filtered.length
+  })
+})
+
+// Messages API
+app.get('/api/messages', (c) => {
+  return c.json({
+    success: true,
+    data: [
+      {
+        id: 'msg-001',
+        from: { id: 'dr-fischer', name: 'Dr. H. Fischer', role: 'doctor', avatar: 'HF' },
+        subject: 'Recovery Progress Update',
+        preview: 'Your recovery is progressing excellently! I have reviewed your latest vitals and I am very pleased with...',
+        timestamp: new Date(Date.now() - 2 * 3600000).toISOString(),
+        read: false,
+        priority: 'normal'
+      },
+      {
+        id: 'msg-002',
+        from: { id: 'dr-schmidt', name: 'Dr. A. Schmidt', role: 'doctor', avatar: 'AS' },
+        subject: 'Updated Nutrition Plan',
+        preview: 'Here is your updated nutrition plan for Week 2. Please follow the protein intake guidelines...',
+        timestamp: new Date(Date.now() - 24 * 3600000).toISOString(),
+        read: true,
+        priority: 'normal'
+      },
+      {
+        id: 'msg-003',
+        from: { id: 'care-coord', name: 'Care Coordinator', role: 'coordinator', avatar: 'CC' },
+        subject: 'Appointment Confirmation',
+        preview: 'Your next appointment has been confirmed. Transport will arrive at 9:30 AM on Oct 22...',
+        timestamp: new Date(Date.now() - 48 * 3600000).toISOString(),
+        read: true,
+        priority: 'normal'
+      }
+    ],
+    unread_count: 1
+  })
+})
+
+// Treatment timeline API
+app.get('/api/timeline', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      current_phase: 'recovery',
+      current_week: 2,
+      total_weeks: 6,
+      progress_percent: 75,
+      phases: [
+        {
+          id: 'pre-op',
+          name: 'Pre-Operative Phase',
+          status: 'completed',
+          start_date: '2024-09-15',
+          end_date: '2024-10-11',
+          milestones: [
+            { name: 'Initial Consultation', status: 'completed', date: '2024-09-15' },
+            { name: 'Medical Evaluation', status: 'completed', date: '2024-09-22' },
+            { name: 'Lab Tests & Imaging', status: 'completed', date: '2024-10-01' },
+            { name: 'Risk Assessment', status: 'completed', date: '2024-10-11' }
+          ]
+        },
+        {
+          id: 'surgery',
+          name: 'Surgery Day',
+          status: 'completed',
+          start_date: '2024-10-12',
+          end_date: '2024-10-12',
+          details: {
+            procedure: 'Gastric Sleeve',
+            surgeon: 'Dr. H. Fischer',
+            duration: '2.5 hours',
+            outcome: 'Successful - No Complications'
+          }
+        },
+        {
+          id: 'recovery',
+          name: 'Recovery Phase',
+          status: 'in_progress',
+          start_date: '2024-10-13',
+          end_date: '2024-11-25',
+          current_week: 2,
+          milestones: [
+            { name: 'Week 1: Initial Assessment', status: 'completed', date: '2024-10-15' },
+            { name: 'Week 2: Light Activity', status: 'in_progress', date: '2024-10-22' },
+            { name: 'Week 3: Mobility Training', status: 'pending', date: '2024-10-29' },
+            { name: 'Week 4-5: Progressive Exercise', status: 'pending', date: '2024-11-05' },
+            { name: 'Week 6: Advanced Strengthening', status: 'pending', date: '2024-11-19' }
+          ]
+        },
+        {
+          id: 'follow-up',
+          name: 'Follow-up Phase',
+          status: 'pending',
+          start_date: '2024-11-26',
+          end_date: '2024-12-26'
+        },
+        {
+          id: 'long-term',
+          name: 'Long-term Support',
+          status: 'pending',
+          start_date: '2024-12-27',
+          duration: '12+ months'
+        }
+      ]
+    }
+  })
+})
+
 // ============================================================================
 // FRONTEND PAGES
 // ============================================================================
@@ -2038,6 +2440,934 @@ app.get('/doctor-dashboard', (c) => {
   `
   
   return c.html(appShell(content, 'Doctor Dashboard', 'home'))
+})
+
+// Health Devices Page
+app.get('/health-devices', (c) => {
+  const content = `
+    <header class="gradient-navy px-5 pt-12 pb-6">
+        <a href="/profile" class="text-white mb-4 inline-block"><i class="fas fa-arrow-left mr-2"></i>Back</a>
+        <h1 class="text-white text-xl font-bold">Connected Health Devices</h1>
+        <p class="text-gold">Sync your wearables and medical devices</p>
+    </header>
+    
+    <main class="px-5 py-6 space-y-6">
+        <!-- Connection Status -->
+        <div class="card p-4 bg-green-50 border-l-4 border-green-500">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-check text-green-600"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-navy">All Devices Synced</p>
+                    <p class="text-sm text-gray-600">Last sync: 2 minutes ago</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Connected Devices -->
+        <div>
+            <h3 class="font-bold text-navy mb-3">Connected Devices</h3>
+            <div class="space-y-3">
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-watch text-gray-700 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-navy">Apple Watch Series 9</h4>
+                                <p class="text-sm text-gray-500">Heart Rate, Steps, Sleep</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                    <span class="text-xs text-green-600">Connected</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t">
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">72</p>
+                            <p class="text-xs text-gray-500">BPM</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">5,240</p>
+                            <p class="text-xs text-gray-500">Steps</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">7.2h</p>
+                            <p class="text-xs text-gray-500">Sleep</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-weight text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-navy">Withings Body+ Scale</h4>
+                                <p class="text-sm text-gray-500">Weight, BMI, Body Fat</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                    <span class="text-xs text-green-600">Connected</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t">
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">82kg</p>
+                            <p class="text-xs text-gray-500">Weight</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">26.1</p>
+                            <p class="text-xs text-gray-500">BMI</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">-8kg</p>
+                            <p class="text-xs text-gray-500">Progress</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-heartbeat text-red-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-navy">Omron Blood Pressure</h4>
+                                <p class="text-sm text-gray-500">Systolic, Diastolic, Pulse</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                    <span class="text-xs text-green-600">Connected</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t">
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">120</p>
+                            <p class="text-xs text-gray-500">Systolic</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">80</p>
+                            <p class="text-xs text-gray-500">Diastolic</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">72</p>
+                            <p class="text-xs text-gray-500">Pulse</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-tint text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-navy">SelectTech™ Glucose Monitor</h4>
+                                <p class="text-sm text-gray-500">Continuous Glucose Monitoring</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                    <span class="text-xs text-green-600">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t">
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">95</p>
+                            <p class="text-xs text-gray-500">mg/dL Now</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-navy">102</p>
+                            <p class="text-xs text-gray-500">Avg Today</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-bold text-green-600">
+                                <i class="fas fa-arrow-down"></i> 8%
+                            </p>
+                            <p class="text-xs text-gray-500">This Week</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add New Device -->
+        <div>
+            <h3 class="font-bold text-navy mb-3">Add New Device</h3>
+            <div class="grid grid-cols-2 gap-3">
+                <button class="card p-4 text-center hover:border-gold hover:border-2">
+                    <i class="fab fa-apple text-3xl text-gray-700 mb-2"></i>
+                    <p class="font-semibold text-navy text-sm">Apple Health</p>
+                </button>
+                <button class="card p-4 text-center hover:border-gold hover:border-2">
+                    <i class="fab fa-google text-3xl text-gray-700 mb-2"></i>
+                    <p class="font-semibold text-navy text-sm">Google Fit</p>
+                </button>
+                <button class="card p-4 text-center hover:border-gold hover:border-2">
+                    <i class="fas fa-mobile-alt text-3xl text-gray-700 mb-2"></i>
+                    <p class="font-semibold text-navy text-sm">Fitbit</p>
+                </button>
+                <button class="card p-4 text-center hover:border-gold hover:border-2">
+                    <i class="fas fa-plus text-3xl text-gold mb-2"></i>
+                    <p class="font-semibold text-navy text-sm">Other Device</p>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Data Sharing -->
+        <div class="card p-4">
+            <h3 class="font-bold text-navy mb-3 flex items-center">
+                <i class="fas fa-shield-alt text-gold mr-2"></i>
+                Data Sharing Settings
+            </h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between py-2">
+                    <div>
+                        <p class="font-medium text-navy">Share with Care Team</p>
+                        <p class="text-xs text-gray-500">Your doctors can view real-time data</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gold"></div>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <div>
+                        <p class="font-medium text-navy">Emergency Alerts</p>
+                        <p class="text-xs text-gray-500">Notify team of abnormal readings</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gold"></div>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <div>
+                        <p class="font-medium text-navy">AI Analysis</p>
+                        <p class="text-xs text-gray-500">Enable AI-powered health insights</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gold"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </main>
+  `
+  
+  return c.html(appShell(content, 'Health Devices', 'profile'))
+})
+
+// Emergency Contact Page
+app.get('/emergency', (c) => {
+  const content = `
+    <header class="bg-red-600 px-5 pt-12 pb-6">
+        <a href="/" class="text-white mb-4 inline-block"><i class="fas fa-arrow-left mr-2"></i>Back</a>
+        <h1 class="text-white text-xl font-bold flex items-center">
+            <i class="fas fa-phone-alt mr-3 animate-pulse"></i>
+            Emergency Services
+        </h1>
+        <p class="text-red-200">24/7 Medical Support Available</p>
+    </header>
+    
+    <main class="px-5 py-6 space-y-6">
+        <!-- Emergency Call -->
+        <div class="card p-6 border-2 border-red-500 bg-red-50">
+            <div class="text-center mb-4">
+                <div class="w-20 h-20 mx-auto bg-red-500 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-phone-alt text-white text-3xl"></i>
+                </div>
+                <h2 class="text-xl font-bold text-navy">Medical Emergency?</h2>
+                <p class="text-gray-600 mt-2">Tap to call our 24/7 emergency hotline</p>
+            </div>
+            <a href="tel:+4930123456789" class="block w-full bg-red-500 text-white text-center py-4 rounded-xl font-bold text-lg">
+                <i class="fas fa-phone mr-2"></i> Call +49 30 123 456 789
+            </a>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="requestAmbulance()" class="card p-4 text-center">
+                <div class="w-14 h-14 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-3">
+                    <i class="fas fa-ambulance text-red-500 text-xl"></i>
+                </div>
+                <p class="font-semibold text-navy">Request Ambulance</p>
+                <p class="text-xs text-gray-500">ETA: 5-10 mins</p>
+            </button>
+            <button onclick="startVideoCall()" class="card p-4 text-center">
+                <div class="w-14 h-14 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-3">
+                    <i class="fas fa-video text-blue-500 text-xl"></i>
+                </div>
+                <p class="font-semibold text-navy">Video Consult</p>
+                <p class="text-xs text-gray-500">Doctor Available</p>
+            </button>
+        </div>
+        
+        <!-- On-Call Doctor -->
+        <div class="card p-4">
+            <h3 class="font-bold text-navy mb-3 flex items-center">
+                <span class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                On-Call Doctor Available
+            </h3>
+            <div class="flex items-center space-x-4">
+                <div class="avatar" style="width:56px;height:56px;font-size:18px;background:#001F3F;color:white;display:flex;align-items:center;justify-content:center;border-radius:50%;">PK</div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-navy">Dr. P. Koch</h4>
+                    <p class="text-sm text-gray-500">Anesthesia & Pain Management</p>
+                    <p class="text-xs text-green-600 mt-1">
+                        <i class="fas fa-circle text-xs mr-1"></i>Online - Ready to assist
+                    </p>
+                </div>
+                <button class="btn-gold py-2 px-4 bg-gold text-navy rounded-lg font-semibold">
+                    <i class="fas fa-video mr-1"></i> Call
+                </button>
+            </div>
+        </div>
+        
+        <!-- Your Location -->
+        <div class="card p-4">
+            <h3 class="font-bold text-navy mb-3">
+                <i class="fas fa-map-marker-alt text-gold mr-2"></i>
+                Your Current Location
+            </h3>
+            <div class="bg-cream p-4 rounded-xl">
+                <p class="font-medium text-navy">Red Sea Resort & Spa</p>
+                <p class="text-sm text-gray-600">Room 412, Building A</p>
+                <p class="text-sm text-gray-500 mt-2">Hurghada, Egypt</p>
+                <p class="text-xs text-gray-400 mt-2">
+                    <i class="fas fa-location-arrow mr-1"></i>
+                    GPS: 27.2578° N, 33.8117° E
+                </p>
+            </div>
+            <p class="text-xs text-gray-500 mt-3 text-center">
+                <i class="fas fa-info-circle mr-1"></i>
+                Location shared with emergency services when calling
+            </p>
+        </div>
+        
+        <!-- Emergency Contacts -->
+        <div>
+            <h3 class="font-bold text-navy mb-3">Emergency Contacts</h3>
+            <div class="space-y-3">
+                <div class="card p-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-hospital text-red-500"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-navy">German Select Clinic</p>
+                            <p class="text-xs text-gray-500">Primary Care Facility</p>
+                        </div>
+                    </div>
+                    <a href="tel:+201234567890" class="text-gold">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                </div>
+                
+                <div class="card p-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-md text-blue-500"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-navy">Dr. H. Fischer (Surgeon)</p>
+                            <p class="text-xs text-gray-500">Your Primary Surgeon</p>
+                        </div>
+                    </div>
+                    <a href="tel:+491234567890" class="text-gold">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                </div>
+                
+                <div class="card p-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-concierge-bell text-gold"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-navy">Concierge Service</p>
+                            <p class="text-xs text-gray-500">Non-medical assistance</p>
+                        </div>
+                    </div>
+                    <a href="tel:+201234567891" class="text-gold">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Current Vitals Warning -->
+        <div class="ai-insight" style="background:linear-gradient(135deg, #EEF2FF 0%, #F0FDF4 100%);border-left:4px solid #C9A227;border-radius:0 12px 12px 0;padding:16px;">
+            <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-heart text-green-600"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-navy">Your Vitals are Normal</h4>
+                    <p class="text-sm text-gray-600">All monitored health metrics are within safe ranges. No immediate concerns detected.</p>
+                    <p class="text-xs text-gray-400 mt-2">Last checked: 5 minutes ago</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        function requestAmbulance() {
+            if(confirm('Request ambulance to your location?')) {
+                alert('Ambulance dispatched! ETA: 8 minutes. Stay calm and keep your phone nearby.');
+            }
+        }
+        function startVideoCall() {
+            alert('Connecting to on-call doctor...');
+        }
+    </script>
+  `
+  
+  return c.html(appShell(content, 'Emergency', 'home'))
+})
+
+// Compose Message Page
+app.get('/compose', (c) => {
+  const recipientId = c.req.query('to') || ''
+  
+  const content = `
+    <header class="gradient-navy px-5 pt-12 pb-6">
+        <div class="flex items-center justify-between">
+            <a href="/messages" class="text-white"><i class="fas fa-times text-xl"></i></a>
+            <h1 class="text-white text-lg font-bold">New Message</h1>
+            <button onclick="sendMessage()" class="text-gold font-semibold">Send</button>
+        </div>
+    </header>
+    
+    <main class="px-5 py-6 space-y-4">
+        <!-- Recipient Selection -->
+        <div class="card p-4">
+            <label class="text-sm text-gray-500 mb-2 block">To:</label>
+            <select id="recipient" class="w-full p-3 border rounded-xl text-navy">
+                <option value="">Select recipient...</option>
+                <option value="dr-fischer" ${recipientId === 'dr-fischer' ? 'selected' : ''}>Dr. H. Fischer - Bariatric Surgery</option>
+                <option value="dr-schmidt">Dr. A. Schmidt - Nutritionist</option>
+                <option value="dr-weber">Dr. L. Weber - Orthopedics</option>
+                <option value="dr-muller">Dr. K. Müller - Cardiology</option>
+                <option value="care-coordinator">Care Coordinator</option>
+                <option value="support">24/7 Support Team</option>
+            </select>
+        </div>
+        
+        <!-- Quick Topics -->
+        <div>
+            <p class="text-sm text-gray-500 mb-2">Quick topic:</p>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="setTopic('medication')" class="px-3 py-2 bg-cream rounded-full text-sm text-navy">
+                    <i class="fas fa-pills mr-1 text-gold"></i> Medication
+                </button>
+                <button onclick="setTopic('appointment')" class="px-3 py-2 bg-cream rounded-full text-sm text-navy">
+                    <i class="fas fa-calendar mr-1 text-gold"></i> Appointment
+                </button>
+                <button onclick="setTopic('symptom')" class="px-3 py-2 bg-cream rounded-full text-sm text-navy">
+                    <i class="fas fa-notes-medical mr-1 text-gold"></i> Symptoms
+                </button>
+                <button onclick="setTopic('diet')" class="px-3 py-2 bg-cream rounded-full text-sm text-navy">
+                    <i class="fas fa-utensils mr-1 text-gold"></i> Diet Question
+                </button>
+                <button onclick="setTopic('exercise')" class="px-3 py-2 bg-cream rounded-full text-sm text-navy">
+                    <i class="fas fa-running mr-1 text-gold"></i> Exercise
+                </button>
+                <button onclick="setTopic('general')" class="px-3 py-2 bg-cream rounded-full text-sm text-navy">
+                    <i class="fas fa-comment mr-1 text-gold"></i> General
+                </button>
+            </div>
+        </div>
+        
+        <!-- Subject -->
+        <div class="card p-4">
+            <label class="text-sm text-gray-500 mb-2 block">Subject:</label>
+            <input type="text" id="subject" placeholder="Enter subject..." class="w-full p-3 border rounded-xl text-navy">
+        </div>
+        
+        <!-- Message Body -->
+        <div class="card p-4">
+            <label class="text-sm text-gray-500 mb-2 block">Message:</label>
+            <textarea id="message-body" rows="8" placeholder="Type your message here..." class="w-full p-3 border rounded-xl text-navy resize-none"></textarea>
+        </div>
+        
+        <!-- Attachments -->
+        <div class="card p-4">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-gray-500">Attachments</span>
+                <button onclick="addAttachment()" class="text-gold text-sm font-semibold">
+                    <i class="fas fa-plus mr-1"></i> Add
+                </button>
+            </div>
+            <div id="attachments-list" class="space-y-2">
+                <!-- Attachments will be added here -->
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3">
+                <button onclick="attachPhoto()" class="px-3 py-2 border border-dashed rounded-lg text-sm text-gray-500">
+                    <i class="fas fa-camera mr-1"></i> Photo
+                </button>
+                <button onclick="attachFile()" class="px-3 py-2 border border-dashed rounded-lg text-sm text-gray-500">
+                    <i class="fas fa-file mr-1"></i> File
+                </button>
+                <button onclick="attachVitals()" class="px-3 py-2 border border-dashed rounded-lg text-sm text-gray-500">
+                    <i class="fas fa-heartbeat mr-1"></i> Latest Vitals
+                </button>
+            </div>
+        </div>
+        
+        <!-- Priority -->
+        <div class="card p-4">
+            <label class="text-sm text-gray-500 mb-2 block">Priority:</label>
+            <div class="flex space-x-3">
+                <label class="flex-1">
+                    <input type="radio" name="priority" value="normal" checked class="sr-only peer">
+                    <div class="p-3 border rounded-xl text-center cursor-pointer peer-checked:border-gold peer-checked:bg-gold/10">
+                        <i class="fas fa-envelope text-gray-500 peer-checked:text-gold"></i>
+                        <p class="text-sm mt-1">Normal</p>
+                    </div>
+                </label>
+                <label class="flex-1">
+                    <input type="radio" name="priority" value="urgent" class="sr-only peer">
+                    <div class="p-3 border rounded-xl text-center cursor-pointer peer-checked:border-orange-500 peer-checked:bg-orange-50">
+                        <i class="fas fa-exclamation-circle text-gray-500 peer-checked:text-orange-500"></i>
+                        <p class="text-sm mt-1">Urgent</p>
+                    </div>
+                </label>
+                <label class="flex-1">
+                    <input type="radio" name="priority" value="emergency" class="sr-only peer">
+                    <div class="p-3 border rounded-xl text-center cursor-pointer peer-checked:border-red-500 peer-checked:bg-red-50">
+                        <i class="fas fa-ambulance text-gray-500 peer-checked:text-red-500"></i>
+                        <p class="text-sm mt-1">Emergency</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        function setTopic(topic) {
+            const topics = {
+                'medication': 'Question about my medication',
+                'appointment': 'Appointment request',
+                'symptom': 'Symptom report',
+                'diet': 'Diet and nutrition question',
+                'exercise': 'Exercise and activity question',
+                'general': ''
+            };
+            document.getElementById('subject').value = topics[topic];
+        }
+        
+        function sendMessage() {
+            const recipient = document.getElementById('recipient').value;
+            const subject = document.getElementById('subject').value;
+            const body = document.getElementById('message-body').value;
+            
+            if(!recipient) {
+                alert('Please select a recipient');
+                return;
+            }
+            if(!body.trim()) {
+                alert('Please enter a message');
+                return;
+            }
+            
+            alert('Message sent successfully! You will receive a response within 24 hours.');
+            window.location.href = '/messages';
+        }
+        
+        function addAttachment() {
+            alert('File picker would open here');
+        }
+        function attachPhoto() {
+            alert('Camera would open here');
+        }
+        function attachFile() {
+            alert('File browser would open here');
+        }
+        function attachVitals() {
+            const list = document.getElementById('attachments-list');
+            list.innerHTML += '<div class="flex items-center justify-between p-2 bg-cream rounded-lg"><span class="text-sm"><i class="fas fa-heartbeat text-gold mr-2"></i>Latest Vitals Report</span><button onclick="this.parentElement.remove()" class="text-red-500"><i class="fas fa-times"></i></button></div>';
+        }
+    </script>
+  `
+  
+  return c.html(appShell(content, 'New Message', 'messages'))
+})
+
+// Patient Onboarding Page
+app.get('/onboarding', (c) => {
+  const step = parseInt(c.req.query('step') || '1')
+  
+  const steps = [
+    { title: 'Welcome', icon: 'hand-sparkles' },
+    { title: 'Personal Info', icon: 'user' },
+    { title: 'Medical History', icon: 'file-medical' },
+    { title: 'Treatment Goals', icon: 'bullseye' },
+    { title: 'Connect Devices', icon: 'mobile-alt' },
+    { title: 'Complete', icon: 'check-circle' }
+  ]
+  
+  const content = `
+    <header class="gradient-navy px-5 pt-12 pb-6">
+        <div class="flex items-center justify-between mb-4">
+            ${step > 1 ? '<a href="/onboarding?step=' + (step-1) + '" class="text-white"><i class="fas fa-arrow-left"></i></a>' : '<div></div>'}
+            <span class="text-white/60 text-sm">Step ${step} of ${steps.length}</span>
+            <div></div>
+        </div>
+        <h1 class="text-white text-xl font-bold">${steps[step-1].title}</h1>
+        
+        <!-- Progress Bar -->
+        <div class="flex space-x-2 mt-4">
+            ${steps.map((s, i) => `
+                <div class="flex-1 h-1 rounded-full ${i < step ? 'bg-gold' : 'bg-white/20'}"></div>
+            `).join('')}
+        </div>
+    </header>
+    
+    <main class="px-5 py-6">
+        ${step === 1 ? `
+            <div class="text-center py-8">
+                <div class="w-24 h-24 mx-auto bg-gold rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-hand-sparkles text-navy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-navy mb-4">Welcome to SelectCareOS™</h2>
+                <p class="text-gray-600 mb-8">Your journey to better health starts here. We'll guide you through setting up your profile.</p>
+                
+                <div class="space-y-4 text-left mb-8">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-shield-alt text-gold text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-navy">GDPR Compliant</p>
+                            <p class="text-sm text-gray-500">Your data is protected by German privacy standards</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-lock text-gold text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-navy">End-to-End Encrypted</p>
+                            <p class="text-sm text-gray-500">All communications are secure</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user-md text-gold text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-navy">German Board-Certified Doctors</p>
+                            <p class="text-sm text-gray-500">Access to world-class medical expertise</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="/onboarding?step=2" class="btn-gold w-full py-4 block text-center font-semibold" style="background:#C9A227;color:#001F3F;border-radius:12px;">
+                    Get Started <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        ` : step === 2 ? `
+            <form class="space-y-4">
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Full Name *</label>
+                    <input type="text" placeholder="John Doe" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Email *</label>
+                    <input type="email" placeholder="john@example.com" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Phone Number *</label>
+                    <input type="tel" placeholder="+49 123 456 7890" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Date of Birth *</label>
+                    <input type="date" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Gender</label>
+                    <select class="w-full p-3 border rounded-xl">
+                        <option>Select...</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                        <option>Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Country of Residence</label>
+                    <select class="w-full p-3 border rounded-xl">
+                        <option>Select...</option>
+                        <option>Germany</option>
+                        <option>United Kingdom</option>
+                        <option>Austria</option>
+                        <option>Switzerland</option>
+                        <option>Netherlands</option>
+                        <option>Other EU Country</option>
+                        <option>GCC Country</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                
+                <a href="/onboarding?step=3" class="btn-gold w-full py-4 block text-center font-semibold mt-6" style="background:#C9A227;color:#001F3F;border-radius:12px;">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </form>
+        ` : step === 3 ? `
+            <form class="space-y-4">
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Current Height (cm)</label>
+                    <input type="number" placeholder="175" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Current Weight (kg)</label>
+                    <input type="number" placeholder="90" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-3">Existing Conditions</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Diabetes</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Hypertension</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Heart Disease</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Sleep Apnea</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Joint Problems</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Current Medications</label>
+                    <textarea placeholder="List any medications you are currently taking..." rows="3" class="w-full p-3 border rounded-xl"></textarea>
+                </div>
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Allergies</label>
+                    <textarea placeholder="List any known allergies..." rows="2" class="w-full p-3 border rounded-xl"></textarea>
+                </div>
+                
+                <a href="/onboarding?step=4" class="btn-gold w-full py-4 block text-center font-semibold mt-6" style="background:#C9A227;color:#001F3F;border-radius:12px;">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </form>
+        ` : step === 4 ? `
+            <form class="space-y-4">
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-3">Interested Treatments</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Bariatric Surgery (Weight Loss)</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Orthopedic Surgery</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Aesthetic Surgery</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Anti-Aging & Longevity</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Cardiology</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-gold">
+                            <span>Wellness & Recovery Programs</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-3">Preferred Care Package</label>
+                    <div class="space-y-3">
+                        <label class="block p-4 border rounded-xl cursor-pointer hover:border-gold">
+                            <input type="radio" name="package" value="essential" class="sr-only peer">
+                            <div class="peer-checked:text-gold">
+                                <p class="font-bold">SELECTCARE™ Essential</p>
+                                <p class="text-sm text-gray-500">€6,500 - €12,000</p>
+                            </div>
+                        </label>
+                        <label class="block p-4 border rounded-xl cursor-pointer hover:border-gold border-gold bg-gold/5">
+                            <input type="radio" name="package" value="plus" class="sr-only peer" checked>
+                            <div class="peer-checked:text-gold">
+                                <p class="font-bold">SELECTCARE+™ Plus <span class="text-xs bg-gold text-navy px-2 py-0.5 rounded-full ml-2">Popular</span></p>
+                                <p class="text-sm text-gray-500">€12,000 - €22,000</p>
+                            </div>
+                        </label>
+                        <label class="block p-4 border rounded-xl cursor-pointer hover:border-gold">
+                            <input type="radio" name="package" value="crown" class="sr-only peer">
+                            <div class="peer-checked:text-gold">
+                                <p class="font-bold">SELECTCROWN™ Luxury</p>
+                                <p class="text-sm text-gray-500">€22,000 - €35,000</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <label class="block text-sm text-gray-500 mb-2">Target Treatment Date</label>
+                    <select class="w-full p-3 border rounded-xl">
+                        <option>As soon as possible</option>
+                        <option>Within 1 month</option>
+                        <option>Within 3 months</option>
+                        <option>Within 6 months</option>
+                        <option>Just exploring options</option>
+                    </select>
+                </div>
+                
+                <a href="/onboarding?step=5" class="btn-gold w-full py-4 block text-center font-semibold mt-6" style="background:#C9A227;color:#001F3F;border-radius:12px;">
+                    Continue <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </form>
+        ` : step === 5 ? `
+            <div class="space-y-6">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 mx-auto bg-gold/20 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-mobile-alt text-gold text-2xl"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-navy">Connect Your Health Devices</h2>
+                    <p class="text-sm text-gray-500 mt-2">Sync your wearables for better monitoring</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <button onclick="connectDevice('apple')" class="card p-4 w-full flex items-center justify-between hover:border-gold">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                                <i class="fab fa-apple text-2xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-semibold text-navy">Apple Health</p>
+                                <p class="text-xs text-gray-500">Heart rate, steps, sleep</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-plus-circle text-gold text-xl"></i>
+                    </button>
+                    
+                    <button onclick="connectDevice('google')" class="card p-4 w-full flex items-center justify-between hover:border-gold">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                                <i class="fab fa-google text-2xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-semibold text-navy">Google Fit</p>
+                                <p class="text-xs text-gray-500">Activity, heart rate</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-plus-circle text-gold text-xl"></i>
+                    </button>
+                    
+                    <button onclick="connectDevice('fitbit')" class="card p-4 w-full flex items-center justify-between hover:border-gold">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-heartbeat text-2xl text-pink-500"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-semibold text-navy">Fitbit</p>
+                                <p class="text-xs text-gray-500">All health metrics</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-plus-circle text-gold text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <a href="/onboarding?step=6" class="btn-gold w-full py-4 block text-center font-semibold" style="background:#C9A227;color:#001F3F;border-radius:12px;">
+                        Continue <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="/onboarding?step=6" class="text-gray-500 text-sm mt-4 block">Skip for now</a>
+                </div>
+            </div>
+            
+            <script>
+                function connectDevice(type) {
+                    alert('Connecting to ' + type + '...');
+                }
+            </script>
+        ` : `
+            <div class="text-center py-8">
+                <div class="w-24 h-24 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-check text-green-600 text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-navy mb-4">You're All Set!</h2>
+                <p class="text-gray-600 mb-8">Your profile is complete. You're ready to start your journey with SelectCareOS™.</p>
+                
+                <div class="card p-4 mb-6 text-left">
+                    <h4 class="font-bold text-navy mb-3">What's Next?</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center">
+                                <span class="text-gold font-bold text-sm">1</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Book a free consultation with our specialists</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center">
+                                <span class="text-gold font-bold text-sm">2</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Get a personalized treatment plan</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center">
+                                <span class="text-gold font-bold text-sm">3</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Begin your transformation journey</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="/" class="btn-gold w-full py-4 block text-center font-semibold" style="background:#C9A227;color:#001F3F;border-radius:12px;">
+                    Go to Dashboard <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                
+                <a href="/booking" class="btn-outline w-full py-4 block text-center font-semibold mt-3" style="border:2px solid #C9A227;color:#C9A227;border-radius:12px;">
+                    Book Consultation
+                </a>
+            </div>
+        `}
+    </main>
+  `
+  
+  return c.html(appShell(content, 'Welcome', 'home'))
 })
 
 // Admin Dashboard
