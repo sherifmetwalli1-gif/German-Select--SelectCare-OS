@@ -1,100 +1,221 @@
-# SelectCareOS™ - German Select Medical Tourism Platform
+# SelectCareOS™ - World-Class Digital Health & Medical Tourism Platform
 
 ## Project Overview
 - **Name**: SelectCareOS™
 - **Organization**: German Select
 - **Goal**: World-class digital health platform combining German medical excellence with Red Sea recovery
+- **Version**: 2.0.0 Enhanced (Monetization & Daily Life Features)
 - **Launch**: Q1 2026 in Hurghada, Egypt
 
-## Live Demo
-- **Platform URL**: https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai
+## 🌐 Live Demo URLs
 
-## Key Features
+| Page | URL | Description |
+|------|-----|-------------|
+| **Home Dashboard** | [/](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/) | Patient dashboard with recovery tracking |
+| **Premium Dashboard** | [/premium](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/premium) | ⭐ Enhanced premium home with monetization |
+| **Daily Wellness** | [/daily-wellness](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/daily-wellness) | Daily health tasks, meals, tracking |
+| **AI Concierge** | [/ai-concierge](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/ai-concierge) | AI-powered health assistant |
+| **Rewards Hub** | [/rewards](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/rewards) | SelectPoints gamification system |
+| **Marketplace** | [/marketplace](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/marketplace) | Health products & supplements |
+| **Family Hub** | [/family](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/family) | ⭐ Family health management |
+| **Subscription** | [/subscription](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/subscription) | Premium tier pricing |
+| **Timeline** | [/timeline](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/timeline) | Treatment journey visualization |
+| **Care Team** | [/care-team](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/care-team) | German board-certified doctors |
+| **Booking** | [/booking](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/booking) | Book consultations |
+| **Telemedicine** | [/telemedicine](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/telemedicine) | Video calls & remote monitoring |
+| **Health Analytics** | [/health-analytics](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/health-analytics) | AI diagnostics & risk analysis |
+| **Care Packages** | [/packages](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/packages) | SELECTCARE™ packages |
+| **Wellness Add-ons** | [/wellness](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/wellness) | Programs, accommodations, excursions |
+| **Doctor Dashboard** | [/doctor-dashboard](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/doctor-dashboard) | Care provider view |
+| **Admin Dashboard** | [/admin/dashboard](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/admin/dashboard) | Platform administration |
+
+---
+
+## 💰 Monetization Features (NEW)
+
+### 1. Premium Subscription Tiers
+
+| Tier | Price | Key Features |
+|------|-------|--------------|
+| **Free** | €0/mo | Basic dashboard, 5 AI queries, community forum |
+| **Basic** | €29/mo | 2 video consults, 50 AI queries, 3 devices |
+| **Plus** | €79/mo ⭐ | 5 consults, unlimited AI, family (4), 2x points |
+| **Elite** | €199/mo | Unlimited consults, care manager, 5x points |
+| **Enterprise** | Custom | API integration, white-label, SLA |
+
+### 2. SelectPoints Gamification System
+
+**Earning Points:**
+- Daily login: +10 pts
+- Log weight/meals: +15-20 pts
+- Complete medications: +30 pts
+- Video consultation: +100 pts
+- Refer a friend: +1,000 pts
+- Complete profile: +500 pts
+
+**Reward Tiers:**
+- Bronze (0-999): 1x multiplier
+- Silver (1,000-4,999): 1.25x, 5% discounts
+- Gold (5,000-14,999): 1.5x, 10% discounts
+- Platinum (15,000-49,999): 2x, 15% discounts
+- Diamond (50,000+): 3x, 20% discounts
+
+**Redemptions:**
+- 15-min video consultation: 2,000 pts (€50 value)
+- Premium health report: 1,500 pts (€40 value)
+- SelectWellness Box: 5,000 pts (€120 value)
+- Red Sea Spa Voucher: 8,000 pts (€200 value)
+
+### 3. Health Marketplace
+
+**Categories & Commission Rates:**
+- Health Devices: 15%
+- Supplements: 20%
+- Fitness Gear: 12%
+- Wellness Products: 18%
+- Nutrition: 15%
+- Skincare: 22%
+
+**Featured Products:**
+- SelectTech Pro Watch: €299 (was €399)
+- Blood Pressure Monitor: €89 (was €129)
+- Vitamin D3+K2: €29
+- Omega-3 Fish Oil: €34
+- Marine Collagen: €45
+
+**Subscription Boxes:**
+- SelectWellness Premium: €89/month (€120+ value)
+- Vitamin Essentials: €49/month (€65+ value)
+
+### 4. Family Health Hub
+
+**Features:**
+- Up to 4-8 family members (tier dependent)
+- Shared SelectPoints pool
+- Family health calendar
+- Family challenges with bonus rewards
+- Medication tracking for all members
+- Combined health dashboard
+
+### 5. AI Health Concierge (Premium)
+
+**Free Tier:**
+- 5 AI queries/month
+- Basic symptom analysis
+
+**Plus/Elite:**
+- Unlimited AI conversations
+- Personalized meal plans
+- Symptom tracking & predictions
+- Health report generation
+- Product recommendations with upselling
+
+---
+
+## 🏥 Core Medical Features
 
 ### Patient Dashboard
 - Surgery preparation tracking with milestone completion
-- Recovery phase monitoring with progress visualization
-- Weekly milestone tracking (Initial Assessment → Mobility Training → Advanced Strengthening)
-- Real-time health metrics display (Heart Rate, Weight Loss, Steps)
+- Recovery phase monitoring (75% progress visualization)
+- Weekly milestones: Initial Assessment → Mobility Training → Advanced Strengthening
+- Real-time health metrics (Heart Rate, Blood Pressure, Weight, Steps)
 - Appointment cards with doctor information
 
 ### Doctor Connectivity & Telemedicine
 - Video call consultations with German board-certified specialists
 - 24/7 emergency hotline
 - On-call doctor availability
-- Secure messaging with care team
+- Secure HIPAA/GDPR-compliant messaging
 - Real-time consultation status
 
 ### Remote Patient Monitoring
-- Connected health devices integration (Apple Watch, Smart Scale)
-- Real-time vitals monitoring (Heart Rate, Blood Pressure, SpO2)
-- Activity tracking with target goals
-- Automatic data synchronization
-- Alert system for abnormal readings
+- Connected devices: Apple Watch, Withings Scale, Omron BP Monitor, CGM
+- Real-time vitals: Heart Rate, Blood Pressure, SpO2, Glucose
+- Activity tracking with 10,000 step goals
+- Sleep quality analysis (Deep, REM, Light)
+- Automatic alerts for abnormal readings
 
 ### AI Diagnostics & Risk Analysis
-- Overall health score calculation (0-100 scale)
-- Cardiovascular risk assessment
+- Overall health score (0-100 scale)
+- Cardiovascular risk assessment (Low/Moderate/High)
 - Metabolic health monitoring
-- Recovery progress tracking with AI insights
-- Evidence-based recommendations with medical citations
+- Recovery progress tracking (25% ahead of average)
+- Evidence-based recommendations with NIH/ASMBS citations
 
-### Booking System
-- **Consultations**: Video call or in-person appointments
-- **Treatments**: 
-  - Bariatric Surgery (Gastric Sleeve €8,500, Gastric Bypass €12,000)
-  - Orthopedic Surgery (Knee/Hip Replacement €18,000-€20,000)
-  - Aesthetic Surgery (Facelift €12,000, Body Contouring €15,000)
-  - Anti-Aging (Stem Cell €15,000, PRP €3,000)
-  - Cardiology procedures
-- **Accommodations**:
-  - 4-Star Hotel (€120/night)
-  - 5-Star Resort (€280/night)
-  - Private Villa (€550/night)
-- **Wellness Programs**:
-  - Red Sea Recovery Retreat (€2,500)
-  - Medical Detox Program (€3,500)
-  - Anti-Aging Intensive (€8,000)
-- **Excursions**:
-  - Red Sea Diving (€150)
-  - Desert Safari (€120)
-  - Luxor Temple Tour (€250)
-  - Private Yacht Cruise (€500)
-  - Snorkeling (€80)
-  - Luxury Spa Day (€200)
+### Treatment Timeline
+- Visual journey from pre-op to long-term support
+- Phase tracking: Pre-operative → Surgery → Recovery → Follow-up → Lifetime
+- Milestone completion badges
+- Surgeon notes and outcomes
 
-### Care Packages
-| Package | Price Range | Duration | Features |
-|---------|-------------|----------|----------|
-| SELECTCARE™ | €6,500-€12,000 | 14 days | German surgeon, JCI facility, 4-star accommodation |
-| SELECTCARE+™ | €12,000-€22,000 | 21 days | 5-star resort, personal coordinator, wellness sessions |
-| SELECTCROWN™ | €22,000-€35,000 | 28 days | Private villa, personal chef, 24/7 nurse, lifetime support |
+---
 
-### Timeline & Therapy Tracking
-- Visual treatment timeline with phases
-- Pre-operative phase tracking
-- Surgery day documentation
-- Recovery phase milestones
-- Follow-up scheduling
-- Long-term support tracking (12+ months)
+## 💊 Care Packages & Pricing
 
-### Doctor Dashboard
-- Today's schedule management
-- Patient monitoring alerts
-- Video call integration
-- Quick actions (Add Notes, Prescribe, Analytics, All Patients)
+| Package | Price | Duration | Key Features |
+|---------|-------|----------|--------------|
+| **SELECTCARE™** | €6,500-€12,000 | 14 days | German surgeon, JCI facility, 4-star hotel, 1-year follow-up |
+| **SELECTCARE+™** | €12,000-€22,000 | 21 days | 5-star resort, personal coordinator, wellness sessions, family option |
+| **SELECTCROWN™** | €22,000-€35,000 | 28 days | Private villa, personal chef, 24/7 nurse, lifetime support, yacht experience |
 
-## Technical Architecture
+### Treatment Categories
 
-### Stack
-- **Framework**: Hono (TypeScript)
-- **Platform**: Cloudflare Pages/Workers
-- **Database**: Cloudflare D1 (SQLite)
-- **Cache**: Cloudflare KV
-- **Build**: Vite
-- **Styling**: TailwindCSS (via CDN)
+**Bariatric Surgery:**
+- Gastric Sleeve: €8,500
+- Gastric Bypass: €12,000
+- Revision Surgery: €15,000
 
-### API Endpoints
+**Orthopedic Surgery:**
+- Knee Replacement: €18,000
+- Hip Replacement: €20,000
+- Spine Surgery: €25,000
+
+**Aesthetic Surgery:**
+- Facelift: €12,000
+- Body Contouring: €15,000
+- Rhinoplasty: €8,000
+
+**Anti-Aging & Longevity:**
+- Stem Cell Therapy: €15,000
+- PRP Therapy: €3,000
+- Hormone Optimization: €5,000
+
+### Wellness Programs
+- Red Sea Recovery Retreat: €2,500 (7 days)
+- Medical Detox Program: €3,500 (10 days)
+- Anti-Aging Intensive: €8,000 (14 days)
+
+### Accommodations
+- 4-Star Hotel: €120/night
+- 5-Star Resort: €280/night
+- Private Villa: €550/night
+
+### Excursions
+- Red Sea Diving: €150
+- Desert Safari: €120
+- Luxor Temple Tour: €250
+- Private Yacht Cruise: €500
+
+---
+
+## 👨‍⚕️ German Select Medical Team
+
+| Doctor | Specialization | Experience | Consultation |
+|--------|---------------|------------|--------------|
+| Dr. med. S.A. Metwalli | Plastic & Reconstructive Surgery | 20 years | €150 |
+| Dr. L. Weber | Orthopedics | 18 years | €180 |
+| Dr. K. Müller | Cardiology | 15 years | €200 |
+| Dr. A. Schmidt | Nutritional Medicine | 12 years | €120 |
+| Dr. H. Fischer | Bariatric Surgery | 22 years | €180 |
+| Dr. M. Bauer | Urology & Andrology | 16 years | €160 |
+| Dr. P. Koch | Anesthesia & Pain Management | 19 years | €140 |
+| Dr. J. Hoffmann | Internal Medicine | 14 years | €150 |
+
+---
+
+## 🔌 API Endpoints
+
+### Core APIs
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -102,125 +223,143 @@
 | `/api/doctors` | GET | List all doctors |
 | `/api/doctors/:id` | GET | Get doctor by ID |
 | `/api/packages` | GET | List care packages |
-| `/api/packages/:id` | GET | Get package by ID |
 | `/api/treatments` | GET | List treatment categories |
-| `/api/treatments/:categoryId` | GET | Get treatments by category |
-| `/api/wellness` | GET | List wellness services |
-| `/api/accommodations` | GET | List accommodations |
-| `/api/excursions` | GET | List excursions |
-| `/api/analytics/overview` | GET | Analytics dashboard data |
+| `/api/wellness` | GET | Wellness services |
+| `/api/accommodations` | GET | Accommodation options |
+| `/api/excursions` | GET | Excursion activities |
+| `/api/vitals/current` | GET | Real-time patient vitals |
+| `/api/vitals/history` | GET | Historical vitals data |
+| `/api/devices` | GET | Connected health devices |
+| `/api/ai/analysis` | GET | AI health analysis |
+| `/api/timeline` | GET | Treatment timeline |
+| `/api/appointments` | GET | Patient appointments |
+| `/api/messages` | GET | Care team messages |
 
-### Frontend Routes
+### Monetization APIs (NEW)
 
-| Route | Description |
-|-------|-------------|
-| `/` | Patient Dashboard (Home) |
-| `/timeline` | Treatment Timeline |
-| `/messages` | Secure Messaging |
-| `/care-team` | Care Team Directory |
-| `/profile` | Patient Profile |
-| `/booking` | Book Consultation |
-| `/telemedicine` | Telemedicine Hub |
-| `/health-analytics` | AI Health Analytics |
-| `/packages` | Care Packages |
-| `/wellness` | Wellness & Add-ons |
-| `/doctor-dashboard` | Doctor Dashboard |
-| `/admin/dashboard` | Admin Dashboard |
-| `/analytics` | Business Analytics |
-| `/affiliate` | Affiliate Portal |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/subscriptions/tiers` | GET | Subscription plans |
+| `/api/rewards/config` | GET | Points earning config |
+| `/api/rewards/user` | GET | User points & tier |
+| `/api/rewards/earn` | POST | Earn points |
+| `/api/marketplace/products` | GET | Shop products |
+| `/api/marketplace/cart` | GET | Shopping cart |
+| `/api/family` | GET | Family members |
+| `/api/user/stats` | GET | User dashboard stats |
+| `/api/tasks/daily` | GET | Daily wellness tasks |
+| `/api/tasks/complete` | POST | Complete a task |
 
-## German Select Doctors
+---
 
-1. **Dr. med. Sherif Akram Metwalli** - Founder, CEO & CMO, Plastic & Reconstructive Surgery
-2. **Dr. L. Weber** - Senior Consultant, Orthopedics
-3. **Dr. K. Müller** - Consultant, Cardiology (University Hospital Kiel)
-4. **Dr. A. Schmidt** - Consultant, Nutritional Medicine
-5. **Dr. H. Fischer** - Senior Consultant, Bariatric Surgery
-6. **Dr. M. Bauer** - Consultant, Urology & Andrology
-7. **Dr. P. Koch** - Head of Department, Anesthesia & Pain Management
-8. **Dr. J. Hoffmann** - Consultant, Internal Medicine & Gastroenterology
-
-## Design System
+## 🎨 Design System
 
 ### Color Palette
 - **Navy** (Primary): `#001F3F`
+- **Navy Light**: `#003366`
 - **Gold** (Accent): `#C9A227`
+- **Gold Light**: `#E8D5A3`
 - **Cream** (Background): `#F8F6F0`
 
-### Key UI Components
-- Progress rings with percentage
-- Timeline visualization with dots
-- Card-based layouts with shadows
+### UI Components
+- Progress rings with animations
+- Card-based layouts with hover effects
+- Timeline visualization with milestone dots
 - Status badges (Completed, In Progress, Upcoming)
-- Bottom navigation bar
-- Floating action buttons
+- Bottom navigation with active states
+- Floating action buttons (AI chat, emergency)
+- Gamification badges and streaks
+- Premium tier indicators
 
-## Development
+---
 
-### Local Setup
+## 🛠 Technical Stack
+
+- **Framework**: Hono (TypeScript)
+- **Platform**: Cloudflare Pages/Workers
+- **Database**: Cloudflare D1 (SQLite)
+- **Cache**: Cloudflare KV
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS (via CDN)
+- **Icons**: FontAwesome 6.4
+- **Charts**: Chart.js
+
+### Development Commands
+
 ```bash
-cd /home/user/webapp
+# Install dependencies
 npm install
+
+# Build for production
 npm run build
+
+# Start development server
 pm2 start ecosystem.config.cjs
-```
 
-### Testing
-```bash
+# Test endpoints
 curl http://localhost:3000/api/health
-curl http://localhost:3000/api/doctors
+curl http://localhost:3000/api/user/stats
+
+# Deploy to Cloudflare
+npm run deploy
 ```
 
-### Deployment
-```bash
-npm run build
-npx wrangler pages deploy dist --project-name selectcareos
-```
+---
 
-## Data Models
+## 🔐 Security & Compliance
 
-### Patient Data
-- Personal information
-- Medical records
-- Treatment history
-- Health metrics
-- Booking history
-
-### Doctor Data
-- Qualifications
-- Specializations
-- Availability
-- Consultation fees
-- Ratings & reviews
-
-### Booking Data
-- Consultation bookings
-- Treatment bookings
-- Accommodation reservations
-- Wellness program enrollments
-- Excursion bookings
-
-## Security & Compliance
-
-- GDPR compliant data handling
-- Secure messaging encryption
+- **GDPR** compliant data handling
+- **HIPAA** compatible architecture
+- End-to-end encryption for messaging
 - JCI-certified facility standards
-- ISO 13485 compliance
-- TEMOS certification
+- ISO 13485 medical device compliance
+- TEMOS international patient certification
 
-## Value Proposition
+---
 
-- **60% cost savings** vs German hospitals
-- **German board-certified** surgeons
-- **<2% complication rates**
-- **2-6 week wait times** (vs 6+ months in Germany)
-- **12+ months digital follow-up**
-- **Red Sea recovery** environment
+## 📈 Value Proposition
 
-## Contact
+| Benefit | Value |
+|---------|-------|
+| Cost Savings | 60% vs German hospitals |
+| Quality | German board-certified surgeons |
+| Safety | <2% complication rates |
+| Speed | 2-6 weeks (vs 6+ months in Germany) |
+| Support | 12+ months digital follow-up |
+| Recovery | Red Sea therapeutic environment |
+
+---
+
+## 🚀 Recommended Next Steps
+
+### Immediate Priorities
+1. **Stripe Integration**: Payment processing for subscriptions and marketplace
+2. **Push Notifications**: Mobile engagement for daily tasks and appointments
+3. **Real Device Integration**: Apple HealthKit, Google Fit APIs
+4. **Video Calling**: WebRTC integration for telemedicine
+
+### Medium-term Goals
+5. **Mobile Apps**: React Native iOS/Android apps
+6. **EMR Integration**: FHIR-compliant health record sync
+7. **Insurance Integration**: Direct billing with German insurers
+8. **Multi-language**: Arabic, German localization
+
+### Long-term Vision
+9. **AI Diagnostics**: Enhanced ML models for risk prediction
+10. **IoT Devices**: SelectTech branded wearables
+11. **Partner Network**: Travel agencies, airlines integration
+12. **Franchising**: SelectCare clinics in other locations
+
+---
+
+## 📞 Contact
 
 - **Website**: https://www.germanselect.org
 - **Platform**: SelectCareOS™
+- **Provider**: German Select GmbH
 
 ---
+
 **German Select** - German Medical Excellence, Egyptian Hospitality, Red Sea Recovery
+
+*© 2024 German Select. All rights reserved.*

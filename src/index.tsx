@@ -3390,6 +3390,242 @@ app.get('/affiliate', async (c) => {
   return c.html(affiliatePage(c))
 })
 
+// ============================================================================
+// MONETIZATION & ENGAGEMENT PAGES
+// ============================================================================
+
+// Premium Subscription Plans
+app.get('/subscription', async (c) => {
+  const { subscriptionPage } = await import('./pages/subscription')
+  return c.html(subscriptionPage())
+})
+
+app.get('/pricing', async (c) => {
+  const { subscriptionPage } = await import('./pages/subscription')
+  return c.html(subscriptionPage())
+})
+
+// SelectPoints Rewards & Gamification
+app.get('/rewards', async (c) => {
+  const { rewardsPage } = await import('./pages/rewards')
+  return c.html(rewardsPage())
+})
+
+app.get('/points', async (c) => {
+  const { rewardsPage } = await import('./pages/rewards')
+  return c.html(rewardsPage())
+})
+
+// Health Marketplace
+app.get('/marketplace', async (c) => {
+  const { marketplacePage } = await import('./pages/marketplace')
+  return c.html(marketplacePage())
+})
+
+app.get('/shop', async (c) => {
+  const { marketplacePage } = await import('./pages/marketplace')
+  return c.html(marketplacePage())
+})
+
+// AI Health Concierge
+app.get('/ai-concierge', async (c) => {
+  const { aiConciergePage } = await import('./pages/ai-concierge')
+  return c.html(aiConciergePage())
+})
+
+app.get('/ai', async (c) => {
+  const { aiConciergePage } = await import('./pages/ai-concierge')
+  return c.html(aiConciergePage())
+})
+
+// Daily Wellness Hub
+app.get('/daily-wellness', async (c) => {
+  const { dailyWellnessPage } = await import('./pages/daily-wellness')
+  return c.html(dailyWellnessPage())
+})
+
+app.get('/wellness-hub', async (c) => {
+  const { dailyWellnessPage } = await import('./pages/daily-wellness')
+  return c.html(dailyWellnessPage())
+})
+
+// Premium Home Dashboard
+app.get('/premium', async (c) => {
+  const { premiumHomePage } = await import('./pages/premium-home')
+  return c.html(premiumHomePage('plus'))
+})
+
+app.get('/dashboard-v2', async (c) => {
+  const { premiumHomePage } = await import('./pages/premium-home')
+  return c.html(premiumHomePage('plus'))
+})
+
+// Family Health Hub
+app.get('/family', async (c) => {
+  const { familyHubPage } = await import('./pages/family-hub')
+  return c.html(familyHubPage())
+})
+
+app.get('/family-hub', async (c) => {
+  const { familyHubPage } = await import('./pages/family-hub')
+  return c.html(familyHubPage())
+})
+
+// ============================================================================
+// MONETIZATION API ENDPOINTS
+// ============================================================================
+
+// Subscription API
+app.get('/api/subscriptions/tiers', async (c) => {
+  const { SUBSCRIPTION_TIERS } = await import('./pages/subscription')
+  return c.json({ success: true, data: SUBSCRIPTION_TIERS })
+})
+
+// Rewards API
+app.get('/api/rewards/config', async (c) => {
+  const { REWARDS_CONFIG } = await import('./pages/rewards')
+  return c.json({ success: true, data: REWARDS_CONFIG })
+})
+
+app.get('/api/rewards/user', (c) => {
+  // Demo user rewards data
+  return c.json({
+    success: true,
+    data: {
+      userId: 'user-123',
+      points: 8450,
+      tier: 'gold',
+      multiplier: 1.5,
+      streak: 14,
+      totalEarned: 15600,
+      totalRedeemed: 7150,
+      badges: ['first-steps', 'health-hero', 'week-warrior'],
+      referralCode: 'JOHN2024',
+      referrals: 3
+    }
+  })
+})
+
+app.post('/api/rewards/earn', async (c) => {
+  const body = await c.req.json()
+  const { action, amount } = body
+  // In production, this would update the database
+  return c.json({
+    success: true,
+    data: {
+      action,
+      pointsEarned: amount || 10,
+      newBalance: 8460,
+      message: `Earned ${amount || 10} SelectPoints for ${action}`
+    }
+  })
+})
+
+// Marketplace API
+app.get('/api/marketplace/products', async (c) => {
+  const { MARKETPLACE_PRODUCTS } = await import('./pages/marketplace')
+  return c.json({ success: true, data: MARKETPLACE_PRODUCTS })
+})
+
+app.get('/api/marketplace/cart', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      items: [
+        { id: 'vitamin-d', name: 'Vitamin D3+K2', price: 29, quantity: 1 },
+        { id: 'omega3', name: 'Omega-3 Fish Oil', price: 34, quantity: 2 },
+      ],
+      subtotal: 97,
+      pointsEarning: 485,
+      discount: 0,
+      total: 97
+    }
+  })
+})
+
+// Family Hub API
+app.get('/api/family', async (c) => {
+  const { FAMILY_MEMBERS } = await import('./pages/family-hub')
+  return c.json({
+    success: true,
+    data: {
+      members: FAMILY_MEMBERS,
+      totalPoints: FAMILY_MEMBERS.reduce((sum, m) => sum + m.points, 0),
+      totalMembers: FAMILY_MEMBERS.length,
+      maxMembers: 4,
+      planType: 'plus'
+    }
+  })
+})
+
+// User Stats API (for premium dashboard)
+app.get('/api/user/stats', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      user: {
+        id: 'user-123',
+        name: 'John Doe',
+        tier: 'plus',
+        avatar: 'JD'
+      },
+      health: {
+        score: 85,
+        recoveryProgress: 75,
+        weightLoss: 8,
+        streak: 14
+      },
+      points: {
+        balance: 8450,
+        earned: 15600,
+        redeemed: 7150,
+        multiplier: 2
+      },
+      tasks: {
+        completed: 4,
+        total: 7,
+        potentialPoints: 155
+      },
+      appointments: {
+        upcoming: 2,
+        nextDate: '2024-10-22T10:00:00Z',
+        nextDoctor: 'Dr. K. Müller'
+      }
+    }
+  })
+})
+
+// Daily Tasks API
+app.get('/api/tasks/daily', (c) => {
+  return c.json({
+    success: true,
+    data: [
+      { id: 't1', name: 'Morning medications', points: 30, completed: true },
+      { id: 't2', name: 'Log breakfast', points: 15, completed: true },
+      { id: 't3', name: 'Drink 8 glasses water', points: 10, completed: false },
+      { id: 't4', name: 'Log blood pressure', points: 20, completed: false },
+      { id: 't5', name: '15-minute walk', points: 25, completed: true },
+      { id: 't6', name: 'Evening stretching', points: 20, completed: false },
+      { id: 't7', name: 'Log sleep time', points: 15, completed: true }
+    ]
+  })
+})
+
+app.post('/api/tasks/complete', async (c) => {
+  const body = await c.req.json()
+  const { taskId } = body
+  return c.json({
+    success: true,
+    data: {
+      taskId,
+      completed: true,
+      pointsEarned: 20,
+      newBalance: 8470,
+      message: 'Task completed! +20 SelectPoints'
+    }
+  })
+})
+
 // 404 handler
 app.notFound((c) => {
   return c.json({
