@@ -593,10 +593,41 @@ export const servicesPage = () => `<!DOCTYPE html>
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--navy);
+            z-index: 1000;
+            padding: 80px 24px 24px;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 16px 0;
+            color: white;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-menu a.active {
+            color: var(--gold);
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .step-line { display: none; }
             .floating-cta { bottom: 10px; right: 10px; }
+            .hero-stats { grid-template-columns: 1fr !important; }
+            .btn-gold, .btn-outline-white { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -614,11 +645,25 @@ export const servicesPage = () => `<!DOCTYPE html>
                 <a href="/care-team" class="text-white/80 hover:text-white transition">Doctors</a>
                 <a href="/booking" class="btn-gold text-sm py-2 px-4">Book Consultation</a>
             </div>
-            <button class="md:hidden text-white text-xl">
+            <button id="mobile-menu-btn" class="md:hidden text-white text-xl" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu">
+        <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 text-white text-2xl">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="/">Home</a>
+        <a href="/services" class="active">Services</a>
+        <a href="/packages">Packages</a>
+        <a href="/care-team">Doctors</a>
+        <a href="/wellness">Wellness</a>
+        <a href="/subscription">Subscription Plans</a>
+        <a href="/booking" class="btn-gold mt-6 text-center" style="border-radius: 12px;">Book Consultation</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="gradient-hero py-20 px-6 relative overflow-hidden">
@@ -769,7 +814,16 @@ export const servicesPage = () => `<!DOCTYPE html>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8 relative">
-                ${JOURNEY_STEPS.map((step, index) => `
+                ${JOURNEY_STEPS.map((step, index) => {
+                    // Define colors based on step color
+                    const colorStyles = {
+                        blue: { bg: 'background: rgba(59, 130, 246, 0.1);', text: 'color: #3B82F6;' },
+                        gold: { bg: 'background: rgba(201, 162, 39, 0.1);', text: 'color: #C9A227;' },
+                        green: { bg: 'background: rgba(34, 197, 94, 0.1);', text: 'color: #22C55E;' }
+                    };
+                    const style = colorStyles[step.color as keyof typeof colorStyles] || colorStyles.gold;
+                    
+                    return `
                     <div class="relative animate-fade-in" style="animation-delay: ${index * 0.2}s">
                         <!-- Step number with connecting line -->
                         <div class="flex justify-center mb-6">
@@ -779,10 +833,10 @@ export const servicesPage = () => `<!DOCTYPE html>
                             </div>
                         </div>
                         
-                        <div class="card p-6 h-full ${step.color === 'gold' ? 'ring-2 ring-gold' : ''}">
+                        <div class="card p-6 h-full ${step.color === 'gold' ? 'ring-2 ring-gold' : ''}" style="transition: all 0.3s;">
                             <div class="text-center mb-4">
-                                <div class="w-12 h-12 mx-auto bg-${step.color === 'gold' ? 'gold' : step.color === 'blue' ? 'blue-500' : 'green-500'}/10 rounded-full flex items-center justify-center mb-3">
-                                    <i class="fas fa-${step.icon} text-${step.color === 'gold' ? 'gold' : step.color === 'blue' ? 'blue-500' : 'green-500'} text-xl"></i>
+                                <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3" style="${style.bg}">
+                                    <i class="fas fa-${step.icon} text-xl" style="${style.text}"></i>
                                 </div>
                                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">${step.duration}</span>
                                 <span class="mx-2 text-gray-300">•</span>
@@ -812,7 +866,7 @@ export const servicesPage = () => `<!DOCTYPE html>
                             </div>
                         </div>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
         </div>
     </section>
@@ -1188,6 +1242,13 @@ export const servicesPage = () => `<!DOCTYPE html>
     </div>
 
     <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+        
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1195,6 +1256,11 @@ export const servicesPage = () => `<!DOCTYPE html>
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                // Close mobile menu if open
+                const menu = document.getElementById('mobile-menu');
+                if (menu.classList.contains('active')) {
+                    toggleMobileMenu();
                 }
             });
         });
@@ -1216,6 +1282,36 @@ export const servicesPage = () => `<!DOCTYPE html>
         document.querySelectorAll('.card, .testimonial-card').forEach(el => {
             observer.observe(el);
         });
+        
+        // Counter animation for stats
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 30);
+        }
+        
+        // Trigger counter animation when hero section is visible
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Could add counter animations here if needed
+                    heroObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const heroSection = document.querySelector('.gradient-hero');
+        if (heroSection) {
+            heroObserver.observe(heroSection);
+        }
     </script>
 </body>
 </html>`;
