@@ -1426,21 +1426,21 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
+            <a href="/dashboard" class="nav-item ${activeNav === 'dashboard' ? 'active' : ''}">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
             <a href="/timeline" class="nav-item ${activeNav === 'timeline' ? 'active' : ''}">
                 <i class="fas fa-stream"></i>
                 <span>Timeline</span>
-            </a>
-            <a href="/messages" class="nav-item ${activeNav === 'messages' ? 'active' : ''}">
-                <i class="fas fa-comment-dots"></i>
-                <span>Messages</span>
             </a>
             <a href="/care-team" class="nav-item ${activeNav === 'care-team' ? 'active' : ''}">
                 <i class="fas fa-user-md"></i>
                 <span>Care Team</span>
             </a>
-            <a href="/profile" class="nav-item ${activeNav === 'profile' ? 'active' : ''}">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
+            <a href="/services" class="nav-item ${activeNav === 'services' ? 'active' : ''}">
+                <i class="fas fa-concierge-bell"></i>
+                <span>Services</span>
             </a>
         </div>
     </nav>
@@ -3693,6 +3693,237 @@ app.get('/family', async (c) => {
 app.get('/family-hub', async (c) => {
   const { familyHubPage } = await import('./pages/family-hub')
   return c.html(familyHubPage())
+})
+
+// Patient Dashboard (comprehensive health monitoring & calculators)
+app.get('/dashboard', async (c) => {
+  const { patientDashboardPage } = await import('./pages/patient-dashboard')
+  return c.html(patientDashboardPage())
+})
+
+// Dashboard API endpoints
+app.get('/api/dashboard/calculators', async (c) => {
+  const { HEALTH_CALCULATORS } = await import('./pages/patient-dashboard')
+  return c.json({ success: true, data: HEALTH_CALCULATORS })
+})
+
+app.get('/api/dashboard/journey', async (c) => {
+  const { PATIENT_JOURNEY } = await import('./pages/patient-dashboard')
+  return c.json({ success: true, data: PATIENT_JOURNEY })
+})
+
+app.get('/api/dashboard/metrics', async (c) => {
+  const { HEALTH_METRICS_CONFIG } = await import('./pages/patient-dashboard')
+  return c.json({ success: true, data: HEALTH_METRICS_CONFIG })
+})
+
+// BMI Calculation API
+app.post('/api/calculators/bmi', async (c) => {
+  const { height, weight } = await c.req.json()
+  if (!height || !weight || height <= 0 || weight <= 0) {
+    return c.json({ success: false, error: 'Invalid height or weight' }, 400)
+  }
+  
+  const heightM = height / 100
+  const bmi = weight / (heightM * heightM)
+  
+  let category, risk, color
+  if (bmi < 18.5) {
+    category = 'Underweight'; risk = 'Nutritional deficiency risk'; color = '#3B82F6'
+  } else if (bmi < 25) {
+    category = 'Normal'; risk = 'Healthy weight range'; color = '#10B981'
+  } else if (bmi < 30) {
+    category = 'Overweight'; risk = 'Increased health risks'; color = '#F59E0B'
+  } else if (bmi < 35) {
+    category = 'Obese Class I'; risk = 'Moderate health risks'; color = '#EF4444'
+  } else if (bmi < 40) {
+    category = 'Obese Class II'; risk = 'Severe health risks'; color = '#DC2626'
+  } else {
+    category = 'Obese Class III'; risk = 'Very severe health risks - Surgery recommended'; color = '#991B1B'
+  }
+  
+  return c.json({
+    success: true,
+    data: {
+      bmi: Math.round(bmi * 10) / 10,
+      category,
+      risk,
+      color,
+      idealWeightRange: {
+        min: Math.round(18.5 * heightM * heightM),
+        max: Math.round(24.9 * heightM * heightM)
+      }
+    }
+  })
+})
+
+// Body Fat Calculation API
+app.post('/api/calculators/body-fat', async (c) => {
+  const { gender, height, waist, neck, hip } = await c.req.json()
+  
+  if (!height || !waist || !neck) {
+    return c.json({ success: false, error: 'Missing required measurements' }, 400)
+  }
+  
+  let bodyFat: number
+  if (gender === 'male') {
+    bodyFat = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450
+  } else {
+    if (!hip) return c.json({ success: false, error: 'Hip measurement required for females' }, 400)
+    bodyFat = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450
+  }
+  
+  bodyFat = Math.max(0, Math.round(bodyFat * 10) / 10)
+  
+  const categories = gender === 'male' 
+    ? [
+        { max: 6, category: 'Essential Fat' },
+        { max: 14, category: 'Athletes' },
+        { max: 18, category: 'Fitness' },
+        { max: 25, category: 'Average' },
+        { max: 100, category: 'Obese' }
+      ]
+    : [
+        { max: 14, category: 'Essential Fat' },
+        { max: 21, category: 'Athletes' },
+        { max: 25, category: 'Fitness' },
+        { max: 32, category: 'Average' },
+        { max: 100, category: 'Obese' }
+      ]
+  
+  const category = categories.find(c => bodyFat < c.max)?.category || 'Unknown'
+  
+  return c.json({
+    success: true,
+    data: { bodyFat, category, gender }
+  })
+})
+
+// Recovery Time Estimation API
+app.post('/api/calculators/recovery', async (c) => {
+  const { procedure, age, bmi } = await c.req.json()
+  
+  const baseRecovery: Record<string, { initial: number, full: number }> = {
+    'gastric-sleeve': { initial: 14, full: 42 },
+    'gastric-bypass': { initial: 21, full: 56 },
+    'knee-replacement': { initial: 42, full: 180 },
+    'hip-replacement': { initial: 42, full: 180 },
+    'facelift': { initial: 14, full: 56 },
+    'rhinoplasty': { initial: 10, full: 365 },
+    'tummy-tuck': { initial: 21, full: 84 }
+  }
+  
+  const base = baseRecovery[procedure]
+  if (!base) {
+    return c.json({ success: false, error: 'Unknown procedure' }, 400)
+  }
+  
+  // Age factor: +10% per decade over 40
+  const ageFactor = age > 40 ? 1 + (age - 40) * 0.01 : 1
+  
+  // BMI factor: +5% per point over 30
+  const bmiFactor = bmi > 30 ? 1 + (bmi - 30) * 0.05 : 1
+  
+  return c.json({
+    success: true,
+    data: {
+      procedure,
+      initialRecoveryDays: Math.round(base.initial * ageFactor * bmiFactor),
+      fullRecoveryDays: Math.round(base.full * ageFactor * bmiFactor),
+      factors: {
+        age: { value: age, impact: ageFactor > 1 ? `+${Math.round((ageFactor - 1) * 100)}%` : 'Normal' },
+        bmi: { value: bmi, impact: bmiFactor > 1 ? `+${Math.round((bmiFactor - 1) * 100)}%` : 'Normal' }
+      }
+    }
+  })
+})
+
+// Cost Savings Calculation API
+app.post('/api/calculators/cost-savings', async (c) => {
+  const { procedure, packageTier } = await c.req.json()
+  
+  const pricing: Record<string, { germany: number, turkey: number, select: number }> = {
+    'gastric-sleeve': { germany: 22000, turkey: 4500, select: 7500 },
+    'gastric-bypass': { germany: 28000, turkey: 6500, select: 10500 },
+    'knee-replacement': { germany: 40000, turkey: 9000, select: 13500 },
+    'hip-replacement': { germany: 45000, turkey: 12000, select: 15000 },
+    'facelift': { germany: 25000, turkey: 5500, select: 8500 },
+    'rhinoplasty': { germany: 15000, turkey: 3500, select: 3200 }
+  }
+  
+  const packageMultipliers: Record<string, number> = {
+    'essential': 1,
+    'plus': 1.4,
+    'crown': 2
+  }
+  
+  const price = pricing[procedure]
+  if (!price) {
+    return c.json({ success: false, error: 'Unknown procedure' }, 400)
+  }
+  
+  const multiplier = packageMultipliers[packageTier] || 1
+  const selectPrice = Math.round(price.select * multiplier)
+  const savings = price.germany - selectPrice
+  const savingsPercent = Math.round((savings / price.germany) * 100)
+  
+  return c.json({
+    success: true,
+    data: {
+      procedure,
+      packageTier,
+      prices: {
+        germany: price.germany,
+        turkey: price.turkey,
+        germanSelect: selectPrice
+      },
+      savings: {
+        amount: savings,
+        percent: savingsPercent
+      }
+    }
+  })
+})
+
+// Ideal Weight Calculation API
+app.post('/api/calculators/ideal-weight', async (c) => {
+  const { gender, height, currentWeight } = await c.req.json()
+  
+  if (!height || height < 100) {
+    return c.json({ success: false, error: 'Invalid height' }, 400)
+  }
+  
+  const heightIn = height / 2.54
+  const heightOver5ft = Math.max(0, heightIn - 60)
+  
+  let devine, robinson, miller
+  if (gender === 'male') {
+    devine = 50 + 2.3 * heightOver5ft
+    robinson = 52 + 1.9 * heightOver5ft
+    miller = 56.2 + 1.41 * heightOver5ft
+  } else {
+    devine = 45.5 + 2.3 * heightOver5ft
+    robinson = 49 + 1.7 * heightOver5ft
+    miller = 53.1 + 1.36 * heightOver5ft
+  }
+  
+  const min = Math.round(Math.min(devine, robinson, miller))
+  const max = Math.round(Math.max(devine, robinson, miller))
+  const toLose = currentWeight ? Math.max(0, currentWeight - max) : null
+  
+  return c.json({
+    success: true,
+    data: {
+      idealRange: { min, max },
+      formulas: {
+        devine: Math.round(devine),
+        robinson: Math.round(robinson),
+        miller: Math.round(miller)
+      },
+      currentWeight,
+      weightToLose: toLose ? Math.round(toLose * 10) / 10 : null
+    }
+  })
 })
 
 // Services Page (comprehensive journey & packages overview)
