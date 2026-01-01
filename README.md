@@ -10,6 +10,18 @@
 
 ## 🆕 What's New in v2.1.0
 
+### NEW: Comprehensive Services Page (/services)
+Inspired by premium medical tourism sites, the new Services page includes:
+- **Hero Section**: Value propositions with savings vs Germany (€8,500 vs €22,000)
+- **Why Red Sea Recovery**: 4 benefit cards (Climate, Waters, Environment, Excellence)
+- **SelectCare Journey**: 3-step visual timeline with pricing
+- **Recovery Experience**: 6 activity cards + sample 2-week itinerary
+- **Care Packages**: 3 detailed packages with feature comparison
+- **Treatment Procedures**: Pricing comparison with savings
+- **Patient Testimonials**: 4 verified success stories
+- **Trust Badges**: JCI, German Certified, TEMOS, ISO, GDPR, HIPAA
+- **Mobile Navigation**: Responsive menu with toggle
+
 ### Payment & Subscription System
 - Complete Stripe integration foundation
 - Checkout session creation
@@ -42,6 +54,7 @@
 | Page | URL | Description |
 |------|-----|-------------|
 | **Home Dashboard** | [/](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/) | Patient dashboard with recovery tracking |
+| **Services** | [/services](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/services) | ⭐ NEW: Comprehensive services overview |
 | **Premium Dashboard** | [/premium](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/premium) | ⭐ Enhanced premium home with monetization |
 | **Daily Wellness** | [/daily-wellness](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/daily-wellness) | Daily health tasks, meals, tracking |
 | **AI Concierge** | [/ai-concierge](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/ai-concierge) | AI-powered health assistant |
