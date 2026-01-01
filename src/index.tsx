@@ -3471,6 +3471,43 @@ app.get('/family-hub', async (c) => {
   return c.html(familyHubPage())
 })
 
+// Services Page (comprehensive journey & packages overview)
+app.get('/services', async (c) => {
+  const { servicesPage } = await import('./pages/services')
+  return c.html(servicesPage())
+})
+
+// Services API endpoints
+app.get('/api/services/journey', async (c) => {
+  const { JOURNEY_STEPS } = await import('./pages/services')
+  return c.json({ success: true, data: JOURNEY_STEPS })
+})
+
+app.get('/api/services/benefits', async (c) => {
+  const { RED_SEA_BENEFITS } = await import('./pages/services')
+  return c.json({ success: true, data: RED_SEA_BENEFITS })
+})
+
+app.get('/api/services/activities', async (c) => {
+  const { RECOVERY_ACTIVITIES } = await import('./pages/services')
+  return c.json({ success: true, data: RECOVERY_ACTIVITIES })
+})
+
+app.get('/api/services/packages', async (c) => {
+  const { CARE_PACKAGES_DETAILED } = await import('./pages/services')
+  return c.json({ success: true, data: CARE_PACKAGES_DETAILED })
+})
+
+app.get('/api/services/testimonials', async (c) => {
+  const { TESTIMONIALS } = await import('./pages/services')
+  return c.json({ success: true, data: TESTIMONIALS })
+})
+
+app.get('/api/services/procedures', async (c) => {
+  const { TREATMENT_PROCEDURES } = await import('./pages/services')
+  return c.json({ success: true, data: TREATMENT_PROCEDURES })
+})
+
 // ============================================================================
 // MONETIZATION API ENDPOINTS
 // ============================================================================
