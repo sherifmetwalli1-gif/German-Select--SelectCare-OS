@@ -335,6 +335,166 @@ const TREATMENT_CATEGORIES = [
       { id: 'cardiac-checkup', name: 'Comprehensive Cardiac Checkup', price: 1800, germanyPrice: 5000, turkeyPrice: 1250, duration: '1 day', recovery: 'None' },
       { id: 'angioplasty', name: 'Angioplasty', price: 9500, germanyPrice: 20000, turkeyPrice: 5000, duration: '1-2 hours', recovery: '1-2 weeks' }
     ]
+  },
+  {
+    id: 'aesthetic-surgical',
+    name: 'Aesthetic Surgical Procedures',
+    icon: 'user-nurse',
+    procedures: [
+      { id: 'rhinoplasty-full', name: 'Rhinoplasty', price: 3200, germanyPrice: 15000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '2-3 weeks' },
+      { id: 'breast-augmentation', name: 'Breast Augmentation', price: 3200, germanyPrice: 10000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '4-6 weeks' },
+      { id: 'breast-reduction', name: 'Breast Reduction', price: 2700, germanyPrice: 12000, turkeyPrice: 2800, duration: '3-4 hours', recovery: '4-6 weeks' },
+      { id: 'breast-lift', name: 'Breast Lift', price: 2200, germanyPrice: 8000, turkeyPrice: 2400, duration: '2-3 hours', recovery: '3-4 weeks' },
+      { id: 'liposuction-area', name: 'Liposuction (per area)', price: 2200, germanyPrice: 8000, turkeyPrice: 2400, duration: '1-2 hours', recovery: '2-4 weeks' },
+      { id: 'facelift-surgical', name: 'Facelift (Surgical)', price: 3800, germanyPrice: 20000, turkeyPrice: 4000, duration: '4-6 hours', recovery: '3-4 weeks' },
+      { id: 'blepharoplasty', name: 'Blepharoplasty (Eyelid)', price: 1600, germanyPrice: 5000, turkeyPrice: 1800, duration: '1-2 hours', recovery: '1-2 weeks' },
+      { id: 'otoplasty', name: 'Otoplasty (Ear Pinning)', price: 1900, germanyPrice: 6000, turkeyPrice: 2000, duration: '1-2 hours', recovery: '1-2 weeks' }
+    ]
+  },
+  {
+    id: 'non-surgical-face',
+    name: 'Non-Surgical Face Treatments',
+    icon: 'spa',
+    procedures: [
+      { id: 'hifu-face', name: 'HIFU Face Lift', price: 950, germanyPrice: 1400, turkeyPrice: 1200, duration: '60-90 min', recovery: 'None' },
+      { id: 'ultherapy', name: 'Ultherapy (Branded HIFU)', price: 1500, germanyPrice: 2000, turkeyPrice: 1800, duration: '90 min', recovery: 'None' },
+      { id: 'rf-tightening', name: 'RF Skin Tightening', price: 750, germanyPrice: 1100, turkeyPrice: 1000, duration: '45-60 min', recovery: 'None' },
+      { id: 'plasma-pen', name: 'Plasma Pen Treatment', price: 550, germanyPrice: 800, turkeyPrice: 700, duration: '30-60 min', recovery: '5-7 days' },
+      { id: 'thread-lift', name: 'Thread Lift', price: 1600, germanyPrice: 4000, turkeyPrice: 1800, duration: '60-90 min', recovery: '1-2 weeks' },
+      { id: 'botox-full', name: 'Botox (Full Face)', price: 450, germanyPrice: 1000, turkeyPrice: 600, duration: '15-30 min', recovery: 'None' },
+      { id: 'dermal-fillers', name: 'Dermal Fillers (1ml)', price: 300, germanyPrice: 450, turkeyPrice: 400, duration: '30-45 min', recovery: 'None' }
+    ]
+  },
+  {
+    id: 'body-contouring-treatments',
+    name: 'Body Contouring',
+    icon: 'person-dress',
+    procedures: [
+      { id: 'vaser-lipo', name: 'VASER Liposuction', price: 3000, germanyPrice: 3800, turkeyPrice: 3500, duration: '2-4 hours', recovery: '2-4 weeks' },
+      { id: 'coolsculpting', name: 'CoolSculpting (per cycle)', price: 650, germanyPrice: 900, turkeyPrice: 750, duration: '45-60 min', recovery: 'None' },
+      { id: 'tummy-tuck', name: 'Tummy Tuck (Abdominoplasty)', price: 3500, germanyPrice: 10000, turkeyPrice: 4000, duration: '3-4 hours', recovery: '4-6 weeks' },
+      { id: 'arm-lift', name: 'Arm Lift (Brachioplasty)', price: 2800, germanyPrice: 8000, turkeyPrice: 3200, duration: '2-3 hours', recovery: '2-4 weeks' },
+      { id: 'thigh-lift', name: 'Thigh Lift', price: 3200, germanyPrice: 9000, turkeyPrice: 3600, duration: '2-3 hours', recovery: '3-4 weeks' }
+    ]
+  },
+  {
+    id: 'skin-treatments',
+    name: 'Skin Treatments',
+    icon: 'wand-magic-sparkles',
+    procedures: [
+      { id: 'fractional-co2', name: 'Fractional CO2 Laser', price: 550, germanyPrice: 1500, turkeyPrice: 700, duration: '30-60 min', recovery: '5-7 days' },
+      { id: 'chemical-peel', name: 'Chemical Peel (Deep)', price: 300, germanyPrice: 800, turkeyPrice: 350, duration: '30-45 min', recovery: '7-14 days' },
+      { id: 'microneedling-prp', name: 'Microneedling + PRP', price: 350, germanyPrice: 1000, turkeyPrice: 450, duration: '45-60 min', recovery: '2-3 days' },
+      { id: 'laser-tattoo', name: 'Laser Tattoo Removal (session)', price: 150, germanyPrice: 300, turkeyPrice: 170, duration: '15-30 min', recovery: '1-2 weeks' },
+      { id: 'laser-scar', name: 'Laser Scar Revision (session)', price: 220, germanyPrice: 450, turkeyPrice: 250, duration: '30-45 min', recovery: '3-5 days' },
+      { id: 'hydrafacial', name: 'Hydrafacial', price: 115, germanyPrice: 350, turkeyPrice: 130, duration: '45-60 min', recovery: 'None' }
+    ]
+  },
+  {
+    id: 'laser-hair-removal',
+    name: 'Laser Hair Removal (6 Sessions)',
+    icon: 'bolt',
+    procedures: [
+      { id: 'lhr-full-body-female', name: 'Full Body (Female)', price: 1000, germanyPrice: 3500, turkeyPrice: 1250, duration: '2-3 hours', recovery: 'None' },
+      { id: 'lhr-full-body-male', name: 'Full Body (Male)', price: 1250, germanyPrice: 4500, turkeyPrice: 1500, duration: '2-3 hours', recovery: 'None' },
+      { id: 'lhr-brazilian', name: 'Brazilian/Bikini', price: 400, germanyPrice: 1200, turkeyPrice: 500, duration: '30-45 min', recovery: 'None' },
+      { id: 'lhr-legs', name: 'Legs (Full)', price: 500, germanyPrice: 1500, turkeyPrice: 600, duration: '60-90 min', recovery: 'None' },
+      { id: 'lhr-face', name: 'Face (Full)', price: 320, germanyPrice: 1200, turkeyPrice: 400, duration: '30 min', recovery: 'None' }
+    ]
+  },
+  {
+    id: 'intimate-aesthetics',
+    name: 'Intimate Aesthetics',
+    icon: 'venus',
+    procedures: [
+      { id: 'vaginal-laser', name: 'Vaginal Tightening (Laser)', price: 700, germanyPrice: 3000, turkeyPrice: 850, duration: '30-45 min', recovery: '2-3 days' },
+      { id: 'vaginal-rf', name: 'Vaginal Tightening (RF)', price: 420, germanyPrice: 2000, turkeyPrice: 500, duration: '30-45 min', recovery: '1-2 days' },
+      { id: 'vaginal-hifu', name: 'Vaginal Tightening (HIFU)', price: 320, germanyPrice: 2500, turkeyPrice: 400, duration: '30-45 min', recovery: 'None' },
+      { id: 'vaginoplasty', name: 'Vaginoplasty (Surgical)', price: 1400, germanyPrice: 5000, turkeyPrice: 1750, duration: '1-2 hours', recovery: '4-6 weeks' },
+      { id: 'labiaplasty', name: 'Labiaplasty', price: 1200, germanyPrice: 3500, turkeyPrice: 1400, duration: '1-2 hours', recovery: '2-4 weeks' }
+    ]
+  }
+]
+
+// Aesthetic Tourism Packages (All-Inclusive)
+const AESTHETIC_PACKAGES = [
+  {
+    id: 'red-sea-renewal',
+    name: 'Red Sea Renewal',
+    tagline: 'Transform & Recover by the Sea',
+    priceRange: { min: 4500, max: 5500 },
+    currency: 'USD',
+    duration: '7 nights',
+    accommodation: '4-Star Beachfront',
+    targetMarket: 'European females 25-45',
+    proceduresIncluded: ['Rhinoplasty OR Breast Aug/Lift', 'Post-op care', 'Recovery spa treatments'],
+    features: ['German Board-Certified Surgeon', 'JCI Hospital', 'Beachfront Recovery', 'Daily Spa', 'Airport VIP Transfer', 'Nutritionist Meals'],
+    popular: true
+  },
+  {
+    id: 'confident-curves',
+    name: 'Confident Curves',
+    tagline: 'Body Sculpting Excellence',
+    priceRange: { min: 3800, max: 4800 },
+    currency: 'USD',
+    duration: '5 nights',
+    accommodation: '5-Star Resort',
+    targetMarket: 'European females 30-50',
+    proceduresIncluded: ['Liposuction (3 areas)', 'VASER + Body RF', 'Compression garments'],
+    features: ['German Plastic Surgeon', 'Advanced VASER Technology', '5-Star Recovery Suite', 'Lymphatic Massage', 'Wellness Activities'],
+    popular: true
+  },
+  {
+    id: 'executive-refresh',
+    name: 'Executive Refresh',
+    tagline: 'Non-Surgical Rejuvenation',
+    priceRange: { min: 2200, max: 3200 },
+    currency: 'USD',
+    duration: '3 nights',
+    accommodation: '5-Star Resort',
+    targetMarket: 'Business travelers 40-60',
+    proceduresIncluded: ['Non-surgical facelift (HIFU)', 'Botox', 'Fillers', 'Medical-grade skincare'],
+    features: ['Minimal Downtime', 'Business Center Access', 'Spa & Wellness', 'Discreet Service', 'Quick Recovery'],
+    popular: false
+  },
+  {
+    id: 'intimate-wellness',
+    name: 'Intimate Wellness',
+    tagline: 'Feminine Rejuvenation Retreat',
+    priceRange: { min: 2500, max: 3500 },
+    currency: 'USD',
+    duration: '5 nights',
+    accommodation: 'Private Villa Option',
+    targetMarket: 'European females 35-55',
+    proceduresIncluded: ['Vaginal rejuvenation (Laser OR RF, 3 sessions)'],
+    features: ['Complete Privacy', 'Female Medical Team Available', 'Private Villa', 'Spa Treatments', 'Holistic Wellness'],
+    popular: false
+  },
+  {
+    id: 'mommy-makeover',
+    name: 'Mommy Makeover',
+    tagline: 'Complete Post-Pregnancy Transformation',
+    priceRange: { min: 6500, max: 8500 },
+    currency: 'USD',
+    duration: '10 nights',
+    accommodation: '5-Star Resort',
+    targetMarket: 'Post-pregnancy women 28-45',
+    proceduresIncluded: ['Tummy Tuck', 'Breast Lift/Augmentation', 'Liposuction (2 areas)'],
+    features: ['Comprehensive Body Restoration', 'Extended Recovery Support', 'Childcare Assistance Available', 'Family Suite Option', 'Physiotherapy'],
+    popular: true
+  },
+  {
+    id: 'total-transformation',
+    name: 'Total Transformation',
+    tagline: 'Complete Aesthetic Journey',
+    priceRange: { min: 12000, max: 18000 },
+    currency: 'USD',
+    duration: '21 nights',
+    accommodation: 'Private Villa',
+    targetMarket: 'Premium clientele',
+    proceduresIncluded: ['Multiple procedures (customized)', 'Full body contouring', 'Facial rejuvenation', 'Anti-aging treatments'],
+    features: ['Personal Care Manager', 'Private Chef', 'Unlimited Spa', 'Yacht Excursion', 'Lifetime Follow-up'],
+    popular: false
   }
 ]
 
@@ -367,6 +527,15 @@ const WELLNESS_SERVICES = [
     features: ['Stem Cell Therapy', 'PRP Treatments', 'Hormone Analysis', 'Nutrition Plan']
   }
 ]
+
+// Telemedicine Technical Requirements
+const TELEMEDICINE_SPECS = {
+  videoPlatform: { name: 'Zoom Healthcare or Doxy.me', compliance: 'HIPAA/GDPR-compliant' },
+  examinationCamera: { name: 'High-resolution USB camera + ring light' },
+  digitalStethoscope: { name: 'Eko Core or ThinkLabs One', connectivity: 'Bluetooth' },
+  ehrIntegration: { name: 'Custom API connector', method: 'Zapier or n8n workflow' },
+  cloudVps: { specs: '4 vCPU, 8GB RAM, 100GB SSD', cost: '€80-€120/month', compliance: 'GDPR Article 32' }
+}
 
 const ACCOMMODATIONS = [
   {
@@ -486,6 +655,52 @@ app.get('/api/treatments/:categoryId', (c) => {
 // Wellness API
 app.get('/api/wellness', (c) => {
   return c.json({ success: true, data: WELLNESS_SERVICES })
+})
+
+// Aesthetic Packages API
+app.get('/api/aesthetic-packages', (c) => {
+  return c.json({ success: true, data: AESTHETIC_PACKAGES, total: AESTHETIC_PACKAGES.length })
+})
+
+app.get('/api/aesthetic-packages/:id', (c) => {
+  const id = c.req.param('id')
+  const pkg = AESTHETIC_PACKAGES.find(p => p.id === id)
+  if (!pkg) return c.json({ success: false, error: 'Aesthetic package not found' }, 404)
+  return c.json({ success: true, data: pkg })
+})
+
+// Telemedicine Specifications API
+app.get('/api/telemedicine/specs', (c) => {
+  return c.json({ success: true, data: TELEMEDICINE_SPECS })
+})
+
+// Comprehensive Pricing API - All procedures with comparisons
+app.get('/api/pricing', (c) => {
+  const category = c.req.query('category')
+  let categories = TREATMENT_CATEGORIES
+  
+  if (category) {
+    categories = TREATMENT_CATEGORIES.filter(t => t.id === category || t.name.toLowerCase().includes(category.toLowerCase()))
+  }
+  
+  // Calculate total procedures and price ranges
+  const summary = {
+    totalCategories: categories.length,
+    totalProcedures: categories.reduce((sum, cat) => sum + cat.procedures.length, 0),
+    priceRange: {
+      min: Math.min(...categories.flatMap(c => c.procedures.map(p => p.price))),
+      max: Math.max(...categories.flatMap(c => c.procedures.map(p => p.price)))
+    },
+    avgSavingsVsGermany: '60-70%',
+    avgPremiumVsTurkey: '+15-25%'
+  }
+  
+  return c.json({ 
+    success: true, 
+    data: categories,
+    summary,
+    note: 'Prices in EUR. German Select includes German board-certified surgeons, JCI hospital, Red Sea recovery, and 12+ months digital follow-up.'
+  })
 })
 
 // Accommodations API
