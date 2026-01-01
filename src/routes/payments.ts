@@ -1,438 +1,410 @@
 /**
- * Payment Routes
- * Stripe payment processing and management
+ * SelectCareOS™ Payment & Subscription Routes
+ * Stripe Integration for Monetization
  */
 
-import { Hono } from 'hono'
-import { createStripeService } from '../services/stripe'
-import type { Bindings, Variables, Currency } from '../types'
+import { Hono } from 'hono';
 
-export const paymentRoutes = new Hono<{ Bindings: Bindings; Variables: Variables }>()
+const payments = new Hono();
 
-// Create payment intent for consultation/booking
-paymentRoutes.post('/create-intent', async (c) => {
+// ============================================================================
+// STRIPE CONFIGURATION (Demo Mode - Replace with real keys in production)
+// ============================================================================
+
+const STRIPE_PRICES = {
+  basic: {
+    monthly: 'price_basic_monthly_2900',
+    annual: 'price_basic_annual_29000',
+    amount: 2900, // €29.00
+    annualAmount: 29000, // €290.00
+  },
+  plus: {
+    monthly: 'price_plus_monthly_7900',
+    annual: 'price_plus_annual_79000',
+    amount: 7900, // €79.00
+    annualAmount: 79000, // €790.00
+  },
+  elite: {
+    monthly: 'price_elite_monthly_19900',
+    annual: 'price_elite_annual_199000',
+    amount: 19900, // €199.00
+    annualAmount: 199000, // €1,990.00
+  },
+};
+
+// ============================================================================
+// SUBSCRIPTION ENDPOINTS
+// ============================================================================
+
+/**
+ * Create checkout session for new subscription
+ * POST /api/payments/create-checkout
+ */
+payments.post('/create-checkout', async (c) => {
   try {
-    const body = await c.req.json()
-    const {
-      amount,
-      currency = 'EUR',
-      bookingId,
-      doctorId,
-      packageId,
-      patientEmail,
-      description,
-      metadata = {},
-    } = body
-
-    if (!amount || amount <= 0) {
-      return c.json({ success: false, error: 'Valid amount is required' }, 400)
-    }
-
-    if (!c.env.STRIPE_SECRET_KEY) {
-      // Demo mode without Stripe
-      return c.json({
-        success: true,
-        data: {
-          mode: 'demo',
-          message: 'Stripe not configured. Demo payment intent created.',
-          paymentIntent: {
-            id: `pi_demo_${crypto.randomUUID().substring(0, 8)}`,
-            client_secret: 'demo_secret_' + crypto.randomUUID(),
-            amount,
-            currency,
-            status: 'requires_payment_method',
-          },
-        },
-        timestamp: new Date().toISOString(),
-      })
-    }
-
-    const stripe = createStripeService(c.env.STRIPE_SECRET_KEY, c.env.STRIPE_WEBHOOK_SECRET)
+    const { tier, interval, userId, returnUrl } = await c.req.json();
     
-    const paymentIntent = await stripe.createPaymentIntent({
-      amount,
-      currency: currency as Currency,
-      metadata: {
-        ...metadata,
-        bookingId: bookingId || '',
-        doctorId: doctorId || '',
-        packageId: packageId || '',
-        source: 'german_select_platform',
-      },
-      description: description || 'German Select Medical Services',
-      receiptEmail: patientEmail,
-    })
-
-    return c.json({
-      success: true,
-      data: {
-        paymentIntentId: paymentIntent.id,
-        clientSecret: paymentIntent.client_secret,
-        amount: paymentIntent.amount / 100, // Convert from cents
-        currency: paymentIntent.currency.toUpperCase(),
-        status: paymentIntent.status,
-      },
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error: any) {
-    console.error('Payment intent creation error:', error)
-    return c.json({ success: false, error: error.message }, 500)
-  }
-})
-
-// Get payment status
-paymentRoutes.get('/status/:paymentIntentId', async (c) => {
-  try {
-    const paymentIntentId = c.req.param('paymentIntentId')
-
-    if (!c.env.STRIPE_SECRET_KEY) {
-      return c.json({
-        success: true,
-        data: {
-          mode: 'demo',
-          paymentIntentId,
-          status: 'succeeded',
-          amount: 150,
-          currency: 'EUR',
-        },
-        timestamp: new Date().toISOString(),
-      })
+    if (!tier || !['basic', 'plus', 'elite'].includes(tier)) {
+      return c.json({ success: false, error: 'Invalid subscription tier' }, 400);
     }
-
-    const stripe = createStripeService(c.env.STRIPE_SECRET_KEY, c.env.STRIPE_WEBHOOK_SECRET)
-    const paymentIntent = await stripe.getPaymentIntent(paymentIntentId)
-
-    return c.json({
-      success: true,
-      data: {
-        paymentIntentId: paymentIntent.id,
-        status: paymentIntent.status,
-        amount: paymentIntent.amount / 100,
-        currency: paymentIntent.currency.toUpperCase(),
-        metadata: paymentIntent.metadata,
-      },
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
-  }
-})
-
-// Process refund
-paymentRoutes.post('/refund', async (c) => {
-  try {
-    const body = await c.req.json()
-    const { paymentIntentId, amount, reason, bookingId } = body
-
-    if (!paymentIntentId) {
-      return c.json({ success: false, error: 'paymentIntentId is required' }, 400)
-    }
-
-    if (!c.env.STRIPE_SECRET_KEY) {
-      return c.json({
-        success: true,
-        data: {
-          mode: 'demo',
-          refundId: `re_demo_${crypto.randomUUID().substring(0, 8)}`,
-          paymentIntentId,
-          amount: amount || 150,
-          status: 'succeeded',
-        },
-        timestamp: new Date().toISOString(),
-      })
-    }
-
-    const stripe = createStripeService(c.env.STRIPE_SECRET_KEY, c.env.STRIPE_WEBHOOK_SECRET)
     
-    const refund = await stripe.createRefund({
-      paymentIntentId,
-      amount: amount ? Math.round(amount * 100) : undefined, // Convert to cents if partial
-      reason: reason || 'requested_by_customer',
-      metadata: {
-        bookingId: bookingId || '',
-        processedAt: new Date().toISOString(),
-      },
-    })
-
+    if (!interval || !['monthly', 'annual'].includes(interval)) {
+      return c.json({ success: false, error: 'Invalid billing interval' }, 400);
+    }
+    
+    const priceConfig = STRIPE_PRICES[tier as keyof typeof STRIPE_PRICES];
+    const priceId = interval === 'annual' ? priceConfig.annual : priceConfig.monthly;
+    
+    // In production, this would create a real Stripe checkout session
+    // For demo, we return a mock session
+    const sessionId = `cs_demo_${Date.now()}_${tier}_${interval}`;
+    
     return c.json({
       success: true,
-      data: {
-        refundId: refund.id,
+      sessionId,
+      url: `${returnUrl || '/subscription'}?session=${sessionId}&tier=${tier}&interval=${interval}`,
+      message: 'Demo mode: In production, this redirects to Stripe Checkout',
+      pricing: {
+        tier,
+        interval,
+        amount: interval === 'annual' ? priceConfig.annualAmount : priceConfig.amount,
+        currency: 'eur',
+        savings: interval === 'annual' ? Math.round(priceConfig.amount * 12 * 0.2) : 0,
+      },
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to create checkout session' }, 500);
+  }
+});
+
+/**
+ * Get subscription status for user
+ * GET /api/payments/subscription-status/:userId
+ */
+payments.get('/subscription-status/:userId', async (c) => {
+  const userId = c.req.param('userId');
+  
+  // Demo subscription data - in production, query database
+  return c.json({
+    success: true,
+    subscription: {
+      id: 'sub_demo_12345',
+      userId,
+      tier: 'plus',
+      status: 'active',
+      interval: 'monthly',
+      currentPeriodStart: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+      currentPeriodEnd: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+      cancelAtPeriodEnd: false,
+      trialEnd: null,
+      features: {
+        consultations: 5,
+        aiQueries: -1, // unlimited
+        deviceConnections: -1,
+        familyMembers: 4,
+        storageGB: 25,
+        pointsMultiplier: 2,
+      },
+    },
+  });
+});
+
+/**
+ * Upgrade subscription tier
+ * POST /api/payments/upgrade
+ */
+payments.post('/upgrade', async (c) => {
+  try {
+    const { userId, newTier, interval } = await c.req.json();
+    
+    if (!['basic', 'plus', 'elite'].includes(newTier)) {
+      return c.json({ success: false, error: 'Invalid tier' }, 400);
+    }
+    
+    // Calculate prorated amount (demo)
+    const priceConfig = STRIPE_PRICES[newTier as keyof typeof STRIPE_PRICES];
+    const proratedAmount = Math.round((interval === 'annual' ? priceConfig.annualAmount : priceConfig.amount) * 0.5);
+    
+    return c.json({
+      success: true,
+      message: `Upgrade to ${newTier} initiated`,
+      upgrade: {
+        userId,
+        previousTier: 'basic',
+        newTier,
+        interval,
+        proratedAmount,
+        effectiveDate: new Date().toISOString(),
+        newFeatures: getNewFeatures(newTier),
+      },
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to process upgrade' }, 500);
+  }
+});
+
+/**
+ * Cancel subscription
+ * POST /api/payments/cancel
+ */
+payments.post('/cancel', async (c) => {
+  try {
+    const { userId, reason, feedback } = await c.req.json();
+    
+    return c.json({
+      success: true,
+      cancellation: {
+        userId,
+        status: 'pending_cancellation',
+        cancelAtPeriodEnd: true,
+        effectiveDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+        reason,
+        feedback,
+        retentionOffer: {
+          discount: 30,
+          message: 'Stay with us! Get 30% off your next 3 months.',
+          code: 'STAYWITHUS30',
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+      },
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to process cancellation' }, 500);
+  }
+});
+
+/**
+ * Apply promo code
+ * POST /api/payments/apply-promo
+ */
+payments.post('/apply-promo', async (c) => {
+  try {
+    const { code, userId, tier } = await c.req.json();
+    
+    const promoCodes: Record<string, any> = {
+      'WELCOME20': { discount: 20, type: 'percent', validTiers: ['basic', 'plus', 'elite'], firstTimeOnly: true },
+      'STAYHEALTHY30': { discount: 30, type: 'percent', validTiers: ['plus', 'elite'], firstTimeOnly: false },
+      'ELITE50': { discount: 50, type: 'fixed_amount', validTiers: ['elite'], firstTimeOnly: true },
+      'COMEBACK10': { discount: 10, type: 'percent', validTiers: ['basic', 'plus', 'elite'], firstTimeOnly: false },
+      'FAMILY25': { discount: 25, type: 'percent', validTiers: ['plus', 'elite'], firstTimeOnly: false },
+    };
+    
+    const promo = promoCodes[code?.toUpperCase()];
+    
+    if (!promo) {
+      return c.json({ success: false, error: 'Invalid promo code' }, 400);
+    }
+    
+    if (!promo.validTiers.includes(tier)) {
+      return c.json({ success: false, error: `This code is not valid for ${tier} tier` }, 400);
+    }
+    
+    return c.json({
+      success: true,
+      promo: {
+        code: code.toUpperCase(),
+        discount: promo.discount,
+        type: promo.type,
+        applied: true,
+        message: promo.type === 'percent' 
+          ? `${promo.discount}% discount applied!`
+          : `€${promo.discount} discount applied!`,
+      },
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to apply promo code' }, 500);
+  }
+});
+
+// ============================================================================
+// ONE-TIME PAYMENT ENDPOINTS (Marketplace)
+// ============================================================================
+
+/**
+ * Create payment intent for marketplace purchase
+ * POST /api/payments/create-payment-intent
+ */
+payments.post('/create-payment-intent', async (c) => {
+  try {
+    const { userId, items, shippingAddress } = await c.req.json();
+    
+    if (!items || items.length === 0) {
+      return c.json({ success: false, error: 'No items in cart' }, 400);
+    }
+    
+    // Calculate totals
+    const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+    const shipping = subtotal >= 5000 ? 0 : 495; // Free shipping over €50
+    const tax = Math.round(subtotal * 0.19); // 19% VAT
+    const total = subtotal + shipping + tax;
+    
+    // Calculate points earned (5% back)
+    const pointsEarned = Math.round(total * 0.05);
+    
+    const paymentIntentId = `pi_demo_${Date.now()}`;
+    
+    return c.json({
+      success: true,
+      paymentIntent: {
+        id: paymentIntentId,
+        clientSecret: `${paymentIntentId}_secret_demo`,
+        amount: total,
+        currency: 'eur',
+        breakdown: {
+          subtotal,
+          shipping,
+          tax,
+          total,
+        },
+        pointsToEarn: pointsEarned,
+        message: 'Demo mode: Use test card 4242 4242 4242 4242',
+      },
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to create payment intent' }, 500);
+  }
+});
+
+/**
+ * Confirm payment and create order
+ * POST /api/payments/confirm-order
+ */
+payments.post('/confirm-order', async (c) => {
+  try {
+    const { paymentIntentId, userId, items, shippingAddress, promoCode } = await c.req.json();
+    
+    // Calculate totals
+    const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+    let discount = 0;
+    if (promoCode) {
+      discount = Math.round(subtotal * 0.1); // 10% discount for demo
+    }
+    const shipping = (subtotal - discount) >= 5000 ? 0 : 495;
+    const tax = Math.round((subtotal - discount) * 0.19);
+    const total = subtotal - discount + shipping + tax;
+    const pointsEarned = Math.round(total * 0.05);
+    
+    const orderId = `order_${Date.now()}`;
+    
+    return c.json({
+      success: true,
+      order: {
+        id: orderId,
+        userId,
+        items,
+        subtotal,
+        discount,
+        shipping,
+        tax,
+        total,
+        currency: 'eur',
+        status: 'paid',
         paymentIntentId,
-        amount: refund.amount / 100,
-        currency: refund.currency.toUpperCase(),
-        status: refund.status,
+        pointsEarned,
+        shippingAddress,
+        estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+        createdAt: new Date().toISOString(),
       },
-      message: 'Refund processed successfully',
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
+      message: 'Order placed successfully! You earned ' + pointsEarned + ' SelectPoints.',
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to confirm order' }, 500);
   }
-})
+});
 
-// Get payment history
-paymentRoutes.get('/history', async (c) => {
+// ============================================================================
+// STRIPE WEBHOOKS (Production handlers)
+// ============================================================================
+
+/**
+ * Handle Stripe webhooks
+ * POST /api/payments/webhook
+ */
+payments.post('/webhook', async (c) => {
   try {
-    const userId = c.req.query('userId')
-    const status = c.req.query('status')
-    const limit = parseInt(c.req.query('limit') || '20')
-    const offset = parseInt(c.req.query('offset') || '0')
-
-    // Mock payment history
-    const payments = [
-      {
-        id: 'pay_001',
-        type: 'consultation',
-        amount: 200,
-        currency: 'EUR',
-        status: 'captured',
-        description: 'Consultation with Dr. Schmidt',
-        bookingId: 'booking_001',
-        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        receiptUrl: 'https://receipt.stripe.com/demo',
-      },
-      {
-        id: 'pay_002',
-        type: 'consultation',
-        amount: 250,
-        currency: 'EUR',
-        status: 'pending',
-        description: 'Consultation with Prof. Dr. Richter',
-        bookingId: 'booking_002',
-        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      },
-      {
-        id: 'pay_003',
-        type: 'package',
-        amount: 3375,
-        currency: 'EUR',
-        status: 'captured',
-        description: 'SurgeryBridge Package - Deposit',
-        bookingId: 'booking_003',
-        createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-        receiptUrl: 'https://receipt.stripe.com/demo2',
-      },
-    ]
-
-    let filtered = payments
-    if (status) {
-      filtered = filtered.filter(p => p.status === status)
+    const body = await c.req.text();
+    const signature = c.req.header('stripe-signature');
+    
+    // In production, verify webhook signature with Stripe
+    // const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    
+    // Demo: parse body as JSON
+    let event;
+    try {
+      event = JSON.parse(body);
+    } catch {
+      return c.json({ error: 'Invalid webhook payload' }, 400);
     }
-
-    return c.json({
-      success: true,
-      data: filtered.slice(offset, offset + limit),
-      meta: {
-        total: filtered.length,
-        page: Math.floor(offset / limit) + 1,
-        limit,
-      },
-      summary: {
-        totalPaid: 3575,
-        totalPending: 250,
-        currency: 'EUR',
-      },
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
-  }
-})
-
-// Get supported currencies
-paymentRoutes.get('/currencies', async (c) => {
-  const currencies = [
-    { code: 'EUR', name: 'Euro', symbol: '€', rate: 1.0 },
-    { code: 'USD', name: 'US Dollar', symbol: '$', rate: 1.08 },
-    { code: 'GBP', name: 'British Pound', symbol: '£', rate: 0.86 },
-    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', rate: 0.94 },
-    { code: 'AED', name: 'UAE Dirham', symbol: 'د.إ', rate: 3.97 },
-  ]
-
-  return c.json({
-    success: true,
-    data: currencies,
-    baseCurrency: 'EUR',
-    lastUpdated: new Date().toISOString(),
-    timestamp: new Date().toISOString(),
-  })
-})
-
-// Convert currency
-paymentRoutes.get('/convert', async (c) => {
-  const amount = parseFloat(c.req.query('amount') || '0')
-  const from = c.req.query('from') || 'EUR'
-  const to = c.req.query('to') || 'USD'
-
-  const rates: Record<string, number> = {
-    EUR: 1.0,
-    USD: 1.08,
-    GBP: 0.86,
-    CHF: 0.94,
-    AED: 3.97,
-  }
-
-  if (!rates[from] || !rates[to]) {
-    return c.json({ success: false, error: 'Unsupported currency' }, 400)
-  }
-
-  // Convert to EUR first, then to target currency
-  const amountInEur = amount / rates[from]
-  const convertedAmount = Math.round(amountInEur * rates[to] * 100) / 100
-
-  return c.json({
-    success: true,
-    data: {
-      originalAmount: amount,
-      originalCurrency: from,
-      convertedAmount,
-      targetCurrency: to,
-      exchangeRate: rates[to] / rates[from],
-    },
-    timestamp: new Date().toISOString(),
-  })
-})
-
-// Payment methods
-paymentRoutes.get('/methods', async (c) => {
-  const methods = [
-    {
-      id: 'card',
-      name: 'Credit/Debit Card',
-      description: 'Visa, Mastercard, American Express',
-      icons: ['visa', 'mastercard', 'amex'],
-      enabled: true,
-    },
-    {
-      id: 'sepa',
-      name: 'SEPA Direct Debit',
-      description: 'Bank transfer for EU customers',
-      icons: ['bank'],
-      enabled: true,
-    },
-    {
-      id: 'paypal',
-      name: 'PayPal',
-      description: 'Pay with your PayPal account',
-      icons: ['paypal'],
-      enabled: false,
-      comingSoon: true,
-    },
-    {
-      id: 'apple_pay',
-      name: 'Apple Pay',
-      description: 'Quick checkout with Apple Pay',
-      icons: ['apple'],
-      enabled: false,
-      comingSoon: true,
-    },
-    {
-      id: 'google_pay',
-      name: 'Google Pay',
-      description: 'Quick checkout with Google Pay',
-      icons: ['google'],
-      enabled: false,
-      comingSoon: true,
-    },
-  ]
-
-  return c.json({
-    success: true,
-    data: methods.filter(m => m.enabled || m.comingSoon),
-    timestamp: new Date().toISOString(),
-  })
-})
-
-// Generate invoice
-paymentRoutes.post('/invoice', async (c) => {
-  try {
-    const body = await c.req.json()
-    const { bookingId, paymentId, patientDetails } = body
-
-    const invoiceId = `INV-${Date.now()}-${crypto.randomUUID().substring(0, 4).toUpperCase()}`
-
-    // Mock invoice generation
-    const invoice = {
-      id: invoiceId,
-      bookingId,
-      paymentId,
-      patient: patientDetails,
-      items: [
-        {
-          description: 'Medical Consultation',
-          quantity: 1,
-          unitPrice: 200,
-          total: 200,
-        },
-      ],
-      subtotal: 200,
-      tax: 0, // Medical services often exempt
-      total: 200,
-      currency: 'EUR',
-      status: 'issued',
-      issuedAt: new Date().toISOString(),
-      dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      pdfUrl: `/api/payments/invoice/${invoiceId}/pdf`,
+    
+    const eventType = event.type;
+    
+    switch (eventType) {
+      case 'checkout.session.completed':
+        // Handle successful checkout
+        console.log('Checkout completed:', event.data.object);
+        break;
+        
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+        // Update user subscription in database
+        console.log('Subscription updated:', event.data.object);
+        break;
+        
+      case 'customer.subscription.deleted':
+        // Handle subscription cancellation
+        console.log('Subscription canceled:', event.data.object);
+        break;
+        
+      case 'invoice.payment_succeeded':
+        // Handle successful payment
+        console.log('Payment succeeded:', event.data.object);
+        break;
+        
+      case 'invoice.payment_failed':
+        // Handle failed payment
+        console.log('Payment failed:', event.data.object);
+        break;
+        
+      default:
+        console.log('Unhandled event type:', eventType);
     }
-
-    return c.json({
-      success: true,
-      data: invoice,
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
+    
+    return c.json({ received: true });
+  } catch (error) {
+    console.error('Webhook error:', error);
+    return c.json({ error: 'Webhook handler failed' }, 500);
   }
-})
+});
 
-// Platform revenue summary (admin)
-paymentRoutes.get('/revenue/summary', async (c) => {
-  try {
-    // Mock revenue data
-    const summary = {
-      period: 'last_30_days',
-      totalRevenue: 186543,
-      platformFees: 32645,
-      doctorPayouts: 124320,
-      affiliateCommissions: 4578,
-      netRevenue: 28067,
-      currency: 'EUR',
-      breakdown: {
-        consultations: {
-          count: 487,
-          revenue: 97400,
-          fees: 19480,
-        },
-        packages: {
-          count: 23,
-          revenue: 89143,
-          fees: 13165,
-        },
-        subscriptions: {
-          count: 7,
-          revenue: 2793,
-          fees: 0,
-        },
-      },
-      growth: {
-        revenue: 23.5,
-        bookings: 18.2,
-        averageOrder: 4.3,
-      },
-      topDoctors: [
-        { id: 'dr_bariatric_antireflux', name: 'Dr. Schmidt', revenue: 34500 },
-        { id: 'dr_cardiology', name: 'Prof. Richter', revenue: 28750 },
-        { id: 'dr_post_bariatric', name: 'Dr. Weber', revenue: 22500 },
-      ],
-    }
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
 
-    return c.json({
-      success: true,
-      data: summary,
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
-  }
-})
+function getNewFeatures(tier: string): string[] {
+  const features: Record<string, string[]> = {
+    basic: [
+      '2 Video Consultations/month',
+      'AI Health Assistant (50 queries)',
+      '3 Device Connections',
+      'Basic Health Reports',
+    ],
+    plus: [
+      '5 Video Consultations/month',
+      'Unlimited AI Concierge',
+      'Unlimited Device Connections',
+      'Family Plan (4 members)',
+      '2x SelectPoints Earning',
+    ],
+    elite: [
+      'Unlimited Video Consultations',
+      'Dedicated Care Manager',
+      '24/7 Emergency Hotline',
+      'VIP Doctor Access',
+      '5x SelectPoints Earning',
+    ],
+  };
+  
+  return features[tier] || [];
+}
+
+export { payments };

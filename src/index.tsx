@@ -3626,6 +3626,172 @@ app.post('/api/tasks/complete', async (c) => {
   })
 })
 
+// ============================================================================
+// MONETIZATION & ENGAGEMENT API ROUTES
+// ============================================================================
+
+// Import route handlers
+import { payments } from './routes/payments'
+import { engagement } from './routes/engagement'
+import { wellness } from './routes/wellness'
+
+// Mount route handlers
+app.route('/api/payments', payments)
+app.route('/api/engagement', engagement)
+app.route('/api/wellness', wellness)
+
+// ============================================================================
+// CONVERSION OPTIMIZATION ENDPOINTS
+// ============================================================================
+
+// Get urgency/scarcity data for subscription page
+app.get('/api/subscription/urgency', (c) => {
+  const now = new Date()
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59)
+  const hoursLeft = Math.floor((endOfMonth.getTime() - now.getTime()) / (1000 * 60 * 60))
+  
+  return c.json({
+    success: true,
+    urgency: {
+      eliteSpotsLeft: Math.floor(Math.random() * 8) + 3,
+      totalEliteSpots: 50,
+      currentViewers: Math.floor(Math.random() * 20) + 15,
+      hoursUntilPriceIncrease: hoursLeft,
+      promotion: {
+        code: 'NEWYEAR2026',
+        discount: 40,
+        expiresAt: endOfMonth.toISOString(),
+        message: 'New Year Special: 40% off Elite membership!'
+      },
+      socialProof: {
+        signupsToday: Math.floor(Math.random() * 15) + 20,
+        recentUpgrade: 'Anna from Munich upgraded to Elite 5 minutes ago'
+      }
+    }
+  })
+})
+
+// Get personalized recommendations
+app.get('/api/recommendations/:userId', (c) => {
+  const userId = c.req.param('userId')
+  
+  return c.json({
+    success: true,
+    recommendations: {
+      products: [
+        {
+          id: 'vitamin-d',
+          name: 'Vitamin D3+K2',
+          reason: 'Essential for post-bariatric recovery',
+          discount: 15,
+          pointsBonus: 50
+        },
+        {
+          id: 'omega-3',
+          name: 'Omega-3 Fish Oil',
+          reason: 'Recommended by Dr. Schmidt for your nutrition plan',
+          discount: 10,
+          pointsBonus: 35
+        }
+      ],
+      services: [
+        {
+          id: 'consultation-package',
+          name: '3-Consultation Package',
+          originalPrice: 450,
+          discountedPrice: 337,
+          savings: 113,
+          reason: 'Based on your recovery timeline'
+        }
+      ],
+      upgrade: {
+        currentTier: 'plus',
+        suggestedTier: 'elite',
+        benefits: ['Unlimited consultations', 'Dedicated care manager', '5x SelectPoints'],
+        specialOffer: {
+          discount: 30,
+          code: 'POWERUSER30',
+          expiresIn: 48
+        }
+      }
+    }
+  })
+})
+
+// Track conversion events
+app.post('/api/analytics/conversion-event', async (c) => {
+  try {
+    const { userId, eventType, eventData, sessionId, pageUrl } = await c.req.json()
+    
+    // Log conversion event (in production, store in analytics DB)
+    console.log('Conversion event:', {
+      userId,
+      eventType,
+      eventData,
+      sessionId,
+      pageUrl,
+      timestamp: new Date().toISOString()
+    })
+    
+    return c.json({
+      success: true,
+      tracked: true,
+      eventId: `evt_${Date.now()}`
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to track event' }, 500)
+  }
+})
+
+// Get streak and points status
+app.get('/api/user/streak/:userId', (c) => {
+  const userId = c.req.param('userId')
+  
+  return c.json({
+    success: true,
+    streak: {
+      current: 14,
+      longest: 21,
+      lastActivityDate: new Date().toISOString().split('T')[0],
+      nextMilestone: 21,
+      milestoneReward: 500,
+      daysUntilMilestone: 7,
+      atRisk: false,
+      message: '🔥 14-day streak! 7 more days to unlock 500 bonus points!'
+    }
+  })
+})
+
+// Check achievement progress
+app.get('/api/achievements/:userId', (c) => {
+  const userId = c.req.param('userId')
+  
+  return c.json({
+    success: true,
+    achievements: {
+      earned: [
+        { id: 'first-steps', name: 'First Steps', earnedAt: '2024-10-01', icon: 'star', points: 50 },
+        { id: 'health-hero', name: 'Health Hero', earnedAt: '2024-10-10', icon: 'heartbeat', points: 100 },
+        { id: 'week-warrior', name: 'Week Warrior', earnedAt: '2024-10-15', icon: 'calendar-check', points: 200 }
+      ],
+      inProgress: [
+        { id: 'consistency-king', name: 'Consistency King', progress: 14, target: 30, icon: 'crown', reward: 1000 },
+        { id: 'gold-member', name: 'Gold Member', progress: 8450, target: 15000, icon: 'medal', reward: 500 }
+      ],
+      locked: [
+        { id: 'diamond-status', name: 'Diamond Status', icon: 'gem', reward: 2000, requirement: 'Reach 50,000 points' },
+        { id: 'referral-master', name: 'Referral Master', icon: 'users', reward: 1500, requirement: 'Refer 10 friends' }
+      ],
+      totalPoints: 350,
+      nextUnlock: {
+        id: 'consistency-king',
+        daysRemaining: 16,
+        reward: 1000
+      }
+    }
+  })
+})
+
 // 404 handler
 app.notFound((c) => {
   return c.json({

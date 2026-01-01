@@ -4,8 +4,38 @@
 - **Name**: SelectCareOS™
 - **Organization**: German Select
 - **Goal**: World-class digital health platform combining German medical excellence with Red Sea recovery
-- **Version**: 2.0.0 Enhanced (Monetization & Daily Life Features)
+- **Version**: 2.1.0 Enhanced (Monetization, Engagement & Daily Life Features)
 - **Launch**: Q1 2026 in Hurghada, Egypt
+- **Last Updated**: January 1, 2026
+
+## 🆕 What's New in v2.1.0
+
+### Payment & Subscription System
+- Complete Stripe integration foundation
+- Checkout session creation
+- Subscription management (upgrade/cancel)
+- Promo code support with validation
+- One-time payment for marketplace purchases
+
+### Conversion Optimization Engine
+- Real-time social proof notifications
+- Urgency indicators (limited spots, time-based offers)
+- Smart upsell recommendations
+- Cart abandonment recovery
+- Personalized homepage content
+
+### Enhanced Daily Wellness
+- Comprehensive daily tasks with points
+- Health metric logging (weight, water, sleep, etc.)
+- AI-powered meal plans (premium feature)
+- Weekly/monthly wellness summaries
+- Health challenges with rewards
+
+### Achievement System
+- 10+ achievement badges
+- Progress tracking for in-progress achievements
+- Points rewards for milestones
+- Streak tracking with bonuses
 
 ## 🌐 Live Demo URLs
 
@@ -235,7 +265,7 @@
 | `/api/appointments` | GET | Patient appointments |
 | `/api/messages` | GET | Care team messages |
 
-### Monetization APIs (NEW)
+### Monetization APIs
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -249,6 +279,56 @@
 | `/api/user/stats` | GET | User dashboard stats |
 | `/api/tasks/daily` | GET | Daily wellness tasks |
 | `/api/tasks/complete` | POST | Complete a task |
+
+### Payment APIs (NEW v2.1)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/payments/create-checkout` | POST | Create subscription checkout |
+| `/api/payments/subscription-status/:userId` | GET | Get subscription status |
+| `/api/payments/upgrade` | POST | Upgrade subscription tier |
+| `/api/payments/cancel` | POST | Cancel subscription |
+| `/api/payments/apply-promo` | POST | Apply promo code |
+| `/api/payments/create-payment-intent` | POST | Create marketplace payment |
+| `/api/payments/confirm-order` | POST | Confirm order & payment |
+| `/api/payments/webhook` | POST | Stripe webhook handler |
+
+### Engagement APIs (NEW v2.1)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/engagement/social-proof` | GET | Recent platform activity |
+| `/api/engagement/viewers/:pageType` | GET | Current viewers count |
+| `/api/engagement/promotions` | GET | Active promotions & urgency |
+| `/api/engagement/availability/:itemType/:itemId` | GET | Scarcity data |
+| `/api/engagement/upsells/:userId` | GET | Personalized upsells |
+| `/api/engagement/cart-recovery/:userId` | GET | Cart abandonment offers |
+| `/api/engagement/retention/:userId` | GET | Retention offers |
+| `/api/engagement/personalized/:userId` | GET | Personalized content |
+| `/api/engagement/track` | POST | Track engagement event |
+
+### Wellness APIs (NEW v2.1)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/wellness/daily/:userId` | GET | Daily wellness summary |
+| `/api/wellness/log` | POST | Log health metric |
+| `/api/wellness/tasks/:userId` | GET | Daily tasks list |
+| `/api/wellness/tasks/complete` | POST | Complete a task |
+| `/api/wellness/meal-plan/:userId` | GET | AI meal plan (premium) |
+| `/api/wellness/weekly/:userId` | GET | Weekly wellness summary |
+| `/api/wellness/challenges/:userId` | GET | Health challenges |
+| `/api/wellness/challenges/join` | POST | Join a challenge |
+
+### Conversion Optimization APIs (NEW v2.1)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/subscription/urgency` | GET | Urgency/scarcity data |
+| `/api/recommendations/:userId` | GET | Personalized recommendations |
+| `/api/user/streak/:userId` | GET | Streak & points status |
+| `/api/achievements/:userId` | GET | Achievement progress |
+| `/api/analytics/conversion-event` | POST | Track conversion events |
 
 ---
 
