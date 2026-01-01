@@ -209,7 +209,10 @@ const CARE_PACKAGES = [
     id: 'selectcare-essential',
     name: 'SELECTCARE™',
     tier: 'Essential',
-    price_range: { min: 6500, max: 12000 },
+    price_range: { min: 5500, max: 10000 },
+    base_price: 7500,
+    turkey_comparison: 5500,
+    savings_vs_germany: 14500,
     currency: 'EUR',
     description: 'Essential Protocol with German Standard Care',
     features: [
@@ -231,7 +234,10 @@ const CARE_PACKAGES = [
     id: 'selectcare-plus',
     name: 'SELECTCARE+™',
     tier: 'Plus',
-    price_range: { min: 12000, max: 22000 },
+    price_range: { min: 9500, max: 18000 },
+    base_price: 12000,
+    turkey_comparison: 9000,
+    savings_vs_germany: 20000,
     currency: 'EUR',
     description: 'Enhanced Comfort with Premium Services',
     features: [
@@ -254,7 +260,10 @@ const CARE_PACKAGES = [
     id: 'selectcrown',
     name: 'SELECTCROWN™',
     tier: 'Crown',
-    price_range: { min: 22000, max: 35000 },
+    price_range: { min: 18000, max: 30000 },
+    base_price: 22000,
+    turkey_comparison: null,
+    savings_vs_germany: 33000,
     currency: 'EUR',
     description: 'Ultimate Luxury with Lifetime Support',
     features: [
@@ -283,9 +292,9 @@ const TREATMENT_CATEGORIES = [
     name: 'Bariatric Surgery',
     icon: 'weight',
     procedures: [
-      { id: 'gastric-sleeve', name: 'Gastric Sleeve', price: 8500, duration: '2-3 hours', recovery: '2-4 weeks' },
-      { id: 'gastric-bypass', name: 'Gastric Bypass', price: 12000, duration: '3-4 hours', recovery: '4-6 weeks' },
-      { id: 'revision-surgery', name: 'Revision Surgery', price: 15000, duration: '3-5 hours', recovery: '4-6 weeks' }
+      { id: 'gastric-sleeve', name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, duration: '2-3 hours', recovery: '2-4 weeks' },
+      { id: 'gastric-bypass', name: 'Gastric Bypass', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, duration: '3-4 hours', recovery: '4-6 weeks' },
+      { id: 'revision-surgery', name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, duration: '3-5 hours', recovery: '4-6 weeks' }
     ]
   },
   {
@@ -293,9 +302,9 @@ const TREATMENT_CATEGORIES = [
     name: 'Orthopedic Surgery',
     icon: 'bone',
     procedures: [
-      { id: 'knee-replacement', name: 'Knee Replacement', price: 18000, duration: '2-3 hours', recovery: '6-12 weeks' },
-      { id: 'hip-replacement', name: 'Hip Replacement', price: 20000, duration: '2-3 hours', recovery: '6-12 weeks' },
-      { id: 'spine-surgery', name: 'Spine Surgery', price: 25000, duration: '4-6 hours', recovery: '8-16 weeks' }
+      { id: 'knee-replacement', name: 'Knee Replacement', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, duration: '2-3 hours', recovery: '6-12 weeks' },
+      { id: 'hip-replacement', name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, duration: '2-3 hours', recovery: '6-12 weeks' },
+      { id: 'spine-surgery', name: 'Spine Surgery', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, duration: '4-6 hours', recovery: '8-16 weeks' }
     ]
   },
   {
@@ -303,9 +312,9 @@ const TREATMENT_CATEGORIES = [
     name: 'Aesthetic Surgery',
     icon: 'sparkles',
     procedures: [
-      { id: 'facelift', name: 'Facelift', price: 12000, duration: '3-5 hours', recovery: '2-4 weeks' },
-      { id: 'body-contouring', name: 'Body Contouring', price: 15000, duration: '4-6 hours', recovery: '4-6 weeks' },
-      { id: 'rhinoplasty', name: 'Rhinoplasty', price: 8000, duration: '2-3 hours', recovery: '2-3 weeks' }
+      { id: 'facelift', name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, duration: '3-5 hours', recovery: '2-4 weeks' },
+      { id: 'body-contouring', name: 'Body Contouring', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, duration: '4-6 hours', recovery: '4-6 weeks' },
+      { id: 'rhinoplasty', name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '2-3 weeks' }
     ]
   },
   {
@@ -313,9 +322,9 @@ const TREATMENT_CATEGORIES = [
     name: 'Anti-Aging & Longevity',
     icon: 'clock',
     procedures: [
-      { id: 'stem-cell', name: 'Stem Cell Therapy', price: 15000, duration: '1-2 hours', recovery: '1 week' },
-      { id: 'prp-therapy', name: 'PRP Therapy', price: 3000, duration: '1 hour', recovery: '1-2 days' },
-      { id: 'hormone-therapy', name: 'Hormone Optimization', price: 5000, duration: 'Ongoing', recovery: 'None' }
+      { id: 'stem-cell', name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, duration: '1-2 hours', recovery: '1 week' },
+      { id: 'prp-therapy', name: 'PRP Therapy', price: 2200, germanyPrice: 8000, turkeyPrice: 800, duration: '1 hour', recovery: '1-2 days' },
+      { id: 'hormone-therapy', name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, duration: 'Ongoing', recovery: 'None' }
     ]
   },
   {
@@ -323,8 +332,8 @@ const TREATMENT_CATEGORIES = [
     name: 'Cardiology',
     icon: 'heart',
     procedures: [
-      { id: 'cardiac-checkup', name: 'Comprehensive Cardiac Checkup', price: 2500, duration: '1 day', recovery: 'None' },
-      { id: 'angioplasty', name: 'Angioplasty', price: 15000, duration: '1-2 hours', recovery: '1-2 weeks' }
+      { id: 'cardiac-checkup', name: 'Comprehensive Cardiac Checkup', price: 1800, germanyPrice: 5000, turkeyPrice: 1250, duration: '1 day', recovery: 'None' },
+      { id: 'angioplasty', name: 'Angioplasty', price: 9500, germanyPrice: 20000, turkeyPrice: 5000, duration: '1-2 hours', recovery: '1-2 weeks' }
     ]
   }
 ]

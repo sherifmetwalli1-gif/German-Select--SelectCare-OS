@@ -4,9 +4,10 @@
 - **Name**: SelectCareOS™
 - **Organization**: German Select
 - **Goal**: World-class digital health platform combining German medical excellence with Red Sea recovery
-- **Version**: 2.1.0 Enhanced (Monetization, Engagement & Daily Life Features)
+- **Version**: 2.2.0 Enhanced (Market-Competitive Pricing + Monetization)
 - **Launch**: Q1 2026 in Hurghada, Egypt
 - **Last Updated**: January 1, 2026
+- **New**: Market Research-Based Pricing Adjustments (15-25% reduction)
 
 ## 🆕 What's New in v2.1.0
 
@@ -193,35 +194,67 @@ Inspired by premium medical tourism sites, the new Services page includes:
 
 ---
 
-## 💊 Care Packages & Pricing
+## 📈 Market Research & Competitive Pricing (NEW v2.2)
 
-| Package | Price | Duration | Key Features |
-|---------|-------|----------|--------------|
-| **SELECTCARE™** | €6,500-€12,000 | 14 days | German surgeon, JCI facility, 4-star hotel, 1-year follow-up |
-| **SELECTCARE+™** | €12,000-€22,000 | 21 days | 5-star resort, personal coordinator, wellness sessions, family option |
-| **SELECTCROWN™** | €22,000-€35,000 | 28 days | Private villa, personal chef, 24/7 nurse, lifetime support, yacht experience |
+### Competitor Analysis Summary
+**Sources**: WhatClinic (384+ clinics), PlacidWay, Bookimed (1,500+ clinics), Flymedi
+
+| Market | Gastric Sleeve | Gastric Bypass | Knee Replacement |
+|--------|---------------|----------------|------------------|
+| **Turkey (Budget)** | €2,600-€4,000 | €3,500-€5,800 | €6,000-€10,000 |
+| **Turkey (Premium)** | €4,000-€6,000 | €6,000-€8,500 | €9,000-€14,000 |
+| **Egypt (Standard)** | $1,500-$3,800 | $3,100-$4,800 | $6,500-$12,000 |
+| **Germany** | €15,000-€22,000 | €20,000-€28,000 | €25,000-€40,000 |
+| **German Select (NEW)** | **€7,500** | **€10,500** | **€13,500** |
+
+### German Select Value Proposition vs Turkey
+- **German Board-Certified Surgeons** (+€3,000-5,000 value)
+- **Red Sea Therapeutic Recovery** (+€1,500-2,500 value)
+- **12+ Months IoT Monitoring** (+€1,000-1,500 value)
+- **SelectCareOS™ Digital Platform** (+€500-1,000 value)
+- **Luxury All-Inclusive Packages** (+€2,000-4,000 value)
+
+**Marketing Position**: "German Excellence at 50-65% of German Prices"
+
+---
+
+## 💊 Care Packages & Pricing (UPDATED)
+
+| Package | Price (NEW) | Turkey Comparison | Savings vs Germany | Duration |
+|---------|-------------|-------------------|-------------------|----------|
+| **SELECTCARE™** | **€7,500** (€5,500-€10,000) | €5,500 | €14,500+ | 14 days |
+| **SELECTCARE+™** | **€12,000** (€9,500-€18,000) | €9,000 | €20,000+ | 21 days |
+| **SELECTCROWN™** | **€22,000** (€18,000-€30,000) | No equivalent | €33,000+ | 28 days |
 
 ### Treatment Categories
 
-**Bariatric Surgery:**
-- Gastric Sleeve: €8,500
-- Gastric Bypass: €12,000
-- Revision Surgery: €15,000
+**Bariatric Surgery (Market-Adjusted):**
+| Procedure | German Select | Turkey | Germany | Savings |
+|-----------|---------------|--------|---------|--------|
+| Gastric Sleeve | **€7,500** | €4,500 | €22,000 | 66% |
+| Gastric Bypass | **€10,500** | €6,500 | €28,000 | 63% |
+| Revision Surgery | **€13,000** | €7,500 | €35,000 | 63% |
 
-**Orthopedic Surgery:**
-- Knee Replacement: €18,000
-- Hip Replacement: €20,000
-- Spine Surgery: €25,000
+**Orthopedic Surgery (Market-Adjusted):**
+| Procedure | German Select | Turkey | Germany | Savings |
+|-----------|---------------|--------|---------|--------|
+| Knee Replacement | **€13,500** | €9,000 | €40,000 | 66% |
+| Hip Replacement | **€15,000** | €12,000 | €45,000 | 67% |
+| Spine Surgery | **€19,500** | €14,000 | €55,000 | 65% |
 
-**Aesthetic Surgery:**
-- Facelift: €12,000
-- Body Contouring: €15,000
-- Rhinoplasty: €8,000
+**Aesthetic Surgery (Market-Adjusted):**
+| Procedure | German Select | Turkey | Germany | Savings |
+|-----------|---------------|--------|---------|--------|
+| Facelift | **€8,500** | €5,500 | €25,000 | 66% |
+| Body Contouring | **€10,500** | €6,500 | €30,000 | 65% |
+| Rhinoplasty | **€6,000** | €3,500 | €18,000 | 67% |
 
-**Anti-Aging & Longevity:**
-- Stem Cell Therapy: €15,000
-- PRP Therapy: €3,000
-- Hormone Optimization: €5,000
+**Anti-Aging & Longevity (Market-Adjusted):**
+| Procedure | German Select | Turkey | Germany | Savings |
+|-----------|---------------|--------|---------|--------|
+| Stem Cell Therapy | **€12,500** | €8,000 | €35,000 | 64% |
+| PRP Therapy | **€2,200** | €800 | €8,000 | 73% |
+| Hormone Optimization | **€4,000** | €2,500 | €12,000 | 67% |
 
 ### Wellness Programs
 - Red Sea Recovery Retreat: €2,500 (7 days)

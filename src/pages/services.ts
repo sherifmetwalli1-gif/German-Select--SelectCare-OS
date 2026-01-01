@@ -47,7 +47,7 @@ export const JOURNEY_STEPS = [
       'Daily wellness activities',
       'Physiotherapy & rehabilitation'
     ],
-    priceRange: { min: 8500, max: 25000 },
+    priceRange: { min: 7500, max: 22000 },
     icon: 'procedures',
     color: 'gold'
   },
@@ -147,9 +147,10 @@ export const CARE_PACKAGES_DETAILED = [
     name: 'SELECTCARE™',
     tier: 'Essential',
     tagline: 'German Excellence, Affordable Care',
-    price: 10000,
-    priceRange: { min: 6500, max: 12000 },
-    savingsVsGermany: 12000,
+    price: 7500,
+    priceRange: { min: 5500, max: 10000 },
+    savingsVsGermany: 14500,
+    turkeyComparison: 5500,
     popular: false,
     features: [
       { text: 'German Board-Certified Surgeon', included: true },
@@ -173,9 +174,10 @@ export const CARE_PACKAGES_DETAILED = [
     name: 'SELECTCARE+™',
     tier: 'Premium',
     tagline: 'Luxury Recovery with Family Options',
-    price: 14500,
-    priceRange: { min: 12000, max: 22000 },
-    savingsVsGermany: 18000,
+    price: 12000,
+    priceRange: { min: 9500, max: 18000 },
+    savingsVsGermany: 20000,
+    turkeyComparison: 9000,
     popular: true,
     badge: 'MOST POPULAR',
     features: [
@@ -200,9 +202,10 @@ export const CARE_PACKAGES_DETAILED = [
     name: 'SELECTCROWN™',
     tier: 'Crown',
     tagline: 'Ultimate Luxury & Privacy',
-    price: 25000,
-    priceRange: { min: 22000, max: 35000 },
-    savingsVsGermany: 30000,
+    price: 22000,
+    priceRange: { min: 18000, max: 30000 },
+    savingsVsGermany: 33000,
+    turkeyComparison: 'No equivalent',
     popular: false,
     badge: 'ULTIMATE',
     features: [
@@ -272,36 +275,36 @@ export const TREATMENT_PROCEDURES = [
     category: 'Bariatric Surgery',
     icon: 'weight',
     procedures: [
-      { name: 'Gastric Sleeve', price: 8500, germanyPrice: 22000, savings: 13500 },
-      { name: 'Gastric Bypass', price: 12000, germanyPrice: 28000, savings: 16000 },
-      { name: 'Revision Surgery', price: 15000, germanyPrice: 35000, savings: 20000 }
+      { name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, savings: 14500, turkeyComparison: '+German MD' },
+      { name: 'Gastric Bypass', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, savings: 17500, turkeyComparison: '+German MD' },
+      { name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, savings: 22000, turkeyComparison: '+German MD' }
     ]
   },
   {
     category: 'Orthopedic Surgery',
     icon: 'bone',
     procedures: [
-      { name: 'Knee Replacement', price: 18000, germanyPrice: 40000, savings: 22000 },
-      { name: 'Hip Replacement', price: 20000, germanyPrice: 45000, savings: 25000 },
-      { name: 'Spine Surgery', price: 25000, germanyPrice: 55000, savings: 30000 }
+      { name: 'Knee Replacement', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, savings: 26500, turkeyComparison: '+German MD' },
+      { name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, savings: 30000, turkeyComparison: '+German MD' },
+      { name: 'Spine Surgery', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, savings: 35500, turkeyComparison: '+German MD' }
     ]
   },
   {
     category: 'Aesthetic Surgery',
     icon: 'sparkles',
     procedures: [
-      { name: 'Facelift', price: 12000, germanyPrice: 25000, savings: 13000 },
-      { name: 'Body Contouring', price: 15000, germanyPrice: 30000, savings: 15000 },
-      { name: 'Rhinoplasty', price: 8000, germanyPrice: 18000, savings: 10000 }
+      { name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, savings: 16500, turkeyComparison: '+German MD' },
+      { name: 'Body Contouring', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, savings: 19500, turkeyComparison: '+German MD' },
+      { name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, savings: 12000, turkeyComparison: '+German MD' }
     ]
   },
   {
     category: 'Anti-Aging & Longevity',
     icon: 'clock',
     procedures: [
-      { name: 'Stem Cell Therapy', price: 15000, germanyPrice: 35000, savings: 20000 },
-      { name: 'PRP Therapy', price: 3000, germanyPrice: 8000, savings: 5000 },
-      { name: 'Hormone Optimization', price: 5000, germanyPrice: 12000, savings: 7000 }
+      { name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, savings: 22500, turkeyComparison: '+German MD' },
+      { name: 'PRP Therapy', price: 2200, germanyPrice: 8000, turkeyPrice: 800, savings: 5800, turkeyComparison: '+German MD' },
+      { name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, savings: 8000, turkeyComparison: '+German MD' }
     ]
   }
 ];
