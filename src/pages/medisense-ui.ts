@@ -1535,6 +1535,68 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
                     </div>
                 </div>
                 
+                <!-- 🏋️ Wellness Programs Section -->
+                <div id="wellness-section" class="card p-6 fade-in">
+                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center">
+                        <i class="fas fa-heartbeat text-gold mr-2"></i>
+                        Personalized Wellness Programs
+                    </h3>
+                    
+                    <!-- Exercise Programs -->
+                    <div id="exercise-programs-section" class="mb-6">
+                        <h4 class="text-md font-semibold text-navy mb-3 flex items-center">
+                            <i class="fas fa-running text-green-500 mr-2"></i>
+                            Recommended Exercise Programs
+                        </h4>
+                        <div id="exercise-programs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Nutrition Plans -->
+                    <div id="nutrition-plans-section" class="mb-6">
+                        <h4 class="text-md font-semibold text-navy mb-3 flex items-center">
+                            <i class="fas fa-utensils text-orange-500 mr-2"></i>
+                            Recommended Nutrition Plans
+                        </h4>
+                        <div id="nutrition-plans-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Lifestyle Modifications -->
+                    <div id="lifestyle-section" class="mb-6">
+                        <h4 class="text-md font-semibold text-navy mb-3 flex items-center">
+                            <i class="fas fa-leaf text-teal-500 mr-2"></i>
+                            Lifestyle Modifications
+                        </h4>
+                        <div id="lifestyle-list" class="space-y-2">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mind-Body Practices -->
+                    <div id="mindbody-section">
+                        <h4 class="text-md font-semibold text-navy mb-3 flex items-center">
+                            <i class="fas fa-spa text-purple-500 mr-2"></i>
+                            Mind-Body Practices
+                        </h4>
+                        <div id="mindbody-list" class="space-y-2">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Explore More -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <a href="/api/wellness/exercises" target="_blank" class="inline-flex items-center text-navy hover:text-gold mr-6">
+                            <i class="fas fa-dumbbell mr-2"></i>View All Exercise Programs
+                        </a>
+                        <a href="/api/wellness/nutrition" target="_blank" class="inline-flex items-center text-navy hover:text-gold">
+                            <i class="fas fa-apple-alt mr-2"></i>View All Nutrition Plans
+                        </a>
+                    </div>
+                </div>
+                
                 <!-- Analysis Quality -->
                 <div class="card p-6 fade-in">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center">
@@ -2326,6 +2388,135 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             
             // Disclaimer
             document.getElementById('disclaimer-text').textContent = data.disclaimer;
+            
+            // 🏋️ Wellness Programs
+            if (data.wellnessRecommendations) {
+                const wellness = data.wellnessRecommendations;
+                document.getElementById('wellness-section').classList.remove('hidden');
+                
+                // Exercise Programs
+                const exerciseList = document.getElementById('exercise-programs-list');
+                exerciseList.innerHTML = '';
+                if (wellness.exercisePrograms && wellness.exercisePrograms.length > 0) {
+                    document.getElementById('exercise-programs-section').classList.remove('hidden');
+                    wellness.exercisePrograms.forEach(prog => {
+                        const categoryIcons = {
+                            'cardiovascular': 'fa-heart-pulse',
+                            'strength': 'fa-dumbbell',
+                            'rehabilitation': 'fa-hand-holding-medical',
+                            'mind-body': 'fa-spa',
+                            'flexibility': 'fa-person-walking'
+                        };
+                        const categoryColors = {
+                            'cardiovascular': 'bg-red-100 text-red-700',
+                            'strength': 'bg-blue-100 text-blue-700',
+                            'rehabilitation': 'bg-green-100 text-green-700',
+                            'mind-body': 'bg-purple-100 text-purple-700',
+                            'flexibility': 'bg-yellow-100 text-yellow-700'
+                        };
+                        const div = document.createElement('div');
+                        div.className = 'p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200';
+                        div.innerHTML = \`
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h5 class="font-bold text-gray-800">\${prog.name}</h5>
+                                    <span class="inline-flex items-center px-2 py-0.5 text-xs rounded-full \${categoryColors[prog.category] || 'bg-gray-100 text-gray-700'}">
+                                        <i class="fas \${categoryIcons[prog.category] || 'fa-running'} mr-1"></i>
+                                        \${prog.category}
+                                    </span>
+                                </div>
+                                <span class="px-2 py-1 bg-white rounded text-xs font-medium text-gray-600">\${prog.difficulty}</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 mb-2">
+                                <span class="mr-4"><i class="fas fa-clock mr-1"></i>\${prog.duration}</span>
+                                <span><i class="fas fa-calendar-alt mr-1"></i>\${prog.frequency}</span>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                <strong>Benefits:</strong> \${prog.benefits.slice(0, 2).join('; ')}
+                            </div>
+                        \`;
+                        exerciseList.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('exercise-programs-section').classList.add('hidden');
+                }
+                
+                // Nutrition Plans
+                const nutritionList = document.getElementById('nutrition-plans-list');
+                nutritionList.innerHTML = '';
+                if (wellness.nutritionPlans && wellness.nutritionPlans.length > 0) {
+                    document.getElementById('nutrition-plans-section').classList.remove('hidden');
+                    wellness.nutritionPlans.forEach(plan => {
+                        const categoryColors = {
+                            'therapeutic': 'bg-blue-100 text-blue-700',
+                            'weight-management': 'bg-orange-100 text-orange-700',
+                            'general-wellness': 'bg-green-100 text-green-700',
+                            'disease-specific': 'bg-purple-100 text-purple-700'
+                        };
+                        const div = document.createElement('div');
+                        div.className = 'p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl border border-orange-200';
+                        div.innerHTML = \`
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h5 class="font-bold text-gray-800">\${plan.name}</h5>
+                                    <span class="inline-flex items-center px-2 py-0.5 text-xs rounded-full \${categoryColors[plan.category] || 'bg-gray-100 text-gray-700'}">
+                                        <i class="fas fa-utensils mr-1"></i>
+                                        \${plan.category}
+                                    </span>
+                                </div>
+                                <span class="px-2 py-1 bg-white rounded text-xs font-medium text-gray-600">\${plan.calorieRange}</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-2">
+                                <strong>Key Principles:</strong>
+                            </div>
+                            <ul class="text-xs text-gray-500 list-disc list-inside">
+                                \${plan.keyPrinciples.slice(0, 3).map(p => '<li>' + p + '</li>').join('')}
+                            </ul>
+                        \`;
+                        nutritionList.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('nutrition-plans-section').classList.add('hidden');
+                }
+                
+                // Lifestyle Modifications
+                const lifestyleList = document.getElementById('lifestyle-list');
+                lifestyleList.innerHTML = '';
+                if (wellness.lifestyleModifications && wellness.lifestyleModifications.length > 0) {
+                    document.getElementById('lifestyle-section').classList.remove('hidden');
+                    wellness.lifestyleModifications.forEach(mod => {
+                        const div = document.createElement('div');
+                        div.className = 'flex items-start p-3 bg-teal-50 rounded-lg';
+                        div.innerHTML = \`
+                            <i class="fas fa-check-circle text-teal-500 mt-0.5 mr-3"></i>
+                            <span class="text-sm text-gray-700">\${mod}</span>
+                        \`;
+                        lifestyleList.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('lifestyle-section').classList.add('hidden');
+                }
+                
+                // Mind-Body Practices
+                const mindbodyList = document.getElementById('mindbody-list');
+                mindbodyList.innerHTML = '';
+                if (wellness.mindBodyPractices && wellness.mindBodyPractices.length > 0) {
+                    document.getElementById('mindbody-section').classList.remove('hidden');
+                    wellness.mindBodyPractices.forEach(practice => {
+                        const div = document.createElement('div');
+                        div.className = 'flex items-start p-3 bg-purple-50 rounded-lg';
+                        div.innerHTML = \`
+                            <i class="fas fa-om text-purple-500 mt-0.5 mr-3"></i>
+                            <span class="text-sm text-gray-700">\${practice}</span>
+                        \`;
+                        mindbodyList.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('mindbody-section').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('wellness-section').classList.add('hidden');
+            }
         }
         
         // Start New Analysis

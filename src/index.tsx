@@ -4118,6 +4118,166 @@ app.get('/api/medisense/v4/red-flags', async (c) => {
   return c.json({ success: true, data: RED_FLAGS_DATABASE })
 })
 
+// ════════════════════════════════════════════════════════════════════════════════
+// 🏋️ WELLNESS API ENDPOINTS - Exercise & Nutrition Programs
+// ════════════════════════════════════════════════════════════════════════════════
+
+// Get all exercise programs
+app.get('/api/wellness/exercise-programs', async (c) => {
+  const { EXERCISE_PROGRAMS_DATABASE, getWellnessStats } = await import('./pages/medisense-wellness')
+  const stats = getWellnessStats()
+  return c.json({ 
+    success: true, 
+    data: Object.values(EXERCISE_PROGRAMS_DATABASE),
+    meta: {
+      totalPrograms: stats.exercisePrograms,
+      totalExercises: stats.totalExercises
+    }
+  })
+})
+
+// Get exercise program by ID
+app.get('/api/wellness/exercise-programs/:id', async (c) => {
+  const { EXERCISE_PROGRAMS_DATABASE } = await import('./pages/medisense-wellness')
+  const id = c.req.param('id')
+  const program = EXERCISE_PROGRAMS_DATABASE[id]
+  
+  if (!program) {
+    return c.json({ success: false, error: 'Exercise program not found' }, 404)
+  }
+  
+  return c.json({ success: true, data: program })
+})
+
+// Get exercise programs by category
+app.get('/api/wellness/exercise-programs/category/:category', async (c) => {
+  const { EXERCISE_PROGRAMS_DATABASE } = await import('./pages/medisense-wellness')
+  const category = c.req.param('category')
+  
+  const programs = Object.values(EXERCISE_PROGRAMS_DATABASE).filter(
+    p => p.category === category
+  )
+  
+  return c.json({ success: true, data: programs, count: programs.length })
+})
+
+// Get exercise programs for a specific condition
+app.get('/api/wellness/exercise-programs/condition/:condition', async (c) => {
+  const { EXERCISE_PROGRAMS_DATABASE, CONDITION_EXERCISE_MAP } = await import('./pages/medisense-wellness')
+  const condition = c.req.param('condition')
+  
+  const programIds = CONDITION_EXERCISE_MAP[condition.toLowerCase()] || []
+  const programs = programIds
+    .map(id => EXERCISE_PROGRAMS_DATABASE[id])
+    .filter(Boolean)
+  
+  return c.json({ success: true, data: programs, count: programs.length })
+})
+
+// Get all nutrition plans
+app.get('/api/wellness/nutrition-plans', async (c) => {
+  const { NUTRITION_PLANS_DATABASE, getWellnessStats } = await import('./pages/medisense-wellness')
+  const stats = getWellnessStats()
+  return c.json({ 
+    success: true, 
+    data: Object.values(NUTRITION_PLANS_DATABASE),
+    meta: {
+      totalPlans: stats.nutritionPlans,
+      totalMealOptions: stats.totalMealOptions
+    }
+  })
+})
+
+// Get nutrition plan by ID
+app.get('/api/wellness/nutrition-plans/:id', async (c) => {
+  const { NUTRITION_PLANS_DATABASE } = await import('./pages/medisense-wellness')
+  const id = c.req.param('id')
+  const plan = NUTRITION_PLANS_DATABASE[id]
+  
+  if (!plan) {
+    return c.json({ success: false, error: 'Nutrition plan not found' }, 404)
+  }
+  
+  return c.json({ success: true, data: plan })
+})
+
+// Get nutrition plans by category
+app.get('/api/wellness/nutrition-plans/category/:category', async (c) => {
+  const { NUTRITION_PLANS_DATABASE } = await import('./pages/medisense-wellness')
+  const category = c.req.param('category')
+  
+  const plans = Object.values(NUTRITION_PLANS_DATABASE).filter(
+    p => p.category === category
+  )
+  
+  return c.json({ success: true, data: plans, count: plans.length })
+})
+
+// Get nutrition plans for a specific condition
+app.get('/api/wellness/nutrition-plans/condition/:condition', async (c) => {
+  const { NUTRITION_PLANS_DATABASE, CONDITION_NUTRITION_MAP } = await import('./pages/medisense-wellness')
+  const condition = c.req.param('condition')
+  
+  const planIds = CONDITION_NUTRITION_MAP[condition.toLowerCase()] || []
+  const plans = planIds
+    .map(id => NUTRITION_PLANS_DATABASE[id])
+    .filter(Boolean)
+  
+  return c.json({ success: true, data: plans, count: plans.length })
+})
+
+// Generate personalized wellness recommendations
+app.post('/api/wellness/recommendations', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { conditions, age, gender, fitnessLevel, goals, restrictions, preferences } = body
+    
+    if (!conditions || !Array.isArray(conditions) || conditions.length === 0) {
+      return c.json({ success: false, error: 'At least one condition is required' }, 400)
+    }
+    
+    const { generateWellnessRecommendations } = await import('./pages/medisense-wellness')
+    
+    const recommendations = generateWellnessRecommendations({
+      conditions,
+      age: age || 35,
+      gender: gender || 'other',
+      fitnessLevel: fitnessLevel || 'sedentary',
+      goals: goals || [],
+      restrictions: restrictions || [],
+      preferences: preferences || {}
+    })
+    
+    return c.json({ success: true, data: recommendations })
+  } catch (error) {
+    console.error('Wellness Recommendations Error:', error)
+    return c.json({ 
+      success: false, 
+      error: 'Failed to generate recommendations',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500)
+  }
+})
+
+// Get wellness statistics
+app.get('/api/wellness/stats', async (c) => {
+  const { getWellnessStats } = await import('./pages/medisense-wellness')
+  const stats = getWellnessStats()
+  return c.json({ success: true, data: stats })
+})
+
+// Get all condition mappings (what exercises/nutrition work for what conditions)
+app.get('/api/wellness/condition-mappings', async (c) => {
+  const { CONDITION_EXERCISE_MAP, CONDITION_NUTRITION_MAP } = await import('./pages/medisense-wellness')
+  return c.json({ 
+    success: true, 
+    data: {
+      exercise: CONDITION_EXERCISE_MAP,
+      nutrition: CONDITION_NUTRITION_MAP
+    }
+  })
+})
+
 // Legacy MediSense analyze endpoint (backward compatible)
 app.post('/api/medisense/analyze', async (c) => {
   try {
@@ -4245,6 +4405,165 @@ app.get('/api/services/testimonials', async (c) => {
 app.get('/api/services/procedures', async (c) => {
   const { TREATMENT_PROCEDURES } = await import('./pages/services')
   return c.json({ success: true, data: TREATMENT_PROCEDURES })
+})
+
+// ============================================================================
+// 🏋️ WELLNESS API ENDPOINTS - Exercise & Nutrition Programs
+// ============================================================================
+
+// Get all exercise programs
+app.get('/api/wellness/exercises', async (c) => {
+  const { EXERCISE_PROGRAMS_DATABASE, getWellnessStats } = await import('./pages/medisense-wellness')
+  return c.json({ 
+    success: true, 
+    data: Object.values(EXERCISE_PROGRAMS_DATABASE),
+    stats: getWellnessStats()
+  })
+})
+
+// Get exercise program by ID
+app.get('/api/wellness/exercises/:id', async (c) => {
+  const id = c.req.param('id')
+  const { EXERCISE_PROGRAMS_DATABASE } = await import('./pages/medisense-wellness')
+  const program = EXERCISE_PROGRAMS_DATABASE[id]
+  
+  if (!program) {
+    return c.json({ success: false, error: 'Exercise program not found' }, 404)
+  }
+  
+  return c.json({ success: true, data: program })
+})
+
+// Get exercises by category
+app.get('/api/wellness/exercises/category/:category', async (c) => {
+  const category = c.req.param('category')
+  const { EXERCISE_PROGRAMS_DATABASE } = await import('./pages/medisense-wellness')
+  
+  const programs = Object.values(EXERCISE_PROGRAMS_DATABASE).filter(
+    p => p.category === category
+  )
+  
+  return c.json({ success: true, data: programs })
+})
+
+// Get exercises by condition
+app.get('/api/wellness/exercises/condition/:condition', async (c) => {
+  const condition = c.req.param('condition')
+  const { EXERCISE_PROGRAMS_DATABASE, CONDITION_EXERCISE_MAP } = await import('./pages/medisense-wellness')
+  
+  const programIds = CONDITION_EXERCISE_MAP[condition.toLowerCase()] || []
+  const programs = programIds
+    .map(id => EXERCISE_PROGRAMS_DATABASE[id])
+    .filter(Boolean)
+  
+  return c.json({ success: true, data: programs })
+})
+
+// Get all nutrition plans
+app.get('/api/wellness/nutrition', async (c) => {
+  const { NUTRITION_PLANS_DATABASE, getWellnessStats } = await import('./pages/medisense-wellness')
+  return c.json({ 
+    success: true, 
+    data: Object.values(NUTRITION_PLANS_DATABASE),
+    stats: getWellnessStats()
+  })
+})
+
+// Get nutrition plan by ID
+app.get('/api/wellness/nutrition/:id', async (c) => {
+  const id = c.req.param('id')
+  const { NUTRITION_PLANS_DATABASE } = await import('./pages/medisense-wellness')
+  const plan = NUTRITION_PLANS_DATABASE[id]
+  
+  if (!plan) {
+    return c.json({ success: false, error: 'Nutrition plan not found' }, 404)
+  }
+  
+  return c.json({ success: true, data: plan })
+})
+
+// Get nutrition plans by category
+app.get('/api/wellness/nutrition/category/:category', async (c) => {
+  const category = c.req.param('category')
+  const { NUTRITION_PLANS_DATABASE } = await import('./pages/medisense-wellness')
+  
+  const plans = Object.values(NUTRITION_PLANS_DATABASE).filter(
+    p => p.category === category
+  )
+  
+  return c.json({ success: true, data: plans })
+})
+
+// Get nutrition plans by condition
+app.get('/api/wellness/nutrition/condition/:condition', async (c) => {
+  const condition = c.req.param('condition')
+  const { NUTRITION_PLANS_DATABASE, CONDITION_NUTRITION_MAP } = await import('./pages/medisense-wellness')
+  
+  const planIds = CONDITION_NUTRITION_MAP[condition.toLowerCase()] || []
+  const plans = planIds
+    .map(id => NUTRITION_PLANS_DATABASE[id])
+    .filter(Boolean)
+  
+  return c.json({ success: true, data: plans })
+})
+
+// Generate personalized wellness recommendations
+app.post('/api/wellness/recommend', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { conditions, age, gender, fitnessLevel, goals, restrictions, preferences } = body
+    
+    if (!conditions || !Array.isArray(conditions) || conditions.length === 0) {
+      return c.json({ success: false, error: 'At least one condition is required' }, 400)
+    }
+    
+    const { generateWellnessRecommendations } = await import('./pages/medisense-wellness')
+    
+    const recommendations = generateWellnessRecommendations({
+      conditions,
+      age: age || 35,
+      gender: gender || 'other',
+      fitnessLevel: fitnessLevel || 'light',
+      goals: goals || [],
+      restrictions: restrictions || [],
+      preferences: preferences || {}
+    })
+    
+    return c.json({ 
+      success: true, 
+      data: recommendations,
+      meta: {
+        generatedAt: new Date().toISOString(),
+        inputConditions: conditions.length,
+        exerciseProgramsRecommended: recommendations.exercisePrograms.length,
+        nutritionPlansRecommended: recommendations.nutritionPlans.length
+      }
+    })
+  } catch (error) {
+    console.error('Wellness Recommendation Error:', error)
+    return c.json({ 
+      success: false, 
+      error: 'Failed to generate wellness recommendations'
+    }, 500)
+  }
+})
+
+// Get wellness statistics
+app.get('/api/wellness/stats', async (c) => {
+  const { getWellnessStats } = await import('./pages/medisense-wellness')
+  return c.json({ success: true, data: getWellnessStats() })
+})
+
+// Get condition mappings
+app.get('/api/wellness/mappings', async (c) => {
+  const { CONDITION_EXERCISE_MAP, CONDITION_NUTRITION_MAP } = await import('./pages/medisense-wellness')
+  return c.json({ 
+    success: true, 
+    data: {
+      exerciseConditions: Object.keys(CONDITION_EXERCISE_MAP),
+      nutritionConditions: Object.keys(CONDITION_NUTRITION_MAP)
+    }
+  })
 })
 
 // ============================================================================

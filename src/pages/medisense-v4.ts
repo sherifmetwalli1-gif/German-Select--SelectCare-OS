@@ -322,6 +322,30 @@ export interface MediSenseResultV4 {
     dataRetentionPolicy: string;
   };
   
+  // 🏋️ Wellness Programs Integration
+  wellnessRecommendations?: {
+    exercisePrograms: {
+      id: string;
+      name: string;
+      category: string;
+      difficulty: string;
+      duration: string;
+      frequency: string;
+      benefits: string[];
+      targetConditions: string[];
+    }[];
+    nutritionPlans: {
+      id: string;
+      name: string;
+      category: string;
+      targetConditions: string[];
+      keyPrinciples: string[];
+      calorieRange: string;
+    }[];
+    lifestyleModifications: string[];
+    mindBodyPractices: string[];
+  };
+  
   // Disclaimer
   disclaimer: string;
   emergencyDisclaimer?: string;
@@ -2279,11 +2303,171 @@ export function analyzeSymptomsV4(
       dataRetentionPolicy: '30 days for anonymous analysis'
     },
     
+    // 🏋️ Generate wellness recommendations based on identified conditions
+    wellnessRecommendations: generateWellnessForConditions(topDifferentials, patient, triage),
+    
     disclaimer: `IMPORTANT MEDICAL DISCLAIMER: This AI-powered symptom analysis is provided for informational and educational purposes only. It does NOT constitute medical advice, diagnosis, or treatment. The information should NOT replace consultation with a qualified healthcare professional. Always seek the advice of your physician or other qualified health provider with any questions regarding a medical condition. Never disregard professional medical advice or delay seeking it because of something you have read or seen from this tool. If you think you may have a medical emergency, call your doctor, go to the emergency room, or call emergency services immediately (112 in Europe, 999 in UK, 911 in USA).`,
     
     emergencyDisclaimer: triage.level <= 1 ? 
       '🚨 EMERGENCY: Based on your symptoms, you should seek immediate medical attention. Call emergency services or go to the nearest emergency room NOW. Time is critical.' : 
       undefined
+  };
+}
+
+// 🏋️ Generate wellness recommendations based on analysis results
+function generateWellnessForConditions(
+  differentials: DifferentialResult[], 
+  patient: PatientProfile, 
+  triage: TriageLevel
+): MediSenseResultV4['wellnessRecommendations'] {
+  // For emergency/critical cases, don't recommend exercise programs
+  if (triage.level <= 1) {
+    return {
+      exercisePrograms: [],
+      nutritionPlans: [],
+      lifestyleModifications: [
+        'Focus on immediate medical care',
+        'Follow all emergency medical instructions',
+        'Do not attempt exercise until cleared by a physician'
+      ],
+      mindBodyPractices: [
+        'Stay calm and focus on breathing',
+        'Have someone stay with you for support'
+      ]
+    };
+  }
+  
+  // Collect condition IDs from top differentials
+  const conditionIds = differentials.slice(0, 5).map(d => d.condition.id);
+  const conditionCategories = differentials.slice(0, 5).map(d => d.condition.category);
+  
+  // Define exercise mappings inline (to avoid circular imports)
+  const INLINE_EXERCISE_MAP: Record<string, { id: string; name: string; category: string; difficulty: string; duration: string; frequency: string; benefits: string[]; targetConditions: string[] }[]> = {
+    'cardiovascular': [
+      { id: 'cardiac-rehab-phase-2', name: 'Cardiac Rehabilitation Phase 2', category: 'rehabilitation', difficulty: 'beginner', duration: '30-45 min', frequency: '3x/week', benefits: ['Improves cardiovascular fitness', 'Reduces risk of future cardiac events by 25%', 'Lowers blood pressure'], targetConditions: ['heart-disease', 'post-mi', 'angina'] },
+      { id: 'heart-healthy-walking', name: 'Heart Healthy Walking Program', category: 'cardiovascular', difficulty: 'beginner', duration: '30-45 min', frequency: '5x/week', benefits: ['Reduces blood pressure by 5-10 mmHg', 'Burns 150-200 calories per session', 'Improves insulin sensitivity'], targetConditions: ['hypertension', 'obesity'] }
+    ],
+    'respiratory': [
+      { id: 'pulmonary-rehab', name: 'Pulmonary Rehabilitation Program', category: 'rehabilitation', difficulty: 'beginner', duration: '30-45 min', frequency: '3-5x/week', benefits: ['Increases exercise tolerance by 25-40%', 'Reduces shortness of breath', 'Improves quality of life'], targetConditions: ['copd', 'asthma', 'chronic-bronchitis'] }
+    ],
+    'musculoskeletal': [
+      { id: 'arthritis-strength', name: 'Gentle Strength for Arthritis', category: 'rehabilitation', difficulty: 'beginner', duration: '20-30 min', frequency: '3x/week', benefits: ['Reduces joint pain and stiffness', 'Strengthens muscles around joints', 'Improves joint function'], targetConditions: ['osteoarthritis', 'rheumatoid-arthritis'] },
+      { id: 'back-pain-rehab', name: 'Lower Back Pain Rehabilitation', category: 'rehabilitation', difficulty: 'beginner', duration: '20-30 min', frequency: 'daily', benefits: ['Reduces pain by 30-50%', 'Improves core stability', 'Prevents recurrence'], targetConditions: ['lower-back-pain', 'herniated-disc'] }
+    ],
+    'neurological': [
+      { id: 'tai-chi-balance', name: 'Tai Chi for Balance', category: 'mind-body', difficulty: 'beginner', duration: '30-45 min', frequency: '3-5x/week', benefits: ['Reduces fall risk by 45%', 'Improves balance and coordination', 'Enhances proprioception'], targetConditions: ['balance-disorders', 'dizziness', 'parkinsons'] },
+      { id: 'yoga-for-anxiety', name: 'Therapeutic Yoga for Anxiety', category: 'mind-body', difficulty: 'beginner', duration: '30-45 min', frequency: 'daily', benefits: ['Reduces cortisol levels by 25%', 'Activates parasympathetic nervous system', 'Improves sleep quality'], targetConditions: ['anxiety', 'stress', 'insomnia'] }
+    ],
+    'mental-health': [
+      { id: 'yoga-for-anxiety', name: 'Therapeutic Yoga for Anxiety', category: 'mind-body', difficulty: 'beginner', duration: '30-45 min', frequency: 'daily', benefits: ['Reduces cortisol levels by 25%', 'Activates parasympathetic nervous system', 'Improves sleep quality'], targetConditions: ['anxiety', 'depression', 'stress'] },
+      { id: 'heart-healthy-walking', name: 'Heart Healthy Walking Program', category: 'cardiovascular', difficulty: 'beginner', duration: '30-45 min', frequency: '5x/week', benefits: ['Reduces stress hormones', 'Releases endorphins', 'Improves mood'], targetConditions: ['depression', 'anxiety'] }
+    ],
+    'endocrine': [
+      { id: 'strength-for-diabetes', name: 'Strength Training for Diabetes', category: 'strength', difficulty: 'beginner', duration: '30-40 min', frequency: '2-3x/week', benefits: ['Improves insulin sensitivity by 20-30%', 'Increases glucose uptake', 'Reduces HbA1c by 0.5-1%'], targetConditions: ['diabetes', 'pre-diabetes', 'metabolic-syndrome'] },
+      { id: 'hiit-metabolic', name: 'HIIT Metabolic Conditioning', category: 'cardiovascular', difficulty: 'advanced', duration: '25-30 min', frequency: '3x/week', benefits: ['Burns 300-400 calories', 'Increases metabolic rate', 'Improves insulin sensitivity'], targetConditions: ['obesity', 'insulin-resistance'] }
+    ],
+    'gastrointestinal': [
+      { id: 'yoga-for-anxiety', name: 'Therapeutic Yoga for Digestion', category: 'mind-body', difficulty: 'beginner', duration: '30-45 min', frequency: 'daily', benefits: ['Reduces stress-related GI symptoms', 'Improves gut motility', 'Enhances relaxation'], targetConditions: ['ibs', 'gerd', 'stress-related-gi'] }
+    ]
+  };
+  
+  // Define nutrition mappings inline
+  const INLINE_NUTRITION_MAP: Record<string, { id: string; name: string; category: string; targetConditions: string[]; keyPrinciples: string[]; calorieRange: string }[]> = {
+    'cardiovascular': [
+      { id: 'dash-diet', name: 'DASH Diet', category: 'therapeutic', targetConditions: ['hypertension', 'heart-disease'], keyPrinciples: ['Reduce sodium to 1500-2300mg', 'Increase potassium, calcium, magnesium', 'Emphasize fruits and vegetables'], calorieRange: '1600-2600 kcal' },
+      { id: 'heart-healthy-diet', name: 'Heart Healthy Diet', category: 'therapeutic', targetConditions: ['coronary-artery-disease', 'high-cholesterol'], keyPrinciples: ['Limit saturated fat to <7%', 'Eliminate trans fats', 'Increase soluble fiber'], calorieRange: '1600-2200 kcal' }
+    ],
+    'endocrine': [
+      { id: 'diabetic-diet', name: 'Diabetic Meal Plan', category: 'therapeutic', targetConditions: ['diabetes', 'pre-diabetes', 'insulin-resistance'], keyPrinciples: ['Consistent carb intake (45-60g/meal)', 'Choose low glycemic index foods', 'Include fiber at every meal'], calorieRange: '1400-2200 kcal' }
+    ],
+    'gastrointestinal': [
+      { id: 'low-fodmap', name: 'Low FODMAP Diet', category: 'therapeutic', targetConditions: ['ibs', 'bloating', 'sibo'], keyPrinciples: ['Eliminate high FODMAP foods', 'Three phases: Elimination, Reintroduction, Personalization', 'Work with a dietitian'], calorieRange: '1600-2200 kcal' },
+      { id: 'anti-inflammatory-diet', name: 'Anti-Inflammatory Diet', category: 'therapeutic', targetConditions: ['inflammatory-bowel-disease', 'chronic-inflammation'], keyPrinciples: ['Emphasize omega-3 fatty acids', 'Abundant colorful fruits and vegetables', 'Eliminate processed foods'], calorieRange: '1600-2200 kcal' }
+    ],
+    'musculoskeletal': [
+      { id: 'anti-inflammatory-diet', name: 'Anti-Inflammatory Diet', category: 'therapeutic', targetConditions: ['arthritis', 'chronic-pain', 'fibromyalgia'], keyPrinciples: ['Emphasize omega-3 fatty acids', 'Include anti-inflammatory spices', 'Avoid refined sugars'], calorieRange: '1600-2200 kcal' }
+    ],
+    'general': [
+      { id: 'mediterranean-diet', name: 'Mediterranean Diet', category: 'general-wellness', targetConditions: ['general-wellness', 'prevention'], keyPrinciples: ['Extra virgin olive oil as primary fat', 'Fish and seafood twice weekly', 'Abundant fruits and vegetables'], calorieRange: '1600-2400 kcal' }
+    ]
+  };
+  
+  // Collect relevant exercise programs
+  const exercisePrograms: MediSenseResultV4['wellnessRecommendations']['exercisePrograms'] = [];
+  const seenExercises = new Set<string>();
+  
+  for (const category of conditionCategories) {
+    const programs = INLINE_EXERCISE_MAP[category] || INLINE_EXERCISE_MAP['general'] || [];
+    for (const program of programs) {
+      if (!seenExercises.has(program.id)) {
+        seenExercises.add(program.id);
+        exercisePrograms.push(program);
+      }
+    }
+  }
+  
+  // Collect relevant nutrition plans
+  const nutritionPlans: MediSenseResultV4['wellnessRecommendations']['nutritionPlans'] = [];
+  const seenNutrition = new Set<string>();
+  
+  for (const category of conditionCategories) {
+    const plans = INLINE_NUTRITION_MAP[category] || INLINE_NUTRITION_MAP['general'] || [];
+    for (const plan of plans) {
+      if (!seenNutrition.has(plan.id)) {
+        seenNutrition.add(plan.id);
+        nutritionPlans.push(plan);
+      }
+    }
+  }
+  
+  // Add Mediterranean diet as default if no specific plans
+  if (nutritionPlans.length === 0) {
+    nutritionPlans.push({
+      id: 'mediterranean-diet',
+      name: 'Mediterranean Diet',
+      category: 'general-wellness',
+      targetConditions: ['general-wellness', 'prevention'],
+      keyPrinciples: ['Extra virgin olive oil as primary fat', 'Fish and seafood twice weekly', 'Abundant fruits and vegetables'],
+      calorieRange: '1600-2400 kcal'
+    });
+  }
+  
+  // Generate lifestyle modifications based on patient profile
+  const lifestyleModifications: string[] = [];
+  
+  if (patient.lifestyle.smoking === 'current' || patient.lifestyle.smoking === 'former') {
+    lifestyleModifications.push('Consider smoking cessation support - reduces cardiovascular and respiratory risks significantly');
+  }
+  
+  if (patient.lifestyle.alcohol === 'heavy' || patient.lifestyle.alcohol === 'moderate') {
+    lifestyleModifications.push('Limit alcohol consumption to reduce health risks');
+  }
+  
+  if (patient.lifestyle.exercise === 'sedentary') {
+    lifestyleModifications.push('Start with 10-15 minutes of light walking daily, gradually increasing duration');
+  }
+  
+  if (patient.bmi && patient.bmi > 25) {
+    lifestyleModifications.push('Focus on gradual weight management through balanced nutrition and regular activity');
+  }
+  
+  lifestyleModifications.push('Aim for 7-9 hours of quality sleep per night');
+  lifestyleModifications.push('Stay hydrated - drink 8+ glasses of water daily');
+  lifestyleModifications.push('Take regular breaks from sitting every 30-60 minutes');
+  
+  // Mind-body practices
+  const mindBodyPractices: string[] = [
+    'Practice deep breathing exercises for 5-10 minutes daily',
+    'Consider meditation or mindfulness practice',
+    'Try progressive muscle relaxation before bed',
+    'Spend time in nature when possible'
+  ];
+  
+  return {
+    exercisePrograms: exercisePrograms.slice(0, 4),
+    nutritionPlans: nutritionPlans.slice(0, 3),
+    lifestyleModifications,
+    mindBodyPractices
   };
 }
 
