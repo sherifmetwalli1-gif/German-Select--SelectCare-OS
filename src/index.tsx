@@ -1426,13 +1426,13 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
+            <a href="/medisense-pro" class="nav-item ${activeNav === 'medisense' ? 'active' : ''}">
+                <i class="fas fa-brain"></i>
+                <span>AI Symptom</span>
+            </a>
             <a href="/dashboard" class="nav-item ${activeNav === 'dashboard' ? 'active' : ''}">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
-            </a>
-            <a href="/timeline" class="nav-item ${activeNav === 'timeline' ? 'active' : ''}">
-                <i class="fas fa-stream"></i>
-                <span>Timeline</span>
             </a>
             <a href="/care-team" class="nav-item ${activeNav === 'care-team' ? 'active' : ''}">
                 <i class="fas fa-user-md"></i>
@@ -4283,11 +4283,15 @@ app.post('/api/tasks/complete', async (c) => {
 import { payments } from './routes/payments'
 import { engagement } from './routes/engagement'
 import { wellness } from './routes/wellness'
+import medisenseApiRouter from './routes/medisense-api'
+import medisenseProRouter from './pages/medisense-pro'
 
 // Mount route handlers
 app.route('/api/payments', payments)
 app.route('/api/engagement', engagement)
 app.route('/api/wellness', wellness)
+app.route('/api/medisense-pro', medisenseApiRouter)
+app.route('/medisense-pro', medisenseProRouter)
 
 // ============================================================================
 // CONVERSION OPTIMIZATION ENDPOINTS
@@ -4441,14 +4445,81 @@ app.get('/api/achievements/:userId', (c) => {
   })
 })
 
-// 404 handler
+// 404 handler - Returns HTML for pages, JSON for API
 app.notFound((c) => {
-  return c.json({
-    success: false,
-    error: 'Not Found',
-    message: `Route ${c.req.path} not found`,
-    requestId: c.get('requestId'),
-  }, 404)
+  const path = c.req.path
+  
+  // Return JSON for API routes
+  if (path.startsWith('/api/')) {
+    return c.json({
+      success: false,
+      error: 'Not Found',
+      message: `API endpoint ${path} not found`,
+      requestId: c.get('requestId'),
+    }, 404)
+  }
+  
+  // Return HTML page for non-API routes
+  return c.html(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - SelectCareOS™</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #001F3F;
+            --gold: #C9A227;
+            --cream: #F8F6F0;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .bg-navy { background-color: var(--navy); }
+        .bg-cream { background-color: var(--cream); }
+        .text-navy { color: var(--navy); }
+        .text-gold { color: var(--gold); }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+    </style>
+</head>
+<body class="bg-cream min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full text-center">
+        <div class="mb-8">
+            <div class="w-32 h-32 mx-auto bg-navy rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-compass text-gold text-5xl"></i>
+            </div>
+            <h1 class="text-4xl font-bold text-navy mb-2">404</h1>
+            <h2 class="text-xl font-semibold text-navy mb-4">Page Not Found</h2>
+            <p class="text-gray-600 mb-6">
+                Sorry, the page <code class="bg-white px-2 py-1 rounded text-sm">${path}</code> doesn't exist.
+                <br>It might have been moved or deleted.
+            </p>
+        </div>
+        
+        <div class="space-y-3">
+            <a href="/" class="block w-full btn-gold py-3 rounded-xl font-semibold hover:opacity-90 transition">
+                <i class="fas fa-home mr-2"></i>Go to Home
+            </a>
+            <a href="/dashboard" class="block w-full bg-white text-navy py-3 rounded-xl font-semibold border-2 border-navy hover:bg-navy hover:text-white transition">
+                <i class="fas fa-tachometer-alt mr-2"></i>View Dashboard
+            </a>
+            <a href="/medisense-pro" class="block w-full bg-white text-navy py-3 rounded-xl font-semibold border-2 border-gray-200 hover:border-gold transition">
+                <i class="fas fa-brain mr-2"></i>AI Symptom Analyzer
+            </a>
+        </div>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-500">
+                Need help? <a href="/emergency" class="text-gold font-semibold">Contact Support</a>
+            </p>
+        </div>
+        
+        <div class="mt-6 text-xs text-gray-400">
+            SelectCareOS™ by German Select
+        </div>
+    </div>
+</body>
+</html>`, 404)
 })
 
 // Error handler

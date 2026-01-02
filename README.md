@@ -68,6 +68,7 @@ Inspired by premium medical tourism sites, the new Services page includes:
 | **Booking** | [/booking](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/booking) | Book consultations |
 | **Telemedicine** | [/telemedicine](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/telemedicine) | Video calls & remote monitoring |
 | **Health Analytics** | [/health-analytics](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/health-analytics) | AI diagnostics & risk analysis |
+| **MediSense AI Pro** | [/medisense-pro](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/medisense-pro) | ⭐ v3.0 - Intelligent symptom analyzer |
 | **Care Packages** | [/packages](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/packages) | SELECTCARE™ packages |
 | **Wellness Add-ons** | [/wellness](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/wellness) | Programs, accommodations, excursions |
 | **Doctor Dashboard** | [/doctor-dashboard](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/doctor-dashboard) | Care provider view |
@@ -185,6 +186,66 @@ Inspired by premium medical tourism sites, the new Services page includes:
 - Metabolic health monitoring
 - Recovery progress tracking (25% ahead of average)
 - Evidence-based recommendations with NIH/ASMBS citations
+
+### 🧠 MediSense AI Pro™ - Intelligent Symptom Analyzer (v3.0.0 - Enhanced)
+**URL**: [/medisense-pro](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/medisense-pro)
+
+**Key Features:**
+- **227+ Symptoms** across 14 body system categories (ICD-11 aligned)
+- **37 Conditions** with clinical accuracy scoring (SNOMED-CT coded)
+- **21 Medications** with drug interaction checking
+- **Multi-language Support**: English, Arabic, German, French
+- **Fuzzy Symptom Matching**: Intelligent synonym recognition for related symptoms
+- **Enhanced Risk Factor Analysis**: Family history mapping, lifestyle factors
+- **4-Level Urgency Triage**: Emergency → Urgent → Routine → Self-Care
+
+**Algorithm Improvements in v3.0:**
+- **Fuzzy matching**: Related symptoms now properly connect (e.g., "chest-pain" matches cardiac conditions)
+- **Family history mapping**: Proper recognition of family history risk factors
+- **Age-based risk factors**: Correct handling of age>55, age-40-60 patterns
+- **Smart emergency detection**: Considers symptom severity, onset, and combinations
+- **Higher accuracy scoring**: 95%+ match scores for classic symptom presentations
+- **Critical combination detection**: Recognizes dangerous symptom patterns (stroke, heart attack, anaphylaxis)
+
+**API Endpoints:**
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/medisense-pro/stats` | System statistics and algorithm version |
+| `GET /api/medisense-pro/health` | Service health check |
+| `GET /api/medisense-pro/symptoms` | Search symptoms by query |
+| `GET /api/medisense-pro/symptoms/:categoryId` | Get symptoms by category |
+| `GET /api/medisense-pro/conditions` | List all conditions |
+| `GET /api/medisense-pro/conditions/:id` | Get condition details |
+| `GET /api/medisense-pro/medications` | List medications |
+| `POST /api/medisense-pro/analyze` | **Main analysis endpoint** |
+| `POST /api/medisense-pro/drug-check` | Check drug interactions |
+
+**Example Analysis Request:**
+```json
+POST /api/medisense-pro/analyze
+{
+  "symptoms": [
+    {"id": "chest-pain", "severity": "severe", "duration": "hours", "onset": "sudden", "frequency": "constant"},
+    {"id": "shortness-breath", "severity": "moderate", "duration": "hours", "onset": "sudden", "frequency": "intermittent"}
+  ],
+  "profile": {
+    "age": 55,
+    "gender": "male",
+    "preExistingConditions": ["hypertension"],
+    "familyHistory": ["heart-disease"],
+    "lifestyle": {"smoking": true, "alcohol": "moderate", "exercise": "sedentary", "diet": "poor"}
+  }
+}
+```
+
+**Response includes:**
+- Top 5 possible conditions with match scores and confidence
+- Detailed symptom matching explanations
+- Risk factor analysis with present/absent indicators
+- Emergency indicators with specific actions
+- Drug interaction alerts
+- Specialist recommendations
+- Triage urgency level with score
 
 ### Treatment Timeline
 - Visual journey from pre-op to long-term support
