@@ -4119,6 +4119,247 @@ app.get('/api/medisense/v4/red-flags', async (c) => {
 })
 
 // ════════════════════════════════════════════════════════════════════════════════
+// 🧠 MEDISENSE AI PRO v2.0 - Enhanced Diagnostic Engine APIs
+// ════════════════════════════════════════════════════════════════════════════════
+
+// Enhanced AI Analysis Endpoint - Uses Bayesian inference engine
+app.post('/api/medisense/v2/analyze', async (c) => {
+  try {
+    const { symptoms, patient } = await c.req.json()
+    
+    if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
+      return c.json({ success: false, error: 'No symptoms provided' }, 400)
+    }
+    
+    if (!patient || !patient.age || !patient.gender) {
+      return c.json({ success: false, error: 'Patient age and gender are required' }, 400)
+    }
+    
+    const { analyzeWithEnhancedAI } = await import('./services/ai-diagnostic-engine')
+    
+    const patientContext = {
+      age: patient.age,
+      gender: patient.gender,
+      preConditions: patient.preConditions || [],
+      medications: patient.medications || [],
+      allergies: patient.allergies || [],
+      familyHistory: patient.familyHistory || [],
+      lifestyle: patient.lifestyle || {
+        smoking: 'never',
+        alcohol: 'none',
+        exercise: 'moderate',
+        diet: 'average'
+      },
+      vitals: patient.vitals
+    }
+    
+    const result = analyzeWithEnhancedAI(symptoms, patientContext)
+    
+    return c.json({ success: true, data: result })
+  } catch (error) {
+    console.error('MediSense AI Pro v2 Analysis Error:', error)
+    return c.json({ 
+      success: false, 
+      error: 'Analysis failed. Please try again.',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500)
+  }
+})
+
+// Get Enhanced Diagnostic Engine Stats
+app.get('/api/medisense/v2/stats', async (c) => {
+  try {
+    const { getEngineStats } = await import('./services/ai-diagnostic-engine')
+    const { getConditionsByCategory, getConditionsByUrgency, getRedFlagCount } = await import('./services/medical-database-enhanced')
+    
+    const engineStats = getEngineStats()
+    const byCategory = getConditionsByCategory()
+    const byUrgency = getConditionsByUrgency()
+    
+    return c.json({
+      success: true,
+      data: {
+        engine: engineStats,
+        conditions: {
+          total: engineStats.conditionCount,
+          byCategory: Object.fromEntries(
+            Object.entries(byCategory).map(([cat, ids]) => [cat, ids.length])
+          ),
+          byUrgency: Object.fromEntries(
+            Object.entries(byUrgency).map(([urg, ids]) => [urg, ids.length])
+          )
+        },
+        redFlags: {
+          total: getRedFlagCount()
+        }
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to get stats' }, 500)
+  }
+})
+
+// Get All Enhanced Conditions
+app.get('/api/medisense/v2/conditions', async (c) => {
+  try {
+    const { COMPLETE_CONDITIONS_DATABASE, getConditionsByCategory } = await import('./services/medical-database-enhanced')
+    const category = c.req.query('category')
+    const urgency = c.req.query('urgency')
+    
+    let conditions = Object.values(COMPLETE_CONDITIONS_DATABASE)
+    
+    if (category) {
+      conditions = conditions.filter(c => c.category === category)
+    }
+    if (urgency) {
+      conditions = conditions.filter(c => c.urgency === urgency)
+    }
+    
+    return c.json({
+      success: true,
+      data: conditions,
+      meta: {
+        total: conditions.length,
+        categories: Object.keys(getConditionsByCategory())
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to get conditions' }, 500)
+  }
+})
+
+// Search Conditions
+app.get('/api/medisense/v2/conditions/search', async (c) => {
+  try {
+    const { searchConditions } = await import('./services/medical-database-enhanced')
+    const query = c.req.query('q') || ''
+    
+    if (!query) {
+      return c.json({ success: false, error: 'Search query required' }, 400)
+    }
+    
+    const results = searchConditions(query)
+    
+    return c.json({
+      success: true,
+      data: results,
+      meta: { query, count: results.length }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Search failed' }, 500)
+  }
+})
+
+// Get Enhanced Red Flags
+app.get('/api/medisense/v2/red-flags', async (c) => {
+  try {
+    const { ENHANCED_RED_FLAGS } = await import('./services/medical-database-enhanced')
+    const severity = c.req.query('severity')
+    
+    let flags = Object.values(ENHANCED_RED_FLAGS)
+    
+    if (severity) {
+      flags = flags.filter(f => f.severity === severity)
+    }
+    
+    return c.json({
+      success: true,
+      data: flags,
+      meta: {
+        total: flags.length,
+        bySeverity: {
+          critical: Object.values(ENHANCED_RED_FLAGS).filter(f => f.severity === 'critical').length,
+          serious: Object.values(ENHANCED_RED_FLAGS).filter(f => f.severity === 'serious').length,
+          warning: Object.values(ENHANCED_RED_FLAGS).filter(f => f.severity === 'warning').length
+        }
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to get red flags' }, 500)
+  }
+})
+
+// Get Enhanced Symptoms Database
+app.get('/api/medisense/v2/symptoms', async (c) => {
+  try {
+    const { SYMPTOMS_DATABASE, getSymptomCount, getSymptomsByCategory } = await import('./services/symptoms-database')
+    const category = c.req.query('category')
+    
+    let symptoms = Object.values(SYMPTOMS_DATABASE)
+    
+    if (category) {
+      symptoms = getSymptomsByCategory(category)
+    }
+    
+    return c.json({
+      success: true,
+      data: symptoms,
+      meta: {
+        total: getSymptomCount(),
+        categories: [...new Set(Object.values(SYMPTOMS_DATABASE).map(s => s.category))]
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to get symptoms' }, 500)
+  }
+})
+
+// Symptom Lookup by Alias
+app.get('/api/medisense/v2/symptoms/lookup', async (c) => {
+  try {
+    const { findSymptomByAlias, getRelatedSymptoms } = await import('./services/symptoms-database')
+    const query = c.req.query('q') || ''
+    
+    if (!query) {
+      return c.json({ success: false, error: 'Query required' }, 400)
+    }
+    
+    const symptom = findSymptomByAlias(query)
+    
+    if (!symptom) {
+      return c.json({ success: false, error: 'Symptom not found' }, 404)
+    }
+    
+    const related = getRelatedSymptoms(symptom.id)
+    
+    return c.json({
+      success: true,
+      data: {
+        symptom,
+        relatedSymptoms: related
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Lookup failed' }, 500)
+  }
+})
+
+// Check Red Flag Combinations
+app.post('/api/medisense/v2/check-red-flags', async (c) => {
+  try {
+    const { symptoms } = await c.req.json()
+    
+    if (!symptoms || !Array.isArray(symptoms)) {
+      return c.json({ success: false, error: 'Symptoms array required' }, 400)
+    }
+    
+    const { checkRedFlagCombinations } = await import('./services/symptoms-database')
+    const redFlags = checkRedFlagCombinations(symptoms.map(s => s.id || s))
+    
+    return c.json({
+      success: true,
+      data: {
+        redFlagsDetected: redFlags,
+        count: redFlags.length,
+        hasRedFlags: redFlags.length > 0
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Red flag check failed' }, 500)
+  }
+})
+
+// ════════════════════════════════════════════════════════════════════════════════
 // 🏋️ WELLNESS API ENDPOINTS - Exercise & Nutrition Programs
 // ════════════════════════════════════════════════════════════════════════════════
 
