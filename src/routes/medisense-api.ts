@@ -15,7 +15,7 @@
 
 import { Hono } from 'hono'
 import { SYMPTOM_DATABASE, getTotalSymptomCount, getAllSymptoms, searchSymptoms } from '../services/medisense-pro'
-import { CONDITIONS_DATABASE, getTotalConditionCount, getConditionsByUrgency, getConditionsByCategory } from '../services/conditions-database'
+import { CONDITIONS_DATABASE, ALL_CONDITIONS_DATABASE, getTotalConditionCount, getConditionsByUrgency, getConditionsByCategory, CONDITION_PREVALENCE_WEIGHTS } from '../services/conditions-database'
 import { MEDICATIONS_DATABASE, checkDrugInteractions, checkMedicationWarnings, searchMedications } from '../services/drug-interactions'
 import { MediSenseAnalyzer, MEDISENSE_STATS, getSymptomCategories, getUrgencyLevelInfo, SymptomInput, PatientProfile } from '../services/medisense-analyzer'
 import { SupportedLanguage } from '../services/medisense-i18n'
@@ -340,9 +340,17 @@ medisenseApiRouter.post('/drug-check', async (c) => {
 
 /**
  * GET /api/medisense-pro/stats
- * Get system statistics
+ * Get system statistics - Enhanced v4.0 with Bayesian features
  */
 medisenseApiRouter.get('/stats', (c) => {
+  // Count conditions by urgency
+  const conditionsByUrgency = {
+    emergency: Object.values(ALL_CONDITIONS_DATABASE).filter(c => c.urgency === 'emergency').length,
+    urgent: Object.values(ALL_CONDITIONS_DATABASE).filter(c => c.urgency === 'urgent').length,
+    routine: Object.values(ALL_CONDITIONS_DATABASE).filter(c => c.urgency === 'routine').length,
+    'self-care': Object.values(ALL_CONDITIONS_DATABASE).filter(c => c.urgency === 'self-care').length
+  }
+  
   return c.json({
     ...MEDISENSE_STATS,
     urgencyLevels: getUrgencyLevelInfo(),
@@ -351,8 +359,17 @@ medisenseApiRouter.get('/stats', (c) => {
       name: cat.name,
       symptomCount: cat.symptomCount
     })),
-    conditionCategories: [...new Set(Object.values(CONDITIONS_DATABASE).map(c => c.category))],
-    medicationCategories: [...new Set(Object.values(MEDICATIONS_DATABASE).map(m => m.category))]
+    conditionCategories: [...new Set(Object.values(ALL_CONDITIONS_DATABASE).map(c => c.category))],
+    medicationCategories: [...new Set(Object.values(MEDICATIONS_DATABASE).map(m => m.category))],
+    conditionsByUrgency,
+    prevalenceDataConditions: Object.keys(CONDITION_PREVALENCE_WEIGHTS).length,
+    algorithmFeatures: {
+      bayesianProbabilityScoring: 'Uses prevalence-based prior probabilities and likelihood ratios',
+      diagnosticValueWeighting: 'Symptoms with high LR+ get additional weight',
+      fuzzySymptomMatching: 'Related symptoms are matched via synonym mapping',
+      riskFactorAnalysis: 'Enhanced family history and lifestyle risk assessment',
+      emergencyDetection: 'Critical symptom combinations trigger emergency alerts'
+    }
   })
 })
 

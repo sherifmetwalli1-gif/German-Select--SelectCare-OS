@@ -894,19 +894,242 @@ export const CONDITIONS_DATABASE: Record<string, MedicalCondition> = {
   }
 }
 
+// Import extended conditions
+import { EXTENDED_CONDITIONS } from './conditions-extended'
+
+// ============================================================================
+// MERGED CONDITIONS DATABASE - All conditions unified
+// ============================================================================
+
+export const ALL_CONDITIONS_DATABASE: Record<string, MedicalCondition> = {
+  ...CONDITIONS_DATABASE,
+  ...EXTENDED_CONDITIONS
+}
+
+// ============================================================================
+// PREVALENCE-BASED PROBABILITY WEIGHTS (Bayesian prior)
+// Based on epidemiological data - higher values = more common
+// ============================================================================
+
+export const CONDITION_PREVALENCE_WEIGHTS: Record<string, number> = {
+  // Emergency conditions (typically less common but critical)
+  'heart-attack': 0.015,         // ~1.5% of chest pain presentations
+  'stroke': 0.012,               // ~1.2% of neurological presentations
+  'pulmonary-embolism': 0.008,   // ~0.8% of dyspnea presentations
+  'anaphylaxis': 0.005,          // ~0.5% of allergic reactions
+  'appendicitis': 0.025,         // ~2.5% of abdominal pain presentations
+  'meningitis': 0.003,           // ~0.3% of headache+fever presentations
+  'sepsis': 0.006,               // ~0.6% of febrile presentations
+  'asthma-attack': 0.03,         // ~3% of respiratory distress
+  
+  // Urgent conditions (moderate prevalence)
+  'atrial-fibrillation': 0.02,   // ~2% of palpitation presentations
+  'pneumonia': 0.04,             // ~4% of respiratory symptoms
+  'deep-vein-thrombosis': 0.012, // ~1.2% of leg swelling
+  'kidney-stones': 0.03,         // ~3% of flank pain presentations
+  'acute-pancreatitis': 0.015,   // ~1.5% of severe abdominal pain
+  'diabetic-ketoacidosis': 0.008, // ~0.8% in diabetic emergency
+  'acute-glaucoma': 0.006,       // ~0.6% of eye pain presentations
+  'gallstones': 0.035,           // ~3.5% of right upper quadrant pain
+  'angina': 0.025,               // ~2.5% of chest pain
+  'heart-failure': 0.02,         // ~2% of dyspnea presentations
+  'pericarditis': 0.01,          // ~1% of chest pain
+  
+  // Routine conditions (common)
+  'asthma': 0.08,                // ~8% prevalence
+  'copd': 0.05,                  // ~5% prevalence in adults
+  'type-2-diabetes': 0.10,       // ~10% prevalence
+  'hypothyroidism': 0.05,        // ~5% prevalence
+  'hyperthyroidism': 0.015,      // ~1.5% prevalence
+  'gastroesophageal-reflux': 0.20, // ~20% prevalence (GERD)
+  'irritable-bowel-syndrome': 0.12, // ~12% prevalence
+  'osteoarthritis': 0.15,        // ~15% prevalence in adults
+  'rheumatoid-arthritis': 0.01,  // ~1% prevalence
+  'migraine': 0.15,              // ~15% prevalence
+  'urinary-tract-infection': 0.08, // ~8% annual incidence women
+  'generalized-anxiety-disorder': 0.06, // ~6% prevalence
+  'major-depressive-disorder': 0.07, // ~7% prevalence
+  'hypertension': 0.30,          // ~30% prevalence
+  'anemia': 0.08,                // ~8% prevalence
+  
+  // Self-care conditions (very common)
+  'common-cold': 0.40,           // ~40% annual incidence
+  'influenza': 0.15,             // ~15% annual incidence
+  'tension-headache': 0.30,      // ~30% prevalence
+  'gastroenteritis': 0.20,       // ~20% annual incidence
+  'allergic-rhinitis': 0.25,     // ~25% prevalence
+  'muscle-strain': 0.20,         // ~20% annual incidence
+  'contact-dermatitis': 0.10,    // ~10% prevalence
+  'insomnia-disorder': 0.15,     // ~15% prevalence
+  
+  // Extended conditions
+  'bronchitis-acute': 0.12,      // ~12% annual incidence
+  'sinusitis': 0.10,             // ~10% annual incidence
+  'peptic-ulcer': 0.04,          // ~4% prevalence
+  'diverticulitis': 0.025,       // ~2.5% prevalence >40
+  'celiac-disease': 0.01,        // ~1% prevalence
+  'crohns-disease': 0.005,       // ~0.5% prevalence
+  'ulcerative-colitis': 0.004,   // ~0.4% prevalence
+  'epilepsy': 0.01,              // ~1% prevalence
+  'parkinsons': 0.003,           // ~0.3% prevalence
+  'multiple-sclerosis': 0.001,   // ~0.1% prevalence
+  'bells-palsy': 0.002,          // ~0.2% annual incidence
+  'vertigo': 0.05,               // ~5% prevalence
+  'strep-throat': 0.08,          // ~8% of sore throats
+  'mononucleosis': 0.015,        // ~1.5% annual incidence teens
+  'lyme-disease': 0.003,         // ~0.3% endemic areas
+  'shingles': 0.04,              // ~4% annual incidence >50
+  'covid-19': 0.05,              // Variable
+  'eczema': 0.12,                // ~12% prevalence
+  'psoriasis': 0.03,             // ~3% prevalence
+  'acne': 0.25,                  // ~25% prevalence teens
+  'cellulitis': 0.02,            // ~2% annual incidence
+  'hives': 0.08,                 // ~8% lifetime prevalence
+  'gout': 0.04,                  // ~4% prevalence
+  'fibromyalgia': 0.03,          // ~3% prevalence
+  'carpal-tunnel': 0.05,         // ~5% prevalence
+  'sciatica': 0.04,              // ~4% prevalence
+  'herniated-disc': 0.02,        // ~2% prevalence
+  'tendinitis': 0.06,            // ~6% prevalence
+  'benign-prostatic-hyperplasia': 0.15, // ~15% prevalence >50
+  'prostatitis': 0.03,           // ~3% prevalence
+  'erectile-dysfunction': 0.15,  // ~15% prevalence >40
+  'pcos': 0.08,                  // ~8% prevalence women
+  'endometriosis': 0.06,         // ~6% prevalence women
+  'yeast-infection': 0.08,       // ~8% annual incidence women
+  'panic-disorder': 0.03,        // ~3% prevalence
+  'ptsd': 0.04,                  // ~4% prevalence
+  'ocd': 0.02,                   // ~2% prevalence
+  'bipolar-disorder': 0.01,      // ~1% prevalence
+  'adhd': 0.05,                  // ~5% prevalence
+  'eating-disorder-anorexia': 0.005, // ~0.5% prevalence
+  'lupus': 0.005,                // ~0.5% prevalence
+  'sjogrens-syndrome': 0.003,    // ~0.3% prevalence
+  'hashimotos': 0.05,            // ~5% prevalence
+  'pleurisy': 0.01,              // ~1% of chest pain
+}
+
+// ============================================================================
+// SYMPTOM SENSITIVITY/SPECIFICITY DATA
+// Sensitivity: How often the symptom appears when condition is present
+// Specificity: How often symptom is absent when condition is absent
+// ============================================================================
+
+export interface SymptomDiagnosticValue {
+  sensitivity: number;  // 0-1: True positive rate
+  specificity: number;  // 0-1: True negative rate
+  likelihoodRatioPositive: number;  // LR+ = sensitivity / (1 - specificity)
+  likelihoodRatioNegative: number;  // LR- = (1 - sensitivity) / specificity
+}
+
+export const SYMPTOM_DIAGNOSTIC_VALUES: Record<string, Record<string, SymptomDiagnosticValue>> = {
+  'heart-attack': {
+    'chest-pain-pressure': { sensitivity: 0.80, specificity: 0.45, likelihoodRatioPositive: 1.45, likelihoodRatioNegative: 0.44 },
+    'chest-pain-cardiac': { sensitivity: 0.85, specificity: 0.50, likelihoodRatioPositive: 1.70, likelihoodRatioNegative: 0.30 },
+    'shortness-breath': { sensitivity: 0.65, specificity: 0.50, likelihoodRatioPositive: 1.30, likelihoodRatioNegative: 0.70 },
+    'sweating-excessive': { sensitivity: 0.70, specificity: 0.75, likelihoodRatioPositive: 2.80, likelihoodRatioNegative: 0.40 },
+    'arm-pain-left': { sensitivity: 0.45, specificity: 0.85, likelihoodRatioPositive: 3.00, likelihoodRatioNegative: 0.65 },
+    'jaw-pain': { sensitivity: 0.35, specificity: 0.90, likelihoodRatioPositive: 3.50, likelihoodRatioNegative: 0.72 },
+    'nausea': { sensitivity: 0.50, specificity: 0.60, likelihoodRatioPositive: 1.25, likelihoodRatioNegative: 0.83 },
+  },
+  'stroke': {
+    'numbness-face': { sensitivity: 0.75, specificity: 0.80, likelihoodRatioPositive: 3.75, likelihoodRatioNegative: 0.31 },
+    'speech-difficulty': { sensitivity: 0.70, specificity: 0.85, likelihoodRatioPositive: 4.67, likelihoodRatioNegative: 0.35 },
+    'speech-slurred': { sensitivity: 0.65, specificity: 0.88, likelihoodRatioPositive: 5.42, likelihoodRatioNegative: 0.40 },
+    'weakness': { sensitivity: 0.80, specificity: 0.60, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.33 },
+    'confusion': { sensitivity: 0.55, specificity: 0.70, likelihoodRatioPositive: 1.83, likelihoodRatioNegative: 0.64 },
+    'vision-loss-sudden': { sensitivity: 0.40, specificity: 0.92, likelihoodRatioPositive: 5.00, likelihoodRatioNegative: 0.65 },
+  },
+  'pulmonary-embolism': {
+    'shortness-breath': { sensitivity: 0.85, specificity: 0.30, likelihoodRatioPositive: 1.21, likelihoodRatioNegative: 0.50 },
+    'chest-pain-sharp': { sensitivity: 0.70, specificity: 0.65, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.46 },
+    'chest-pain-breathing': { sensitivity: 0.65, specificity: 0.70, likelihoodRatioPositive: 2.17, likelihoodRatioNegative: 0.50 },
+    'cough-blood': { sensitivity: 0.25, specificity: 0.95, likelihoodRatioPositive: 5.00, likelihoodRatioNegative: 0.79 },
+    'leg-swelling-one': { sensitivity: 0.45, specificity: 0.85, likelihoodRatioPositive: 3.00, likelihoodRatioNegative: 0.65 },
+  },
+  'appendicitis': {
+    'abdominal-pain-right-lower': { sensitivity: 0.85, specificity: 0.75, likelihoodRatioPositive: 3.40, likelihoodRatioNegative: 0.20 },
+    'abdominal-pain-severe': { sensitivity: 0.75, specificity: 0.50, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.50 },
+    'nausea': { sensitivity: 0.70, specificity: 0.40, likelihoodRatioPositive: 1.17, likelihoodRatioNegative: 0.75 },
+    'vomiting': { sensitivity: 0.55, specificity: 0.55, likelihoodRatioPositive: 1.22, likelihoodRatioNegative: 0.82 },
+    'fever': { sensitivity: 0.60, specificity: 0.60, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.67 },
+    'loss-appetite': { sensitivity: 0.65, specificity: 0.45, likelihoodRatioPositive: 1.18, likelihoodRatioNegative: 0.78 },
+  },
+  'meningitis': {
+    'headache-severe': { sensitivity: 0.90, specificity: 0.30, likelihoodRatioPositive: 1.29, likelihoodRatioNegative: 0.33 },
+    'neck-stiffness': { sensitivity: 0.70, specificity: 0.85, likelihoodRatioPositive: 4.67, likelihoodRatioNegative: 0.35 },
+    'high-fever': { sensitivity: 0.85, specificity: 0.50, likelihoodRatioPositive: 1.70, likelihoodRatioNegative: 0.30 },
+    'light-sensitivity': { sensitivity: 0.55, specificity: 0.75, likelihoodRatioPositive: 2.20, likelihoodRatioNegative: 0.60 },
+    'confusion': { sensitivity: 0.50, specificity: 0.80, likelihoodRatioPositive: 2.50, likelihoodRatioNegative: 0.63 },
+  },
+  'migraine': {
+    'headache-severe': { sensitivity: 0.85, specificity: 0.40, likelihoodRatioPositive: 1.42, likelihoodRatioNegative: 0.38 },
+    'nausea': { sensitivity: 0.80, specificity: 0.55, likelihoodRatioPositive: 1.78, likelihoodRatioNegative: 0.36 },
+    'light-sensitivity': { sensitivity: 0.85, specificity: 0.70, likelihoodRatioPositive: 2.83, likelihoodRatioNegative: 0.21 },
+    'vomiting': { sensitivity: 0.50, specificity: 0.70, likelihoodRatioPositive: 1.67, likelihoodRatioNegative: 0.71 },
+  },
+  'urinary-tract-infection': {
+    'painful-urination': { sensitivity: 0.85, specificity: 0.70, likelihoodRatioPositive: 2.83, likelihoodRatioNegative: 0.21 },
+    'frequent-urination': { sensitivity: 0.80, specificity: 0.55, likelihoodRatioPositive: 1.78, likelihoodRatioNegative: 0.36 },
+    'urgency-urination': { sensitivity: 0.75, specificity: 0.60, likelihoodRatioPositive: 1.88, likelihoodRatioNegative: 0.42 },
+    'blood-urine': { sensitivity: 0.40, specificity: 0.90, likelihoodRatioPositive: 4.00, likelihoodRatioNegative: 0.67 },
+    'flank-pain': { sensitivity: 0.30, specificity: 0.85, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.82 },
+  },
+  'pneumonia': {
+    'cough-productive': { sensitivity: 0.80, specificity: 0.45, likelihoodRatioPositive: 1.45, likelihoodRatioNegative: 0.44 },
+    'fever': { sensitivity: 0.85, specificity: 0.50, likelihoodRatioPositive: 1.70, likelihoodRatioNegative: 0.30 },
+    'shortness-breath': { sensitivity: 0.70, specificity: 0.55, likelihoodRatioPositive: 1.56, likelihoodRatioNegative: 0.55 },
+    'chest-pain-breathing': { sensitivity: 0.55, specificity: 0.70, likelihoodRatioPositive: 1.83, likelihoodRatioNegative: 0.64 },
+    'chills': { sensitivity: 0.65, specificity: 0.60, likelihoodRatioPositive: 1.63, likelihoodRatioNegative: 0.58 },
+  },
+  'common-cold': {
+    'runny-nose': { sensitivity: 0.90, specificity: 0.40, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.25 },
+    'stuffy-nose': { sensitivity: 0.85, specificity: 0.35, likelihoodRatioPositive: 1.31, likelihoodRatioNegative: 0.43 },
+    'sneezing': { sensitivity: 0.75, specificity: 0.50, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.50 },
+    'sore-throat': { sensitivity: 0.70, specificity: 0.45, likelihoodRatioPositive: 1.27, likelihoodRatioNegative: 0.67 },
+    'cough': { sensitivity: 0.65, specificity: 0.40, likelihoodRatioPositive: 1.08, likelihoodRatioNegative: 0.88 },
+  },
+}
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
 // Get condition count
 export const getTotalConditionCount = (): number => {
-  return Object.keys(CONDITIONS_DATABASE).length
+  return Object.keys(ALL_CONDITIONS_DATABASE).length
 }
 
 // Get conditions by urgency
 export const getConditionsByUrgency = (urgency: string): MedicalCondition[] => {
-  return Object.values(CONDITIONS_DATABASE).filter(c => c.urgency === urgency)
+  return Object.values(ALL_CONDITIONS_DATABASE).filter(c => c.urgency === urgency)
 }
 
 // Get conditions by category
 export const getConditionsByCategory = (category: string): MedicalCondition[] => {
-  return Object.values(CONDITIONS_DATABASE).filter(c => c.category === category)
+  return Object.values(ALL_CONDITIONS_DATABASE).filter(c => c.category === category)
 }
 
-console.log(`MediSense AI Pro™ Conditions Database loaded with ${getTotalConditionCount()} conditions`)
+// Get prevalence weight for condition (returns 0.05 default if not found)
+export const getPrevalenceWeight = (conditionId: string): number => {
+  return CONDITION_PREVALENCE_WEIGHTS[conditionId] || 0.05
+}
+
+// Get diagnostic values for a symptom-condition pair
+export const getDiagnosticValue = (conditionId: string, symptomId: string): SymptomDiagnosticValue | null => {
+  return SYMPTOM_DIAGNOSTIC_VALUES[conditionId]?.[symptomId] || null
+}
+
+// Calculate Bayesian posterior probability
+export const calculateBayesianProbability = (
+  priorProbability: number,
+  likelihoodRatioPositive: number,
+  symptomPresent: boolean
+): number => {
+  const lr = symptomPresent ? likelihoodRatioPositive : 1 / likelihoodRatioPositive
+  const priorOdds = priorProbability / (1 - priorProbability)
+  const posteriorOdds = priorOdds * lr
+  return posteriorOdds / (1 + posteriorOdds)
+}
+
+console.log(`MediSense AI Pro™ Conditions Database loaded with ${getTotalConditionCount()} conditions (base: ${Object.keys(CONDITIONS_DATABASE).length}, extended: ${Object.keys(EXTENDED_CONDITIONS).length})`)
