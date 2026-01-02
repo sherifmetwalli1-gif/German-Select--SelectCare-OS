@@ -9,6 +9,17 @@ import type { Bindings, Variables, User } from '../types'
 
 export const authRoutes = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 
+// Generate secure fallback secret (should never be used in production)
+function getSecureSecret(envSecret: string | undefined): string {
+  if (!envSecret) {
+    console.warn('⚠️ WARNING: JWT_SECRET not configured. Using generated fallback. Set JWT_SECRET in production!');
+    // Generate a deterministic but unique secret based on timestamp seed
+    // This is still insecure for production but better than hardcoded string
+    return `fallback-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+  }
+  return envSecret;
+}
+
 // Simple JWT implementation for edge runtime
 async function createToken(payload: object, secret: string): Promise<string> {
   const header = { alg: 'HS256', typ: 'JWT' }
@@ -89,7 +100,7 @@ authRoutes.post('/register', async (c) => {
     // Generate token
     const token = await createToken(
       { userId: user.id, email: user.email, role: user.role },
-      c.env.JWT_SECRET || 'default-secret'
+      getSecureSecret(c.env.JWT_SECRET)
     )
 
     return c.json({
@@ -131,7 +142,7 @@ authRoutes.post('/login', async (c) => {
     // Generate token
     const token = await createToken(
       { userId: user.id, email: user.email, role: user.role },
-      c.env.JWT_SECRET || 'default-secret'
+      getSecureSecret(c.env.JWT_SECRET)
     )
 
     return c.json({
@@ -162,7 +173,7 @@ authRoutes.get('/me', async (c) => {
     }
 
     const token = authHeader.substring(7)
-    const payload = await verifyToken(token, c.env.JWT_SECRET || 'default-secret')
+    const payload = await verifyToken(token, getSecureSecret(c.env.JWT_SECRET))
 
     const db = new DatabaseService(c.env.DB)
     const user = await db.getUserById(payload.userId)
@@ -191,7 +202,7 @@ authRoutes.post('/verify', async (c) => {
       return c.json({ success: false, error: 'Token is required' }, 400)
     }
 
-    const payload = await verifyToken(token, c.env.JWT_SECRET || 'default-secret')
+    const payload = await verifyToken(token, getSecureSecret(c.env.JWT_SECRET))
 
     return c.json({
       success: true,

@@ -823,9 +823,148 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
         }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+        
+        .toast {
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+        
+        .toast.toast-error {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            border-left: 4px solid #DC2626;
+            color: #991B1B;
+        }
+        
+        .toast.toast-success {
+            background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+            border-left: 4px solid #059669;
+            color: #065F46;
+        }
+        
+        .toast.toast-warning {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-left: 4px solid #D97706;
+            color: #92400E;
+        }
+        
+        .toast.toast-info {
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            border-left: 4px solid #2563EB;
+            color: #1E40AF;
+        }
+        
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .toast-message {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            padding: 0;
+            font-size: 18px;
+        }
+        
+        .toast-close:hover {
+            opacity: 1;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Skip to Content Link (Accessibility) */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--navy);
+            color: white;
+            padding: 8px 16px;
+            z-index: 10001;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        /* Focus Visible (Accessibility) */
+        *:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-cream min-h-screen">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" role="alert" aria-live="polite"></div>
+    
     <!-- Header -->
     <header class="gradient-navy sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4">
@@ -881,7 +1020,7 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         </div>
     </section>
     
-    <main class="max-w-7xl mx-auto px-4 py-6 md:py-8">
+    <main id="main-content" class="max-w-7xl mx-auto px-4 py-6 md:py-8" role="main" aria-label="MediSense Symptom Analyzer">
         <!-- Disclaimer -->
         <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-6 md:mb-8">
             <div class="flex items-start">
@@ -1690,6 +1829,53 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
     </a>
     
     <script>
+        // Toast Notification System
+        const toast = {
+            container: null,
+            init() {
+                this.container = document.getElementById('toast-container');
+            },
+            show(type, title, message, duration = 5000) {
+                if (!this.container) this.init();
+                
+                const icons = {
+                    error: 'fa-circle-exclamation',
+                    success: 'fa-circle-check',
+                    warning: 'fa-triangle-exclamation',
+                    info: 'fa-circle-info'
+                };
+                
+                const toastEl = document.createElement('div');
+                toastEl.className = \`toast toast-\${type}\`;
+                toastEl.innerHTML = \`
+                    <i class="fas \${icons[type]} toast-icon"></i>
+                    <div class="toast-content">
+                        <div class="toast-title">\${title}</div>
+                        <div class="toast-message">\${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.remove()" aria-label="Close notification">
+                        <i class="fas fa-times"></i>
+                    </button>
+                \`;
+                
+                this.container.appendChild(toastEl);
+                
+                // Auto remove after duration
+                if (duration > 0) {
+                    setTimeout(() => {
+                        toastEl.style.animation = 'slideOut 0.3s ease-out forwards';
+                        setTimeout(() => toastEl.remove(), 300);
+                    }, duration);
+                }
+                
+                return toastEl;
+            },
+            error(title, message) { return this.show('error', title, message); },
+            success(title, message) { return this.show('success', title, message); },
+            warning(title, message) { return this.show('warning', title, message); },
+            info(title, message) { return this.show('info', title, message, 4000); }
+        };
+        
         // Symptom Categories Data
         const symptomCategories = ${JSON.stringify(SYMPTOM_CATEGORIES_V4)};
         
@@ -1771,15 +1957,26 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             const gender = document.getElementById('patient-gender').value;
             
             if (!age || !gender) {
-                alert('Please enter your age and gender to continue.');
+                toast.warning('Missing Information', 'Please enter your age and select your gender to continue.');
+                // Highlight missing fields
+                if (!age) document.getElementById('patient-age').focus();
+                else if (!gender) document.getElementById('patient-gender').focus();
                 return false;
             }
+            
+            const ageNum = parseInt(age);
+            if (ageNum < 0 || ageNum > 120) {
+                toast.warning('Invalid Age', 'Please enter a valid age between 0 and 120.');
+                document.getElementById('patient-age').focus();
+                return false;
+            }
+            
             return true;
         }
         
         function validateStep2() {
             if (selectedSymptoms.size === 0) {
-                alert('Please select at least one symptom to continue.');
+                toast.warning('No Symptoms Selected', 'Please select at least one symptom to continue with the analysis.');
                 return false;
             }
             return true;
@@ -2152,13 +2349,14 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
                 if (result.success) {
                     analysisResult = result.data;
                     displayResults(result.data);
+                    toast.success('Analysis Complete', 'Your symptom analysis has been processed successfully.');
                 } else {
-                    alert('Analysis failed: ' + (result.error || 'Please try again.'));
+                    toast.error('Analysis Failed', result.error || 'Unable to process your symptoms. Please try again.');
                     goToStep(3);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                toast.error('Connection Error', 'Unable to connect to the analysis service. Please check your connection and try again.');
                 goToStep(3);
             }
         }
