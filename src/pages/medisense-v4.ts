@@ -2339,7 +2339,52 @@ function generateWellnessForConditions(
   
   // Collect condition IDs from top differentials
   const conditionIds = differentials.slice(0, 5).map(d => d.condition.id);
-  const conditionCategories = differentials.slice(0, 5).map(d => d.condition.category);
+  const conditionCategories = new Set(differentials.slice(0, 5).map(d => d.condition.category));
+  
+  // Also consider patient's pre-existing conditions for wellness recommendations
+  const preConditionCategories: Record<string, string> = {
+    // Endocrine/Metabolic
+    'diabetes': 'endocrine', 'diabetes-type-2': 'endocrine', 'pre-diabetes': 'endocrine',
+    'obesity': 'endocrine', 'metabolic-syndrome': 'endocrine',
+    'thyroid': 'endocrine', 'hypothyroidism': 'endocrine', 'hyperthyroidism': 'endocrine',
+    // Cardiovascular
+    'hypertension': 'cardiovascular', 'heart-disease': 'cardiovascular', 'coronary-artery-disease': 'cardiovascular',
+    'heart-failure': 'cardiovascular', 'atrial-fibrillation': 'cardiovascular', 'high-cholesterol': 'cardiovascular',
+    'stroke': 'cardiovascular',
+    // Respiratory
+    'asthma': 'respiratory', 'copd': 'respiratory', 'chronic-bronchitis': 'respiratory',
+    // Musculoskeletal
+    'arthritis': 'musculoskeletal', 'osteoarthritis': 'musculoskeletal', 'rheumatoid-arthritis': 'musculoskeletal',
+    'back-pain': 'musculoskeletal', 'fibromyalgia': 'musculoskeletal', 'osteoporosis': 'musculoskeletal',
+    // Mental Health
+    'anxiety': 'mental-health', 'depression': 'mental-health', 'insomnia': 'mental-health', 'stress': 'mental-health',
+    // Gastrointestinal
+    'ibs': 'gastrointestinal', 'gerd': 'gastrointestinal', 'crohns': 'gastrointestinal', 'ulcerative-colitis': 'gastrointestinal',
+    // Neurological
+    'parkinsons': 'neurological', 'dementia': 'neurological', 'alzheimers': 'neurological', 'migraine': 'neurological',
+    // Other
+    'cancer': 'general', 'kidney-disease': 'general', 'liver-disease': 'general'
+  };
+  
+  // Add categories from patient's pre-existing conditions
+  for (const preCondition of patient.preConditions) {
+    const normalizedCondition = preCondition.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const category = preConditionCategories[normalizedCondition];
+    if (category) {
+      conditionCategories.add(category);
+    }
+  }
+  
+  // If still no categories, add 'general' based on lifestyle factors
+  if (conditionCategories.size === 0) {
+    if (patient.lifestyle.exercise === 'sedentary') {
+      conditionCategories.add('cardiovascular'); // Walking program
+    }
+    if (patient.bmi && patient.bmi > 25) {
+      conditionCategories.add('endocrine'); // Weight management
+    }
+    conditionCategories.add('general');
+  }
   
   // Define exercise mappings inline (to avoid circular imports)
   const INLINE_EXERCISE_MAP: Record<string, { id: string; name: string; category: string; difficulty: string; duration: string; frequency: string; benefits: string[]; targetConditions: string[] }[]> = {
@@ -2392,13 +2437,29 @@ function generateWellnessForConditions(
     ]
   };
   
+  // Add general exercise programs available for all
+  const INLINE_GENERAL_EXERCISES = [
+    { id: 'heart-healthy-walking', name: 'Heart Healthy Walking Program', category: 'cardiovascular', difficulty: 'beginner', duration: '30-45 min', frequency: '5x/week', benefits: ['Burns 150-200 calories', 'Improves cardiovascular health', 'Low impact on joints'], targetConditions: ['general-wellness'] },
+    { id: 'yoga-for-anxiety', name: 'Therapeutic Yoga', category: 'mind-body', difficulty: 'beginner', duration: '30-45 min', frequency: '3-5x/week', benefits: ['Reduces stress', 'Improves flexibility', 'Enhances sleep'], targetConditions: ['general-wellness', 'stress'] }
+  ];
+  
   // Collect relevant exercise programs
   const exercisePrograms: MediSenseResultV4['wellnessRecommendations']['exercisePrograms'] = [];
   const seenExercises = new Set<string>();
   
   for (const category of conditionCategories) {
-    const programs = INLINE_EXERCISE_MAP[category] || INLINE_EXERCISE_MAP['general'] || [];
+    const programs = INLINE_EXERCISE_MAP[category] || [];
     for (const program of programs) {
+      if (!seenExercises.has(program.id)) {
+        seenExercises.add(program.id);
+        exercisePrograms.push(program);
+      }
+    }
+  }
+  
+  // Add general exercises if we have fewer than 2 programs
+  if (exercisePrograms.length < 2) {
+    for (const program of INLINE_GENERAL_EXERCISES) {
       if (!seenExercises.has(program.id)) {
         seenExercises.add(program.id);
         exercisePrograms.push(program);

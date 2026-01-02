@@ -2710,10 +2710,38 @@ export const CONDITION_EXERCISE_MAP: Record<string, string[]> = {
   // Neurological
   'parkinsons': ['tai-chi-balance', 'yoga-for-anxiety'],
   'balance-disorders': ['tai-chi-balance'],
+  'stroke': ['cardiac-rehab-phase-1', 'tai-chi-balance', 'yoga-for-anxiety'],
+  'dementia': ['tai-chi-balance', 'heart-healthy-walking'],
+  'alzheimers': ['tai-chi-balance', 'heart-healthy-walking', 'yoga-for-anxiety'],
+  
+  // Cancer (post-treatment/recovery)
+  'cancer': ['yoga-for-anxiety', 'heart-healthy-walking'],
+  'cancer-survivor': ['yoga-for-anxiety', 'heart-healthy-walking', 'strength-for-diabetes'],
+  
+  // Endocrine
+  'thyroid': ['heart-healthy-walking', 'yoga-for-anxiety'],
+  'hypothyroidism': ['heart-healthy-walking', 'strength-for-diabetes'],
+  'hyperthyroidism': ['yoga-for-anxiety', 'tai-chi-balance'],
+  
+  // Renal
+  'kidney-disease': ['heart-healthy-walking', 'yoga-for-anxiety'],
+  'chronic-kidney-disease': ['heart-healthy-walking', 'yoga-for-anxiety'],
+  
+  // Hepatic
+  'liver-disease': ['heart-healthy-walking', 'yoga-for-anxiety'],
+  'fatty-liver': ['weight-loss-beginner', 'heart-healthy-walking'],
+  
+  // Special Populations
+  'pregnancy': ['yoga-for-anxiety', 'heart-healthy-walking'],
+  'postpartum': ['yoga-for-anxiety', 'weight-loss-beginner'],
+  'elderly': ['tai-chi-balance', 'arthritis-strength', 'heart-healthy-walking'],
+  'post-surgery': ['cardiac-rehab-phase-1', 'yoga-for-anxiety'],
   
   // General
   'sedentary-lifestyle': ['weight-loss-beginner', 'heart-healthy-walking'],
   'stress': ['yoga-for-anxiety', 'tai-chi-balance'],
+  'chronic-fatigue': ['yoga-for-anxiety', 'tai-chi-balance', 'heart-healthy-walking'],
+  'sleep-apnea': ['weight-loss-beginner', 'yoga-for-anxiety'],
 };
 
 // ════════════════════════════════════════════════════════════════════════════════
@@ -2748,9 +2776,44 @@ export const CONDITION_NUTRITION_MAP: Record<string, string[]> = {
   'chronic-kidney-disease': ['renal-diet'],
   'kidney-failure': ['renal-diet'],
   
+  // Cancer
+  'cancer': ['anti-inflammatory-diet', 'mediterranean-diet'],
+  'cancer-survivor': ['anti-inflammatory-diet', 'mediterranean-diet'],
+  
+  // Neurological
+  'stroke': ['dash-diet', 'mediterranean-diet'],
+  'dementia': ['mediterranean-diet', 'anti-inflammatory-diet'],
+  'alzheimers': ['mediterranean-diet', 'anti-inflammatory-diet'],
+  'parkinsons': ['mediterranean-diet', 'anti-inflammatory-diet'],
+  
+  // Endocrine
+  'thyroid': ['anti-inflammatory-diet', 'mediterranean-diet'],
+  'hypothyroidism': ['anti-inflammatory-diet', 'mediterranean-diet'],
+  'hyperthyroidism': ['anti-inflammatory-diet'],
+  
+  // Hepatic
+  'liver-disease': ['mediterranean-diet'],
+  'fatty-liver': ['mediterranean-diet', 'weight-loss-balanced'],
+  
+  // Musculoskeletal
+  'osteoarthritis': ['anti-inflammatory-diet', 'mediterranean-diet'],
+  'osteoporosis': ['mediterranean-diet'],
+  'fibromyalgia': ['anti-inflammatory-diet'],
+  
+  // Mental Health
+  'anxiety-disorder': ['mediterranean-diet', 'anti-inflammatory-diet'],
+  'depression': ['mediterranean-diet', 'anti-inflammatory-diet'],
+  
+  // Special Populations
+  'pregnancy': ['mediterranean-diet'],
+  'elderly': ['mediterranean-diet'],
+  
   // General
   'general-wellness': ['mediterranean-diet'],
   'cognitive-decline': ['mediterranean-diet', 'anti-inflammatory-diet'],
+  'chronic-fatigue': ['anti-inflammatory-diet', 'mediterranean-diet'],
+  'sleep-apnea': ['weight-loss-balanced', 'mediterranean-diet'],
+  'stress': ['mediterranean-diet'],
 };
 
 // ════════════════════════════════════════════════════════════════════════════════
