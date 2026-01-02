@@ -255,11 +255,11 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             box-shadow: 0 4px 20px rgba(0, 31, 63, 0.08);
         }
         
-        /* Body Map Styles */
+        /* Anatomical Body Map Styles */
         .body-map-container {
             position: relative;
             width: 100%;
-            max-width: 300px;
+            max-width: 280px;
             margin: 0 auto;
         }
         
@@ -270,25 +270,94 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         
         .body-region {
             cursor: pointer;
-            transition: all 0.3s;
-            fill: #E5E7EB;
-            stroke: #9CA3AF;
-            stroke-width: 2;
+            transition: all 0.25s ease;
+            fill: #F3F4F6;
+            stroke: #D1D5DB;
+            stroke-width: 1.5;
         }
         
         .body-region:hover {
-            fill: var(--gold-light);
+            fill: #FEF3C7;
             stroke: var(--gold);
+            stroke-width: 2;
+            filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
         }
         
         .body-region.selected {
             fill: var(--gold);
             stroke: var(--navy);
+            stroke-width: 2;
+            filter: drop-shadow(0 2px 6px rgba(0, 31, 63, 0.2));
         }
         
         .body-region.has-symptoms {
             fill: #FED7AA;
-            stroke: #F97316;
+            stroke: #EA580C;
+            stroke-width: 2;
+        }
+        
+        .body-outline {
+            fill: none;
+            stroke: #9CA3AF;
+            stroke-width: 1;
+            pointer-events: none;
+        }
+        
+        .body-highlight {
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-dasharray: 4 2;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .body-region:hover + .body-highlight {
+            opacity: 1;
+        }
+        
+        .region-label {
+            font-size: 8px;
+            fill: #6B7280;
+            pointer-events: none;
+            font-weight: 500;
+            text-anchor: middle;
+        }
+        
+        .region-label.active {
+            fill: var(--navy);
+            font-weight: 600;
+        }
+        
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+        
+        .view-toggle button {
+            padding: 6px 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 20px;
+            background: white;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6B7280;
+        }
+        
+        .view-toggle button.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: white;
+        }
+        
+        .view-toggle button:hover:not(.active) {
+            border-color: var(--gold);
+            color: var(--navy);
         }
         
         /* Symptom Tags */
@@ -840,52 +909,291 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         <!-- Step 2: Symptom Selection -->
         <div id="step2" class="hidden">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Body Map (Left) -->
+                <!-- Anatomical Body Map (Left) -->
                 <div class="lg:col-span-1">
                     <div class="card p-6 sticky top-24">
-                        <h3 class="font-bold text-navy mb-4 flex items-center">
+                        <h3 class="font-bold text-navy mb-3 flex items-center">
                             <i class="fas fa-person text-gold mr-2"></i>
-                            Click Body Region
+                            Select Body Region
                         </h3>
+                        
+                        <!-- View Toggle (Front/Back) -->
+                        <div class="view-toggle">
+                            <button id="view-front" class="active" onclick="toggleBodyView('front')">
+                                <i class="fas fa-user mr-1"></i>Front
+                            </button>
+                            <button id="view-back" onclick="toggleBodyView('back')">
+                                <i class="fas fa-user mr-1"></i>Back
+                            </button>
+                        </div>
+                        
                         <div class="body-map-container">
-                            <svg viewBox="0 0 200 400" class="body-map">
-                                <!-- Head -->
-                                <ellipse cx="100" cy="40" rx="30" ry="35" class="body-region" data-region="head" id="region-head"/>
+                            <!-- Front View -->
+                            <svg id="body-front" viewBox="0 0 220 440" class="body-map">
+                                <!-- Background body outline -->
+                                <defs>
+                                    <linearGradient id="skinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#F9FAFB"/>
+                                        <stop offset="100%" style="stop-color:#F3F4F6"/>
+                                    </linearGradient>
+                                </defs>
                                 
-                                <!-- Neck -->
-                                <rect x="88" y="70" width="24" height="20" rx="5" class="body-region" data-region="head" id="region-neck"/>
+                                <!-- HEAD REGIONS -->
+                                <!-- Skull/Forehead -->
+                                <ellipse cx="110" cy="35" rx="32" ry="20" class="body-region" data-region="head" data-subregion="forehead" onclick="selectBodyRegion('head', 'Forehead/Scalp')"/>
+                                <text x="110" y="38" class="region-label">Scalp</text>
                                 
-                                <!-- Chest -->
-                                <path d="M 55 90 Q 100 85 145 90 L 140 160 Q 100 165 60 160 Z" class="body-region" data-region="respiratory" id="region-chest"/>
+                                <!-- Face -->
+                                <path d="M 78 40 Q 75 60 80 80 Q 110 90 140 80 Q 145 60 142 40 Q 130 35 110 35 Q 90 35 78 40" class="body-region" data-region="head" data-subregion="face" onclick="selectBodyRegion('head', 'Face')"/>
+                                <text x="110" y="65" class="region-label">Face</text>
                                 
-                                <!-- Abdomen -->
-                                <path d="M 60 160 Q 100 165 140 160 L 135 230 Q 100 235 65 230 Z" class="body-region" data-region="gastrointestinal" id="region-abdomen"/>
+                                <!-- Eyes (Left & Right) -->
+                                <ellipse cx="95" cy="50" rx="8" ry="5" class="body-region" data-region="eyes" data-subregion="left-eye" onclick="selectBodyRegion('eyes', 'Left Eye')"/>
+                                <ellipse cx="125" cy="50" rx="8" ry="5" class="body-region" data-region="eyes" data-subregion="right-eye" onclick="selectBodyRegion('eyes', 'Right Eye')"/>
                                 
-                                <!-- Left Arm -->
-                                <path d="M 55 95 L 25 100 Q 15 150 20 200 L 30 200 Q 35 155 35 110 L 55 105" class="body-region" data-region="musculoskeletal" id="region-left-arm"/>
+                                <!-- Ears -->
+                                <ellipse cx="72" cy="55" rx="6" ry="10" class="body-region" data-region="ears" data-subregion="left-ear" onclick="selectBodyRegion('ears', 'Left Ear')"/>
+                                <ellipse cx="148" cy="55" rx="6" ry="10" class="body-region" data-region="ears" data-subregion="right-ear" onclick="selectBodyRegion('ears', 'Right Ear')"/>
                                 
-                                <!-- Right Arm -->
-                                <path d="M 145 95 L 175 100 Q 185 150 180 200 L 170 200 Q 165 155 165 110 L 145 105" class="body-region" data-region="musculoskeletal" id="region-right-arm"/>
+                                <!-- Nose/Sinuses -->
+                                <path d="M 105 52 L 110 68 L 115 52" class="body-region" data-region="respiratory" data-subregion="nose" onclick="selectBodyRegion('respiratory', 'Nose/Sinuses')" fill="#F3F4F6"/>
                                 
-                                <!-- Pelvis -->
-                                <path d="M 65 230 Q 100 235 135 230 L 130 260 Q 100 265 70 260 Z" class="body-region" data-region="urinary" id="region-pelvis"/>
+                                <!-- Mouth/Throat -->
+                                <path d="M 98 72 Q 110 78 122 72 Q 115 75 110 76 Q 105 75 98 72" class="body-region" data-region="respiratory" data-subregion="throat" onclick="selectBodyRegion('respiratory', 'Mouth/Throat')"/>
                                 
-                                <!-- Left Leg -->
-                                <path d="M 70 260 L 65 340 Q 60 370 55 390 L 70 390 Q 75 370 80 340 L 90 260" class="body-region" data-region="musculoskeletal" id="region-left-leg"/>
+                                <!-- NECK -->
+                                <path d="M 95 82 L 92 105 Q 110 108 128 105 L 125 82 Q 110 88 95 82" class="body-region" data-region="head" data-subregion="neck" onclick="selectBodyRegion('head', 'Neck')"/>
+                                <text x="110" y="97" class="region-label">Neck</text>
                                 
-                                <!-- Right Leg -->
-                                <path d="M 110 260 L 120 340 Q 125 370 130 390 L 145 390 Q 140 370 135 340 L 130 260" class="body-region" data-region="musculoskeletal" id="region-right-leg"/>
+                                <!-- TORSO REGIONS -->
+                                <!-- Left Shoulder -->
+                                <path d="M 55 108 Q 50 112 45 118 L 60 128 L 75 108 Q 65 105 55 108" class="body-region" data-region="musculoskeletal" data-subregion="left-shoulder" onclick="selectBodyRegion('musculoskeletal', 'Left Shoulder')"/>
+                                <text x="55" y="120" class="region-label">L.Shldr</text>
+                                
+                                <!-- Right Shoulder -->
+                                <path d="M 165 108 Q 170 112 175 118 L 160 128 L 145 108 Q 155 105 165 108" class="body-region" data-region="musculoskeletal" data-subregion="right-shoulder" onclick="selectBodyRegion('musculoskeletal', 'Right Shoulder')"/>
+                                <text x="165" y="120" class="region-label">R.Shldr</text>
+                                
+                                <!-- Upper Chest (Left) -->
+                                <path d="M 75 108 L 60 128 L 68 168 L 108 165 L 108 108 Q 90 105 75 108" class="body-region" data-region="respiratory" data-subregion="left-chest" onclick="selectBodyRegion('respiratory', 'Left Chest')"/>
+                                <text x="85" y="142" class="region-label">L.Chest</text>
+                                
+                                <!-- Upper Chest (Right) -->
+                                <path d="M 145 108 L 160 128 L 152 168 L 112 165 L 112 108 Q 130 105 145 108" class="body-region" data-region="respiratory" data-subregion="right-chest" onclick="selectBodyRegion('respiratory', 'Right Chest')"/>
+                                <text x="135" y="142" class="region-label">R.Chest</text>
+                                
+                                <!-- Heart Region (Center Chest) -->
+                                <ellipse cx="95" cy="145" rx="18" ry="20" class="body-region" data-region="cardiovascular" data-subregion="heart" onclick="selectBodyRegion('cardiovascular', 'Heart Area')" style="fill:#FEE2E2; stroke:#F87171;"/>
+                                <text x="95" y="148" class="region-label" style="fill:#991B1B;">Heart</text>
+                                
+                                <!-- Upper Abdomen / Stomach -->
+                                <path d="M 68 168 L 65 205 Q 110 212 155 205 L 152 168 Q 110 172 68 168" class="body-region" data-region="gastrointestinal" data-subregion="upper-abdomen" onclick="selectBodyRegion('gastrointestinal', 'Upper Abdomen/Stomach')"/>
+                                <text x="110" y="188" class="region-label">Stomach</text>
+                                
+                                <!-- Lower Abdomen -->
+                                <path d="M 65 205 L 68 245 Q 110 250 152 245 L 155 205 Q 110 212 65 205" class="body-region" data-region="gastrointestinal" data-subregion="lower-abdomen" onclick="selectBodyRegion('gastrointestinal', 'Lower Abdomen')"/>
+                                <text x="110" y="228" class="region-label">Abdomen</text>
+                                
+                                <!-- Liver Region (Right side) -->
+                                <ellipse cx="140" cy="185" rx="15" ry="12" class="body-region" data-region="gastrointestinal" data-subregion="liver" onclick="selectBodyRegion('gastrointestinal', 'Liver Area')" style="opacity:0.7"/>
+                                <text x="140" y="188" class="region-label">Liver</text>
+                                
+                                <!-- PELVIC REGION -->
+                                <!-- Pelvis/Groin -->
+                                <path d="M 68 245 L 75 275 Q 110 280 145 275 L 152 245 Q 110 250 68 245" class="body-region" data-region="urinary" data-subregion="pelvis" onclick="selectBodyRegion('urinary', 'Pelvic/Groin Area')"/>
+                                <text x="110" y="262" class="region-label">Pelvis</text>
+                                
+                                <!-- LEFT ARM -->
+                                <!-- Upper Arm -->
+                                <path d="M 45 118 L 32 175 L 45 180 L 60 128" class="body-region" data-region="musculoskeletal" data-subregion="left-upper-arm" onclick="selectBodyRegion('musculoskeletal', 'Left Upper Arm')"/>
+                                <text x="42" y="152" class="region-label">Arm</text>
+                                
+                                <!-- Left Elbow -->
+                                <ellipse cx="38" cy="185" rx="10" ry="8" class="body-region" data-region="musculoskeletal" data-subregion="left-elbow" onclick="selectBodyRegion('musculoskeletal', 'Left Elbow')"/>
+                                
+                                <!-- Left Forearm -->
+                                <path d="M 32 190 L 22 250 L 35 255 L 45 195" class="body-region" data-region="musculoskeletal" data-subregion="left-forearm" onclick="selectBodyRegion('musculoskeletal', 'Left Forearm')"/>
+                                
+                                <!-- Left Wrist/Hand -->
+                                <path d="M 22 250 L 15 280 Q 20 295 32 290 L 35 255" class="body-region" data-region="musculoskeletal" data-subregion="left-hand" onclick="selectBodyRegion('musculoskeletal', 'Left Wrist/Hand')"/>
+                                <text x="25" y="275" class="region-label">Hand</text>
+                                
+                                <!-- RIGHT ARM -->
+                                <!-- Upper Arm -->
+                                <path d="M 175 118 L 188 175 L 175 180 L 160 128" class="body-region" data-region="musculoskeletal" data-subregion="right-upper-arm" onclick="selectBodyRegion('musculoskeletal', 'Right Upper Arm')"/>
+                                <text x="178" y="152" class="region-label">Arm</text>
+                                
+                                <!-- Right Elbow -->
+                                <ellipse cx="182" cy="185" rx="10" ry="8" class="body-region" data-region="musculoskeletal" data-subregion="right-elbow" onclick="selectBodyRegion('musculoskeletal', 'Right Elbow')"/>
+                                
+                                <!-- Right Forearm -->
+                                <path d="M 188 190 L 198 250 L 185 255 L 175 195" class="body-region" data-region="musculoskeletal" data-subregion="right-forearm" onclick="selectBodyRegion('musculoskeletal', 'Right Forearm')"/>
+                                
+                                <!-- Right Wrist/Hand -->
+                                <path d="M 198 250 L 205 280 Q 200 295 188 290 L 185 255" class="body-region" data-region="musculoskeletal" data-subregion="right-hand" onclick="selectBodyRegion('musculoskeletal', 'Right Wrist/Hand')"/>
+                                <text x="195" y="275" class="region-label">Hand</text>
+                                
+                                <!-- LEFT LEG -->
+                                <!-- Left Hip -->
+                                <ellipse cx="85" cy="278" rx="12" ry="10" class="body-region" data-region="musculoskeletal" data-subregion="left-hip" onclick="selectBodyRegion('musculoskeletal', 'Left Hip')"/>
+                                
+                                <!-- Left Thigh -->
+                                <path d="M 75 275 L 70 340 L 88 345 L 95 280" class="body-region" data-region="musculoskeletal" data-subregion="left-thigh" onclick="selectBodyRegion('musculoskeletal', 'Left Thigh')"/>
+                                <text x="80" y="315" class="region-label">Thigh</text>
+                                
+                                <!-- Left Knee -->
+                                <ellipse cx="78" cy="355" rx="12" ry="14" class="body-region" data-region="musculoskeletal" data-subregion="left-knee" onclick="selectBodyRegion('musculoskeletal', 'Left Knee')"/>
+                                <text x="78" y="358" class="region-label">Knee</text>
+                                
+                                <!-- Left Shin/Calf -->
+                                <path d="M 68 368 L 62 415 L 78 420 L 88 368" class="body-region" data-region="musculoskeletal" data-subregion="left-shin" onclick="selectBodyRegion('musculoskeletal', 'Left Shin/Calf')"/>
+                                
+                                <!-- Left Ankle/Foot -->
+                                <path d="M 62 415 L 50 435 Q 68 440 82 435 L 78 420" class="body-region" data-region="musculoskeletal" data-subregion="left-foot" onclick="selectBodyRegion('musculoskeletal', 'Left Ankle/Foot')"/>
+                                <text x="68" y="432" class="region-label">Foot</text>
+                                
+                                <!-- RIGHT LEG -->
+                                <!-- Right Hip -->
+                                <ellipse cx="135" cy="278" rx="12" ry="10" class="body-region" data-region="musculoskeletal" data-subregion="right-hip" onclick="selectBodyRegion('musculoskeletal', 'Right Hip')"/>
+                                
+                                <!-- Right Thigh -->
+                                <path d="M 125 280 L 132 345 L 150 340 L 145 275" class="body-region" data-region="musculoskeletal" data-subregion="right-thigh" onclick="selectBodyRegion('musculoskeletal', 'Right Thigh')"/>
+                                <text x="138" y="315" class="region-label">Thigh</text>
+                                
+                                <!-- Right Knee -->
+                                <ellipse cx="142" cy="355" rx="12" ry="14" class="body-region" data-region="musculoskeletal" data-subregion="right-knee" onclick="selectBodyRegion('musculoskeletal', 'Right Knee')"/>
+                                <text x="142" y="358" class="region-label">Knee</text>
+                                
+                                <!-- Right Shin/Calf -->
+                                <path d="M 132 368 L 142 420 L 158 415 L 152 368" class="body-region" data-region="musculoskeletal" data-subregion="right-shin" onclick="selectBodyRegion('musculoskeletal', 'Right Shin/Calf')"/>
+                                
+                                <!-- Right Ankle/Foot -->
+                                <path d="M 142 420 L 138 435 Q 155 440 170 435 L 158 415" class="body-region" data-region="musculoskeletal" data-subregion="right-foot" onclick="selectBodyRegion('musculoskeletal', 'Right Ankle/Foot')"/>
+                                <text x="152" y="432" class="region-label">Foot</text>
+                            </svg>
+                            
+                            <!-- Back View (Hidden by default) -->
+                            <svg id="body-back" viewBox="0 0 220 440" class="body-map hidden">
+                                <!-- HEAD BACK -->
+                                <ellipse cx="110" cy="40" rx="32" ry="35" class="body-region" data-region="head" data-subregion="back-head" onclick="selectBodyRegion('head', 'Back of Head')"/>
+                                <text x="110" y="43" class="region-label">Head</text>
+                                
+                                <!-- NECK BACK -->
+                                <path d="M 92 70 L 90 105 Q 110 110 130 105 L 128 70 Q 110 75 92 70" class="body-region" data-region="head" data-subregion="neck-back" onclick="selectBodyRegion('head', 'Neck (Back)')"/>
+                                <text x="110" y="92" class="region-label">Neck</text>
+                                
+                                <!-- UPPER BACK -->
+                                <!-- Left Upper Back -->
+                                <path d="M 55 108 L 45 125 L 58 175 L 108 172 L 108 108 Q 80 105 55 108" class="body-region" data-region="musculoskeletal" data-subregion="left-upper-back" onclick="selectBodyRegion('musculoskeletal', 'Left Upper Back')"/>
+                                <text x="78" y="145" class="region-label">L.Back</text>
+                                
+                                <!-- Right Upper Back -->
+                                <path d="M 165 108 L 175 125 L 162 175 L 112 172 L 112 108 Q 140 105 165 108" class="body-region" data-region="musculoskeletal" data-subregion="right-upper-back" onclick="selectBodyRegion('musculoskeletal', 'Right Upper Back')"/>
+                                <text x="142" y="145" class="region-label">R.Back</text>
+                                
+                                <!-- Spine (Upper) -->
+                                <rect x="105" y="108" width="10" height="70" rx="3" class="body-region" data-region="musculoskeletal" data-subregion="upper-spine" onclick="selectBodyRegion('musculoskeletal', 'Upper Spine')" style="fill:#E5E7EB;"/>
+                                <text x="110" y="145" class="region-label">Spine</text>
+                                
+                                <!-- LOWER BACK -->
+                                <!-- Left Lower Back -->
+                                <path d="M 58 175 L 62 245 L 108 242 L 108 172 Z" class="body-region" data-region="musculoskeletal" data-subregion="left-lower-back" onclick="selectBodyRegion('musculoskeletal', 'Left Lower Back')"/>
+                                <text x="82" y="212" class="region-label">L.Lumbar</text>
+                                
+                                <!-- Right Lower Back -->
+                                <path d="M 162 175 L 158 245 L 112 242 L 112 172 Z" class="body-region" data-region="musculoskeletal" data-subregion="right-lower-back" onclick="selectBodyRegion('musculoskeletal', 'Right Lower Back')"/>
+                                <text x="138" y="212" class="region-label">R.Lumbar</text>
+                                
+                                <!-- Spine (Lower) -->
+                                <rect x="105" y="178" width="10" height="70" rx="3" class="body-region" data-region="musculoskeletal" data-subregion="lower-spine" onclick="selectBodyRegion('musculoskeletal', 'Lower Spine/Lumbar')" style="fill:#E5E7EB;"/>
+                                
+                                <!-- Kidney Areas -->
+                                <ellipse cx="75" cy="195" rx="12" ry="18" class="body-region" data-region="urinary" data-subregion="left-kidney" onclick="selectBodyRegion('urinary', 'Left Kidney Area')" style="fill:#DBEAFE; stroke:#3B82F6;"/>
+                                <text x="75" y="198" class="region-label" style="fill:#1E40AF;">Kidney</text>
+                                
+                                <ellipse cx="145" cy="195" rx="12" ry="18" class="body-region" data-region="urinary" data-subregion="right-kidney" onclick="selectBodyRegion('urinary', 'Right Kidney Area')" style="fill:#DBEAFE; stroke:#3B82F6;"/>
+                                <text x="145" y="198" class="region-label" style="fill:#1E40AF;">Kidney</text>
+                                
+                                <!-- BUTTOCKS -->
+                                <path d="M 62 245 L 68 285 Q 88 290 108 285 L 108 242 Z" class="body-region" data-region="musculoskeletal" data-subregion="left-buttock" onclick="selectBodyRegion('musculoskeletal', 'Left Buttock')"/>
+                                <text x="85" y="268" class="region-label">L.Glute</text>
+                                
+                                <path d="M 158 245 L 152 285 Q 132 290 112 285 L 112 242 Z" class="body-region" data-region="musculoskeletal" data-subregion="right-buttock" onclick="selectBodyRegion('musculoskeletal', 'Right Buttock')"/>
+                                <text x="135" y="268" class="region-label">R.Glute</text>
+                                
+                                <!-- Tailbone/Sacrum -->
+                                <path d="M 100 248 L 95 275 Q 110 280 125 275 L 120 248 Q 110 250 100 248" class="body-region" data-region="musculoskeletal" data-subregion="tailbone" onclick="selectBodyRegion('musculoskeletal', 'Tailbone/Sacrum')" style="fill:#E5E7EB;"/>
+                                
+                                <!-- LEFT ARM (BACK) -->
+                                <path d="M 45 118 L 28 180 L 42 185 L 55 125" class="body-region" data-region="musculoskeletal" data-subregion="left-tricep" onclick="selectBodyRegion('musculoskeletal', 'Left Tricep')"/>
+                                <path d="M 28 190 L 18 255 L 32 260 L 42 195" class="body-region" data-region="musculoskeletal" data-subregion="left-forearm-back" onclick="selectBodyRegion('musculoskeletal', 'Left Forearm (Back)')"/>
+                                <path d="M 18 255 L 12 285 Q 22 295 35 288 L 32 260" class="body-region" data-region="musculoskeletal" data-subregion="left-hand-back" onclick="selectBodyRegion('musculoskeletal', 'Left Hand (Back)')"/>
+                                
+                                <!-- RIGHT ARM (BACK) -->
+                                <path d="M 175 118 L 192 180 L 178 185 L 165 125" class="body-region" data-region="musculoskeletal" data-subregion="right-tricep" onclick="selectBodyRegion('musculoskeletal', 'Right Tricep')"/>
+                                <path d="M 192 190 L 202 255 L 188 260 L 178 195" class="body-region" data-region="musculoskeletal" data-subregion="right-forearm-back" onclick="selectBodyRegion('musculoskeletal', 'Right Forearm (Back)')"/>
+                                <path d="M 202 255 L 208 285 Q 198 295 185 288 L 188 260" class="body-region" data-region="musculoskeletal" data-subregion="right-hand-back" onclick="selectBodyRegion('musculoskeletal', 'Right Hand (Back)')"/>
+                                
+                                <!-- LEFT LEG (BACK) -->
+                                <!-- Left Hamstring -->
+                                <path d="M 68 285 L 65 345 L 88 350 L 95 290" class="body-region" data-region="musculoskeletal" data-subregion="left-hamstring" onclick="selectBodyRegion('musculoskeletal', 'Left Hamstring')"/>
+                                <text x="78" y="320" class="region-label">Hamstring</text>
+                                
+                                <!-- Left Back of Knee -->
+                                <ellipse cx="76" cy="360" rx="12" ry="10" class="body-region" data-region="musculoskeletal" data-subregion="left-knee-back" onclick="selectBodyRegion('musculoskeletal', 'Left Knee (Back)')"/>
+                                
+                                <!-- Left Calf -->
+                                <path d="M 65 370 L 58 420 L 78 425 L 88 372" class="body-region" data-region="musculoskeletal" data-subregion="left-calf" onclick="selectBodyRegion('musculoskeletal', 'Left Calf')"/>
+                                <text x="72" y="400" class="region-label">Calf</text>
+                                
+                                <!-- Left Heel -->
+                                <ellipse cx="68" cy="432" rx="12" ry="8" class="body-region" data-region="musculoskeletal" data-subregion="left-heel" onclick="selectBodyRegion('musculoskeletal', 'Left Heel')"/>
+                                
+                                <!-- RIGHT LEG (BACK) -->
+                                <!-- Right Hamstring -->
+                                <path d="M 125 290 L 132 350 L 155 345 L 152 285" class="body-region" data-region="musculoskeletal" data-subregion="right-hamstring" onclick="selectBodyRegion('musculoskeletal', 'Right Hamstring')"/>
+                                <text x="142" y="320" class="region-label">Hamstring</text>
+                                
+                                <!-- Right Back of Knee -->
+                                <ellipse cx="144" cy="360" rx="12" ry="10" class="body-region" data-region="musculoskeletal" data-subregion="right-knee-back" onclick="selectBodyRegion('musculoskeletal', 'Right Knee (Back)')"/>
+                                
+                                <!-- Right Calf -->
+                                <path d="M 132 372 L 142 425 L 162 420 L 155 370" class="body-region" data-region="musculoskeletal" data-subregion="right-calf" onclick="selectBodyRegion('musculoskeletal', 'Right Calf')"/>
+                                <text x="148" y="400" class="region-label">Calf</text>
+                                
+                                <!-- Right Heel -->
+                                <ellipse cx="152" cy="432" rx="12" ry="8" class="body-region" data-region="musculoskeletal" data-subregion="right-heel" onclick="selectBodyRegion('musculoskeletal', 'Right Heel')"/>
                             </svg>
                         </div>
                         
-                        <div class="mt-4 text-center text-sm text-gray-500">
-                            Click on a body region to select symptoms for that area
+                        <!-- Selected Region Display -->
+                        <div id="selected-region-info" class="mt-3 p-3 bg-cream rounded-xl text-center hidden">
+                            <div class="text-xs text-gray-500 mb-1">Selected Region</div>
+                            <div class="font-semibold text-navy" id="selected-region-name">-</div>
+                        </div>
+                        
+                        <div class="mt-3 text-center text-xs text-gray-400">
+                            <i class="fas fa-hand-pointer mr-1"></i>
+                            Click a body region to filter symptoms
                         </div>
                         
                         <!-- Selected Count -->
-                        <div class="mt-4 p-4 bg-cream rounded-xl text-center">
+                        <div class="mt-3 p-4 bg-gradient-to-r from-navy to-navy-light rounded-xl text-center">
                             <div class="text-3xl font-bold text-gold" id="symptom-count">0</div>
-                            <div class="text-sm text-gray-500">Symptoms Selected</div>
+                            <div class="text-sm text-white/80">Symptoms Selected</div>
+                        </div>
+                        
+                        <!-- Quick Region Buttons -->
+                        <div class="mt-3 grid grid-cols-3 gap-2">
+                            <button onclick="selectBodyRegion('general', 'General')" class="p-2 text-xs bg-gray-100 hover:bg-gold hover:text-navy rounded-lg transition-colors">
+                                <i class="fas fa-user block text-lg mb-1"></i>General
+                            </button>
+                            <button onclick="selectBodyRegion('mental', 'Mental Health')" class="p-2 text-xs bg-gray-100 hover:bg-gold hover:text-navy rounded-lg transition-colors">
+                                <i class="fas fa-brain block text-lg mb-1"></i>Mental
+                            </button>
+                            <button onclick="selectBodyRegion('skin', 'Skin')" class="p-2 text-xs bg-gray-100 hover:bg-gold hover:text-navy rounded-lg transition-colors">
+                                <i class="fas fa-hand-dots block text-lg mb-1"></i>Skin
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1315,24 +1623,90 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         }
         
         // Body Map
+        let currentBodyView = 'front';
+        let selectedBodyRegion = null;
+        
         function setupBodyMap() {
+            // Body regions are now handled via onclick attributes in the SVG
+            // This function sets up additional interactivity
             document.querySelectorAll('.body-region').forEach(region => {
-                region.addEventListener('click', function() {
-                    const regionId = this.dataset.region;
-                    
-                    // Select category tab
-                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                    const tab = document.querySelector('[data-category="' + regionId + '"]');
-                    if (tab) {
-                        tab.classList.add('active');
-                        currentCategory = regionId;
-                        renderSymptoms(regionId);
+                region.addEventListener('mouseenter', function() {
+                    const subregion = this.dataset.subregion;
+                    if (subregion) {
+                        this.style.cursor = 'pointer';
                     }
-                    
-                    // Highlight region
-                    document.querySelectorAll('.body-region').forEach(r => r.classList.remove('selected'));
-                    this.classList.add('selected');
                 });
+            });
+        }
+        
+        // Toggle between front and back body views
+        function toggleBodyView(view) {
+            currentBodyView = view;
+            
+            // Update buttons
+            document.getElementById('view-front').classList.toggle('active', view === 'front');
+            document.getElementById('view-back').classList.toggle('active', view === 'back');
+            
+            // Toggle SVG visibility
+            document.getElementById('body-front').classList.toggle('hidden', view !== 'front');
+            document.getElementById('body-back').classList.toggle('hidden', view !== 'back');
+        }
+        
+        // Select body region and filter symptoms
+        function selectBodyRegion(regionId, regionName) {
+            selectedBodyRegion = { id: regionId, name: regionName };
+            
+            // Update selected region display
+            const infoDiv = document.getElementById('selected-region-info');
+            const nameDiv = document.getElementById('selected-region-name');
+            infoDiv.classList.remove('hidden');
+            nameDiv.textContent = regionName;
+            
+            // Highlight the selected region
+            document.querySelectorAll('.body-region').forEach(r => r.classList.remove('selected'));
+            event.target.classList.add('selected');
+            
+            // Select category tab and filter symptoms
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            const tab = document.querySelector('[data-category="' + regionId + '"]');
+            if (tab) {
+                tab.classList.add('active');
+                currentCategory = regionId;
+                renderSymptoms(regionId);
+            } else {
+                // If no specific tab, show all but scroll to relevant section
+                document.querySelector('[data-category="all"]').classList.add('active');
+                currentCategory = 'all';
+                renderSymptoms('all');
+            }
+            
+            // Scroll symptoms grid into view
+            document.getElementById('symptoms-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Update body map to show regions with symptoms
+        function updateBodyMapHighlights() {
+            document.querySelectorAll('.body-region').forEach(region => {
+                region.classList.remove('has-symptoms');
+            });
+            
+            // Check which categories have selected symptoms
+            const categoriesWithSymptoms = new Set();
+            selectedSymptoms.forEach((data, symptomId) => {
+                for (const [catId, cat] of Object.entries(symptomCategories)) {
+                    if (cat.symptoms.some(s => s.id === symptomId)) {
+                        categoriesWithSymptoms.add(catId);
+                        break;
+                    }
+                }
+            });
+            
+            // Highlight regions
+            document.querySelectorAll('.body-region').forEach(region => {
+                const regionCategory = region.dataset.region;
+                if (categoriesWithSymptoms.has(regionCategory)) {
+                    region.classList.add('has-symptoms');
+                }
             });
         }
         
