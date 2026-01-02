@@ -1007,6 +1007,55 @@ export const CONDITION_PREVALENCE_WEIGHTS: Record<string, number> = {
   'sjogrens-syndrome': 0.003,    // ~0.3% prevalence
   'hashimotos': 0.05,            // ~5% prevalence
   'pleurisy': 0.01,              // ~1% of chest pain
+  
+  // NEW CONDITIONS (to reach 100+)
+  // Emergency conditions
+  'aortic-dissection': 0.002,    // ~0.2% of chest pain presentations
+  'hypertensive-crisis': 0.005,  // ~0.5% of hypertensive patients
+  'hypoglycemia-severe': 0.008,  // ~0.8% of diabetic emergencies
+  'pneumothorax': 0.005,         // ~0.5% of chest pain/SOB
+  
+  // Infectious diseases
+  'tuberculosis': 0.003,         // ~0.3% prevalence (varies by region)
+  'hepatitis-b': 0.01,           // ~1% chronic carriers
+  'hepatitis-c': 0.008,          // ~0.8% prevalence
+  'hiv-aids': 0.004,             // ~0.4% prevalence
+  'malaria': 0.001,              // ~0.1% (travelers/endemic)
+  'dengue-fever': 0.001,         // ~0.1% (travelers/endemic)
+  
+  // Neurological
+  'trigeminal-neuralgia': 0.001, // ~0.1% prevalence
+  'cluster-headache': 0.001,     // ~0.1% prevalence
+  'dementia-alzheimers': 0.06,   // ~6% prevalence >65
+  'neuropathy-peripheral': 0.08, // ~8% prevalence
+  
+  // Respiratory
+  'sleep-apnea': 0.10,           // ~10% prevalence
+  'pulmonary-fibrosis': 0.005,   // ~0.5% prevalence
+  
+  // Gastrointestinal
+  'liver-cirrhosis': 0.01,       // ~1% prevalence
+  'hemorrhoids': 0.15,           // ~15% prevalence
+  'cholecystitis': 0.025,        // ~2.5% of abdominal pain
+  
+  // Endocrine
+  'addisons-disease': 0.001,     // ~0.1% prevalence
+  'cushings-syndrome': 0.0005,   // ~0.05% prevalence
+  
+  // Blood disorders
+  'iron-deficiency-anemia': 0.10, // ~10% prevalence
+  'thrombocytopenia': 0.005,     // ~0.5% prevalence
+  'leukemia': 0.002,             // ~0.2% prevalence
+  
+  // Eye conditions
+  'cataracts': 0.15,             // ~15% prevalence >60
+  'macular-degeneration': 0.08,  // ~8% prevalence >60
+  'conjunctivitis': 0.10,        // ~10% annual incidence
+  
+  // Pediatric conditions
+  'croup': 0.06,                 // ~6% in children <5
+  'rsv-infection': 0.08,         // ~8% in infants
+  'hand-foot-mouth': 0.05,       // ~5% in children <5
 }
 
 // ============================================================================
@@ -1088,6 +1137,69 @@ export const SYMPTOM_DIAGNOSTIC_VALUES: Record<string, Record<string, SymptomDia
     'sneezing': { sensitivity: 0.75, specificity: 0.50, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.50 },
     'sore-throat': { sensitivity: 0.70, specificity: 0.45, likelihoodRatioPositive: 1.27, likelihoodRatioNegative: 0.67 },
     'cough': { sensitivity: 0.65, specificity: 0.40, likelihoodRatioPositive: 1.08, likelihoodRatioNegative: 0.88 },
+  },
+  
+  // NEW CONDITIONS - Diagnostic Values
+  'aortic-dissection': {
+    'chest-pain-severe': { sensitivity: 0.90, specificity: 0.40, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.25 },
+    'chest-pain-tearing': { sensitivity: 0.75, specificity: 0.95, likelihoodRatioPositive: 15.00, likelihoodRatioNegative: 0.26 },
+    'back-pain-severe': { sensitivity: 0.70, specificity: 0.75, likelihoodRatioPositive: 2.80, likelihoodRatioNegative: 0.40 },
+    'sweating-excessive': { sensitivity: 0.60, specificity: 0.70, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.57 },
+  },
+  'hypoglycemia-severe': {
+    'confusion': { sensitivity: 0.85, specificity: 0.55, likelihoodRatioPositive: 1.89, likelihoodRatioNegative: 0.27 },
+    'sweating-excessive': { sensitivity: 0.90, specificity: 0.50, likelihoodRatioPositive: 1.80, likelihoodRatioNegative: 0.20 },
+    'trembling': { sensitivity: 0.85, specificity: 0.65, likelihoodRatioPositive: 2.43, likelihoodRatioNegative: 0.23 },
+    'rapid-heartbeat': { sensitivity: 0.75, specificity: 0.50, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.50 },
+  },
+  'tuberculosis': {
+    'cough-chronic': { sensitivity: 0.85, specificity: 0.45, likelihoodRatioPositive: 1.55, likelihoodRatioNegative: 0.33 },
+    'cough-blood': { sensitivity: 0.40, specificity: 0.95, likelihoodRatioPositive: 8.00, likelihoodRatioNegative: 0.63 },
+    'night-sweats': { sensitivity: 0.65, specificity: 0.80, likelihoodRatioPositive: 3.25, likelihoodRatioNegative: 0.44 },
+    'weight-loss-unexplained': { sensitivity: 0.70, specificity: 0.70, likelihoodRatioPositive: 2.33, likelihoodRatioNegative: 0.43 },
+  },
+  'sleep-apnea': {
+    'snoring-loud': { sensitivity: 0.90, specificity: 0.50, likelihoodRatioPositive: 1.80, likelihoodRatioNegative: 0.20 },
+    'breathing-stops-sleep': { sensitivity: 0.85, specificity: 0.90, likelihoodRatioPositive: 8.50, likelihoodRatioNegative: 0.17 },
+    'excessive-daytime-sleepiness': { sensitivity: 0.80, specificity: 0.60, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.33 },
+  },
+  'gout': {
+    'joint-pain-severe': { sensitivity: 0.90, specificity: 0.50, likelihoodRatioPositive: 1.80, likelihoodRatioNegative: 0.20 },
+    'joint-swelling': { sensitivity: 0.85, specificity: 0.60, likelihoodRatioPositive: 2.13, likelihoodRatioNegative: 0.25 },
+    'joint-redness': { sensitivity: 0.75, specificity: 0.75, likelihoodRatioPositive: 3.00, likelihoodRatioNegative: 0.33 },
+  },
+  'dementia-alzheimers': {
+    'memory-loss': { sensitivity: 0.95, specificity: 0.40, likelihoodRatioPositive: 1.58, likelihoodRatioNegative: 0.13 },
+    'confusion': { sensitivity: 0.85, specificity: 0.55, likelihoodRatioPositive: 1.89, likelihoodRatioNegative: 0.27 },
+    'disorientation': { sensitivity: 0.80, specificity: 0.75, likelihoodRatioPositive: 3.20, likelihoodRatioNegative: 0.27 },
+  },
+  'anaphylaxis': {
+    'difficulty-breathing': { sensitivity: 0.90, specificity: 0.60, likelihoodRatioPositive: 2.25, likelihoodRatioNegative: 0.17 },
+    'swelling-lips-tongue': { sensitivity: 0.75, specificity: 0.95, likelihoodRatioPositive: 15.00, likelihoodRatioNegative: 0.26 },
+    'hives': { sensitivity: 0.85, specificity: 0.80, likelihoodRatioPositive: 4.25, likelihoodRatioNegative: 0.19 },
+    'rapid-heartbeat': { sensitivity: 0.70, specificity: 0.50, likelihoodRatioPositive: 1.40, likelihoodRatioNegative: 0.60 },
+  },
+  'diabetic-ketoacidosis': {
+    'thirst-excessive': { sensitivity: 0.90, specificity: 0.50, likelihoodRatioPositive: 1.80, likelihoodRatioNegative: 0.20 },
+    'frequent-urination': { sensitivity: 0.85, specificity: 0.45, likelihoodRatioPositive: 1.55, likelihoodRatioNegative: 0.33 },
+    'nausea': { sensitivity: 0.80, specificity: 0.40, likelihoodRatioPositive: 1.33, likelihoodRatioNegative: 0.50 },
+    'confusion': { sensitivity: 0.60, specificity: 0.80, likelihoodRatioPositive: 3.00, likelihoodRatioNegative: 0.50 },
+  },
+  'deep-vein-thrombosis': {
+    'leg-swelling-one': { sensitivity: 0.85, specificity: 0.75, likelihoodRatioPositive: 3.40, likelihoodRatioNegative: 0.20 },
+    'leg-pain-walking': { sensitivity: 0.70, specificity: 0.65, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.46 },
+    'skin-warmth': { sensitivity: 0.60, specificity: 0.80, likelihoodRatioPositive: 3.00, likelihoodRatioNegative: 0.50 },
+  },
+  'atrial-fibrillation': {
+    'irregular-heartbeat': { sensitivity: 0.95, specificity: 0.85, likelihoodRatioPositive: 6.33, likelihoodRatioNegative: 0.06 },
+    'palpitations': { sensitivity: 0.80, specificity: 0.60, likelihoodRatioPositive: 2.00, likelihoodRatioNegative: 0.33 },
+    'rapid-heartbeat': { sensitivity: 0.75, specificity: 0.50, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.50 },
+  },
+  'sepsis': {
+    'high-fever': { sensitivity: 0.85, specificity: 0.50, likelihoodRatioPositive: 1.70, likelihoodRatioNegative: 0.30 },
+    'rapid-heartbeat': { sensitivity: 0.90, specificity: 0.40, likelihoodRatioPositive: 1.50, likelihoodRatioNegative: 0.25 },
+    'rapid-breathing': { sensitivity: 0.85, specificity: 0.45, likelihoodRatioPositive: 1.55, likelihoodRatioNegative: 0.33 },
+    'confusion': { sensitivity: 0.70, specificity: 0.75, likelihoodRatioPositive: 2.80, likelihoodRatioNegative: 0.40 },
   },
 }
 
