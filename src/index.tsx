@@ -4083,6 +4083,180 @@ app.post('/api/calculators/ideal-weight', async (c) => {
   })
 })
 
+// ============================================================================
+// MEDISENSE AI™ v4.0 - World-Class Symptom Analyzer
+// ============================================================================
+
+// MediSense v4 Page
+app.get('/medisense', async (c) => {
+  const { mediSenseV4Page } = await import('./pages/medisense-ui')
+  return c.html(mediSenseV4Page())
+})
+
+// MediSense v4 Analysis API
+app.post('/api/medisense/v4/analyze', async (c) => {
+  try {
+    const { symptoms, patient, freeText } = await c.req.json()
+    
+    if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
+      return c.json({ success: false, error: 'No symptoms provided' }, 400)
+    }
+    
+    if (!patient || !patient.age || !patient.gender) {
+      return c.json({ success: false, error: 'Patient age and gender are required' }, 400)
+    }
+    
+    const { analyzeSymptomsV4 } = await import('./pages/medisense-v4')
+    
+    // Ensure patient profile has all required fields
+    const patientProfile = {
+      age: patient.age,
+      gender: patient.gender,
+      height: patient.height,
+      weight: patient.weight,
+      bmi: patient.bmi,
+      preConditions: patient.preConditions || [],
+      medications: patient.medications || [],
+      allergies: patient.allergies || [],
+      familyHistory: patient.familyHistory || [],
+      lifestyle: patient.lifestyle || {
+        smoking: 'never',
+        alcohol: 'none',
+        exercise: 'moderate',
+        diet: 'standard'
+      },
+      vitals: patient.vitals
+    }
+    
+    const result = analyzeSymptomsV4(symptoms, patientProfile, freeText)
+    
+    return c.json({ success: true, data: result })
+  } catch (error) {
+    console.error('MediSense v4 Analysis Error:', error)
+    return c.json({ 
+      success: false, 
+      error: 'Analysis failed. Please try again.',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500)
+  }
+})
+
+// MediSense v4 Symptom Categories API
+app.get('/api/medisense/v4/symptoms', async (c) => {
+  const { SYMPTOM_CATEGORIES_V4 } = await import('./pages/medisense-ui')
+  return c.json({ success: true, data: SYMPTOM_CATEGORIES_V4 })
+})
+
+// MediSense v4 Conditions Database API
+app.get('/api/medisense/v4/conditions', async (c) => {
+  const { CONDITIONS_DATABASE_V4 } = await import('./pages/medisense-v4')
+  return c.json({ success: true, data: Object.values(CONDITIONS_DATABASE_V4) })
+})
+
+// MediSense v4 Triage Levels API
+app.get('/api/medisense/v4/triage-levels', async (c) => {
+  const { TRIAGE_LEVELS_V4 } = await import('./pages/medisense-v4')
+  return c.json({ success: true, data: TRIAGE_LEVELS_V4 })
+})
+
+// MediSense v4 Red Flags API
+app.get('/api/medisense/v4/red-flags', async (c) => {
+  const { RED_FLAGS_DATABASE } = await import('./pages/medisense-v4')
+  return c.json({ success: true, data: RED_FLAGS_DATABASE })
+})
+
+// Legacy MediSense analyze endpoint (backward compatible)
+app.post('/api/medisense/analyze', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { symptoms, age, gender, duration, severity } = body
+    
+    if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
+      return c.json({ success: false, error: 'No symptoms provided' }, 400)
+    }
+    
+    // Convert to v4 format
+    const { analyzeSymptomsV4 } = await import('./pages/medisense-v4')
+    
+    const symptomInputs = symptoms.map((s: string) => ({
+      id: s,
+      name: s,
+      severity: severity || 'moderate',
+      duration: duration || '1day',
+      frequency: 'intermittent' as const,
+      onset: 'gradual' as const
+    }))
+    
+    const patientProfile = {
+      age: age || 35,
+      gender: (gender || 'other') as 'male' | 'female' | 'other',
+      preConditions: body.preConditions ? body.preConditions.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
+      medications: body.medications ? body.medications.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
+      allergies: [],
+      familyHistory: [],
+      lifestyle: {
+        smoking: 'never' as const,
+        alcohol: 'none' as const,
+        exercise: 'moderate' as const,
+        diet: 'standard' as const
+      }
+    }
+    
+    const result = analyzeSymptomsV4(symptomInputs, patientProfile, body.additionalDetails)
+    
+    // Convert back to legacy format for backward compatibility
+    return c.json({
+      success: true,
+      data: {
+        urgency: result.triage,
+        possibleConditions: result.differentialDiagnosis.slice(0, 5).map(d => ({
+          condition: {
+            id: d.condition.id,
+            name: d.condition.name,
+            icd11: d.condition.icd11,
+            category: d.condition.category,
+            urgency: d.condition.urgency,
+            description: d.condition.name
+          },
+          matchScore: d.probability,
+          matchingSymptoms: [...d.matchingSymptoms.primary, ...d.matchingSymptoms.secondary],
+          missingSymptoms: d.missingKeySymptoms
+        })),
+        recommendedSpecialists: result.specialists.slice(0, 3).map(s => ({
+          name: s.name,
+          icon: s.icon,
+          description: s.reason
+        })),
+        recommendations: [
+          ...result.recommendations.immediate.map(r => ({
+            priority: 'critical' as const,
+            action: r.action,
+            description: r.reason
+          })),
+          ...result.recommendations.shortTerm.map(r => ({
+            priority: 'medium' as const,
+            action: r.action,
+            description: r.reason
+          })),
+          ...result.recommendations.followUp.map(r => ({
+            priority: 'low' as const,
+            action: r.action,
+            description: r.reason
+          }))
+        ],
+        disclaimer: result.disclaimer,
+        analysisTimestamp: result.timestamp
+      }
+    })
+  } catch (error) {
+    console.error('MediSense Analysis Error:', error)
+    return c.json({ 
+      success: false, 
+      error: 'Analysis failed. Please try again.'
+    }, 500)
+  }
+})
+
 // Services Page (comprehensive journey & packages overview)
 app.get('/services', async (c) => {
   const { servicesPage } = await import('./pages/services')
