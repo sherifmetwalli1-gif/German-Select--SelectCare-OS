@@ -639,7 +639,7 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                                 <h3 class="font-bold text-navy mb-2">AI Health Insight</h3>
                                 <p class="text-gray-600 mb-3">Based on your recent data, your cardiovascular health is improving. Your resting heart rate has decreased by 5 bpm over the past 2 weeks, indicating better fitness. Consider increasing your daily steps to 7,500 for optimal pre-surgical conditioning.</p>
                                 <div class="flex items-center space-x-4">
-                                    <button class="text-gold font-semibold text-sm">View Full Analysis →</button>
+                                    <button onclick="window.location.href='/medisense'" class="text-gold font-semibold text-sm hover:text-navy transition-colors">View Full Analysis →</button>
                                     <span class="text-xs text-gray-400">Updated 2 hours ago</span>
                                 </div>
                             </div>
