@@ -589,10 +589,16 @@ export function analyzeSymptoms(
   // Generate recommendations
   const recommendations = generateRecommendations(symptoms, matchedConditions, urgency, age, gender)
   
+  // Filter out undefined specialists
+  const validSpecialists = Array.from(specialists)
+    .map(s => SPECIALISTS[s as keyof typeof SPECIALISTS])
+    .filter((spec): spec is typeof SPECIALISTS[keyof typeof SPECIALISTS] => spec !== undefined)
+    .slice(0, 3)
+  
   return {
     urgency: URGENCY_LEVELS[urgency as keyof typeof URGENCY_LEVELS],
     possibleConditions: matchedConditions.slice(0, 5),
-    recommendedSpecialists: Array.from(specialists).slice(0, 3).map(s => SPECIALISTS[s as keyof typeof SPECIALISTS]),
+    recommendedSpecialists: validSpecialists,
     recommendations,
     disclaimer: 'This analysis is for informational purposes only and does not constitute medical advice. Please consult a qualified healthcare professional for proper diagnosis and treatment.',
     analysisTimestamp: new Date().toISOString()
@@ -1455,15 +1461,15 @@ export const mediSenseAIPage = () => `<!DOCTYPE html>
             const specList = document.getElementById('specialists-list');
             specList.innerHTML = '';
             
-            data.recommendedSpecialists.forEach(spec => {
+            data.recommendedSpecialists.filter(spec => spec !== null && spec !== undefined).forEach(spec => {
                 const div = document.createElement('div');
                 div.className = 'p-4 bg-cream rounded-xl text-center';
                 div.innerHTML = \`
                     <div class="w-12 h-12 bg-navy rounded-full mx-auto flex items-center justify-center mb-3">
-                        <i class="fas \${spec.icon} text-white text-xl"></i>
+                        <i class="fas \${spec.icon || 'fa-user-md'} text-white text-xl"></i>
                     </div>
-                    <h4 class="font-bold text-navy">\${spec.name}</h4>
-                    <p class="text-xs text-gray-500">\${spec.description}</p>
+                    <h4 class="font-bold text-navy">\${spec.name || 'Specialist'}</h4>
+                    <p class="text-xs text-gray-500">\${spec.description || 'Medical specialist'}</p>
                 \`;
                 specList.appendChild(div);
             });
