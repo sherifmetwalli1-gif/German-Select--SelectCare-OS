@@ -3696,25 +3696,21 @@ app.get('/family-hub', async (c) => {
 })
 
 // ============================================================================
-// MEDISENSE AI™ - INTELLIGENT SYMPTOM ANALYZER
+// MEDISENSE AI™ - INTELLIGENT SYMPTOM ANALYZER (Legacy routes redirect to v4)
 // ============================================================================
 
-// MediSense AI Page
-app.get('/medisense', async (c) => {
-  const { mediSenseAIPage } = await import('./pages/symptom-analyzer')
-  return c.html(mediSenseAIPage())
-})
-
-// Alias routes for symptom checker
+// Alias routes for symptom checker (redirect to v4 MediSense)
 app.get('/symptom-checker', async (c) => {
-  const { mediSenseAIPage } = await import('./pages/symptom-analyzer')
-  return c.html(mediSenseAIPage())
+  const { mediSenseV4Page } = await import('./pages/medisense-ui')
+  return c.html(mediSenseV4Page())
 })
 
 app.get('/ai-diagnosis', async (c) => {
-  const { mediSenseAIPage } = await import('./pages/symptom-analyzer')
-  return c.html(mediSenseAIPage())
+  const { mediSenseV4Page } = await import('./pages/medisense-ui')
+  return c.html(mediSenseV4Page())
 })
+
+// Legacy MediSense page route removed - using v4 at /medisense below
 
 // MediSense AI API - Get symptom categories
 app.get('/api/medisense/symptoms', async (c) => {
@@ -3747,51 +3743,8 @@ app.get('/api/medisense/body-regions', async (c) => {
 })
 
 // MediSense AI API - Main symptom analysis endpoint
-app.post('/api/medisense/analyze', async (c) => {
-  const { analyzeSymptoms, SYMPTOM_CATEGORIES, CONDITIONS_DATABASE, URGENCY_LEVELS, SPECIALISTS } = await import('./pages/symptom-analyzer')
-  
-  try {
-    const body = await c.req.json()
-    const { symptoms, age, gender, duration, severity, preConditions, medications, additionalDetails } = body
-    
-    if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
-      return c.json({ success: false, error: 'At least one symptom is required' }, 400)
-    }
-    
-    if (!age || !gender) {
-      return c.json({ success: false, error: 'Age and gender are required' }, 400)
-    }
-    
-    const result = analyzeSymptoms(
-      symptoms,
-      parseInt(age),
-      gender,
-      duration || 'unknown',
-      {
-        preExistingConditions: preConditions ? preConditions.split(',').map((s: string) => s.trim()) : [],
-        medications: medications ? medications.split(',').map((s: string) => s.trim()) : []
-      }
-    )
-    
-    return c.json({
-      success: true,
-      data: result,
-      meta: {
-        symptomsAnalyzed: symptoms.length,
-        conditionsMatched: result.possibleConditions.length,
-        analysisVersion: '2.0.0',
-        model: 'MediSense AI v2.0'
-      }
-    })
-  } catch (error) {
-    console.error('MediSense analysis error:', error)
-    return c.json({ 
-      success: false, 
-      error: 'Analysis failed. Please try again.',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, 500)
-  }
-})
+// NOTE: This legacy endpoint is now handled by v4 backend below (line ~4169)
+// The v4 backend provides backward compatibility with the legacy response format
 
 // MediSense AI API - Quick symptom lookup
 app.get('/api/medisense/symptom/:id', async (c) => {
