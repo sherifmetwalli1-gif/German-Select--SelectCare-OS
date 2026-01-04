@@ -39,6 +39,32 @@ export const aiConciergePage = () => `
         @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
         .ai-avatar { position: relative; }
         .ai-avatar::before { content: ''; position: absolute; inset: -4px; background: var(--gold); border-radius: 50%; animation: pulse-ring 2s ease-out infinite; opacity: 0; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 0 max(20px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            color: #9CA3AF;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-item:hover { color: #6B7280; }
+        .nav-item.active { color: #C9A227; }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .input-area { padding-bottom: 80px; }
     </style>
 </head>
 <body class="flex flex-col">
@@ -266,7 +292,7 @@ export const aiConciergePage = () => `
     </div>
     
     <!-- Input Area -->
-    <div class="px-5 py-4 bg-cream">
+    <div class="px-5 py-4 bg-cream input-area">
         <div class="input-container flex items-center gap-3 px-4 py-2">
             <button class="text-gray-400"><i class="fas fa-plus-circle text-xl"></i></button>
             <input type="text" placeholder="Ask me anything about your health..." class="flex-1 py-2 outline-none text-sm">
@@ -277,6 +303,32 @@ export const aiConciergePage = () => `
         </div>
         <p class="text-center text-xs text-gray-400 mt-2">AI responses are informational only. Always consult a doctor for medical advice.</p>
     </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="flex justify-around items-center max-w-md mx-auto">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/daily-wellness" class="nav-item">
+                <i class="fas fa-heart"></i>
+                <span>Wellness</span>
+            </a>
+            <a href="/ai-concierge" class="nav-item active">
+                <i class="fas fa-robot"></i>
+                <span>AI</span>
+            </a>
+            <a href="/medisense" class="nav-item">
+                <i class="fas fa-stethoscope"></i>
+                <span>MediSense</span>
+            </a>
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>
 `;

@@ -30,6 +30,35 @@ export const adminPage = (c: Context) => {
         .badge-warning { background: #fef3c7; color: #92400e; }
         .badge-danger { background: #fee2e2; color: #991b1b; }
         .badge-info { background: #dbeafe; color: #1e40af; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 256px;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 0 max(12px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            color: #9CA3AF;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-item:hover { color: #6B7280; }
+        .nav-item.active { color: #3B82F6; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+        
+        @media (max-width: 768px) {
+            .bottom-nav { left: 0; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -567,6 +596,32 @@ export const adminPage = (c: Context) => {
             }
         });
     </script>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="flex justify-around items-center max-w-md mx-auto">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/daily-wellness" class="nav-item">
+                <i class="fas fa-heart"></i>
+                <span>Wellness</span>
+            </a>
+            <a href="/medisense" class="nav-item">
+                <i class="fas fa-stethoscope"></i>
+                <span>MediSense</span>
+            </a>
+            <a href="/admin" class="nav-item active">
+                <i class="fas fa-shield-alt"></i>
+                <span>Admin</span>
+            </a>
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>`
 }

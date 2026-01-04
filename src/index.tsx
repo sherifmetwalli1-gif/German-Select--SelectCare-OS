@@ -3614,6 +3614,11 @@ app.get('/affiliate', async (c) => {
   return c.html(affiliatePage(c))
 })
 
+app.get('/doctors', async (c) => {
+  const { doctorsPage } = await import('./pages/doctors')
+  return c.html(doctorsPage(c))
+})
+
 // ============================================================================
 // MONETIZATION & ENGAGEMENT PAGES
 // ============================================================================
@@ -3698,6 +3703,18 @@ app.get('/family-hub', async (c) => {
 // ============================================================================
 // MEDISENSE AI™ - INTELLIGENT SYMPTOM ANALYZER (Legacy routes redirect to v4)
 // ============================================================================
+
+// Symptom Analyzer standalone page
+app.get('/symptom-analyzer', async (c) => {
+  const { mediSenseAIPage } = await import('./pages/symptom-analyzer')
+  return c.html(mediSenseAIPage())
+})
+
+// Patient Dashboard alias
+app.get('/patient-dashboard', async (c) => {
+  const { patientDashboardPage } = await import('./pages/patient-dashboard')
+  return c.html(patientDashboardPage())
+})
 
 // Alias routes for symptom checker (redirect to v4 MediSense)
 app.get('/symptom-checker', async (c) => {

@@ -26,6 +26,32 @@ export const affiliatePage = (c: Context) => {
         .badge-paid { background: #dbeafe; color: #1e40af; }
         .link-box { background: linear-gradient(135deg, #f3e8ff 0%, #fdf2f8 100%); border: 1px dashed #a855f7; }
         .copy-btn:hover { background: #7c3aed; color: white; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 0 max(20px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            color: #9CA3AF;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-item:hover { color: #6B7280; }
+        .nav-item.active { color: #8B5CF6; }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .page-content { padding-bottom: 100px; }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -502,6 +528,32 @@ export const affiliatePage = (c: Context) => {
             });
         }
     </script>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="flex justify-around items-center max-w-md mx-auto">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/daily-wellness" class="nav-item">
+                <i class="fas fa-heart"></i>
+                <span>Wellness</span>
+            </a>
+            <a href="/affiliate" class="nav-item active">
+                <i class="fas fa-handshake"></i>
+                <span>Affiliate</span>
+            </a>
+            <a href="/rewards" class="nav-item">
+                <i class="fas fa-coins"></i>
+                <span>Rewards</span>
+            </a>
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>`
 }

@@ -195,6 +195,32 @@ export const subscriptionPage = () => `
         .savings-badge { background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .float-animation { animation: float 3s ease-in-out infinite; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 0 max(20px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            color: #9CA3AF;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .bottom-nav .nav-item:hover { color: #6B7280; }
+        .bottom-nav .nav-item.active { color: var(--gold); }
+        .bottom-nav .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        main { padding-bottom: 100px; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -389,6 +415,32 @@ export const subscriptionPage = () => `
             }
         }
     </script>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="flex justify-around items-center max-w-md mx-auto">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/daily-wellness" class="nav-item">
+                <i class="fas fa-heart"></i>
+                <span>Wellness</span>
+            </a>
+            <a href="/subscription" class="nav-item active">
+                <i class="fas fa-crown"></i>
+                <span>Plans</span>
+            </a>
+            <a href="/marketplace" class="nav-item">
+                <i class="fas fa-store"></i>
+                <span>Shop</span>
+            </a>
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>
 `;

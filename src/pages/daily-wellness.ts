@@ -394,24 +394,33 @@ export const dailyWellnessPage = () => `
         </div>
     </main>
     
+    <!-- Floating AI Button -->
+    <a href="/ai-concierge" class="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center text-navy text-2xl shadow-lg z-50 hover:scale-105 transition-transform" title="AI Health Assistant">
+        <i class="fas fa-robot"></i>
+    </a>
+    
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-40">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="text-center text-gray-400 py-2 px-3">
-                <i class="fas fa-home text-xl"></i>
-                <p class="text-xs mt-1">Home</p>
+            <a href="/" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-home text-xl mb-1"></i>
+                <span class="text-xs">Home</span>
             </a>
-            <a href="/daily-wellness" class="text-center text-gold py-2 px-3">
-                <i class="fas fa-heart text-xl"></i>
-                <p class="text-xs mt-1">Wellness</p>
+            <a href="/daily-wellness" class="flex flex-col items-center py-2 px-3 text-yellow-600">
+                <i class="fas fa-heart text-xl mb-1"></i>
+                <span class="text-xs">Wellness</span>
             </a>
-            <a href="/ai-concierge" class="text-center text-gray-400 py-2 px-3">
-                <i class="fas fa-robot text-xl"></i>
-                <p class="text-xs mt-1">AI</p>
+            <a href="/medisense" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-stethoscope text-xl mb-1"></i>
+                <span class="text-xs">MediSense</span>
             </a>
-            <a href="/profile" class="text-center text-gray-400 py-2 px-3">
-                <i class="fas fa-user text-xl"></i>
-                <p class="text-xs mt-1">Profile</p>
+            <a href="/rewards" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-coins text-xl mb-1"></i>
+                <span class="text-xs">Rewards</span>
+            </a>
+            <a href="/marketplace" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-store text-xl mb-1"></i>
+                <span class="text-xs">Shop</span>
             </a>
         </div>
     </nav>

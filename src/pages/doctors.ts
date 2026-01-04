@@ -16,6 +16,32 @@ export function doctorsPage(c: Context): string {
         .german-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); }
         .card-hover { transition: all 0.3s ease; }
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 0 max(20px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            color: #9CA3AF;
+            font-size: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-item:hover { color: #6B7280; }
+        .nav-item.active { color: #3B82F6; }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        main { padding-bottom: 100px; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -218,6 +244,32 @@ export function doctorsPage(c: Context): string {
             premiumFilter.addEventListener('change', applyFilters);
         }
     </script>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="flex justify-around items-center max-w-md mx-auto">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/doctors" class="nav-item active">
+                <i class="fas fa-user-md"></i>
+                <span>Doctors</span>
+            </a>
+            <a href="/booking" class="nav-item">
+                <i class="fas fa-calendar-plus"></i>
+                <span>Book</span>
+            </a>
+            <a href="/medisense" class="nav-item">
+                <i class="fas fa-stethoscope"></i>
+                <span>MediSense</span>
+            </a>
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>`
 }
