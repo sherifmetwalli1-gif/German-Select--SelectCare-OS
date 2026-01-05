@@ -92,6 +92,43 @@ export const HEALTH_CALCULATORS = {
       { name: 'Miller', description: 'Adjusted for larger body frames' },
       { name: 'Hamwi', description: 'Used for medication dosing' }
     ]
+  },
+  calorieCalculator: {
+    id: 'calorie-tdee',
+    name: 'Calorie & TDEE Calculator',
+    description: 'Calculate daily calorie needs using science-backed BMR and TDEE formulas',
+    icon: 'fa-fire-alt',
+    formulas: [
+      { 
+        name: 'Mifflin-St Jeor', 
+        description: 'Most accurate for general population (1990)',
+        male: 'BMR = (10 × weight kg) + (6.25 × height cm) – (5 × age) + 5',
+        female: 'BMR = (10 × weight kg) + (6.25 × height cm) – (5 × age) – 161'
+      },
+      { 
+        name: 'Harris-Benedict', 
+        description: 'Classic formula revised in 1984',
+        male: 'BMR = 88.362 + (13.397 × weight) + (4.799 × height) – (5.677 × age)',
+        female: 'BMR = 447.593 + (9.247 × weight) + (3.098 × height) – (4.330 × age)'
+      },
+      { 
+        name: 'Katch-McArdle', 
+        description: 'Best for lean individuals with known body fat %',
+        formula: 'BMR = 370 + (21.6 × Lean Body Mass kg)'
+      }
+    ],
+    activityMultipliers: [
+      { level: 'Sedentary', multiplier: 1.2, description: 'Little or no exercise' },
+      { level: 'Lightly Active', multiplier: 1.375, description: 'Light exercise 1-3 days/week' },
+      { level: 'Moderately Active', multiplier: 1.55, description: 'Moderate exercise 3-5 days/week' },
+      { level: 'Very Active', multiplier: 1.725, description: 'Hard exercise 6-7 days/week' },
+      { level: 'Extremely Active', multiplier: 1.9, description: 'Very hard exercise, physical job' }
+    ],
+    macroRatios: {
+      balanced: { protein: 30, carbs: 40, fat: 30 },
+      lowCarb: { protein: 40, carbs: 20, fat: 40 },
+      highProtein: { protein: 40, carbs: 35, fat: 25 }
+    }
   }
 }
 
@@ -1072,6 +1109,213 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                         </div>
                     </div>
                 </div>
+                
+                <!-- CALORIE/TDEE CALCULATOR - Best Practices from MyFitnessPal, Calculator.net, Forbes TDEE -->
+                <div class="card p-6 calculator-card md:col-span-2 lg:col-span-3">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-fire-alt text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-navy">Calorie & TDEE Calculator</h3>
+                                <p class="text-sm text-gray-500">Calculate your daily calorie needs using science-backed formulas</p>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-gradient-to-r from-orange-100 to-red-100 text-orange-600 px-3 py-1 rounded-full font-semibold">
+                            <i class="fas fa-star mr-1"></i>Premium
+                        </span>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Input Section -->
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-3"><i class="fas fa-user mr-2"></i>Personal Information</h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs text-gray-600 font-medium">Age</label>
+                                        <input type="number" id="cal-age" placeholder="35" min="15" max="100" class="input-field" oninput="calculateCalories()">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-gray-600 font-medium">Gender</label>
+                                        <select id="cal-gender" class="input-field" onchange="calculateCalories()">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-gray-600 font-medium">Height (cm)</label>
+                                        <input type="number" id="cal-height" placeholder="175" min="100" max="250" class="input-field" oninput="calculateCalories()">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-gray-600 font-medium">Weight (kg)</label>
+                                        <input type="number" id="cal-weight" placeholder="80" min="30" max="300" class="input-field" oninput="calculateCalories()">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-3"><i class="fas fa-running mr-2"></i>Activity Level</h4>
+                                <select id="cal-activity" class="input-field mb-2" onchange="calculateCalories()">
+                                    <option value="1.2">Sedentary (little or no exercise)</option>
+                                    <option value="1.375">Lightly Active (light exercise 1-3 days/week)</option>
+                                    <option value="1.55" selected>Moderately Active (moderate exercise 3-5 days/week)</option>
+                                    <option value="1.725">Very Active (hard exercise 6-7 days/week)</option>
+                                    <option value="1.9">Extremely Active (very hard exercise, physical job)</option>
+                                </select>
+                                <div class="text-xs text-gray-500">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Choose the level that best describes your typical week
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-3"><i class="fas fa-bullseye mr-2"></i>Your Goal</h4>
+                                <select id="cal-goal" class="input-field mb-2" onchange="calculateCalories()">
+                                    <option value="-1000">Aggressive Weight Loss (-1 kg/week)</option>
+                                    <option value="-500">Moderate Weight Loss (-0.5 kg/week)</option>
+                                    <option value="-250">Mild Weight Loss (-0.25 kg/week)</option>
+                                    <option value="0" selected>Maintain Weight</option>
+                                    <option value="250">Mild Weight Gain (+0.25 kg/week)</option>
+                                    <option value="500">Moderate Weight Gain (+0.5 kg/week)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-3"><i class="fas fa-flask mr-2"></i>Formula Method</h4>
+                                <select id="cal-formula" class="input-field" onchange="calculateCalories()">
+                                    <option value="mifflin" selected>Mifflin-St Jeor (Most Accurate)</option>
+                                    <option value="harris">Harris-Benedict (Classic)</option>
+                                    <option value="katch">Katch-McArdle (Requires Body Fat %)</option>
+                                </select>
+                                <div id="body-fat-input" class="mt-3 hidden">
+                                    <label class="text-xs text-gray-600 font-medium">Body Fat Percentage (%)</label>
+                                    <input type="number" id="cal-bodyfat" placeholder="20" min="3" max="60" class="input-field" oninput="calculateCalories()">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Results Section -->
+                        <div id="cal-result" class="space-y-4 hidden">
+                            <!-- BMR Result -->
+                            <div class="p-5 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-blue-100 text-sm font-medium">Basal Metabolic Rate (BMR)</span>
+                                    <i class="fas fa-heartbeat text-blue-200"></i>
+                                </div>
+                                <div class="text-3xl font-bold" id="cal-bmr">--</div>
+                                <div class="text-blue-200 text-xs mt-1">Calories burned at complete rest</div>
+                            </div>
+                            
+                            <!-- TDEE Result -->
+                            <div class="p-5 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl text-white">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-orange-100 text-sm font-medium">Total Daily Energy Expenditure (TDEE)</span>
+                                    <i class="fas fa-fire text-orange-200"></i>
+                                </div>
+                                <div class="text-4xl font-bold" id="cal-tdee">--</div>
+                                <div class="text-orange-200 text-xs mt-1">Calories you burn per day with activity</div>
+                            </div>
+                            
+                            <!-- Target Calories -->
+                            <div class="p-5 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl text-white">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-green-100 text-sm font-medium">Daily Calorie Target</span>
+                                    <i class="fas fa-utensils text-green-200"></i>
+                                </div>
+                                <div class="text-4xl font-bold" id="cal-target">--</div>
+                                <div class="text-green-200 text-xs mt-1" id="cal-goal-text">To maintain your current weight</div>
+                            </div>
+                            
+                            <!-- Macronutrient Breakdown -->
+                            <div class="p-5 bg-white border-2 border-gray-100 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-4 flex items-center">
+                                    <i class="fas fa-chart-pie text-purple-500 mr-2"></i>
+                                    Recommended Macros
+                                </h4>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-blue-600" id="macro-protein">--g</div>
+                                        <div class="text-xs text-gray-500">Protein (30%)</div>
+                                        <div class="text-xs text-blue-500 font-medium" id="macro-protein-cal">-- cal</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-amber-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-amber-600" id="macro-carbs">--g</div>
+                                        <div class="text-xs text-gray-500">Carbs (40%)</div>
+                                        <div class="text-xs text-amber-500 font-medium" id="macro-carbs-cal">-- cal</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-green-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-green-600" id="macro-fat">--g</div>
+                                        <div class="text-xs text-gray-500">Fat (30%)</div>
+                                        <div class="text-xs text-green-500 font-medium" id="macro-fat-cal">-- cal</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Weekly Projection -->
+                            <div class="p-5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-3 flex items-center">
+                                    <i class="fas fa-calendar-alt text-indigo-500 mr-2"></i>
+                                    Weight Projection
+                                </h4>
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div class="p-2 bg-white rounded-lg">
+                                        <div class="text-sm font-bold text-navy" id="proj-1month">--</div>
+                                        <div class="text-xs text-gray-500">1 Month</div>
+                                    </div>
+                                    <div class="p-2 bg-white rounded-lg">
+                                        <div class="text-sm font-bold text-navy" id="proj-3month">--</div>
+                                        <div class="text-xs text-gray-500">3 Months</div>
+                                    </div>
+                                    <div class="p-2 bg-white rounded-lg">
+                                        <div class="text-sm font-bold text-navy" id="proj-6month">--</div>
+                                        <div class="text-xs text-gray-500">6 Months</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tips -->
+                            <div class="p-4 bg-blue-50 rounded-xl">
+                                <h4 class="font-semibold text-blue-800 mb-2 text-sm">
+                                    <i class="fas fa-lightbulb mr-2"></i>Pro Tips
+                                </h4>
+                                <ul class="text-xs text-blue-700 space-y-1" id="cal-tips">
+                                    <li>• Track your food intake for accurate results</li>
+                                    <li>• Adjust calories based on weekly progress</li>
+                                    <li>• Don't go below 1200 cal (women) / 1500 cal (men)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div id="cal-empty" class="flex flex-col items-center justify-center py-12 text-center">
+                            <div class="w-24 h-24 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-fire-alt text-orange-400 text-4xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-navy mb-2">Enter Your Details</h4>
+                            <p class="text-sm text-gray-500 max-w-xs">
+                                Fill in the form to calculate your daily calorie needs based on the most accurate scientific formulas.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Formula Explanation -->
+                    <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+                        <details>
+                            <summary class="cursor-pointer font-semibold text-navy text-sm flex items-center">
+                                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                About the Formulas
+                            </summary>
+                            <div class="mt-3 text-xs text-gray-600 space-y-2">
+                                <p><strong>Mifflin-St Jeor (Recommended):</strong> Most accurate for the general population. Developed in 1990 and validated in numerous studies.</p>
+                                <p><strong>Harris-Benedict:</strong> Classic formula from 1919, revised in 1984. May slightly overestimate for some individuals.</p>
+                                <p><strong>Katch-McArdle:</strong> Best for lean individuals who know their body fat percentage. Accounts for lean body mass.</p>
+                                <p class="text-gray-500 italic mt-2">Note: All formulas are estimates. Monitor your progress and adjust as needed. Consult a healthcare provider for personalized advice.</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1820,6 +2064,158 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
             }
             
             document.getElementById('ideal-result').classList.remove('hidden');
+        }
+        
+        // ============================================================================
+        // CALORIE/TDEE CALCULATOR - Best Practices from MyFitnessPal, Calculator.net
+        // Using Mifflin-St Jeor (most accurate), Harris-Benedict, and Katch-McArdle formulas
+        // ============================================================================
+        
+        // Show/hide body fat input based on formula selection
+        document.getElementById('cal-formula')?.addEventListener('change', function() {
+            const bodyFatInput = document.getElementById('body-fat-input');
+            if (this.value === 'katch') {
+                bodyFatInput.classList.remove('hidden');
+            } else {
+                bodyFatInput.classList.add('hidden');
+            }
+        });
+        
+        function calculateCalories() {
+            const age = parseFloat(document.getElementById('cal-age')?.value);
+            const gender = document.getElementById('cal-gender')?.value;
+            const heightCm = parseFloat(document.getElementById('cal-height')?.value);
+            const weightKg = parseFloat(document.getElementById('cal-weight')?.value);
+            const activityLevel = parseFloat(document.getElementById('cal-activity')?.value);
+            const goal = parseFloat(document.getElementById('cal-goal')?.value);
+            const formula = document.getElementById('cal-formula')?.value;
+            const bodyFat = parseFloat(document.getElementById('cal-bodyfat')?.value);
+            
+            // Validate required fields
+            if (!age || !heightCm || !weightKg || age < 15 || heightCm < 100 || weightKg < 30) {
+                return;
+            }
+            
+            // For Katch-McArdle, require body fat
+            if (formula === 'katch' && (!bodyFat || bodyFat < 3 || bodyFat > 60)) {
+                return;
+            }
+            
+            let bmr = 0;
+            
+            // Calculate BMR based on selected formula
+            switch (formula) {
+                case 'mifflin':
+                    // Mifflin-St Jeor Equation (1990) - Most accurate for general population
+                    // Men: BMR = (10 × weight in kg) + (6.25 × height in cm) – (5 × age in years) + 5
+                    // Women: BMR = (10 × weight in kg) + (6.25 × height in cm) – (5 × age in years) – 161
+                    if (gender === 'male') {
+                        bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+                    } else {
+                        bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+                    }
+                    break;
+                    
+                case 'harris':
+                    // Harris-Benedict Equation (Revised 1984)
+                    // Men: BMR = 88.362 + (13.397 × weight in kg) + (4.799 × height in cm) – (5.677 × age in years)
+                    // Women: BMR = 447.593 + (9.247 × weight in kg) + (3.098 × height in cm) – (4.330 × age in years)
+                    if (gender === 'male') {
+                        bmr = 88.362 + (13.397 * weightKg) + (4.799 * heightCm) - (5.677 * age);
+                    } else {
+                        bmr = 447.593 + (9.247 * weightKg) + (3.098 * heightCm) - (4.330 * age);
+                    }
+                    break;
+                    
+                case 'katch':
+                    // Katch-McArdle Formula - Uses Lean Body Mass
+                    // BMR = 370 + (21.6 × Lean Body Mass in kg)
+                    const leanMass = weightKg * (1 - bodyFat / 100);
+                    bmr = 370 + (21.6 * leanMass);
+                    break;
+                    
+                default:
+                    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + (gender === 'male' ? 5 : -161);
+            }
+            
+            // Calculate TDEE (BMR × Activity Factor)
+            const tdee = bmr * activityLevel;
+            
+            // Calculate target calories based on goal
+            const targetCalories = Math.max(gender === 'male' ? 1500 : 1200, tdee + goal);
+            
+            // Calculate macros (using balanced approach: 30% protein, 40% carbs, 30% fat)
+            const proteinCal = targetCalories * 0.30;
+            const carbsCal = targetCalories * 0.40;
+            const fatCal = targetCalories * 0.30;
+            
+            const proteinGrams = Math.round(proteinCal / 4); // 4 cal per gram
+            const carbsGrams = Math.round(carbsCal / 4); // 4 cal per gram
+            const fatGrams = Math.round(fatCal / 9); // 9 cal per gram
+            
+            // Weight projections (3500 cal = 1 lb = 0.45 kg)
+            const weeklyChange = (goal * 7) / 7700; // kg per week (7700 cal ≈ 1 kg)
+            const proj1Month = weightKg + (weeklyChange * 4);
+            const proj3Month = weightKg + (weeklyChange * 12);
+            const proj6Month = weightKg + (weeklyChange * 24);
+            
+            // Update UI
+            document.getElementById('cal-bmr').textContent = Math.round(bmr).toLocaleString() + ' cal';
+            document.getElementById('cal-tdee').textContent = Math.round(tdee).toLocaleString() + ' cal';
+            document.getElementById('cal-target').textContent = Math.round(targetCalories).toLocaleString() + ' cal';
+            
+            // Update goal text
+            const goalTexts = {
+                '-1000': 'For aggressive weight loss (-1 kg/week)',
+                '-500': 'For moderate weight loss (-0.5 kg/week)',
+                '-250': 'For mild weight loss (-0.25 kg/week)',
+                '0': 'To maintain your current weight',
+                '250': 'For mild weight gain (+0.25 kg/week)',
+                '500': 'For moderate weight gain (+0.5 kg/week)'
+            };
+            document.getElementById('cal-goal-text').textContent = goalTexts[goal.toString()] || 'To maintain your current weight';
+            
+            // Update macros
+            document.getElementById('macro-protein').textContent = proteinGrams + 'g';
+            document.getElementById('macro-carbs').textContent = carbsGrams + 'g';
+            document.getElementById('macro-fat').textContent = fatGrams + 'g';
+            document.getElementById('macro-protein-cal').textContent = Math.round(proteinCal) + ' cal';
+            document.getElementById('macro-carbs-cal').textContent = Math.round(carbsCal) + ' cal';
+            document.getElementById('macro-fat-cal').textContent = Math.round(fatCal) + ' cal';
+            
+            // Update projections
+            document.getElementById('proj-1month').textContent = proj1Month.toFixed(1) + ' kg';
+            document.getElementById('proj-3month').textContent = proj3Month.toFixed(1) + ' kg';
+            document.getElementById('proj-6month').textContent = proj6Month.toFixed(1) + ' kg';
+            
+            // Update tips based on goal
+            const tipsEl = document.getElementById('cal-tips');
+            if (goal < 0) {
+                tipsEl.innerHTML = \`
+                    <li>• Create a calorie deficit through diet and exercise</li>
+                    <li>• Prioritize protein to preserve muscle mass</li>
+                    <li>• Don't drop below \${gender === 'male' ? '1500' : '1200'} calories daily</li>
+                    <li>• Aim for 0.5-1% body weight loss per week max</li>
+                \`;
+            } else if (goal > 0) {
+                tipsEl.innerHTML = \`
+                    <li>• Focus on quality calories, not just quantity</li>
+                    <li>• Include resistance training for muscle gain</li>
+                    <li>• Eat protein with every meal (aim for 1.6-2.2g/kg)</li>
+                    <li>• Track progress with measurements, not just scale</li>
+                \`;
+            } else {
+                tipsEl.innerHTML = \`
+                    <li>• Monitor your weight weekly for consistency</li>
+                    <li>• Adjust intake if weight changes significantly</li>
+                    <li>• Balance macros for optimal health</li>
+                    <li>• Stay hydrated and prioritize sleep</li>
+                \`;
+            }
+            
+            // Show results, hide empty state
+            document.getElementById('cal-result').classList.remove('hidden');
+            document.getElementById('cal-empty').classList.add('hidden');
         }
         
         // Weight Chart
