@@ -628,6 +628,463 @@ app.get('/api/doctors/:id', (c) => {
   return c.json({ success: true, data: doctor })
 })
 
+// ============================================================================
+// INTELLIGENT BOOKING SYSTEM - Best Practices from Zocdoc, Doctolib, Cal.com
+// ============================================================================
+
+// In-memory storage for bookings (in production, use D1 database)
+const bookings: any[] = []
+
+// Generate time slots for doctors
+function generateAvailabilitySlots(doctorId: string, weekOffset: number = 0) {
+  const slots: any[] = []
+  const doctor = DOCTORS.find(d => d.id === doctorId)
+  if (!doctor) return slots
+  
+  const today = new Date()
+  const startDate = new Date(today)
+  startDate.setDate(today.getDate() + 1 + (weekOffset * 7)) // Start from tomorrow
+  
+  // Generate slots for next 7 days
+  for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+    const slotDate = new Date(startDate)
+    slotDate.setDate(startDate.getDate() + dayOffset)
+    const dateStr = slotDate.toISOString().split('T')[0]
+    
+    // Skip weekends (Saturday = 6, Sunday = 0)
+    const dayOfWeek = slotDate.getDay()
+    if (dayOfWeek === 0 || dayOfWeek === 6) continue
+    
+    // Morning slots (9:00 - 12:30) - each slot 30 mins
+    const morningSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00']
+    // Afternoon slots (14:00 - 17:30)
+    const afternoonSlots = ['14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00']
+    
+    const allSlots = [...morningSlots, ...afternoonSlots]
+    
+    for (const time of allSlots) {
+      // Randomly make some slots unavailable (simulating existing bookings)
+      const isBooked = bookings.some(b => 
+        b.doctorId === doctorId && 
+        b.date === dateStr && 
+        b.time === time &&
+        b.status !== 'cancelled'
+      )
+      
+      // Add some random "already booked" slots for realism
+      const randomlyBooked = Math.random() < 0.2
+      
+      if (!isBooked && !randomlyBooked) {
+        slots.push({
+          id: `${doctorId}-${dateStr}-${time}`,
+          doctorId,
+          date: dateStr,
+          startTime: time,
+          endTime: addMinutes(time, 30),
+          duration: 30,
+          available: true,
+          type: 'onsite', // Default to onsite consultation
+          location: doctor.location
+        })
+      }
+    }
+  }
+  
+  return slots
+}
+
+function addMinutes(time: string, minutes: number): string {
+  const [hours, mins] = time.split(':').map(Number)
+  const totalMins = hours * 60 + mins + minutes
+  const newHours = Math.floor(totalMins / 60)
+  const newMins = totalMins % 60
+  return `${String(newHours).padStart(2, '0')}:${String(newMins).padStart(2, '0')}`
+}
+
+// Doctor availability API
+app.get('/api/doctors/:id/availability', (c) => {
+  const doctorId = c.req.param('id')
+  const weekOffset = parseInt(c.req.query('week') || '0')
+  const consultationType = c.req.query('type') || 'onsite'
+  
+  const doctor = DOCTORS.find(d => d.id === doctorId)
+  if (!doctor) return c.json({ success: false, error: 'Doctor not found' }, 404)
+  
+  const slots = generateAvailabilitySlots(doctorId, weekOffset)
+  
+  // Group slots by date for easier UI rendering
+  const slotsByDate: Record<string, typeof slots> = {}
+  slots.forEach(slot => {
+    if (!slotsByDate[slot.date]) slotsByDate[slot.date] = []
+    slotsByDate[slot.date].push(slot)
+  })
+  
+  return c.json({
+    success: true,
+    data: {
+      doctor: {
+        id: doctor.id,
+        name: doctor.name,
+        specialization: doctor.specialization,
+        location: doctor.location,
+        consultationFee: doctor.consultation_fee,
+        rating: doctor.rating,
+        avatar: doctor.avatar
+      },
+      slots,
+      slotsByDate,
+      consultationType,
+      weekOffset,
+      timezone: 'Europe/Berlin'
+    }
+  })
+})
+
+// Get next available slot for a doctor (for quick booking)
+app.get('/api/doctors/:id/next-available', (c) => {
+  const doctorId = c.req.param('id')
+  const doctor = DOCTORS.find(d => d.id === doctorId)
+  if (!doctor) return c.json({ success: false, error: 'Doctor not found' }, 404)
+  
+  // Get first available slot
+  const slots = generateAvailabilitySlots(doctorId, 0)
+  const nextSlot = slots[0] || null
+  
+  return c.json({
+    success: true,
+    data: {
+      doctor: {
+        id: doctor.id,
+        name: doctor.name,
+        specialization: doctor.specialization
+      },
+      nextAvailable: nextSlot,
+      hasAvailability: slots.length > 0
+    }
+  })
+})
+
+// Booking creation API
+app.post('/api/bookings', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { 
+      doctorId, 
+      slotId,
+      date,
+      time,
+      patientName, 
+      patientEmail, 
+      patientPhone,
+      notes,
+      consultationType,
+      affiliateCode,
+      symptoms,
+      urgency
+    } = body
+    
+    // Validation
+    if (!doctorId || !patientName || !patientEmail) {
+      return c.json({ 
+        success: false, 
+        error: 'Missing required fields: doctorId, patientName, patientEmail' 
+      }, 400)
+    }
+    
+    const doctor = DOCTORS.find(d => d.id === doctorId)
+    if (!doctor) {
+      return c.json({ success: false, error: 'Doctor not found' }, 404)
+    }
+    
+    // Check if slot is still available
+    const existingBooking = bookings.find(b => 
+      b.doctorId === doctorId && 
+      b.date === date && 
+      b.time === time && 
+      b.status !== 'cancelled'
+    )
+    
+    if (existingBooking) {
+      return c.json({ 
+        success: false, 
+        error: 'This slot has already been booked. Please choose another time.' 
+      }, 409)
+    }
+    
+    // Create booking
+    const bookingId = `BK-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+    const booking = {
+      id: bookingId,
+      doctorId,
+      doctorName: doctor.name,
+      doctorSpecialization: doctor.specialization,
+      slotId,
+      date,
+      time,
+      duration: 30,
+      patientName,
+      patientEmail,
+      patientPhone: patientPhone || null,
+      notes: notes || null,
+      consultationType: consultationType || 'onsite',
+      location: doctor.location,
+      symptoms: symptoms || [],
+      urgency: urgency || 'routine',
+      affiliateCode: affiliateCode || null,
+      price: doctor.consultation_fee,
+      currency: 'EUR',
+      status: 'confirmed',
+      paymentStatus: 'pending',
+      createdAt: new Date().toISOString(),
+      confirmationCode: bookingId.split('-')[2],
+      // Reminder settings
+      reminders: {
+        email24h: true,
+        email1h: true,
+        sms24h: !!patientPhone,
+        sms1h: !!patientPhone
+      }
+    }
+    
+    bookings.push(booking)
+    
+    // Calculate points earned (rewards system)
+    const pointsEarned = Math.floor(doctor.consultation_fee * 2)
+    
+    return c.json({
+      success: true,
+      data: {
+        booking,
+        pointsEarned,
+        message: 'Booking confirmed successfully',
+        nextSteps: [
+          'Check your email for confirmation details',
+          'You will receive a reminder 24 hours before your appointment',
+          'Prepare any medical documents or test results to bring with you',
+          'Arrive 15 minutes early to complete check-in'
+        ]
+      }
+    })
+  } catch (error) {
+    console.error('Booking error:', error)
+    return c.json({ success: false, error: 'Failed to create booking' }, 500)
+  }
+})
+
+// Get user bookings
+app.get('/api/bookings', (c) => {
+  const email = c.req.query('email')
+  const status = c.req.query('status')
+  
+  let filteredBookings = [...bookings]
+  
+  if (email) {
+    filteredBookings = filteredBookings.filter(b => b.patientEmail === email)
+  }
+  
+  if (status) {
+    filteredBookings = filteredBookings.filter(b => b.status === status)
+  }
+  
+  // Sort by date (newest first)
+  filteredBookings.sort((a, b) => new Date(b.date + 'T' + b.time).getTime() - new Date(a.date + 'T' + a.time).getTime())
+  
+  return c.json({
+    success: true,
+    data: filteredBookings,
+    total: filteredBookings.length
+  })
+})
+
+// Get single booking
+app.get('/api/bookings/:id', (c) => {
+  const id = c.req.param('id')
+  const booking = bookings.find(b => b.id === id)
+  
+  if (!booking) {
+    return c.json({ success: false, error: 'Booking not found' }, 404)
+  }
+  
+  return c.json({
+    success: true,
+    data: booking
+  })
+})
+
+// Cancel booking
+app.post('/api/bookings/:id/cancel', (c) => {
+  const id = c.req.param('id')
+  const booking = bookings.find(b => b.id === id)
+  
+  if (!booking) {
+    return c.json({ success: false, error: 'Booking not found' }, 404)
+  }
+  
+  if (booking.status === 'cancelled') {
+    return c.json({ success: false, error: 'Booking is already cancelled' }, 400)
+  }
+  
+  // Check if cancellation is allowed (24 hours before)
+  const appointmentTime = new Date(booking.date + 'T' + booking.time)
+  const hoursUntil = (appointmentTime.getTime() - Date.now()) / (1000 * 60 * 60)
+  
+  if (hoursUntil < 24) {
+    return c.json({ 
+      success: false, 
+      error: 'Cancellations must be made at least 24 hours in advance' 
+    }, 400)
+  }
+  
+  booking.status = 'cancelled'
+  booking.cancelledAt = new Date().toISOString()
+  
+  return c.json({
+    success: true,
+    data: booking,
+    message: 'Booking cancelled successfully'
+  })
+})
+
+// Reschedule booking
+app.post('/api/bookings/:id/reschedule', async (c) => {
+  const id = c.req.param('id')
+  const booking = bookings.find(b => b.id === id)
+  
+  if (!booking) {
+    return c.json({ success: false, error: 'Booking not found' }, 404)
+  }
+  
+  const body = await c.req.json()
+  const { newDate, newTime } = body
+  
+  if (!newDate || !newTime) {
+    return c.json({ success: false, error: 'New date and time required' }, 400)
+  }
+  
+  // Check if new slot is available
+  const conflicting = bookings.find(b => 
+    b.id !== id &&
+    b.doctorId === booking.doctorId && 
+    b.date === newDate && 
+    b.time === newTime && 
+    b.status !== 'cancelled'
+  )
+  
+  if (conflicting) {
+    return c.json({ 
+      success: false, 
+      error: 'New slot is not available' 
+    }, 409)
+  }
+  
+  // Update booking
+  booking.previousDate = booking.date
+  booking.previousTime = booking.time
+  booking.date = newDate
+  booking.time = newTime
+  booking.rescheduledAt = new Date().toISOString()
+  booking.status = 'rescheduled'
+  
+  return c.json({
+    success: true,
+    data: booking,
+    message: 'Booking rescheduled successfully'
+  })
+})
+
+// Intelligent booking suggestions based on symptoms
+app.post('/api/booking/suggest', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { symptoms, urgency, preferredDate, preferredTime } = body
+    
+    // Map symptoms to specializations
+    const symptomToSpec: Record<string, string[]> = {
+      'weight': ['Bariatric Surgery', 'Nutritionist'],
+      'obesity': ['Bariatric Surgery', 'Nutritionist'],
+      'heart': ['Cardiology'],
+      'chest pain': ['Cardiology'],
+      'joint': ['Orthopedics'],
+      'knee': ['Orthopedics'],
+      'hip': ['Orthopedics'],
+      'back': ['Orthopedics'],
+      'urinary': ['Urology & Andrology'],
+      'prostate': ['Urology & Andrology'],
+      'skin': ['Plastic & Reconstructive Surgery'],
+      'cosmetic': ['Plastic & Reconstructive Surgery'],
+      'diet': ['Nutritionist'],
+      'nutrition': ['Nutritionist']
+    }
+    
+    // Find matching specializations
+    const matchingSpecs = new Set<string>()
+    symptoms?.forEach((symptom: string) => {
+      Object.entries(symptomToSpec).forEach(([key, specs]) => {
+        if (symptom.toLowerCase().includes(key)) {
+          specs.forEach(s => matchingSpecs.add(s))
+        }
+      })
+    })
+    
+    // Get recommended doctors
+    let recommendedDoctors = DOCTORS.filter(d => 
+      Array.from(matchingSpecs).some(spec => 
+        d.specialization.toLowerCase().includes(spec.toLowerCase())
+      )
+    )
+    
+    // If no matches, return all available doctors
+    if (recommendedDoctors.length === 0) {
+      recommendedDoctors = DOCTORS.filter(d => d.available)
+    }
+    
+    // Sort by rating and premium status
+    recommendedDoctors.sort((a, b) => {
+      if (a.is_premium && !b.is_premium) return -1
+      if (!a.is_premium && b.is_premium) return 1
+      return b.rating - a.rating
+    })
+    
+    // Get availability for top 3 doctors
+    const suggestions = recommendedDoctors.slice(0, 3).map(doctor => {
+      const slots = generateAvailabilitySlots(doctor.id, 0)
+      const nextSlot = slots[0]
+      
+      return {
+        doctor: {
+          id: doctor.id,
+          name: doctor.name,
+          specialization: doctor.specialization,
+          rating: doctor.rating,
+          totalReviews: doctor.total_reviews,
+          consultationFee: doctor.consultation_fee,
+          isPremium: doctor.is_premium,
+          avatar: doctor.avatar
+        },
+        nextAvailable: nextSlot,
+        totalSlots: slots.length,
+        matchScore: Array.from(matchingSpecs).some(s => 
+          doctor.specialization.toLowerCase().includes(s.toLowerCase())
+        ) ? 'high' : 'medium'
+      }
+    })
+    
+    return c.json({
+      success: true,
+      data: {
+        suggestions,
+        matchedSpecializations: Array.from(matchingSpecs),
+        urgencyNote: urgency === 'urgent' 
+          ? 'Based on your symptoms, we recommend scheduling an appointment as soon as possible.'
+          : 'Based on your symptoms, we recommend scheduling a consultation within the next 1-2 weeks.'
+      }
+    })
+  } catch (error) {
+    console.error('Suggestion error:', error)
+    return c.json({ success: false, error: 'Failed to generate suggestions' }, 500)
+  }
+})
+
 // Packages API
 app.get('/api/packages', (c) => {
   return c.json({ success: true, data: CARE_PACKAGES })
@@ -2055,91 +2512,10 @@ app.get('/profile', (c) => {
   return c.html(appShell(content, 'Profile', 'profile'))
 })
 
-// Booking Page
-app.get('/booking', (c) => {
-  const content = `
-    <header class="gradient-navy px-5 pt-12 pb-6">
-        <a href="/" class="text-white mb-4 inline-block"><i class="fas fa-arrow-left mr-2"></i>Back</a>
-        <h1 class="text-white text-xl font-bold">Book Consultation</h1>
-        <p class="text-gold">Schedule with our specialists</p>
-    </header>
-    
-    <main class="px-5 py-6 space-y-6">
-        <!-- Consultation Type -->
-        <div>
-            <h3 class="font-bold text-navy mb-3">Consultation Type</h3>
-            <div class="grid grid-cols-2 gap-3">
-                <button class="card p-4 text-center border-2 border-gold">
-                    <i class="fas fa-video text-gold text-2xl mb-2"></i>
-                    <p class="font-semibold text-navy">Video Call</p>
-                    <p class="text-xs text-gray-500">From anywhere</p>
-                </button>
-                <button class="card p-4 text-center border-2 border-transparent">
-                    <i class="fas fa-hospital text-gold text-2xl mb-2"></i>
-                    <p class="font-semibold text-navy">In-Person</p>
-                    <p class="text-xs text-gray-500">At facility</p>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Select Specialty -->
-        <div>
-            <h3 class="font-bold text-navy mb-3">Select Specialty</h3>
-            <div class="grid grid-cols-2 gap-3">
-                ${TREATMENT_CATEGORIES.map(cat => `
-                    <button class="card p-4 text-left hover:border-gold hover:border-2 transition-all">
-                        <div class="w-10 h-10 bg-gold/10 rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-${cat.icon === 'weight' ? 'weight' : cat.icon === 'bone' ? 'bone' : cat.icon === 'sparkles' ? 'magic' : cat.icon === 'clock' ? 'clock' : 'heart'} text-gold"></i>
-                        </div>
-                        <p class="font-semibold text-navy text-sm">${cat.name}</p>
-                    </button>
-                `).join('')}
-            </div>
-        </div>
-        
-        <!-- Select Doctor -->
-        <div>
-            <h3 class="font-bold text-navy mb-3">Available Doctors</h3>
-            <div class="space-y-3">
-                ${DOCTORS.slice(0, 4).map(doc => `
-                    <button class="card p-4 w-full text-left hover:border-gold hover:border-2 transition-all">
-                        <div class="flex items-center space-x-3">
-                            <div class="avatar">${doc.avatar}</div>
-                            <div class="flex-1">
-                                <p class="font-semibold text-navy">${doc.name}</p>
-                                <p class="text-xs text-gray-500">${doc.specialization}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-gold">€${doc.consultation_fee}</p>
-                                <p class="text-xs text-gray-500">per session</p>
-                            </div>
-                        </div>
-                    </button>
-                `).join('')}
-            </div>
-        </div>
-        
-        <!-- Date Selection -->
-        <div>
-            <h3 class="font-bold text-navy mb-3">Select Date & Time</h3>
-            <input type="date" class="w-full p-4 border rounded-xl mb-3">
-            <div class="grid grid-cols-4 gap-2">
-                <button class="p-3 border rounded-lg text-sm hover:bg-gold hover:text-navy">9:00</button>
-                <button class="p-3 border rounded-lg text-sm hover:bg-gold hover:text-navy">10:00</button>
-                <button class="p-3 border rounded-lg text-sm bg-gold text-navy">11:00</button>
-                <button class="p-3 border rounded-lg text-sm hover:bg-gold hover:text-navy">14:00</button>
-                <button class="p-3 border rounded-lg text-sm hover:bg-gold hover:text-navy">15:00</button>
-                <button class="p-3 border rounded-lg text-sm hover:bg-gold hover:text-navy">16:00</button>
-            </div>
-        </div>
-        
-        <button class="btn-gold w-full text-lg py-4">
-            <i class="fas fa-calendar-check mr-2"></i> Confirm Booking
-        </button>
-    </main>
-  `
-  
-  return c.html(appShell(content, 'Book Consultation', 'home'))
+// Booking Page - Intelligent Booking System
+app.get('/booking', async (c) => {
+  const { bookingPage } = await import('./pages/booking')
+  return c.html(bookingPage(c))
 })
 
 // Telemedicine Page
