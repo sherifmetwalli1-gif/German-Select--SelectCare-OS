@@ -325,26 +325,49 @@ export const dailyWellnessPage = () => `
         
         <!-- Mindfulness & Mental Wellness -->
         <div>
-            <h2 class="font-bold text-navy mb-4">Mental Wellness</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="font-bold text-navy">Mental Wellness</h2>
+                <a href="/mindfulness" class="text-gold text-sm font-medium">View All <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
             
             <div class="grid grid-cols-2 gap-4">
-                <div class="card p-4 text-center bg-gradient-to-br from-indigo-50 to-purple-50">
+                <a href="/meditation" class="card p-4 text-center bg-gradient-to-br from-indigo-50 to-purple-50 block hover:shadow-lg transition-shadow">
                     <div class="w-14 h-14 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i class="fas fa-brain text-white text-xl"></i>
                     </div>
                     <h4 class="font-bold text-navy">Meditation</h4>
                     <p class="text-xs text-gray-500 mb-3">5-min guided session</p>
-                    <button class="w-full bg-indigo-500 text-white py-2 rounded-lg text-sm font-bold">Start</button>
-                </div>
+                    <span class="inline-block w-full bg-indigo-500 text-white py-2 rounded-lg text-sm font-bold">Start</span>
+                </a>
                 
-                <div class="card p-4 text-center bg-gradient-to-br from-blue-50 to-cyan-50">
+                <a href="/breathing" class="card p-4 text-center bg-gradient-to-br from-blue-50 to-cyan-50 block hover:shadow-lg transition-shadow">
                     <div class="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i class="fas fa-wind text-white text-xl"></i>
                     </div>
                     <h4 class="font-bold text-navy">Breathing</h4>
                     <p class="text-xs text-gray-500 mb-3">3-min stress relief</p>
-                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg text-sm font-bold">Start</button>
-                </div>
+                    <span class="inline-block w-full bg-blue-500 text-white py-2 rounded-lg text-sm font-bold">Start</span>
+                </a>
+            </div>
+            
+            <!-- Quick Mindfulness Actions -->
+            <div class="grid grid-cols-4 gap-2 mt-4">
+                <a href="/mindfulness" class="card p-3 text-center hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-moon text-purple-500 text-lg mb-1"></i>
+                    <p class="text-xs text-gray-600">Sleep</p>
+                </a>
+                <a href="/mindfulness" class="card p-3 text-center hover:bg-green-50 transition-colors">
+                    <i class="fas fa-leaf text-green-500 text-lg mb-1"></i>
+                    <p class="text-xs text-gray-600">Calm</p>
+                </a>
+                <a href="/mindfulness" class="card p-3 text-center hover:bg-orange-50 transition-colors">
+                    <i class="fas fa-sun text-orange-500 text-lg mb-1"></i>
+                    <p class="text-xs text-gray-600">Energy</p>
+                </a>
+                <a href="/mindfulness" class="card p-3 text-center hover:bg-pink-50 transition-colors">
+                    <i class="fas fa-heart text-pink-500 text-lg mb-1"></i>
+                    <p class="text-xs text-gray-600">Gratitude</p>
+                </a>
             </div>
             
             <!-- Premium Mindfulness -->
@@ -362,6 +385,9 @@ export const dailyWellnessPage = () => `
                         </div>
                     </div>
                 </div>
+                <a href="/mindfulness" class="block w-full mt-3 text-center bg-gold text-navy py-2 rounded-lg text-sm font-bold">
+                    Explore All Sessions
+                </a>
             </div>
         </div>
         

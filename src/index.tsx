@@ -3678,6 +3678,27 @@ app.get('/wellness-hub', async (c) => {
   return c.html(dailyWellnessPage())
 })
 
+// Mindfulness & Breathing Exercises
+app.get('/mindfulness', async (c) => {
+  const { mindfulnessPage } = await import('./pages/mindfulness')
+  return c.html(mindfulnessPage('all'))
+})
+
+app.get('/meditation', async (c) => {
+  const { meditationPage } = await import('./pages/mindfulness')
+  return c.html(meditationPage())
+})
+
+app.get('/breathing', async (c) => {
+  const { breathingPage } = await import('./pages/mindfulness')
+  return c.html(breathingPage())
+})
+
+app.get('/breathing-exercises', async (c) => {
+  const { breathingPage } = await import('./pages/mindfulness')
+  return c.html(breathingPage())
+})
+
 // Premium Home Dashboard
 app.get('/premium', async (c) => {
   const { premiumHomePage } = await import('./pages/premium-home')
