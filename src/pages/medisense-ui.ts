@@ -215,14 +215,46 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* ============================================================================
+           SELECTCAREOS™ PREMIUM MEDISENSE SYSTEM
+           German Select Luxury Healthcare Branding
+           ============================================================================ */
+        
         :root {
-            --navy: #001F3F;
-            --navy-light: #003366;
+            /* German Navy Spectrum */
+            --navy: #1a1a2e;
+            --navy-light: #16213e;
+            --deep-navy: #0f0f1a;
+            --midnight-blue: #16213e;
+            
+            /* Luxurious Gold Spectrum */
             --gold: #C9A227;
+            --gold-primary: #C9A227;
+            --gold-champagne: #D4AF37;
+            --gold-soft: #E8D5A3;
             --gold-light: #E8D5A3;
-            --cream: #F8F6F0;
+            --gold-bright: #F4D03F;
+            --gold-rose: #B8860B;
+            
+            /* Warm Neutrals */
+            --cream: #faf8f5;
+            --warm-ivory: #F5F0E8;
+            --pearl: #FFFDF7;
+            --soft-beige: #F0EBE3;
+            
+            /* Functional Colors */
             --medical-blue: #0EA5E9;
             --medical-green: #10B981;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            
+            /* Premium Shadows */
+            --shadow-gold-sm: 0 2px 8px rgba(201, 162, 39, 0.2);
+            --shadow-gold-md: 0 4px 15px rgba(201, 162, 39, 0.3);
+            --shadow-gold-lg: 0 8px 30px rgba(201, 162, 39, 0.4);
+            --shadow-navy-md: 0 4px 15px rgba(26, 26, 46, 0.15);
+            --shadow-navy-lg: 0 12px 40px rgba(26, 26, 46, 0.2);
         }
         
         * { box-sizing: border-box; }
@@ -242,17 +274,37 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         .border-gold { border-color: var(--gold); }
         
         .gradient-navy {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, var(--deep-navy) 100%);
+            border-bottom: 2px solid rgba(201, 162, 39, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(201, 162, 39, 0.2) inset;
         }
         
         .gradient-medical {
-            background: linear-gradient(135deg, #0EA5E9 0%, #10B981 100%);
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, #16213e 100%);
+            position: relative;
+        }
+        
+        .gradient-medical::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--gold-champagne) 50%, var(--gold) 80%, transparent 100%);
         }
         
         .card {
-            background: white;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
+            border: 1px solid rgba(201, 162, 39, 0.1);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 31, 63, 0.08);
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(26, 26, 46, 0.12), 0 4px 12px rgba(201, 162, 39, 0.08);
+            border-color: rgba(201, 162, 39, 0.2);
         }
         
         /* Refined Anatomical Body Map Styles */
@@ -319,41 +371,42 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             opacity: 0.5;
         }
         
-        /* View Toggle */
+        /* View Toggle - Premium Gold */
         .view-toggle {
             display: flex;
             gap: 6px;
             margin-bottom: 12px;
             justify-content: center;
-            background: #F3F4F6;
+            background: linear-gradient(145deg, var(--soft-beige) 0%, #E8E8E8 100%);
             padding: 4px;
             border-radius: 25px;
+            border: 1px solid rgba(201, 162, 39, 0.1);
         }
         
         .view-toggle button {
-            padding: 8px 16px;
+            padding: 8px 18px;
             border: none;
             border-radius: 20px;
             background: transparent;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
             color: #6B7280;
         }
         
         .view-toggle button.active {
-            background: white;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
             color: var(--navy);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-gold-sm);
         }
         
         .view-toggle button:hover:not(.active) {
             color: var(--navy);
-            background: rgba(255,255,255,0.5);
+            background: rgba(201, 162, 39, 0.15);
         }
         
-        /* Gender Toggle */
+        /* Gender Toggle - Premium Gold */
         .gender-toggle {
             display: flex;
             gap: 6px;
@@ -362,47 +415,58 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         }
         
         .gender-toggle button {
-            padding: 4px 10px;
-            border: 1px solid #E5E7EB;
+            padding: 6px 12px;
+            border: 2px solid #E8E8E8;
             border-radius: 15px;
-            background: white;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
             font-size: 10px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             color: #9CA3AF;
         }
         
         .gender-toggle button.active {
-            background: var(--cream);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
             border-color: var(--gold);
             color: var(--navy);
+            font-weight: 600;
+            box-shadow: var(--shadow-gold-sm);
         }
         
-        /* Symptom Tags */
+        .gender-toggle button:hover:not(.active) {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, 0.08);
+        }
+        
+        /* Symptom Tags - Premium Gold */
         .symptom-tag {
             display: inline-flex;
             align-items: center;
-            padding: 10px 16px;
-            background: white;
-            border: 2px solid #E5E7EB;
+            padding: 12px 18px;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
+            border: 2px solid #E8E8E8;
             border-radius: 30px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 14px;
             margin: 4px;
+            font-weight: 500;
         }
         
         .symptom-tag:hover {
             border-color: var(--gold);
-            background: var(--gold-light);
-            transform: translateY(-1px);
+            background: linear-gradient(145deg, var(--pearl) 0%, rgba(201, 162, 39, 0.08) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold-sm);
         }
         
         .symptom-tag.selected {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
             border-color: var(--gold);
             color: var(--navy);
             font-weight: 600;
+            box-shadow: var(--shadow-gold-sm);
         }
         
         .symptom-tag.critical {
@@ -487,87 +551,113 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             transition: width 0.5s ease;
         }
         
-        /* Category Tabs */
+        /* Category Tabs - Premium Gold */
         .category-tab {
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 22px;
+            border-radius: 25px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
+            border: 2px solid transparent;
         }
         
         .category-tab.active {
-            background: var(--navy);
-            color: white;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
+            color: var(--navy);
+            font-weight: 600;
+            box-shadow: var(--shadow-gold-sm);
+            border-color: var(--gold);
         }
         
         .category-tab:not(.active) {
-            background: white;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
             color: var(--navy);
+            border-color: #E8E8E8;
         }
         
         .category-tab:not(.active):hover {
-            background: var(--gold-light);
+            background: linear-gradient(145deg, var(--pearl) 0%, rgba(201, 162, 39, 0.1) 100%);
+            border-color: var(--gold);
         }
         
-        /* Input Fields */
+        /* Input Fields - Premium Gold */
         .input-field {
             width: 100%;
             padding: 14px 18px;
-            border: 2px solid #E5E7EB;
+            border: 2px solid #E8E8E8;
             border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.2s;
+            font-size: 15px;
+            background: var(--pearl);
+            color: var(--navy);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field::placeholder {
+            color: #A0A0A0;
         }
         
         .input-field:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15), 0 4px 12px rgba(201, 162, 39, 0.1);
         }
         
-        /* Buttons */
+        /* Buttons - Premium Gold */
         .btn-primary {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold-champagne) 0%, var(--gold) 50%, var(--gold-rose) 100%);
             color: var(--navy);
             padding: 16px 32px;
-            border-radius: 30px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 16px;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .btn-primary:hover:not(:disabled) {
-            background: #B8922B;
-            transform: scale(1.02);
+            background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold-champagne) 50%, var(--gold) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(201, 162, 39, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .btn-primary:disabled {
-            background: #D1D5DB;
+            background: linear-gradient(135deg, #D1D5DB 0%, #9CA3AF 100%);
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
         
         .btn-secondary {
-            background: var(--navy);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 500;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: var(--gold);
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
             font-size: 14px;
-            transition: all 0.2s;
-            border: none;
+            transition: all 0.3s ease;
+            border: 2px solid var(--gold);
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(26, 26, 46, 0.3);
         }
         
         .btn-secondary:hover {
-            background: var(--navy-light);
+            background: var(--gold);
+            color: var(--navy);
+            box-shadow: var(--shadow-gold-md);
         }
         
         /* Risk Gauge */
@@ -614,7 +704,7 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             40% { transform: scale(1.2); opacity: 1; }
         }
         
-        /* Step Indicator */
+        /* Step Indicator - Premium Gold */
         .step-indicator {
             display: flex;
             align-items: center;
@@ -624,40 +714,53 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         }
         
         .step {
-            width: 36px;
-            height: 36px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
         
         .step.active {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold-champagne) 0%, var(--gold) 100%);
             color: var(--navy);
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2), 0 4px 15px rgba(201, 162, 39, 0.4);
+            animation: pulse-gold-step 2s infinite;
+        }
+        
+        @keyframes pulse-gold-step {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2), 0 4px 15px rgba(201, 162, 39, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(201, 162, 39, 0.1), 0 4px 20px rgba(201, 162, 39, 0.5); }
         }
         
         .step.completed {
-            background: var(--medical-green);
-            color: white;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
         }
         
         .step.inactive {
-            background: #E5E7EB;
-            color: #9CA3AF;
+            background: var(--soft-beige);
+            color: #8B8B8B;
+            border: 2px solid #D0D0D0;
         }
         
         .step-line {
-            width: 40px;
+            width: 60px;
             height: 3px;
-            background: #E5E7EB;
+            background: #E0E0E0;
             border-radius: 2px;
+            transition: all 0.4s ease;
         }
         
         .step-line.completed {
-            background: var(--medical-green);
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-champagne) 100%);
         }
         
         /* Condition Card */
@@ -706,18 +809,38 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             border-radius: 0 12px 12px 0;
         }
         
-        /* Specialist Card */
+        /* Specialist Card - Premium Gold */
         .specialist-card {
-            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-            border-radius: 12px;
-            padding: 16px;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
+            border: 2px solid rgba(201, 162, 39, 0.15);
+            border-radius: 16px;
+            padding: 20px;
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .specialist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-champagne) 50%, var(--gold) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .specialist-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 31, 63, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(26, 26, 46, 0.1), 0 4px 12px rgba(201, 162, 39, 0.1);
+            border-color: rgba(201, 162, 39, 0.3);
+        }
+        
+        .specialist-card:hover::before {
+            opacity: 1;
         }
         
         /* Timeline */
@@ -752,17 +875,17 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         
-        /* Bottom Navigation */
+        /* Bottom Navigation - Premium Gold */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
-            border-top: 1px solid #E5E7EB;
-            padding: 8px 0 20px;
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--pearl) 100%);
+            border-top: 2px solid rgba(201, 162, 39, 0.15);
+            padding: 8px 0 max(20px, env(safe-area-inset-bottom));
             z-index: 100;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 -4px 20px rgba(26, 26, 46, 0.08);
         }
         
         .nav-item {
@@ -770,23 +893,23 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             flex-direction: column;
             align-items: center;
             padding: 8px 12px;
-            color: #6B7280;
+            color: #9CA3AF;
             text-decoration: none;
             font-size: 10px;
             transition: all 0.2s;
         }
         
         .nav-item i {
-            font-size: 20px;
+            font-size: 22px;
             margin-bottom: 4px;
         }
         
         .nav-item:hover {
-            color: var(--gold);
+            color: var(--navy);
         }
         
         .nav-item.active {
-            color: var(--navy);
+            color: var(--gold);
         }
         
         .nav-item.active i {
@@ -798,7 +921,7 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             padding-bottom: 80px;
         }
         
-        /* Floating Emergency Button */
+        /* Floating Emergency Button - Premium */
         .floating-emergency {
             position: fixed;
             bottom: 90px;
@@ -817,11 +940,38 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
+            border: 3px solid rgba(255, 255, 255, 0.3);
         }
         
         .floating-emergency:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+        }
+        
+        /* Gold Accent AI Floating Button */
+        .floating-ai {
+            position: fixed;
+            bottom: 160px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 20px;
+            box-shadow: var(--shadow-gold-md);
+            z-index: 99;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .floating-ai:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-gold-lg);
         }
         
         /* Toast Notifications */
@@ -965,19 +1115,20 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
     <!-- Toast Notification Container -->
     <div id="toast-container" class="toast-container" role="alert" aria-live="polite"></div>
     
-    <!-- Header -->
+    <!-- Header - Premium Gold -->
     <header class="gradient-navy sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <a href="/" class="text-2xl font-bold text-white">
+                    <a href="/" class="text-2xl font-bold text-white flex items-center">
+                        <i class="fas fa-hospital mr-2" style="color: var(--gold)"></i>
                         SelectCare<span class="text-gold">OS</span>™
                     </a>
-                    <span class="hidden md:inline-block text-white/60">|</span>
-                    <span class="hidden md:inline-block text-gold font-semibold">MediSense AI™ v4.0</span>
+                    <span class="hidden md:inline-block" style="color: rgba(201, 162, 39, 0.4)">|</span>
+                    <span class="hidden md:inline-block font-semibold" style="color: var(--gold-soft)">MediSense AI™ v4.0</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="/dashboard" class="text-white hover:text-gold transition">
+                    <a href="/dashboard" class="transition-opacity hover:opacity-80" style="color: var(--gold-soft)">
                         <i class="fas fa-th-large mr-2"></i>
                         <span class="hidden sm:inline">Dashboard</span>
                     </a>
@@ -986,34 +1137,34 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         </div>
     </header>
     
-    <!-- Hero Section -->
+    <!-- Hero Section - Premium Gold -->
     <section class="gradient-medical py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-white">
-            <div class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full mb-4 md:mb-6">
-                <i class="fas fa-brain text-3xl md:text-4xl"></i>
+            <div class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full mb-4 md:mb-6" style="background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%); box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);">
+                <i class="fas fa-brain text-3xl md:text-4xl" style="color: var(--navy)"></i>
             </div>
             <h1 class="text-3xl md:text-5xl font-bold mb-3 md:mb-4">
-                MediSense <span class="text-gold">AI</span>™
+                MediSense <span style="color: var(--gold)">AI</span>™
             </h1>
-            <p class="text-lg md:text-xl opacity-90 mb-2">World-Class Intelligent Symptom Analyzer</p>
+            <p class="text-lg md:text-xl mb-2" style="color: var(--gold-soft)">World-Class Intelligent Symptom Analyzer</p>
             <p class="text-xs md:text-sm opacity-75 max-w-2xl mx-auto">
                 Powered by advanced medical AI • Bayesian inference engine • 300+ ICD-11 conditions • 6-level triage
             </p>
             <div class="flex justify-center flex-wrap gap-4 md:gap-8 mt-6 md:mt-8">
-                <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">600+</div>
+                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                    <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">600+</div>
                     <div class="text-xs md:text-sm opacity-75">Symptoms</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">300+</div>
+                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                    <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">300+</div>
                     <div class="text-xs md:text-sm opacity-75">Conditions</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">98.5%</div>
+                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                    <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">98.5%</div>
                     <div class="text-xs md:text-sm opacity-75">Triage Accuracy</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">50+</div>
+                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                    <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">50+</div>
                     <div class="text-xs md:text-sm opacity-75">Red Flags</div>
                 </div>
             </div>
@@ -1424,9 +1575,9 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
                     <div class="card p-6 fade-in">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-navy font-bold mr-3">2</div>
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold mr-3" style="background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%); color: var(--navy); box-shadow: var(--shadow-gold-sm);">2</div>
                                 <div>
-                                    <h2 class="text-lg font-bold text-navy">Select Your Symptoms</h2>
+                                    <h2 class="text-lg font-bold" style="color: var(--navy)">Select Your Symptoms</h2>
                                     <p class="text-sm text-gray-500">Choose all symptoms you're experiencing</p>
                                 </div>
                             </div>
@@ -1480,9 +1631,9 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         <!-- Step 3: Symptom Details -->
         <div id="step3" class="hidden card p-6 fade-in">
             <div class="flex items-center mb-4">
-                <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-navy font-bold mr-3">3</div>
+                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold mr-3" style="background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%); color: var(--navy); box-shadow: var(--shadow-gold-sm);">3</div>
                 <div>
-                    <h2 class="text-lg font-bold text-navy">Symptom Details</h2>
+                    <h2 class="text-lg font-bold" style="color: var(--navy)">Symptom Details</h2>
                     <p class="text-sm text-gray-500">Help us understand your symptoms better</p>
                 </div>
             </div>
@@ -1780,19 +1931,20 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
         </div>
     </main>
     
-    <!-- Footer -->
-    <footer class="bg-navy text-white py-8 mt-12">
+    <!-- Footer - Premium Gold -->
+    <footer class="py-8 mt-12" style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center">
-                <div class="text-xl font-bold mb-2">MediSense <span class="text-gold">AI</span>™ v4.0</div>
-                <p class="text-gray-400 text-sm mb-4">Part of SelectCareOS™ - German Excellence. Red Sea Recovery.</p>
-                <div class="flex justify-center space-x-6 text-xs text-gray-500">
-                    <span><i class="fas fa-shield-alt mr-1"></i>HIPAA Ready</span>
-                    <span><i class="fas fa-lock mr-1"></i>GDPR Compliant</span>
-                    <span><i class="fas fa-certificate mr-1"></i>ICD-11 Aligned</span>
-                    <span><i class="fas fa-user-md mr-1"></i>MD Reviewed</span>
+                <div class="text-xl font-bold mb-2 text-white">MediSense <span style="color: var(--gold)">AI</span>™ v4.0</div>
+                <p class="text-sm mb-4" style="color: var(--gold-soft)">Part of SelectCareOS™ - German Excellence. Red Sea Recovery.</p>
+                <div class="flex justify-center flex-wrap gap-4 md:gap-6 text-xs mb-4" style="color: var(--gold-soft)">
+                    <span><i class="fas fa-shield-alt mr-1" style="color: var(--gold)"></i>HIPAA Ready</span>
+                    <span><i class="fas fa-lock mr-1" style="color: var(--gold)"></i>GDPR Compliant</span>
+                    <span><i class="fas fa-certificate mr-1" style="color: var(--gold)"></i>ICD-11 Aligned</span>
+                    <span><i class="fas fa-user-md mr-1" style="color: var(--gold)"></i>MD Reviewed</span>
                 </div>
-                <p class="text-gray-500 text-xs mt-4">© 2024 German Select. All rights reserved. Not a substitute for professional medical advice.</p>
+                <div class="h-px w-32 mx-auto mb-4" style="background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);"></div>
+                <p class="text-gray-400 text-xs">© 2024 German Select. All rights reserved. Not a substitute for professional medical advice.</p>
             </div>
         </div>
     </footer>
