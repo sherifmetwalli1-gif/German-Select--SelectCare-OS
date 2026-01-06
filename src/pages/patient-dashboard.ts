@@ -818,6 +818,80 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                             </button>
                         </div>
                     </div>
+                    
+                    <!-- Health App Integration -->
+                    <div class="card p-6">
+                        <h2 class="text-lg font-bold text-navy mb-4">
+                            <i class="fas fa-heartbeat text-gold mr-2"></i>
+                            Health App Sync
+                        </h2>
+                        
+                        <div id="health-providers-status" class="mb-4">
+                            <p class="text-sm text-gray-500">No health apps connected</p>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <button onclick="connectHealthProvider('apple_health')" class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                                        <i class="fab fa-apple text-white"></i>
+                                    </div>
+                                    <span class="font-medium text-navy">Apple Health</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button onclick="connectHealthProvider('google_fit')" class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                                        <i class="fab fa-google text-white"></i>
+                                    </div>
+                                    <span class="font-medium text-navy">Google Fit</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button onclick="connectHealthProvider('fitbit')" class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-heartbeat text-white"></i>
+                                    </div>
+                                    <span class="font-medium text-navy">Fitbit</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button onclick="connectHealthProvider('garmin')" class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-watch text-white"></i>
+                                    </div>
+                                    <span class="font-medium text-navy">Garmin</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Synced Health Data Display -->
+                        <div id="synced-health-data" class="mt-4 grid grid-cols-2 gap-3 hidden">
+                            <div class="p-3 bg-blue-50 rounded-lg text-center">
+                                <div class="text-xl font-bold text-blue-600" id="health-steps">--</div>
+                                <div class="text-xs text-gray-500">Steps Today</div>
+                            </div>
+                            <div class="p-3 bg-red-50 rounded-lg text-center">
+                                <div class="text-xl font-bold text-red-600"><span id="health-heart-rate">--</span> bpm</div>
+                                <div class="text-xs text-gray-500">Heart Rate</div>
+                            </div>
+                            <div class="p-3 bg-green-50 rounded-lg text-center">
+                                <div class="text-xl font-bold text-green-600" id="health-weight">--</div>
+                                <div class="text-xs text-gray-500">Weight</div>
+                            </div>
+                            <div class="p-3 bg-orange-50 rounded-lg text-center">
+                                <div class="text-xl font-bold text-orange-600" id="health-calories-burned">--</div>
+                                <div class="text-xs text-gray-500">Calories Burned</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1250,12 +1324,15 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                             </div>
                             
                             <!-- Action Buttons -->
-                            <div class="flex gap-2">
+                            <div class="flex flex-wrap gap-2">
                                 <button onclick="saveCalorieResults()" class="flex-1 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                                    <i class="fas fa-save mr-1"></i> Save Results
+                                    <i class="fas fa-save mr-1"></i> Save
                                 </button>
-                                <button onclick="resetCalorieCalculator()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors">
-                                    <i class="fas fa-redo mr-1"></i> Reset
+                                <button onclick="exportMealPlanPDF()" class="flex-1 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg text-sm font-medium hover:from-purple-700 hover:to-indigo-700 transition-colors">
+                                    <i class="fas fa-file-pdf mr-1"></i> Export PDF
+                                </button>
+                                <button onclick="resetCalorieCalculator()" class="px-3 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors">
+                                    <i class="fas fa-redo"></i>
                                 </button>
                             </div>
                         </div>
@@ -3043,6 +3120,333 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
             document.getElementById('cal-empty').classList.remove('hidden');
         }
         
+        // ============================================================================
+        // PDF EXPORT FOR MEAL PLAN
+        // ============================================================================
+        
+        async function exportMealPlanPDF() {
+            const target = document.getElementById('cal-target')?.textContent;
+            if (!target || target === '--') {
+                alert('Please calculate your calories first before exporting.');
+                return;
+            }
+            
+            // Gather current calculation data
+            const calories = parseInt(target.replace(/[^0-9]/g, ''));
+            const protein = parseInt(document.getElementById('macro-protein')?.textContent) || 0;
+            const carbs = parseInt(document.getElementById('macro-carbs')?.textContent) || 0;
+            const fat = parseInt(document.getElementById('macro-fat')?.textContent) || 0;
+            const goal = document.getElementById('cal-goal')?.value || '0';
+            
+            try {
+                // Call the API to generate meal plan
+                const response = await fetch('/api/export/meal-plan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        calories,
+                        macros: { protein, carbs, fat },
+                        goal,
+                        userInfo: { name: 'SelectCare User' },
+                        format: 'html'
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to generate meal plan');
+                
+                const html = await response.text();
+                
+                // Open in new window for printing/saving as PDF
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(html);
+                printWindow.document.close();
+                
+                // Auto-trigger print dialog after a short delay
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                
+                // Fallback: Generate client-side if API fails
+                const htmlContent = generateMealPlanHTML(calories, { protein, carbs, fat }, goal);
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(htmlContent);
+                printWindow.document.close();
+                setTimeout(() => printWindow.print(), 500);
+            }
+        }
+        
+        // Fallback meal plan generator (client-side)
+        function generateMealPlanHTML(calories, macros, goal) {
+            const goalText = {
+                '-1000': 'Weight Loss (Aggressive)',
+                '-500': 'Weight Loss (Moderate)',
+                '-250': 'Weight Loss (Mild)',
+                '0': 'Weight Maintenance',
+                '250': 'Weight Gain (Mild)',
+                '500': 'Weight Gain (Moderate)'
+            }[goal] || 'Weight Maintenance';
+            
+            return \`
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SelectCareOS - Personalized Meal Plan</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #1a1a2e; }
+        .header { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #1a1a2e; margin: 0; }
+        .header .subtitle { color: #C9A227; font-size: 18px; }
+        .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+        .summary-card { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; border-radius: 10px; text-align: center; }
+        .summary-card .value { font-size: 28px; font-weight: bold; color: #C9A227; }
+        .summary-card .label { font-size: 12px; color: #666; }
+        .meal { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .meal h3 { color: #1a1a2e; margin-top: 0; border-bottom: 2px solid #C9A227; padding-bottom: 10px; }
+        .suggestion { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .suggestion .name { font-weight: bold; color: #1a1a2e; }
+        .macros { display: flex; gap: 15px; margin-top: 10px; font-size: 12px; }
+        .macros span { padding: 4px 8px; border-radius: 4px; }
+        .protein { background: #e3f2fd; color: #1976d2; }
+        .carbs { background: #fff3e0; color: #f57c00; }
+        .fat { background: #e8f5e9; color: #388e3c; }
+        .tips { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-top: 30px; }
+        .tips h3 { color: #C9A227; margin-top: 0; }
+        .tips ul { margin: 0; padding-left: 20px; }
+        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #666; font-size: 12px; }
+        @media print { body { padding: 0; } .no-print { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🥗 Personalized Meal Plan</h1>
+        <div class="subtitle">SelectCareOS™ - German Excellence in Healthcare</div>
+        <div style="margin-top: 10px; color: #666;">Goal: \${goalText} | Generated: \${new Date().toLocaleDateString()}</div>
+    </div>
+    
+    <div class="summary">
+        <div class="summary-card">
+            <div class="value">\${calories}</div>
+            <div class="label">Daily Calories</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">\${macros.protein}g</div>
+            <div class="label">Protein</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">\${macros.carbs}g</div>
+            <div class="label">Carbs</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">\${macros.fat}g</div>
+            <div class="label">Fat</div>
+        </div>
+    </div>
+    
+    <div class="meal">
+        <h3>🌅 Breakfast (\${Math.round(calories * 0.25)} cal) - 7:00-8:00 AM</h3>
+        <div class="suggestion">
+            <div class="name">Greek Yogurt Bowl</div>
+            <div style="color: #666; font-size: 14px;">Greek yogurt with berries, granola, and honey</div>
+            <div class="macros">
+                <span class="protein">Protein: \${Math.round(macros.protein * 0.3)}g</span>
+                <span class="carbs">Carbs: \${Math.round(macros.carbs * 0.25)}g</span>
+                <span class="fat">Fat: \${Math.round(macros.fat * 0.2)}g</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="meal">
+        <h3>☀️ Lunch (\${Math.round(calories * 0.35)} cal) - 12:00-1:00 PM</h3>
+        <div class="suggestion">
+            <div class="name">Grilled Chicken Salad</div>
+            <div style="color: #666; font-size: 14px;">Grilled chicken breast with mixed greens, quinoa, and olive oil dressing</div>
+            <div class="macros">
+                <span class="protein">Protein: \${Math.round(macros.protein * 0.4)}g</span>
+                <span class="carbs">Carbs: \${Math.round(macros.carbs * 0.35)}g</span>
+                <span class="fat">Fat: \${Math.round(macros.fat * 0.3)}g</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="meal">
+        <h3>🌙 Dinner (\${Math.round(calories * 0.30)} cal) - 6:00-7:00 PM</h3>
+        <div class="suggestion">
+            <div class="name">Salmon & Vegetables</div>
+            <div style="color: #666; font-size: 14px;">Baked salmon with roasted vegetables and quinoa</div>
+            <div class="macros">
+                <span class="protein">Protein: \${Math.round(macros.protein * 0.25)}g</span>
+                <span class="carbs">Carbs: \${Math.round(macros.carbs * 0.3)}g</span>
+                <span class="fat">Fat: \${Math.round(macros.fat * 0.35)}g</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="meal">
+        <h3>🍎 Snacks (\${Math.round(calories * 0.10)} cal)</h3>
+        <div class="suggestion">
+            <div class="name">Healthy Snack Options</div>
+            <div style="color: #666; font-size: 14px;">Almonds (1/4 cup) • Apple with peanut butter • Protein shake • Greek yogurt</div>
+            <div class="macros">
+                <span class="protein">Protein: \${Math.round(macros.protein * 0.05)}g</span>
+                <span class="carbs">Carbs: \${Math.round(macros.carbs * 0.1)}g</span>
+                <span class="fat">Fat: \${Math.round(macros.fat * 0.15)}g</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tips">
+        <h3>💡 Pro Tips for Success</h3>
+        <ul>
+            <li>Drink at least 8 glasses of water daily</li>
+            <li>Eat slowly and mindfully for better digestion</li>
+            <li>Prep meals in advance for consistency</li>
+            <li>Include fiber-rich foods for satiety</li>
+            <li>Limit processed foods and added sugars</li>
+            <li>Track your progress weekly and adjust as needed</li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <p>This meal plan is for informational purposes only. Consult a healthcare provider before making significant dietary changes.</p>
+        <p>© \${new Date().getFullYear()} SelectCareOS™ - German Select Healthcare</p>
+    </div>
+    
+    <div class="no-print" style="text-align: center; margin-top: 20px;">
+        <button onclick="window.print()" style="padding: 10px 30px; background: #C9A227; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            🖨️ Print / Save as PDF
+        </button>
+    </div>
+</body>
+</html>
+            \`;
+        }
+        
+        // ============================================================================
+        // HEALTH APP INTEGRATION (Apple Health / Google Fit)
+        // ============================================================================
+        
+        const HEALTH_PROVIDERS_KEY = 'selectcare_health_providers';
+        
+        async function connectHealthProvider(provider) {
+            const userId = 'user_' + Date.now(); // In production, use actual user ID
+            
+            try {
+                const response = await fetch('/api/health/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ provider, userId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Store provider info locally
+                    const providers = JSON.parse(localStorage.getItem(HEALTH_PROVIDERS_KEY) || '{}');
+                    providers[provider] = { userId, connected: true, lastSync: new Date().toISOString() };
+                    localStorage.setItem(HEALTH_PROVIDERS_KEY, JSON.stringify(providers));
+                    
+                    alert(\`Successfully connected to \${provider.replace('_', ' ').toUpperCase()}!\`);
+                    updateHealthProviderUI();
+                    
+                    // Auto-sync after connection
+                    await syncHealthData(provider, userId);
+                } else {
+                    alert('Failed to connect: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Connection error:', error);
+                alert('Failed to connect to health provider.');
+            }
+        }
+        
+        async function syncHealthData(provider, userId) {
+            try {
+                const response = await fetch('/api/health/sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        provider, 
+                        userId,
+                        dataTypes: ['steps', 'heart_rate', 'weight', 'calories', 'sleep']
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update local storage with synced data
+                    const providers = JSON.parse(localStorage.getItem(HEALTH_PROVIDERS_KEY) || '{}');
+                    if (providers[provider]) {
+                        providers[provider].lastSync = data.data.syncedAt;
+                        providers[provider].healthData = data.data.healthData;
+                        localStorage.setItem(HEALTH_PROVIDERS_KEY, JSON.stringify(providers));
+                    }
+                    
+                    updateHealthDataDisplay(data.data.healthData);
+                    return data.data.healthData;
+                }
+            } catch (error) {
+                console.error('Sync error:', error);
+            }
+            return null;
+        }
+        
+        function updateHealthProviderUI() {
+            const providers = JSON.parse(localStorage.getItem(HEALTH_PROVIDERS_KEY) || '{}');
+            
+            // Update connected providers display if the element exists
+            const container = document.getElementById('health-providers-status');
+            if (container) {
+                const connectedList = Object.entries(providers)
+                    .filter(([_, v]) => v.connected)
+                    .map(([provider, info]) => \`
+                        <div class="flex items-center justify-between p-2 bg-green-50 rounded-lg mb-2">
+                            <span class="text-sm font-medium text-green-700">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                \${provider.replace('_', ' ').toUpperCase()}
+                            </span>
+                            <span class="text-xs text-gray-500">
+                                Synced: \${new Date(info.lastSync).toLocaleString()}
+                            </span>
+                        </div>
+                    \`).join('');
+                
+                container.innerHTML = connectedList || '<p class="text-sm text-gray-500">No health apps connected</p>';
+            }
+        }
+        
+        function updateHealthDataDisplay(healthData) {
+            if (!healthData) return;
+            
+            // Update steps if available
+            if (healthData.steps) {
+                const stepsEl = document.getElementById('health-steps');
+                if (stepsEl) stepsEl.textContent = healthData.steps.today?.toLocaleString() || '--';
+            }
+            
+            // Update heart rate if available
+            if (healthData.heartRate) {
+                const hrEl = document.getElementById('health-heart-rate');
+                if (hrEl) hrEl.textContent = healthData.heartRate.current || '--';
+            }
+            
+            // Update weight if available
+            if (healthData.weight) {
+                const weightEl = document.getElementById('health-weight');
+                if (weightEl) weightEl.textContent = healthData.weight.current + ' ' + healthData.weight.unit;
+            }
+            
+            // Update calories if available
+            if (healthData.calories) {
+                const calEl = document.getElementById('health-calories-burned');
+                if (calEl) calEl.textContent = healthData.calories.burned?.toLocaleString() || '--';
+            }
+        }
+        
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             // Default tab is overview
@@ -3055,6 +3459,9 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
             
             // Initialize macro pie chart
             updateMacroPieChart(30, 40, 30);
+            
+            // Initialize health provider UI
+            updateHealthProviderUI();
         });
     </script>
     

@@ -1085,6 +1085,899 @@ app.post('/api/booking/suggest', async (c) => {
   }
 })
 
+// ============================================================================
+// BOOKING REMINDERS API - Email/SMS Notification System
+// ============================================================================
+
+// Reminder queue (simulated - in production, use a proper queue service)
+const reminderQueue: Array<{
+  bookingId: string
+  type: 'email' | 'sms'
+  scheduledFor: string
+  status: 'pending' | 'sent' | 'failed'
+  recipient: string
+  message: string
+}> = []
+
+// Send booking reminder
+app.post('/api/bookings/:id/send-reminder', async (c) => {
+  const bookingId = c.req.param('id')
+  const booking = bookings.find(b => b.id === bookingId)
+  
+  if (!booking) {
+    return c.json({ success: false, error: 'Booking not found' }, 404)
+  }
+  
+  const body = await c.req.json()
+  const { type = 'email', timing = '24h' } = body
+  
+  // Calculate send time based on timing
+  const appointmentTime = new Date(`${booking.date}T${booking.time}`)
+  const hoursBeforeMap: Record<string, number> = { '24h': 24, '1h': 1, '2h': 2, '48h': 48 }
+  const hoursBefore = hoursBeforeMap[timing] || 24
+  const sendTime = new Date(appointmentTime.getTime() - (hoursBefore * 60 * 60 * 1000))
+  
+  // Generate reminder message
+  const reminderTemplates = {
+    email: {
+      subject: `Appointment Reminder - ${booking.doctorName}`,
+      body: `Dear ${booking.patientName},
+
+This is a reminder for your upcoming appointment:
+
+📅 Date: ${new Date(booking.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+⏰ Time: ${booking.time}
+👨‍⚕️ Doctor: ${booking.doctorName}
+📍 Location: ${booking.location}
+🏥 Type: ${booking.consultationType === 'onsite' ? 'In-Person Consultation' : 'Video Consultation'}
+
+Confirmation Code: ${booking.confirmationCode}
+
+Please arrive 15 minutes early with:
+- Valid ID
+- Insurance documents (if applicable)
+- Any relevant medical records
+
+Need to reschedule? Contact us at support@selectcare.de
+
+Best regards,
+SelectCareOS™ Team`
+    },
+    sms: {
+      body: `SelectCare Reminder: Your appointment with ${booking.doctorName} is on ${booking.date} at ${booking.time}. Conf: ${booking.confirmationCode}. Reply HELP for support.`
+    }
+  }
+  
+  const template = reminderTemplates[type]
+  
+  // Add to queue
+  const reminder = {
+    bookingId,
+    type,
+    scheduledFor: sendTime.toISOString(),
+    status: 'pending' as const,
+    recipient: type === 'email' ? booking.patientEmail : booking.patientPhone || '',
+    message: type === 'email' ? template.body : template.body
+  }
+  
+  reminderQueue.push(reminder)
+  
+  // Simulate immediate send for demo (in production, this would be handled by a background job)
+  const now = new Date()
+  if (sendTime <= now) {
+    reminder.status = 'sent'
+  }
+  
+  return c.json({
+    success: true,
+    data: {
+      reminder,
+      booking: {
+        id: booking.id,
+        date: booking.date,
+        time: booking.time,
+        doctor: booking.doctorName
+      },
+      message: `${type.toUpperCase()} reminder scheduled for ${sendTime.toISOString()}`
+    }
+  })
+})
+
+// Get reminder status for a booking
+app.get('/api/bookings/:id/reminders', (c) => {
+  const bookingId = c.req.param('id')
+  const booking = bookings.find(b => b.id === bookingId)
+  
+  if (!booking) {
+    return c.json({ success: false, error: 'Booking not found' }, 404)
+  }
+  
+  const bookingReminders = reminderQueue.filter(r => r.bookingId === bookingId)
+  
+  return c.json({
+    success: true,
+    data: {
+      bookingId,
+      reminders: bookingReminders,
+      settings: booking.reminders
+    }
+  })
+})
+
+// Update reminder preferences for a booking
+app.put('/api/bookings/:id/reminders', async (c) => {
+  const bookingId = c.req.param('id')
+  const booking = bookings.find(b => b.id === bookingId)
+  
+  if (!booking) {
+    return c.json({ success: false, error: 'Booking not found' }, 404)
+  }
+  
+  const body = await c.req.json()
+  const { email24h, email1h, sms24h, sms1h } = body
+  
+  // Update reminder settings
+  booking.reminders = {
+    email24h: email24h ?? booking.reminders.email24h,
+    email1h: email1h ?? booking.reminders.email1h,
+    sms24h: sms24h ?? booking.reminders.sms24h,
+    sms1h: sms1h ?? booking.reminders.sms1h
+  }
+  
+  return c.json({
+    success: true,
+    data: {
+      bookingId,
+      reminders: booking.reminders,
+      message: 'Reminder preferences updated'
+    }
+  })
+})
+
+// ============================================================================
+// APPLE HEALTH / GOOGLE FIT INTEGRATION API
+// ============================================================================
+
+// Health data sync endpoints
+const healthIntegrations: Record<string, {
+  provider: 'apple_health' | 'google_fit' | 'fitbit' | 'garmin'
+  userId: string
+  connected: boolean
+  lastSync: string
+  permissions: string[]
+  data: any
+}> = {}
+
+// Connect to health provider
+app.post('/api/health/connect', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { provider, userId, accessToken } = body
+    
+    if (!provider || !userId) {
+      return c.json({ success: false, error: 'Provider and userId are required' }, 400)
+    }
+    
+    const supportedProviders = ['apple_health', 'google_fit', 'fitbit', 'garmin', 'samsung_health']
+    if (!supportedProviders.includes(provider)) {
+      return c.json({ 
+        success: false, 
+        error: `Unsupported provider. Supported: ${supportedProviders.join(', ')}` 
+      }, 400)
+    }
+    
+    // Simulate OAuth connection (in production, use actual OAuth flow)
+    const integrationId = `${provider}-${userId}`
+    healthIntegrations[integrationId] = {
+      provider,
+      userId,
+      connected: true,
+      lastSync: new Date().toISOString(),
+      permissions: ['activity', 'heart_rate', 'sleep', 'weight', 'nutrition'],
+      data: {
+        steps: 0,
+        heartRate: [],
+        sleep: [],
+        weight: [],
+        calories: []
+      }
+    }
+    
+    return c.json({
+      success: true,
+      data: {
+        integrationId,
+        provider,
+        connected: true,
+        permissions: healthIntegrations[integrationId].permissions,
+        message: `Successfully connected to ${provider.replace('_', ' ').toUpperCase()}`
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to connect health provider' }, 500)
+  }
+})
+
+// Disconnect health provider
+app.post('/api/health/disconnect', async (c) => {
+  const body = await c.req.json()
+  const { provider, userId } = body
+  
+  const integrationId = `${provider}-${userId}`
+  
+  if (healthIntegrations[integrationId]) {
+    delete healthIntegrations[integrationId]
+  }
+  
+  return c.json({
+    success: true,
+    message: `Disconnected from ${provider}`
+  })
+})
+
+// Sync health data from provider
+app.post('/api/health/sync', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { provider, userId, dataTypes } = body
+    
+    const integrationId = `${provider}-${userId}`
+    const integration = healthIntegrations[integrationId]
+    
+    if (!integration || !integration.connected) {
+      return c.json({ 
+        success: false, 
+        error: 'Health provider not connected. Please connect first.' 
+      }, 400)
+    }
+    
+    // Simulate fetching data from health provider
+    const now = new Date()
+    const syncedData: any = {}
+    
+    const typesToSync = dataTypes || ['steps', 'heart_rate', 'weight', 'calories']
+    
+    if (typesToSync.includes('steps')) {
+      syncedData.steps = {
+        today: 5000 + Math.floor(Math.random() * 5000),
+        weekly: Array.from({ length: 7 }, () => 4000 + Math.floor(Math.random() * 6000)),
+        goal: 10000
+      }
+    }
+    
+    if (typesToSync.includes('heart_rate')) {
+      syncedData.heartRate = {
+        current: 65 + Math.floor(Math.random() * 20),
+        resting: 58 + Math.floor(Math.random() * 10),
+        max: 120 + Math.floor(Math.random() * 30),
+        history: Array.from({ length: 24 }, (_, i) => ({
+          time: new Date(now.getTime() - i * 3600000).toISOString(),
+          bpm: 60 + Math.floor(Math.random() * 30)
+        }))
+      }
+    }
+    
+    if (typesToSync.includes('weight')) {
+      const baseWeight = 75 + Math.random() * 10
+      syncedData.weight = {
+        current: baseWeight.toFixed(1),
+        unit: 'kg',
+        trend: Array.from({ length: 30 }, (_, i) => ({
+          date: new Date(now.getTime() - i * 86400000).toISOString().split('T')[0],
+          weight: (baseWeight + (Math.random() - 0.5) * 2).toFixed(1)
+        }))
+      }
+    }
+    
+    if (typesToSync.includes('calories')) {
+      syncedData.calories = {
+        burned: 1800 + Math.floor(Math.random() * 800),
+        consumed: 1600 + Math.floor(Math.random() * 600),
+        goal: 2200,
+        breakdown: {
+          bmr: 1500,
+          activity: 300 + Math.floor(Math.random() * 400),
+          exercise: 100 + Math.floor(Math.random() * 300)
+        }
+      }
+    }
+    
+    if (typesToSync.includes('sleep')) {
+      syncedData.sleep = {
+        lastNight: {
+          duration: 6 + Math.random() * 2,
+          quality: ['poor', 'fair', 'good', 'excellent'][Math.floor(Math.random() * 4)],
+          deepSleep: 1 + Math.random(),
+          remSleep: 1.5 + Math.random(),
+          lightSleep: 3 + Math.random()
+        },
+        weeklyAverage: 6.5 + Math.random() * 1.5,
+        goal: 8
+      }
+    }
+    
+    // Update integration data
+    integration.data = { ...integration.data, ...syncedData }
+    integration.lastSync = now.toISOString()
+    
+    return c.json({
+      success: true,
+      data: {
+        provider,
+        syncedAt: integration.lastSync,
+        dataTypes: typesToSync,
+        healthData: syncedData
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to sync health data' }, 500)
+  }
+})
+
+// Get health data
+app.get('/api/health/data', (c) => {
+  const provider = c.req.query('provider')
+  const userId = c.req.query('userId')
+  const dataType = c.req.query('type')
+  
+  if (!provider || !userId) {
+    return c.json({ success: false, error: 'Provider and userId are required' }, 400)
+  }
+  
+  const integrationId = `${provider}-${userId}`
+  const integration = healthIntegrations[integrationId]
+  
+  if (!integration) {
+    return c.json({ success: false, error: 'Health provider not connected' }, 404)
+  }
+  
+  let responseData = integration.data
+  if (dataType && integration.data[dataType]) {
+    responseData = { [dataType]: integration.data[dataType] }
+  }
+  
+  return c.json({
+    success: true,
+    data: {
+      provider: integration.provider,
+      connected: integration.connected,
+      lastSync: integration.lastSync,
+      healthData: responseData
+    }
+  })
+})
+
+// Get connected providers for user
+app.get('/api/health/providers', (c) => {
+  const userId = c.req.query('userId')
+  
+  const userIntegrations = Object.entries(healthIntegrations)
+    .filter(([key, val]) => val.userId === userId)
+    .map(([key, val]) => ({
+      provider: val.provider,
+      connected: val.connected,
+      lastSync: val.lastSync,
+      permissions: val.permissions
+    }))
+  
+  const availableProviders = [
+    { id: 'apple_health', name: 'Apple Health', icon: 'fa-apple', color: '#000000', available: true },
+    { id: 'google_fit', name: 'Google Fit', icon: 'fa-google', color: '#4285F4', available: true },
+    { id: 'fitbit', name: 'Fitbit', icon: 'fa-heartbeat', color: '#00B0B9', available: true },
+    { id: 'garmin', name: 'Garmin Connect', icon: 'fa-watch', color: '#007CC3', available: true },
+    { id: 'samsung_health', name: 'Samsung Health', icon: 'fa-mobile-alt', color: '#1428A0', available: true }
+  ]
+  
+  return c.json({
+    success: true,
+    data: {
+      connected: userIntegrations,
+      available: availableProviders
+    }
+  })
+})
+
+// ============================================================================
+// INTERNATIONALIZATION (i18n) API
+// ============================================================================
+
+// Supported languages
+const SUPPORTED_LANGUAGES = [
+  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧', rtl: false },
+  { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪', rtl: false },
+  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', rtl: true },
+  { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺', rtl: false },
+  { code: 'tr', name: 'Turkish', native: 'Türkçe', flag: '🇹🇷', rtl: false },
+  { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', rtl: false },
+  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', rtl: false },
+  { code: 'zh', name: 'Chinese', native: '中文', flag: '🇨🇳', rtl: false }
+]
+
+// Translation strings (core UI translations)
+const TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    // Navigation
+    'nav.home': 'Home',
+    'nav.wellness': 'Wellness',
+    'nav.medisense': 'MediSense',
+    'nav.rewards': 'Rewards',
+    'nav.profile': 'Profile',
+    'nav.booking': 'Booking',
+    'nav.doctors': 'Doctors',
+    
+    // Common
+    'common.save': 'Save',
+    'common.cancel': 'Cancel',
+    'common.confirm': 'Confirm',
+    'common.back': 'Back',
+    'common.next': 'Next',
+    'common.loading': 'Loading...',
+    'common.error': 'Error',
+    'common.success': 'Success',
+    
+    // Booking
+    'booking.title': 'Book Your Consultation',
+    'booking.selectDoctor': 'Select Doctor',
+    'booking.selectTime': 'Select Time',
+    'booking.confirm': 'Confirm Booking',
+    'booking.reminder.24h': 'Remind me 24 hours before',
+    'booking.reminder.1h': 'Remind me 1 hour before',
+    
+    // Calorie Calculator
+    'calc.calorie.title': 'Calorie & TDEE Calculator',
+    'calc.calorie.age': 'Age',
+    'calc.calorie.gender': 'Gender',
+    'calc.calorie.height': 'Height',
+    'calc.calorie.weight': 'Weight',
+    'calc.calorie.activity': 'Activity Level',
+    'calc.calorie.goal': 'Your Goal',
+    'calc.calorie.bmr': 'Basal Metabolic Rate',
+    'calc.calorie.tdee': 'Total Daily Energy Expenditure',
+    'calc.calorie.target': 'Daily Calorie Target',
+    'calc.calorie.export': 'Export Meal Plan',
+    'calc.calorie.save': 'Save Results',
+    
+    // Health Integration
+    'health.connect': 'Connect Health App',
+    'health.sync': 'Sync Data',
+    'health.disconnect': 'Disconnect',
+    'health.lastSync': 'Last synced',
+    'health.steps': 'Steps',
+    'health.heartRate': 'Heart Rate',
+    'health.sleep': 'Sleep',
+    'health.calories': 'Calories'
+  },
+  de: {
+    // Navigation
+    'nav.home': 'Startseite',
+    'nav.wellness': 'Wohlbefinden',
+    'nav.medisense': 'MediSense',
+    'nav.rewards': 'Prämien',
+    'nav.profile': 'Profil',
+    'nav.booking': 'Buchung',
+    'nav.doctors': 'Ärzte',
+    
+    // Common
+    'common.save': 'Speichern',
+    'common.cancel': 'Abbrechen',
+    'common.confirm': 'Bestätigen',
+    'common.back': 'Zurück',
+    'common.next': 'Weiter',
+    'common.loading': 'Laden...',
+    'common.error': 'Fehler',
+    'common.success': 'Erfolg',
+    
+    // Booking
+    'booking.title': 'Termin buchen',
+    'booking.selectDoctor': 'Arzt auswählen',
+    'booking.selectTime': 'Zeit auswählen',
+    'booking.confirm': 'Buchung bestätigen',
+    'booking.reminder.24h': '24 Stunden vorher erinnern',
+    'booking.reminder.1h': '1 Stunde vorher erinnern',
+    
+    // Calorie Calculator
+    'calc.calorie.title': 'Kalorien- & TDEE-Rechner',
+    'calc.calorie.age': 'Alter',
+    'calc.calorie.gender': 'Geschlecht',
+    'calc.calorie.height': 'Größe',
+    'calc.calorie.weight': 'Gewicht',
+    'calc.calorie.activity': 'Aktivitätsniveau',
+    'calc.calorie.goal': 'Ihr Ziel',
+    'calc.calorie.bmr': 'Grundumsatz',
+    'calc.calorie.tdee': 'Gesamtumsatz',
+    'calc.calorie.target': 'Tägliches Kalorienziel',
+    'calc.calorie.export': 'Ernährungsplan exportieren',
+    'calc.calorie.save': 'Ergebnisse speichern',
+    
+    // Health Integration
+    'health.connect': 'Gesundheits-App verbinden',
+    'health.sync': 'Daten synchronisieren',
+    'health.disconnect': 'Trennen',
+    'health.lastSync': 'Zuletzt synchronisiert',
+    'health.steps': 'Schritte',
+    'health.heartRate': 'Herzfrequenz',
+    'health.sleep': 'Schlaf',
+    'health.calories': 'Kalorien'
+  },
+  ar: {
+    // Navigation
+    'nav.home': 'الرئيسية',
+    'nav.wellness': 'العافية',
+    'nav.medisense': 'ميدي سينس',
+    'nav.rewards': 'المكافآت',
+    'nav.profile': 'الملف الشخصي',
+    'nav.booking': 'الحجز',
+    'nav.doctors': 'الأطباء',
+    
+    // Common
+    'common.save': 'حفظ',
+    'common.cancel': 'إلغاء',
+    'common.confirm': 'تأكيد',
+    'common.back': 'رجوع',
+    'common.next': 'التالي',
+    'common.loading': 'جاري التحميل...',
+    'common.error': 'خطأ',
+    'common.success': 'نجاح',
+    
+    // Booking
+    'booking.title': 'احجز استشارتك',
+    'booking.selectDoctor': 'اختر الطبيب',
+    'booking.selectTime': 'اختر الوقت',
+    'booking.confirm': 'تأكيد الحجز',
+    'booking.reminder.24h': 'تذكيري قبل 24 ساعة',
+    'booking.reminder.1h': 'تذكيري قبل ساعة واحدة',
+    
+    // Calorie Calculator
+    'calc.calorie.title': 'حاسبة السعرات الحرارية',
+    'calc.calorie.age': 'العمر',
+    'calc.calorie.gender': 'الجنس',
+    'calc.calorie.height': 'الطول',
+    'calc.calorie.weight': 'الوزن',
+    'calc.calorie.activity': 'مستوى النشاط',
+    'calc.calorie.goal': 'هدفك',
+    'calc.calorie.bmr': 'معدل الأيض الأساسي',
+    'calc.calorie.tdee': 'إجمالي الطاقة اليومية',
+    'calc.calorie.target': 'السعرات اليومية المستهدفة',
+    'calc.calorie.export': 'تصدير خطة الوجبات',
+    'calc.calorie.save': 'حفظ النتائج',
+    
+    // Health Integration
+    'health.connect': 'ربط تطبيق الصحة',
+    'health.sync': 'مزامنة البيانات',
+    'health.disconnect': 'قطع الاتصال',
+    'health.lastSync': 'آخر مزامنة',
+    'health.steps': 'خطوات',
+    'health.heartRate': 'معدل ضربات القلب',
+    'health.sleep': 'النوم',
+    'health.calories': 'السعرات الحرارية'
+  }
+}
+
+// Get supported languages
+app.get('/api/i18n/languages', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      languages: SUPPORTED_LANGUAGES,
+      default: 'en'
+    }
+  })
+})
+
+// Get translations for a language
+app.get('/api/i18n/translations/:lang', (c) => {
+  const lang = c.req.param('lang')
+  
+  if (!SUPPORTED_LANGUAGES.find(l => l.code === lang)) {
+    return c.json({ success: false, error: 'Language not supported' }, 404)
+  }
+  
+  const translations = TRANSLATIONS[lang] || TRANSLATIONS['en']
+  const langInfo = SUPPORTED_LANGUAGES.find(l => l.code === lang)
+  
+  return c.json({
+    success: true,
+    data: {
+      language: langInfo,
+      translations,
+      fallback: lang !== 'en' ? TRANSLATIONS['en'] : undefined
+    }
+  })
+})
+
+// Translate specific keys
+app.post('/api/i18n/translate', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { keys, lang } = body
+    
+    if (!keys || !Array.isArray(keys)) {
+      return c.json({ success: false, error: 'Keys array is required' }, 400)
+    }
+    
+    const targetLang = lang || 'en'
+    const translations = TRANSLATIONS[targetLang] || TRANSLATIONS['en']
+    const fallback = TRANSLATIONS['en']
+    
+    const result: Record<string, string> = {}
+    keys.forEach((key: string) => {
+      result[key] = translations[key] || fallback[key] || key
+    })
+    
+    return c.json({
+      success: true,
+      data: {
+        language: targetLang,
+        translations: result
+      }
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to translate' }, 500)
+  }
+})
+
+// ============================================================================
+// PDF EXPORT API - Meal Plan & Health Reports
+// ============================================================================
+
+// Generate meal plan PDF data
+app.post('/api/export/meal-plan', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { 
+      calories, 
+      macros, 
+      mealTiming, 
+      goal, 
+      userInfo,
+      format = 'json'
+    } = body
+    
+    if (!calories || !macros) {
+      return c.json({ success: false, error: 'Calories and macros data required' }, 400)
+    }
+    
+    // Generate meal suggestions based on macros
+    const mealPlan = {
+      generatedAt: new Date().toISOString(),
+      user: userInfo || { name: 'Guest' },
+      dailyTarget: {
+        calories,
+        protein: macros.protein,
+        carbs: macros.carbs,
+        fat: macros.fat
+      },
+      goal: goal || 'maintain',
+      meals: {
+        breakfast: {
+          name: 'Balanced Breakfast',
+          time: '7:00 - 8:00 AM',
+          calories: Math.round(calories * 0.25),
+          suggestions: [
+            {
+              name: 'Greek Yogurt Bowl',
+              description: 'Greek yogurt with berries, granola, and honey',
+              calories: Math.round(calories * 0.25),
+              protein: Math.round(macros.protein * 0.3),
+              carbs: Math.round(macros.carbs * 0.25),
+              fat: Math.round(macros.fat * 0.2)
+            },
+            {
+              name: 'Eggs & Avocado Toast',
+              description: '2 eggs with whole grain toast and half avocado',
+              calories: Math.round(calories * 0.25),
+              protein: Math.round(macros.protein * 0.35),
+              carbs: Math.round(macros.carbs * 0.2),
+              fat: Math.round(macros.fat * 0.3)
+            }
+          ]
+        },
+        lunch: {
+          name: 'Nutritious Lunch',
+          time: '12:00 - 1:00 PM',
+          calories: Math.round(calories * 0.35),
+          suggestions: [
+            {
+              name: 'Grilled Chicken Salad',
+              description: 'Grilled chicken breast with mixed greens, quinoa, and olive oil dressing',
+              calories: Math.round(calories * 0.35),
+              protein: Math.round(macros.protein * 0.4),
+              carbs: Math.round(macros.carbs * 0.35),
+              fat: Math.round(macros.fat * 0.3)
+            },
+            {
+              name: 'Salmon & Rice Bowl',
+              description: 'Baked salmon with brown rice and steamed vegetables',
+              calories: Math.round(calories * 0.35),
+              protein: Math.round(macros.protein * 0.35),
+              carbs: Math.round(macros.carbs * 0.4),
+              fat: Math.round(macros.fat * 0.35)
+            }
+          ]
+        },
+        dinner: {
+          name: 'Balanced Dinner',
+          time: '6:00 - 7:00 PM',
+          calories: Math.round(calories * 0.30),
+          suggestions: [
+            {
+              name: 'Lean Beef Stir-Fry',
+              description: 'Lean beef strips with vegetables and brown rice',
+              calories: Math.round(calories * 0.30),
+              protein: Math.round(macros.protein * 0.25),
+              carbs: Math.round(macros.carbs * 0.3),
+              fat: Math.round(macros.fat * 0.25)
+            },
+            {
+              name: 'Turkey & Sweet Potato',
+              description: 'Roasted turkey with baked sweet potato and broccoli',
+              calories: Math.round(calories * 0.30),
+              protein: Math.round(macros.protein * 0.3),
+              carbs: Math.round(macros.carbs * 0.35),
+              fat: Math.round(macros.fat * 0.2)
+            }
+          ]
+        },
+        snacks: {
+          name: 'Healthy Snacks',
+          time: 'Between meals',
+          calories: Math.round(calories * 0.10),
+          suggestions: [
+            { name: 'Almonds (1/4 cup)', calories: 160, protein: 6, carbs: 6, fat: 14 },
+            { name: 'Apple with Peanut Butter', calories: 190, protein: 4, carbs: 25, fat: 8 },
+            { name: 'Protein Shake', calories: 150, protein: 25, carbs: 5, fat: 3 },
+            { name: 'Cottage Cheese (1 cup)', calories: 180, protein: 24, carbs: 8, fat: 5 }
+          ]
+        }
+      },
+      tips: [
+        'Drink at least 8 glasses of water daily',
+        'Eat slowly and mindfully for better digestion',
+        'Prep meals in advance for consistency',
+        'Include fiber-rich foods for satiety',
+        'Limit processed foods and added sugars'
+      ],
+      weeklyShoppingList: [
+        { category: 'Proteins', items: ['Chicken breast', 'Salmon', 'Eggs', 'Greek yogurt', 'Lean beef', 'Turkey'] },
+        { category: 'Carbs', items: ['Brown rice', 'Quinoa', 'Oats', 'Whole grain bread', 'Sweet potato'] },
+        { category: 'Vegetables', items: ['Spinach', 'Broccoli', 'Mixed greens', 'Bell peppers', 'Tomatoes'] },
+        { category: 'Fruits', items: ['Berries', 'Apples', 'Bananas', 'Avocados'] },
+        { category: 'Healthy Fats', items: ['Olive oil', 'Almonds', 'Peanut butter'] }
+      ]
+    }
+    
+    // Generate HTML for PDF
+    if (format === 'html') {
+      const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SelectCareOS - Personalized Meal Plan</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #1a1a2e; }
+    .header { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 20px; margin-bottom: 30px; }
+    .header h1 { color: #1a1a2e; margin: 0; }
+    .header .subtitle { color: #C9A227; font-size: 18px; }
+    .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
+    .summary-card { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; border-radius: 10px; text-align: center; }
+    .summary-card .value { font-size: 28px; font-weight: bold; color: #C9A227; }
+    .summary-card .label { font-size: 12px; color: #666; }
+    .meal { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    .meal h3 { color: #1a1a2e; margin-top: 0; border-bottom: 2px solid #C9A227; padding-bottom: 10px; }
+    .suggestion { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; }
+    .suggestion .name { font-weight: bold; color: #1a1a2e; }
+    .macros { display: flex; gap: 15px; margin-top: 10px; font-size: 12px; }
+    .macros span { padding: 4px 8px; border-radius: 4px; }
+    .protein { background: #e3f2fd; color: #1976d2; }
+    .carbs { background: #fff3e0; color: #f57c00; }
+    .fat { background: #e8f5e9; color: #388e3c; }
+    .tips { background: #f5f5f5; padding: 20px; border-radius: 10px; }
+    .tips h3 { color: #C9A227; }
+    .tips ul { margin: 0; padding-left: 20px; }
+    .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #666; font-size: 12px; }
+    @media print { body { padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🥗 Personalized Meal Plan</h1>
+    <div class="subtitle">SelectCareOS™ - German Excellence in Healthcare</div>
+    <div style="margin-top: 10px; color: #666;">Generated: ${new Date().toLocaleDateString()}</div>
+  </div>
+  
+  <div class="summary">
+    <div class="summary-card">
+      <div class="value">${calories}</div>
+      <div class="label">Daily Calories</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">${macros.protein}g</div>
+      <div class="label">Protein</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">${macros.carbs}g</div>
+      <div class="label">Carbs</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">${macros.fat}g</div>
+      <div class="label">Fat</div>
+    </div>
+  </div>
+  
+  ${Object.entries(mealPlan.meals).map(([key, meal]: [string, any]) => `
+    <div class="meal">
+      <h3>${meal.name} (${meal.calories} cal) - ${meal.time}</h3>
+      ${meal.suggestions.slice(0, 2).map((s: any) => `
+        <div class="suggestion">
+          <div class="name">${s.name}</div>
+          <div style="color: #666; font-size: 14px;">${s.description || ''}</div>
+          <div class="macros">
+            <span class="protein">Protein: ${s.protein}g</span>
+            <span class="carbs">Carbs: ${s.carbs}g</span>
+            <span class="fat">Fat: ${s.fat}g</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('')}
+  
+  <div class="tips">
+    <h3>💡 Pro Tips</h3>
+    <ul>
+      ${mealPlan.tips.map(tip => `<li>${tip}</li>`).join('')}
+    </ul>
+  </div>
+  
+  <div class="footer">
+    <p>This meal plan is for informational purposes only. Consult a healthcare provider before making significant dietary changes.</p>
+    <p>© ${new Date().getFullYear()} SelectCareOS™ - German Select Healthcare</p>
+  </div>
+</body>
+</html>
+      `
+      
+      return c.html(html)
+    }
+    
+    return c.json({
+      success: true,
+      data: mealPlan
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to generate meal plan' }, 500)
+  }
+})
+
+// Generate health report PDF data
+app.post('/api/export/health-report', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { 
+      calculatorResults, 
+      healthData, 
+      userInfo,
+      format = 'json'
+    } = body
+    
+    const report = {
+      generatedAt: new Date().toISOString(),
+      user: userInfo || { name: 'Guest' },
+      calculators: calculatorResults || {},
+      healthMetrics: healthData || {},
+      recommendations: [],
+      disclaimer: 'This report is for informational purposes only and does not constitute medical advice.'
+    }
+    
+    return c.json({
+      success: true,
+      data: report
+    })
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to generate health report' }, 500)
+  }
+})
+
 // Packages API
 app.get('/api/packages', (c) => {
   return c.json({ success: true, data: CARE_PACKAGES })
@@ -3970,11 +4863,13 @@ app.get('/onboarding', (c) => {
   return c.html(appShell(content, 'Welcome', 'home'))
 })
 
-// Admin Dashboard
-app.get('/admin', (c) => {
-  return c.redirect('/admin/dashboard')
+// Admin Dashboard - serves page directly (no redirect)
+app.get('/admin', async (c) => {
+  const { adminPage } = await import('./pages/admin')
+  return c.html(adminPage(c))
 })
 
+// Alias for admin dashboard
 app.get('/admin/dashboard', async (c) => {
   const { adminPage } = await import('./pages/admin')
   return c.html(adminPage(c))

@@ -406,6 +406,17 @@ export function bookingPage(c: Context): string {
                     <a href="/dashboard" class="hover:text-blue-200 transition-colors">
                         <i class="fas fa-user mr-1"></i> My Account
                     </a>
+                    <!-- Language Selector -->
+                    <div class="relative">
+                        <select id="language-selector" onchange="changeLanguage(this.value)" class="appearance-none bg-white/10 text-white px-3 py-1.5 pr-8 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition border border-white/20">
+                            <option value="en" class="text-gray-800">🇬🇧 English</option>
+                            <option value="de" class="text-gray-800">🇩🇪 Deutsch</option>
+                            <option value="ar" class="text-gray-800">🇸🇦 العربية</option>
+                            <option value="ru" class="text-gray-800">🇷🇺 Русский</option>
+                            <option value="tr" class="text-gray-800">🇹🇷 Türkçe</option>
+                        </select>
+                        <i class="fas fa-globe absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none"></i>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -1594,6 +1605,117 @@ END:VCALENDAR\`;
         function validateEmail(email) {
             return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
         }
+
+        // ============================================================================
+        // INTERNATIONALIZATION (i18n)
+        // ============================================================================
+        
+        const LANG_STORAGE_KEY = 'selectcare_language';
+        let currentLanguage = localStorage.getItem(LANG_STORAGE_KEY) || 'en';
+        let translations = {};
+        
+        // Load translations
+        async function loadTranslations(lang) {
+            try {
+                const response = await fetch(\`/api/i18n/translations/\${lang}\`);
+                const data = await response.json();
+                if (data.success) {
+                    translations = data.data.translations;
+                    if (data.data.fallback) {
+                        translations = { ...data.data.fallback, ...translations };
+                    }
+                    return true;
+                }
+            } catch (error) {
+                console.error('Failed to load translations:', error);
+            }
+            return false;
+        }
+        
+        // Change language
+        async function changeLanguage(lang) {
+            const success = await loadTranslations(lang);
+            if (success) {
+                currentLanguage = lang;
+                localStorage.setItem(LANG_STORAGE_KEY, lang);
+                
+                // Update text direction for RTL languages
+                document.documentElement.dir = ['ar', 'he', 'fa'].includes(lang) ? 'rtl' : 'ltr';
+                
+                // Apply translations to page
+                applyTranslations();
+                
+                // Show notification
+                showNotification(\`Language changed to \${getLanguageName(lang)}\`, 'success');
+            }
+        }
+        
+        function getLanguageName(code) {
+            const names = {
+                'en': 'English',
+                'de': 'Deutsch',
+                'ar': 'العربية',
+                'ru': 'Русский',
+                'tr': 'Türkçe',
+                'fr': 'Français',
+                'es': 'Español',
+                'zh': '中文'
+            };
+            return names[code] || code;
+        }
+        
+        // Translate function
+        function t(key) {
+            return translations[key] || key;
+        }
+        
+        // Apply translations to page elements
+        function applyTranslations() {
+            // Update elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = t(key);
+            });
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const colors = {
+                'success': 'bg-green-500',
+                'error': 'bg-red-500',
+                'info': 'bg-blue-500'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = \`fixed top-4 right-4 \${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in\`;
+            notification.innerHTML = \`<i class="fas fa-\${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}-circle mr-2"></i>\${message}\`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set language selector to current language
+            const selector = document.getElementById('language-selector');
+            if (selector) {
+                selector.value = currentLanguage;
+            }
+            
+            // Load translations if not English (English is default)
+            if (currentLanguage !== 'en') {
+                loadTranslations(currentLanguage).then(() => applyTranslations());
+            }
+        });
     </script>
 </body>
 </html>`
