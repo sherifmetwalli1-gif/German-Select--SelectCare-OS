@@ -270,41 +270,133 @@ export const TESTIMONIALS = [
   }
 ];
 
+// Service types: 'surgery' = Major Surgery, 'treatment' = Onsite Treatment, 'checkup' = Diagnostic/Checkup
 export const TREATMENT_PROCEDURES = [
   {
-    category: 'Bariatric Surgery',
+    category: 'Bariatric & Weight Loss',
     icon: 'weight',
+    description: 'German-certified metabolic surgery with 5-star Red Sea recovery',
+    specialist: 'Prof. Dr. Med. Bariatric Surgeon',
     procedures: [
-      { name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, savings: 14500, turkeyComparison: '+German MD' },
-      { name: 'Gastric Bypass', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, savings: 17500, turkeyComparison: '+German MD' },
-      { name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, savings: 22000, turkeyComparison: '+German MD' }
+      { name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, savings: 14500, type: 'surgery', duration: '1 hour', recovery: '2 weeks', turkeyComparison: '+German MD' },
+      { name: 'Gastric Bypass (Roux-en-Y)', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, savings: 17500, type: 'surgery', duration: '2 hours', recovery: '3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Gastric Balloon (Non-Surgical)', price: 3500, germanyPrice: 8000, turkeyPrice: 2500, savings: 4500, type: 'treatment', duration: '30 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, savings: 22000, type: 'surgery', duration: '2-3 hours', recovery: '3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Mini Gastric Bypass', price: 9500, germanyPrice: 25000, turkeyPrice: 5500, savings: 15500, type: 'surgery', duration: '1.5 hours', recovery: '2 weeks', turkeyComparison: '+German MD' }
     ]
   },
   {
     category: 'Orthopedic Surgery',
     icon: 'bone',
+    description: 'Arthroscopy, joint replacement & sports injuries by German orthopedic specialists',
+    specialist: 'Dr. Med. Senior Orthopedic Surgeon',
     procedures: [
-      { name: 'Knee Replacement', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, savings: 26500, turkeyComparison: '+German MD' },
-      { name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, savings: 30000, turkeyComparison: '+German MD' },
-      { name: 'Spine Surgery', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, savings: 35500, turkeyComparison: '+German MD' }
+      { name: 'Knee Replacement (Total)', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, savings: 26500, type: 'surgery', duration: '2 hours', recovery: '6-8 weeks', turkeyComparison: '+German MD' },
+      { name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, savings: 30000, type: 'surgery', duration: '2.5 hours', recovery: '6-8 weeks', turkeyComparison: '+German MD' },
+      { name: 'Arthroscopic Knee Surgery', price: 5500, germanyPrice: 15000, turkeyPrice: 4000, savings: 9500, type: 'surgery', duration: '45 min', recovery: '2-4 weeks', turkeyComparison: '+German MD' },
+      { name: 'Spine Surgery (Disc)', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, savings: 35500, type: 'surgery', duration: '3 hours', recovery: '8-12 weeks', turkeyComparison: '+German MD' },
+      { name: 'ACL Reconstruction', price: 7500, germanyPrice: 20000, turkeyPrice: 5500, savings: 12500, type: 'surgery', duration: '1.5 hours', recovery: '6-9 months', turkeyComparison: '+German MD' },
+      { name: 'Shoulder Arthroscopy', price: 6500, germanyPrice: 18000, turkeyPrice: 4500, savings: 11500, type: 'surgery', duration: '1 hour', recovery: '3-4 weeks', turkeyComparison: '+German MD' }
     ]
   },
   {
-    category: 'Aesthetic Surgery',
+    category: 'Plastic & Reconstructive',
     icon: 'sparkles',
+    description: 'Post-bariatric body contouring & cosmetic procedures',
+    specialist: 'Prof. Dr. Med. Plastic & Reconstructive Surgeon',
     procedures: [
-      { name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, savings: 16500, turkeyComparison: '+German MD' },
-      { name: 'Body Contouring', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, savings: 19500, turkeyComparison: '+German MD' },
-      { name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, savings: 12000, turkeyComparison: '+German MD' }
+      { name: 'Body Contouring (Full)', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, savings: 19500, type: 'surgery', duration: '4-6 hours', recovery: '4-6 weeks', turkeyComparison: '+German MD' },
+      { name: 'Abdominoplasty (Tummy Tuck)', price: 6500, germanyPrice: 18000, turkeyPrice: 4000, savings: 11500, type: 'surgery', duration: '2-3 hours', recovery: '3-4 weeks', turkeyComparison: '+German MD' },
+      { name: 'Arm Lift (Brachioplasty)', price: 4500, germanyPrice: 12000, turkeyPrice: 3000, savings: 7500, type: 'surgery', duration: '2 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Thigh Lift', price: 5500, germanyPrice: 15000, turkeyPrice: 3500, savings: 9500, type: 'surgery', duration: '2-3 hours', recovery: '3-4 weeks', turkeyComparison: '+German MD' },
+      { name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, savings: 16500, type: 'surgery', duration: '3-4 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, savings: 12000, type: 'surgery', duration: '1.5-2 hours', recovery: '2 weeks', turkeyComparison: '+German MD' },
+      { name: 'Liposuction', price: 4000, germanyPrice: 10000, turkeyPrice: 2500, savings: 6000, type: 'surgery', duration: '1-2 hours', recovery: '1-2 weeks', turkeyComparison: '+German MD' }
+    ]
+  },
+  {
+    category: 'Cardiology',
+    icon: 'heartbeat',
+    description: 'Comprehensive cardiac care by German-trained cardiologists',
+    specialist: 'Ass. Prof. Dr. Med. Cardiology',
+    procedures: [
+      { name: 'Complete Cardiac Checkup', price: 1200, germanyPrice: 3500, turkeyPrice: 800, savings: 2300, type: 'checkup', duration: '3-4 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Echocardiogram (Advanced)', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Cardiac Stress Test', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'checkup', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Coronary CT Angiography', price: 800, germanyPrice: 2200, turkeyPrice: 600, savings: 1400, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Cardiac Catheterization', price: 3500, germanyPrice: 10000, turkeyPrice: 2500, savings: 6500, type: 'treatment', duration: '2-3 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Pacemaker Implantation', price: 8500, germanyPrice: 25000, turkeyPrice: 6000, savings: 16500, type: 'surgery', duration: '1-2 hours', recovery: '1 week', turkeyComparison: '+German MD' }
+    ]
+  },
+  {
+    category: 'Urology & Andrology',
+    icon: 'user',
+    description: "Men's health & urological procedures by German urologists",
+    specialist: 'Dr. Med. Consultant Urology & Andrology',
+    procedures: [
+      { name: 'Complete Urology Checkup', price: 800, germanyPrice: 2200, turkeyPrice: 500, savings: 1400, type: 'checkup', duration: '2 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Prostate Assessment (MRI+PSA)', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'checkup', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'TURP (Prostate Surgery)', price: 5500, germanyPrice: 15000, turkeyPrice: 4000, savings: 9500, type: 'surgery', duration: '1-2 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Kidney Stone Treatment (ESWL)', price: 2500, germanyPrice: 7000, turkeyPrice: 1800, savings: 4500, type: 'treatment', duration: '1 hour', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Vasectomy', price: 1200, germanyPrice: 3000, turkeyPrice: 800, savings: 1800, type: 'surgery', duration: '30 min', recovery: '1 week', turkeyComparison: '+German MD' },
+      { name: 'ED Treatment (PRP/Shockwave)', price: 1800, germanyPrice: 4500, turkeyPrice: 1200, savings: 2700, type: 'treatment', duration: '45 min', recovery: 'Same day', turkeyComparison: '+German MD' }
+    ]
+  },
+  {
+    category: 'Gastroenterology',
+    icon: 'stomach',
+    description: 'Digestive health & internal medicine by German gastroenterologists',
+    specialist: 'Dr. Med. Gastroenterology & Internal Medicine',
+    procedures: [
+      { name: 'Complete GI Checkup', price: 950, germanyPrice: 2800, turkeyPrice: 650, savings: 1850, type: 'checkup', duration: '3 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Gastroscopy (Diagnostic)', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'checkup', duration: '30 min', recovery: '2-4 hours', turkeyComparison: '+German MD' },
+      { name: 'Colonoscopy (Diagnostic)', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'checkup', duration: '45 min', recovery: '4-6 hours', turkeyComparison: '+German MD' },
+      { name: 'GERD/Antireflux Treatment', price: 3500, germanyPrice: 10000, turkeyPrice: 2500, savings: 6500, type: 'treatment', duration: '1 hour', recovery: '2-3 days', turkeyComparison: '+German MD' },
+      { name: 'Hemorrhoid Treatment', price: 1800, germanyPrice: 5000, turkeyPrice: 1200, savings: 3200, type: 'treatment', duration: '30-45 min', recovery: '1-2 weeks', turkeyComparison: '+German MD' },
+      { name: 'Liver FibroScan + Assessment', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'checkup', duration: '30 min', recovery: 'Same day', turkeyComparison: '+German MD' }
+    ]
+  },
+  {
+    category: 'Dental Care',
+    icon: 'tooth',
+    description: 'Comprehensive dental services from checkups to implants',
+    specialist: 'Dr. Med. Dent. German Dental Specialist',
+    procedures: [
+      { name: 'Complete Dental Checkup', price: 120, germanyPrice: 350, turkeyPrice: 80, savings: 230, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Professional Cleaning', price: 150, germanyPrice: 400, turkeyPrice: 100, savings: 250, type: 'treatment', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Dental Implant (Single)', price: 1200, germanyPrice: 3500, turkeyPrice: 800, savings: 2300, type: 'surgery', duration: '1-2 hours', recovery: '3-6 months', turkeyComparison: '+German MD' },
+      { name: 'Full Mouth Implants (All-on-4)', price: 8500, germanyPrice: 25000, turkeyPrice: 6000, savings: 16500, type: 'surgery', duration: '3-4 hours', recovery: '3-6 months', turkeyComparison: '+German MD' },
+      { name: 'Teeth Whitening (Zoom)', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'treatment', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Porcelain Veneers (per tooth)', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'treatment', duration: '2 visits', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Root Canal Treatment', price: 350, germanyPrice: 900, turkeyPrice: 200, savings: 550, type: 'treatment', duration: '1-2 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Dental Crown (Zirconia)', price: 550, germanyPrice: 1500, turkeyPrice: 350, savings: 950, type: 'treatment', duration: '2 visits', recovery: 'Same day', turkeyComparison: '+German MD' }
+    ]
+  },
+  {
+    category: 'Pain Management',
+    icon: 'syringe',
+    description: 'Advanced pain therapy & anesthesiology',
+    specialist: 'Dr. Med. Anesthesia & Pain Management',
+    procedures: [
+      { name: 'Pain Assessment & Consultation', price: 250, germanyPrice: 650, turkeyPrice: 150, savings: 400, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Epidural Steroid Injection', price: 800, germanyPrice: 2200, turkeyPrice: 600, savings: 1400, type: 'treatment', duration: '30 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Nerve Block Therapy', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'treatment', duration: '30-45 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Facet Joint Injection', price: 550, germanyPrice: 1500, turkeyPrice: 400, savings: 950, type: 'treatment', duration: '30 min', recovery: '1 day', turkeyComparison: '+German MD' },
+      { name: 'Trigger Point Therapy', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'treatment', duration: '30 min', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   },
   {
     category: 'Anti-Aging & Longevity',
     icon: 'clock',
+    description: 'Regenerative medicine & wellness treatments',
+    specialist: 'Prof. Dr. Med. Regenerative Medicine',
     procedures: [
-      { name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, savings: 22500, turkeyComparison: '+German MD' },
-      { name: 'PRP Therapy', price: 2200, germanyPrice: 8000, turkeyPrice: 800, savings: 5800, turkeyComparison: '+German MD' },
-      { name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, savings: 8000, turkeyComparison: '+German MD' }
+      { name: 'Executive Health Checkup', price: 2500, germanyPrice: 7000, turkeyPrice: 1800, savings: 4500, type: 'checkup', duration: 'Full day', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, savings: 22500, type: 'treatment', duration: '3-4 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'PRP Therapy (Face/Hair)', price: 2200, germanyPrice: 8000, turkeyPrice: 800, savings: 5800, type: 'treatment', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'IV Vitamin Therapy', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'treatment', duration: '1-2 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, savings: 8000, type: 'treatment', duration: 'Ongoing', recovery: 'None', turkeyComparison: '+German MD' },
+      { name: 'NAD+ Infusion Therapy', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'treatment', duration: '2-3 hours', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   }
 ];
@@ -1060,52 +1152,263 @@ export const servicesPage = () => `<!DOCTYPE html>
         </div>
     </section>
 
-    <!-- Treatment Procedures & Pricing -->
-    <section class="py-20 px-6 bg-white">
+    <!-- Medical Shop - Onsite Treatments & Surgeries -->
+    <section id="shop" class="py-20 px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <span class="bg-gold/10 text-gold px-4 py-2 rounded-full text-sm font-semibold inline-block mb-4">
-                    <i class="fas fa-procedures mr-2"></i>Procedures
+                    <i class="fas fa-store-alt mr-2"></i>Medical Shop
                 </span>
                 <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">
-                    Treatment Procedures & Savings
+                    Onsite Treatments & Surgeries
                 </h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">
-                    Compare our prices with German hospitals - save up to 70%
+                    German expertise, Red Sea recovery. Compare our prices - save up to 70% vs Germany
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8">
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="filterServices('all')" class="service-filter active px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gold text-navy" data-filter="all">
+                    <i class="fas fa-th-large mr-2"></i>All Services
+                </button>
+                <button onclick="filterServices('surgery')" class="service-filter px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gray-100 text-gray-600 hover:bg-gold/20 hover:text-navy" data-filter="surgery">
+                    <i class="fas fa-procedures mr-2"></i>Surgeries
+                </button>
+                <button onclick="filterServices('treatment')" class="service-filter px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gray-100 text-gray-600 hover:bg-gold/20 hover:text-navy" data-filter="treatment">
+                    <i class="fas fa-syringe mr-2"></i>Treatments
+                </button>
+                <button onclick="filterServices('checkup')" class="service-filter px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gray-100 text-gray-600 hover:bg-gold/20 hover:text-navy" data-filter="checkup">
+                    <i class="fas fa-stethoscope mr-2"></i>Checkups
+                </button>
+            </div>
+            
+            <!-- Category Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="serviceGrid">
                 ${TREATMENT_PROCEDURES.map(category => `
-                    <div class="card p-6">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center">
-                                <i class="fas fa-${category.icon === 'weight' ? 'weight' : category.icon === 'bone' ? 'bone' : category.icon === 'sparkles' ? 'magic' : 'clock'} text-gold text-xl"></i>
+                    <div class="card p-6 service-category" data-category="${category.category}">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-14 h-14 bg-gradient-to-br from-gold to-gold-light rounded-2xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-${
+                                    category.icon === 'weight' ? 'weight' : 
+                                    category.icon === 'bone' ? 'bone' : 
+                                    category.icon === 'sparkles' ? 'magic' : 
+                                    category.icon === 'heartbeat' ? 'heartbeat' :
+                                    category.icon === 'user' ? 'male' :
+                                    category.icon === 'stomach' ? 'stomach' :
+                                    category.icon === 'tooth' ? 'tooth' :
+                                    category.icon === 'syringe' ? 'syringe' :
+                                    'clock'
+                                } text-navy text-xl"></i>
                             </div>
-                            <h3 class="font-bold text-navy text-xl">${category.category}</h3>
+                            <div>
+                                <h3 class="font-bold text-navy text-lg">${category.category}</h3>
+                                <p class="text-xs text-gray-500">${category.procedures.length} procedures</p>
+                            </div>
                         </div>
                         
-                        <div class="space-y-4">
+                        <p class="text-sm text-gray-600 mb-4">${category.description || ''}</p>
+                        
+                        <div class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                             ${category.procedures.map(proc => `
-                                <div class="flex items-center justify-between p-4 bg-cream rounded-lg">
-                                    <div>
-                                        <p class="font-semibold text-navy">${proc.name}</p>
-                                        <p class="text-xs text-gray-500 line-through">Germany: €${proc.germanyPrice.toLocaleString()}</p>
+                                <div class="service-item p-4 bg-gradient-to-r from-cream to-white rounded-xl border-2 border-transparent hover:border-gold transition-all cursor-pointer" 
+                                     data-type="${proc.type}"
+                                     onclick="showServiceDetail('${encodeURIComponent(JSON.stringify({...proc, category: category.category, specialist: category.specialist}))}')">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <p class="font-semibold text-navy text-sm">${proc.name}</p>
+                                                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${
+                                                    proc.type === 'surgery' ? 'bg-red-100 text-red-700' :
+                                                    proc.type === 'treatment' ? 'bg-blue-100 text-blue-700' :
+                                                    'bg-green-100 text-green-700'
+                                                }">${proc.type === 'surgery' ? '⚕️ Surgery' : proc.type === 'treatment' ? '💉 Treatment' : '🔍 Checkup'}</span>
+                                            </div>
+                                            <p class="text-xs text-gray-400 line-through">Germany: €${proc.germanyPrice.toLocaleString()}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-gold text-lg">€${proc.price.toLocaleString()}</p>
+                                            <span class="savings-tag text-xs">
+                                                Save €${proc.savings.toLocaleString()}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="text-right">
-                                        <p class="font-bold text-gold text-lg">€${proc.price.toLocaleString()}</p>
-                                        <span class="savings-tag text-xs">
-                                            Save €${proc.savings.toLocaleString()}
-                                        </span>
+                                    <div class="flex items-center gap-4 text-xs text-gray-500">
+                                        <span><i class="fas fa-clock mr-1"></i>${proc.duration}</span>
+                                        <span><i class="fas fa-bed mr-1"></i>${proc.recovery}</span>
                                     </div>
                                 </div>
                             `).join('')}
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <a href="/booking?category=${encodeURIComponent(category.category)}" class="btn-gold w-full text-center block text-sm py-3">
+                                <i class="fas fa-calendar-check mr-2"></i>Book Consultation
+                            </a>
                         </div>
                     </div>
                 `).join('')}
             </div>
         </div>
     </section>
+    
+    <!-- Service Detail Modal -->
+    <div id="serviceDetailModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h3 id="modalTitle" class="text-xl font-bold text-navy"></h3>
+                    <button onclick="closeServiceDetail()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="modalContent" class="p-6"></div>
+            <div class="p-6 border-t border-gray-100 bg-cream rounded-b-3xl">
+                <div class="flex gap-4">
+                    <a id="modalBookBtn" href="#" class="flex-1 btn-gold text-center py-4 rounded-xl font-semibold">
+                        <i class="fas fa-calendar-check mr-2"></i>Book This Procedure
+                    </a>
+                    <a href="/medisense" class="flex-1 btn-outline text-center py-4 rounded-xl font-semibold">
+                        <i class="fas fa-brain mr-2"></i>Check Eligibility
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterServices(type) {
+            // Update active button
+            document.querySelectorAll('.service-filter').forEach(btn => {
+                btn.classList.remove('active', 'bg-gold', 'text-navy');
+                btn.classList.add('bg-gray-100', 'text-gray-600');
+            });
+            const activeBtn = document.querySelector(\`.service-filter[data-filter="\${type}"]\`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-gold', 'text-navy');
+                activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
+            }
+            
+            // Filter items
+            document.querySelectorAll('.service-item').forEach(item => {
+                const itemType = item.dataset.type;
+                if (type === 'all' || itemType === type) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Hide empty categories
+            document.querySelectorAll('.service-category').forEach(cat => {
+                const visibleItems = cat.querySelectorAll('.service-item[style="display: block"], .service-item:not([style*="display"])');
+                const hiddenItems = cat.querySelectorAll('.service-item[style="display: none"]');
+                if (type !== 'all' && hiddenItems.length === cat.querySelectorAll('.service-item').length) {
+                    cat.style.display = 'none';
+                } else {
+                    cat.style.display = 'block';
+                }
+            });
+        }
+        
+        function showServiceDetail(serviceJson) {
+            const service = JSON.parse(decodeURIComponent(serviceJson));
+            document.getElementById('modalTitle').textContent = service.name;
+            
+            const content = \`
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="px-3 py-1 rounded-full text-sm font-medium \${
+                            service.type === 'surgery' ? 'bg-red-100 text-red-700' :
+                            service.type === 'treatment' ? 'bg-blue-100 text-blue-700' :
+                            'bg-green-100 text-green-700'
+                        }">\${service.type === 'surgery' ? '⚕️ Major Surgery' : service.type === 'treatment' ? '💉 Onsite Treatment' : '🔍 Diagnostic Checkup'}</span>
+                        <span class="text-sm text-gray-500">\${service.category}</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-cream rounded-xl p-4">
+                            <p class="text-sm text-gray-500 mb-1">Our Price</p>
+                            <p class="text-3xl font-bold text-gold">€\${service.price.toLocaleString()}</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <p class="text-sm text-gray-500 mb-1">Germany Price</p>
+                            <p class="text-2xl font-bold text-gray-400 line-through">€\${service.germanyPrice.toLocaleString()}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+                        <p class="text-sm text-green-600 mb-1">Your Savings</p>
+                        <p class="text-2xl font-bold text-green-600">€\${service.savings.toLocaleString()}</p>
+                        <p class="text-xs text-green-500">\${Math.round((service.savings / service.germanyPrice) * 100)}% less than Germany</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3 p-3 bg-cream rounded-lg">
+                            <i class="fas fa-clock text-gold"></i>
+                            <div>
+                                <p class="text-xs text-gray-500">Duration</p>
+                                <p class="font-semibold text-navy">\${service.duration}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-cream rounded-lg">
+                            <i class="fas fa-bed text-gold"></i>
+                            <div>
+                                <p class="text-xs text-gray-500">Recovery</p>
+                                <p class="font-semibold text-navy">\${service.recovery}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    \${service.specialist ? \`
+                        <div class="flex items-center gap-4 p-4 border border-gold/30 rounded-xl bg-gold/5">
+                            <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-md text-navy"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Performed by</p>
+                                <p class="font-semibold text-navy">\${service.specialist}</p>
+                                <p class="text-xs text-gold">German Board-Certified</p>
+                            </div>
+                        </div>
+                    \` : ''}
+                    
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-navy">What's Included:</h4>
+                        <ul class="grid grid-cols-1 gap-2 text-sm text-gray-600">
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i>German Board-Certified Specialist</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i>JCI-Accredited Hospital Facility</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i>Pre-operative Consultation</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i>Post-procedure Follow-up</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i>SelectCareOS™ Digital Support</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i>24/7 Medical Hotline</li>
+                        </ul>
+                    </div>
+                </div>
+            \`;
+            
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modalBookBtn').href = '/booking?procedure=' + encodeURIComponent(service.name) + '&category=' + encodeURIComponent(service.category);
+            document.getElementById('serviceDetailModal').classList.remove('hidden');
+            document.getElementById('serviceDetailModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeServiceDetail() {
+            document.getElementById('serviceDetailModal').classList.add('hidden');
+            document.getElementById('serviceDetailModal').classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal on escape or outside click
+        document.getElementById('serviceDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeServiceDetail();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeServiceDetail();
+        });
+    </script>
 
     <!-- Patient Testimonials -->
     <section class="py-20 px-6 bg-cream">
