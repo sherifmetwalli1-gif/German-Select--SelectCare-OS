@@ -1,31 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "selectcareos",
-  "main": "src/index.tsx",
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": "./dist",
-
-  // D1 Database Configuration
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "selectcareos-production",
-      "database_id": "placeholder-id-replace-after-creation"
-    }
-  ],
-
-  // KV Namespace for caching and sessions
-  "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "placeholder-kv-id"
-    }
-  ],
-
-  // Environment Variables
-  "vars": {
-    "ENVIRONMENT": "development",
-    "API_BASE_URL": "https://selectcareos.pages.dev"
-  }
+  "pages_build_output_dir": "./dist"
 }
