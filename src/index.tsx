@@ -6282,6 +6282,7 @@ import { engagement } from './routes/engagement'
 import { wellness } from './routes/wellness'
 import medisenseApiRouter from './routes/medisense-api'
 import medisenseProRouter from './pages/medisense-pro'
+import { notificationsRouter } from './routes/notifications'
 
 // Mount route handlers
 app.route('/api/payments', payments)
@@ -6289,6 +6290,7 @@ app.route('/api/engagement', engagement)
 app.route('/api/wellness', wellness)
 app.route('/api/medisense-pro', medisenseApiRouter)
 app.route('/medisense-pro', medisenseProRouter)
+app.route('/api/notifications', notificationsRouter)
 
 // ============================================================================
 // CONVERSION OPTIMIZATION ENDPOINTS

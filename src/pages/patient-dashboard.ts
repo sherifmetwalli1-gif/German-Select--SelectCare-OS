@@ -800,23 +800,123 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                     <div class="card p-6">
                         <h2 class="text-lg font-bold text-navy mb-4">Quick Actions</h2>
                         <div class="grid grid-cols-2 gap-3">
-                            <button class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light transition">
-                                <i class="fas fa-video text-navy text-xl mb-2"></i>
+                            <button onclick="openVideoCall()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
+                                <i class="fas fa-video text-navy text-xl mb-2 group-hover:text-gold"></i>
                                 <div class="text-sm font-semibold text-navy">Video Call</div>
                             </button>
-                            <button class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light transition">
-                                <i class="fas fa-file-medical text-navy text-xl mb-2"></i>
+                            <button onclick="openDocuments()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
+                                <i class="fas fa-file-medical text-navy text-xl mb-2 group-hover:text-gold"></i>
                                 <div class="text-sm font-semibold text-navy">Documents</div>
                             </button>
-                            <button class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light transition">
-                                <i class="fas fa-pills text-navy text-xl mb-2"></i>
+                            <button onclick="openMedications()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
+                                <i class="fas fa-pills text-navy text-xl mb-2 group-hover:text-gold"></i>
                                 <div class="text-sm font-semibold text-navy">Medications</div>
                             </button>
-                            <button class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light transition">
-                                <i class="fas fa-utensils text-navy text-xl mb-2"></i>
+                            <button onclick="openMealPlan()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
+                                <i class="fas fa-utensils text-navy text-xl mb-2 group-hover:text-gold"></i>
                                 <div class="text-sm font-semibold text-navy">Meal Plan</div>
                             </button>
                         </div>
+                    </div>
+                    
+                    <!-- Medication Reminder Widget -->
+                    <div class="card p-6" id="medication-widget">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold text-navy">
+                                <i class="fas fa-pills text-gold mr-2"></i>
+                                Today's Medications
+                            </h2>
+                            <span id="med-adherence" class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                                100% Adherence
+                            </span>
+                        </div>
+                        
+                        <div id="medication-schedule" class="space-y-3">
+                            <!-- Morning Medications -->
+                            <div class="med-time-slot">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fas fa-sun text-amber-500"></i>
+                                    <span class="text-sm font-semibold text-navy">Morning</span>
+                                    <span class="text-xs text-gray-400">6:00 - 12:00</span>
+                                </div>
+                                <div id="morning-meds" class="space-y-2">
+                                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-sm">O</div>
+                                            <div>
+                                                <div class="font-semibold text-navy text-sm">Omeprazole</div>
+                                                <div class="text-xs text-gray-500">20mg • 7:00 AM</div>
+                                            </div>
+                                        </div>
+                                        <button onclick="logMedication('med_001', 'taken')" class="px-3 py-1 bg-green-500 text-white text-xs rounded-full hover:bg-green-600 transition">
+                                            <i class="fas fa-check mr-1"></i>Take
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">M</div>
+                                            <div>
+                                                <div class="font-semibold text-navy text-sm">Multivitamin</div>
+                                                <div class="text-xs text-gray-500">1 tablet • 8:00 AM</div>
+                                            </div>
+                                        </div>
+                                        <button onclick="logMedication('med_002', 'taken')" class="px-3 py-1 bg-green-500 text-white text-xs rounded-full hover:bg-green-600 transition">
+                                            <i class="fas fa-check mr-1"></i>Take
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Afternoon Medications -->
+                            <div class="med-time-slot">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fas fa-cloud-sun text-blue-500"></i>
+                                    <span class="text-sm font-semibold text-navy">Afternoon</span>
+                                    <span class="text-xs text-gray-400">12:00 - 18:00</span>
+                                </div>
+                                <div id="afternoon-meds" class="space-y-2">
+                                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white font-bold text-sm">B</div>
+                                            <div>
+                                                <div class="font-semibold text-navy text-sm">Vitamin B12</div>
+                                                <div class="text-xs text-gray-500">1000mcg • 12:00 PM</div>
+                                            </div>
+                                        </div>
+                                        <button onclick="logMedication('med_004', 'taken')" class="px-3 py-1 bg-green-500 text-white text-xs rounded-full hover:bg-green-600 transition">
+                                            <i class="fas fa-check mr-1"></i>Take
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Evening Medications -->
+                            <div class="med-time-slot">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fas fa-moon text-indigo-500"></i>
+                                    <span class="text-sm font-semibold text-navy">Evening</span>
+                                    <span class="text-xs text-gray-400">18:00 - 22:00</span>
+                                </div>
+                                <div id="evening-meds" class="space-y-2">
+                                    <div class="flex items-center justify-between p-3 bg-indigo-50 rounded-lg border-l-4 border-indigo-400">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">C</div>
+                                            <div>
+                                                <div class="font-semibold text-navy text-sm">Calcium Citrate</div>
+                                                <div class="text-xs text-gray-500">500mg • 8:00 PM</div>
+                                            </div>
+                                        </div>
+                                        <button onclick="logMedication('med_003', 'taken')" class="px-3 py-1 bg-green-500 text-white text-xs rounded-full hover:bg-green-600 transition">
+                                            <i class="fas fa-check mr-1"></i>Take
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="openMedications()" class="mt-4 w-full py-2 text-sm text-gold font-semibold hover:bg-gold-light rounded-lg transition">
+                            <i class="fas fa-cog mr-1"></i>Manage Medications
+                        </button>
                     </div>
                     
                     <!-- Health App Integration -->
@@ -3462,7 +3562,570 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
             
             // Initialize health provider UI
             updateHealthProviderUI();
+            
+            // Initialize notifications
+            initializeNotifications();
+            
+            // Request push notification permission
+            requestNotificationPermission();
         });
+        
+        // ═══════════════════════════════════════════════════════════════════════
+        // QUICK ACTION FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════
+        
+        // Video Call Handler
+        async function openVideoCall() {
+            showModal('video-call-modal');
+            
+            // Fetch upcoming video appointments
+            try {
+                const response = await fetch('/api/notifications/appointments?upcoming=true&userId=user_001');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const videoAppts = data.data.appointments.filter(a => a.isVirtual);
+                    renderVideoCallModal(videoAppts);
+                }
+            } catch (error) {
+                console.error('Failed to fetch appointments:', error);
+            }
+        }
+        
+        function renderVideoCallModal(appointments) {
+            const container = document.getElementById('video-appointments-list');
+            if (!container) return;
+            
+            if (appointments.length === 0) {
+                container.innerHTML = \`
+                    <div class="text-center py-8">
+                        <i class="fas fa-video text-gray-300 text-4xl mb-4"></i>
+                        <p class="text-gray-500">No upcoming video consultations</p>
+                        <button onclick="scheduleVideoCall()" class="mt-4 px-6 py-2 bg-gold text-navy rounded-full font-semibold hover:bg-gold-bright transition">
+                            <i class="fas fa-plus mr-2"></i>Schedule Video Call
+                        </button>
+                    </div>
+                \`;
+                return;
+            }
+            
+            container.innerHTML = appointments.map(apt => \`
+                <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 mb-3">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="font-bold text-navy">\${apt.title}</h4>
+                            <p class="text-sm text-gray-600"><i class="fas fa-user-md mr-1"></i>\${apt.doctorName || 'Dr. Hans Mueller'}</p>
+                        </div>
+                        <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">
+                            \${apt.status === 'in_progress' ? '🔴 LIVE' : 'Scheduled'}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                        <span><i class="fas fa-calendar mr-1"></i>\${new Date(apt.startTime).toLocaleDateString()}</span>
+                        <span><i class="fas fa-clock mr-1"></i>\${new Date(apt.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <button onclick="joinVideoCall('\${apt.id}')" class="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-bold hover:from-green-600 hover:to-emerald-700 transition-all">
+                        <i class="fas fa-video mr-2"></i>Join Video Call
+                    </button>
+                </div>
+            \`).join('');
+        }
+        
+        async function joinVideoCall(appointmentId) {
+            showToast('Connecting to video call...', 'info');
+            
+            try {
+                const response = await fetch(\`/api/notifications/video-call/\${appointmentId}?userId=user_001\`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    // In production, this would open the actual video call
+                    // For now, show a simulated video call interface
+                    showVideoCallInterface(data.data);
+                }
+            } catch (error) {
+                showToast('Failed to connect to video call', 'error');
+            }
+        }
+        
+        function showVideoCallInterface(callData) {
+            closeModal('video-call-modal');
+            
+            const videoUI = document.createElement('div');
+            videoUI.id = 'video-call-interface';
+            videoUI.className = 'fixed inset-0 z-50 bg-gray-900';
+            videoUI.innerHTML = \`
+                <div class="h-full flex flex-col">
+                    <!-- Video Area -->
+                    <div class="flex-1 relative bg-gradient-to-br from-gray-800 to-gray-900">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <div class="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-r from-gold to-gold-bright flex items-center justify-center">
+                                    <i class="fas fa-user-md text-5xl text-navy"></i>
+                                </div>
+                                <h3 class="text-xl font-bold">\${callData.doctorName}</h3>
+                                <p class="text-gray-400">\${callData.title}</p>
+                                <p class="text-green-400 mt-2"><i class="fas fa-circle text-xs mr-2 animate-pulse"></i>Connected</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Self view -->
+                        <div class="absolute bottom-4 right-4 w-32 h-24 bg-gray-700 rounded-xl border-2 border-gold overflow-hidden">
+                            <div class="w-full h-full flex items-center justify-center">
+                                <i class="fas fa-user text-gray-500 text-2xl"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Call timer -->
+                        <div class="absolute top-4 left-4 px-4 py-2 bg-black/50 rounded-full text-white text-sm">
+                            <i class="fas fa-clock mr-2"></i><span id="call-timer">00:00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Controls -->
+                    <div class="bg-gray-800 p-6">
+                        <div class="flex justify-center items-center gap-6">
+                            <button onclick="toggleMute()" class="w-14 h-14 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition">
+                                <i class="fas fa-microphone" id="mic-icon"></i>
+                            </button>
+                            <button onclick="toggleVideo()" class="w-14 h-14 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition">
+                                <i class="fas fa-video" id="video-icon"></i>
+                            </button>
+                            <button onclick="endVideoCall()" class="w-16 h-16 rounded-full bg-red-500 text-white hover:bg-red-600 transition">
+                                <i class="fas fa-phone-slash text-xl"></i>
+                            </button>
+                            <button onclick="toggleChat()" class="w-14 h-14 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                            <button onclick="toggleScreenShare()" class="w-14 h-14 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition">
+                                <i class="fas fa-desktop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            \`;
+            document.body.appendChild(videoUI);
+            
+            // Start call timer
+            let seconds = 0;
+            window.callTimer = setInterval(() => {
+                seconds++;
+                const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const secs = (seconds % 60).toString().padStart(2, '0');
+                document.getElementById('call-timer').textContent = \`\${mins}:\${secs}\`;
+            }, 1000);
+        }
+        
+        function endVideoCall() {
+            clearInterval(window.callTimer);
+            const videoUI = document.getElementById('video-call-interface');
+            if (videoUI) videoUI.remove();
+            showToast('Video call ended', 'success');
+        }
+        
+        function toggleMute() {
+            const icon = document.getElementById('mic-icon');
+            if (icon.classList.contains('fa-microphone')) {
+                icon.classList.remove('fa-microphone');
+                icon.classList.add('fa-microphone-slash');
+                showToast('Microphone muted', 'info');
+            } else {
+                icon.classList.remove('fa-microphone-slash');
+                icon.classList.add('fa-microphone');
+                showToast('Microphone unmuted', 'info');
+            }
+        }
+        
+        function toggleVideo() {
+            const icon = document.getElementById('video-icon');
+            if (icon.classList.contains('fa-video')) {
+                icon.classList.remove('fa-video');
+                icon.classList.add('fa-video-slash');
+                showToast('Camera off', 'info');
+            } else {
+                icon.classList.remove('fa-video-slash');
+                icon.classList.add('fa-video');
+                showToast('Camera on', 'info');
+            }
+        }
+        
+        function toggleChat() { showToast('Chat feature coming soon', 'info'); }
+        function toggleScreenShare() { showToast('Screen sharing feature coming soon', 'info'); }
+        function scheduleVideoCall() { window.location.href = '/booking?type=video'; }
+        
+        // Documents Handler
+        function openDocuments() {
+            showModal('documents-modal');
+            loadDocuments();
+        }
+        
+        async function loadDocuments() {
+            // Simulated documents for demo
+            const documents = [
+                { id: 'doc_001', name: 'Pre-Surgery Guidelines', type: 'pdf', date: '2024-01-10', category: 'preparation' },
+                { id: 'doc_002', name: 'Lab Results - Blood Work', type: 'pdf', date: '2024-01-08', category: 'lab' },
+                { id: 'doc_003', name: 'Post-Op Care Instructions', type: 'pdf', date: '2024-01-15', category: 'recovery' },
+                { id: 'doc_004', name: 'Medication Schedule', type: 'pdf', date: '2024-01-15', category: 'medication' },
+                { id: 'doc_005', name: 'Travel Itinerary', type: 'pdf', date: '2024-01-05', category: 'travel' }
+            ];
+            
+            const container = document.getElementById('documents-list');
+            if (!container) return;
+            
+            const categoryIcons = {
+                preparation: { icon: 'fa-clipboard-check', color: 'text-blue-500' },
+                lab: { icon: 'fa-flask', color: 'text-purple-500' },
+                recovery: { icon: 'fa-heart', color: 'text-red-500' },
+                medication: { icon: 'fa-pills', color: 'text-green-500' },
+                travel: { icon: 'fa-plane', color: 'text-amber-500' }
+            };
+            
+            container.innerHTML = documents.map(doc => {
+                const cat = categoryIcons[doc.category] || { icon: 'fa-file', color: 'text-gray-500' };
+                return \`
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition cursor-pointer" onclick="viewDocument('\${doc.id}')">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center">
+                                <i class="fas \${cat.icon} \${cat.color} text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-navy">\${doc.name}</h4>
+                                <p class="text-xs text-gray-500">\${doc.date} • \${doc.type.toUpperCase()}</p>
+                            </div>
+                        </div>
+                        <button class="p-2 text-gray-400 hover:text-gold transition">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                \`;
+            }).join('');
+        }
+        
+        function viewDocument(docId) {
+            showToast('Opening document...', 'info');
+            // In production, open actual document viewer
+        }
+        
+        // Medications Handler
+        function openMedications() {
+            showModal('medications-modal');
+            loadMedicationsModal();
+        }
+        
+        async function loadMedicationsModal() {
+            try {
+                const response = await fetch('/api/notifications/medications?userId=user_001');
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderMedicationsModal(data.data);
+                }
+            } catch (error) {
+                console.error('Failed to load medications:', error);
+            }
+        }
+        
+        function renderMedicationsModal(medData) {
+            const container = document.getElementById('medications-full-list');
+            if (!container) return;
+            
+            const { medications, schedule } = medData;
+            
+            const html = \`
+                <div class="space-y-6">
+                    <!-- Add Medication Button -->
+                    <button onclick="showAddMedicationForm()" class="w-full py-3 border-2 border-dashed border-gold rounded-xl text-gold font-semibold hover:bg-gold-light transition">
+                        <i class="fas fa-plus mr-2"></i>Add New Medication
+                    </button>
+                    
+                    <!-- Medication List -->
+                    \${medications.map(med => \`
+                        <div class="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: \${med.color || '#6B7280'}">
+                                        \${med.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-navy">\${med.name}</h4>
+                                        <p class="text-sm text-gray-500">\${med.dosage} \${med.unit} • \${med.frequency.replace('_', ' ')}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="editMedication('\${med.id}')" class="p-2 text-gray-400 hover:text-gold transition">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" \${med.isActive ? 'checked' : ''} onchange="toggleMedicationActive('\${med.id}')" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-green-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-2">
+                                <i class="fas fa-info-circle mr-1 text-gold"></i>
+                                \${med.instructions}
+                            </div>
+                            <div class="flex items-center gap-4 text-xs text-gray-400">
+                                <span><i class="fas fa-user-md mr-1"></i>\${med.prescribedBy}</span>
+                                <span><i class="fas fa-clock mr-1"></i>\${med.times.join(', ')}</span>
+                            </div>
+                        </div>
+                    \`).join('')}
+                </div>
+            \`;
+            
+            container.innerHTML = html;
+        }
+        
+        async function logMedication(medicationId, status) {
+            try {
+                const response = await fetch(\`/api/notifications/medications/\${medicationId}/log\`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: 'user_001', status })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(status === 'taken' ? '✓ Medication logged!' : 'Medication skipped', status === 'taken' ? 'success' : 'warning');
+                    
+                    // Update UI
+                    const btn = event.target.closest('button');
+                    if (btn && status === 'taken') {
+                        btn.innerHTML = '<i class="fas fa-check"></i> Taken';
+                        btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        btn.classList.add('bg-gray-300', 'cursor-default');
+                        btn.disabled = true;
+                    }
+                }
+            } catch (error) {
+                showToast('Failed to log medication', 'error');
+            }
+        }
+        
+        function showAddMedicationForm() {
+            showToast('Add medication form coming soon', 'info');
+        }
+        
+        function editMedication(medId) {
+            showToast('Edit medication form coming soon', 'info');
+        }
+        
+        function toggleMedicationActive(medId) {
+            showToast('Medication status updated', 'success');
+        }
+        
+        // Meal Plan Handler
+        function openMealPlan() {
+            // Switch to nutrition tab
+            showTab('nutrition');
+            showToast('Navigating to Meal Plan section', 'info');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════
+        // NOTIFICATION SYSTEM
+        // ═══════════════════════════════════════════════════════════════════════
+        
+        let notificationPermission = 'default';
+        
+        function initializeNotifications() {
+            // Check if browser supports notifications
+            if ('Notification' in window) {
+                notificationPermission = Notification.permission;
+            }
+            
+            // Load notifications
+            loadNotifications();
+            
+            // Poll for new notifications every 30 seconds
+            setInterval(loadNotifications, 30000);
+        }
+        
+        async function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                const permission = await Notification.requestPermission();
+                notificationPermission = permission;
+                
+                if (permission === 'granted') {
+                    showToast('Push notifications enabled!', 'success');
+                }
+            }
+        }
+        
+        async function loadNotifications() {
+            try {
+                const response = await fetch('/api/notifications?userId=user_001');
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateNotificationBadge(data.data.unreadCount);
+                }
+            } catch (error) {
+                console.error('Failed to load notifications:', error);
+            }
+        }
+        
+        function updateNotificationBadge(count) {
+            const badge = document.getElementById('notification-badge');
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count > 9 ? '9+' : count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+        
+        function sendPushNotification(title, body, icon) {
+            if (notificationPermission === 'granted') {
+                new Notification(title, {
+                    body,
+                    icon: icon || '/static/images/logo.png',
+                    badge: '/static/images/badge.png',
+                    vibrate: [200, 100, 200]
+                });
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════
+        // MODAL SYSTEM
+        // ═══════════════════════════════════════════════════════════════════════
+        
+        function showModal(modalId) {
+            // Create modal backdrop if not exists
+            let backdrop = document.getElementById('modal-backdrop');
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.id = 'modal-backdrop';
+                backdrop.className = 'fixed inset-0 bg-black/50 z-40 opacity-0 transition-opacity duration-300';
+                backdrop.onclick = () => closeModal(modalId);
+                document.body.appendChild(backdrop);
+            }
+            
+            // Create modal content container if not exists
+            let modal = document.getElementById(modalId);
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'fixed inset-x-4 top-20 bottom-20 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-[600px] bg-white rounded-2xl z-50 overflow-hidden shadow-2xl transform translate-y-full transition-transform duration-300';
+                modal.innerHTML = getModalContent(modalId);
+                document.body.appendChild(modal);
+            }
+            
+            // Show with animation
+            requestAnimationFrame(() => {
+                backdrop.classList.remove('opacity-0');
+                backdrop.classList.add('opacity-100');
+                modal.classList.remove('translate-y-full');
+            });
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalId) {
+            const backdrop = document.getElementById('modal-backdrop');
+            const modal = document.getElementById(modalId);
+            
+            if (backdrop) {
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.remove(), 300);
+            }
+            
+            if (modal) {
+                modal.classList.add('translate-y-full');
+                setTimeout(() => modal.remove(), 300);
+            }
+            
+            document.body.style.overflow = '';
+        }
+        
+        function getModalContent(modalId) {
+            const modals = {
+                'video-call-modal': \`
+                    <div class="h-full flex flex-col">
+                        <div class="p-4 bg-gradient-to-r from-navy to-navy-light text-white flex items-center justify-between">
+                            <h3 class="font-bold text-lg"><i class="fas fa-video mr-2"></i>Video Consultations</h3>
+                            <button onclick="closeModal('video-call-modal')" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flex-1 overflow-y-auto p-4" id="video-appointments-list">
+                            <div class="flex items-center justify-center h-32">
+                                <i class="fas fa-spinner fa-spin text-gold text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                \`,
+                'documents-modal': \`
+                    <div class="h-full flex flex-col">
+                        <div class="p-4 bg-gradient-to-r from-navy to-navy-light text-white flex items-center justify-between">
+                            <h3 class="font-bold text-lg"><i class="fas fa-file-medical mr-2"></i>My Documents</h3>
+                            <button onclick="closeModal('documents-modal')" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flex-1 overflow-y-auto p-4 space-y-3" id="documents-list">
+                            <div class="flex items-center justify-center h-32">
+                                <i class="fas fa-spinner fa-spin text-gold text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                \`,
+                'medications-modal': \`
+                    <div class="h-full flex flex-col">
+                        <div class="p-4 bg-gradient-to-r from-navy to-navy-light text-white flex items-center justify-between">
+                            <h3 class="font-bold text-lg"><i class="fas fa-pills mr-2"></i>My Medications</h3>
+                            <button onclick="closeModal('medications-modal')" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flex-1 overflow-y-auto p-4" id="medications-full-list">
+                            <div class="flex items-center justify-center h-32">
+                                <i class="fas fa-spinner fa-spin text-gold text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                \`
+            };
+            
+            return modals[modalId] || '<div class="p-4">Modal content not found</div>';
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════
+        // TOAST NOTIFICATIONS
+        // ═══════════════════════════════════════════════════════════════════════
+        
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-amber-500',
+                info: 'bg-blue-500'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = \`fixed top-4 right-4 px-6 py-3 \${colors[type]} text-white rounded-xl shadow-lg z-50 transform translate-x-full transition-transform duration-300\`;
+            toast.innerHTML = \`
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-\${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'}\"></i>
+                    <span>\${message}</span>
+                </div>
+            \`;
+            
+            document.body.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full');
+            });
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
     </script>
     
     <!-- Bottom Navigation -->
