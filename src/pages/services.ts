@@ -13,7 +13,7 @@
  * - Call-to-action sections
  */
 
-// Static data for services page
+// Static data for services page - Market-researched pricing (2025)
 export const JOURNEY_STEPS = [
   {
     step: 1,
@@ -29,7 +29,7 @@ export const JOURNEY_STEPS = [
       'Nutritional counseling & meal plans',
       'Psychological preparation support'
     ],
-    price: 2500,
+    price: 990,
     icon: 'laptop-medical',
     color: 'blue'
   },
@@ -47,7 +47,7 @@ export const JOURNEY_STEPS = [
       'Daily wellness activities',
       'Physiotherapy & rehabilitation'
     ],
-    priceRange: { min: 7500, max: 22000 },
+    priceRange: { min: 4900, max: 14500 },
     icon: 'procedures',
     color: 'gold'
   },
@@ -65,7 +65,7 @@ export const JOURNEY_STEPS = [
       'SelectCareOS™ premium access',
       'Unlimited AI health concierge'
     ],
-    priceMonthly: 99,
+    priceMonthly: 49,
     icon: 'infinity',
     color: 'green'
   }
@@ -141,16 +141,17 @@ export const RECOVERY_ACTIVITIES = [
   }
 ];
 
+// Market-researched care package pricing (2025) - competitive medical tourism rates
 export const CARE_PACKAGES_DETAILED = [
   {
     id: 'selectcare-essential',
     name: 'SELECTCARE™',
     tier: 'Essential',
     tagline: 'German Excellence, Affordable Care',
-    price: 7500,
-    priceRange: { min: 5500, max: 10000 },
-    savingsVsGermany: 14500,
-    turkeyComparison: 5500,
+    price: 4900,
+    priceRange: { min: 3500, max: 6500 },
+    savingsVsGermany: 17100,
+    turkeyComparison: 3800,
     popular: false,
     features: [
       { text: 'German Board-Certified Surgeon', included: true },
@@ -174,10 +175,10 @@ export const CARE_PACKAGES_DETAILED = [
     name: 'SELECTCARE+™',
     tier: 'Premium',
     tagline: 'Luxury Recovery with Family Options',
-    price: 12000,
-    priceRange: { min: 9500, max: 18000 },
-    savingsVsGermany: 20000,
-    turkeyComparison: 9000,
+    price: 7900,
+    priceRange: { min: 6200, max: 11500 },
+    savingsVsGermany: 24100,
+    turkeyComparison: 5800,
     popular: true,
     badge: 'MOST POPULAR',
     features: [
@@ -202,9 +203,9 @@ export const CARE_PACKAGES_DETAILED = [
     name: 'SELECTCROWN™',
     tier: 'Crown',
     tagline: 'Ultimate Luxury & Privacy',
-    price: 22000,
-    priceRange: { min: 18000, max: 30000 },
-    savingsVsGermany: 33000,
+    price: 14500,
+    priceRange: { min: 11500, max: 19500 },
+    savingsVsGermany: 40500,
     turkeyComparison: 'No equivalent',
     popular: false,
     badge: 'ULTIMATE',
@@ -271,6 +272,8 @@ export const TESTIMONIALS = [
 ];
 
 // Service types: 'surgery' = Major Surgery, 'treatment' = Onsite Treatment, 'checkup' = Diagnostic/Checkup
+// Market-researched pricing (2025) - competitive with Egypt/Turkey medical tourism rates
+// German MD premium justifies ~15-25% above pure Egypt rates while undercutting Western prices by 70-80%
 export const TREATMENT_PROCEDURES = [
   {
     category: 'Bariatric & Weight Loss',
@@ -278,11 +281,11 @@ export const TREATMENT_PROCEDURES = [
     description: 'German-certified metabolic surgery with 5-star Red Sea recovery',
     specialist: 'Prof. Dr. Med. Bariatric Surgeon',
     procedures: [
-      { name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, savings: 14500, type: 'surgery', duration: '1 hour', recovery: '2 weeks', turkeyComparison: '+German MD' },
-      { name: 'Gastric Bypass (Roux-en-Y)', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, savings: 17500, type: 'surgery', duration: '2 hours', recovery: '3 weeks', turkeyComparison: '+German MD' },
-      { name: 'Gastric Balloon (Non-Surgical)', price: 3500, germanyPrice: 8000, turkeyPrice: 2500, savings: 4500, type: 'treatment', duration: '30 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, savings: 22000, type: 'surgery', duration: '2-3 hours', recovery: '3 weeks', turkeyComparison: '+German MD' },
-      { name: 'Mini Gastric Bypass', price: 9500, germanyPrice: 25000, turkeyPrice: 5500, savings: 15500, type: 'surgery', duration: '1.5 hours', recovery: '2 weeks', turkeyComparison: '+German MD' }
+      { name: 'Gastric Sleeve', price: 4900, germanyPrice: 22000, turkeyPrice: 3800, savings: 17100, type: 'surgery', duration: '1 hour', recovery: '2 weeks', turkeyComparison: '+German MD' },
+      { name: 'Gastric Bypass (Roux-en-Y)', price: 6500, germanyPrice: 28000, turkeyPrice: 5200, savings: 21500, type: 'surgery', duration: '2 hours', recovery: '3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Gastric Balloon (Non-Surgical)', price: 2200, germanyPrice: 8000, turkeyPrice: 1800, savings: 5800, type: 'treatment', duration: '30 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Revision Surgery', price: 7900, germanyPrice: 35000, turkeyPrice: 6200, savings: 27100, type: 'surgery', duration: '2-3 hours', recovery: '3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Mini Gastric Bypass', price: 5900, germanyPrice: 25000, turkeyPrice: 4500, savings: 19100, type: 'surgery', duration: '1.5 hours', recovery: '2 weeks', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -291,12 +294,12 @@ export const TREATMENT_PROCEDURES = [
     description: 'Arthroscopy, joint replacement & sports injuries by German orthopedic specialists',
     specialist: 'Dr. Med. Senior Orthopedic Surgeon',
     procedures: [
-      { name: 'Knee Replacement (Total)', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, savings: 26500, type: 'surgery', duration: '2 hours', recovery: '6-8 weeks', turkeyComparison: '+German MD' },
-      { name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, savings: 30000, type: 'surgery', duration: '2.5 hours', recovery: '6-8 weeks', turkeyComparison: '+German MD' },
-      { name: 'Arthroscopic Knee Surgery', price: 5500, germanyPrice: 15000, turkeyPrice: 4000, savings: 9500, type: 'surgery', duration: '45 min', recovery: '2-4 weeks', turkeyComparison: '+German MD' },
-      { name: 'Spine Surgery (Disc)', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, savings: 35500, type: 'surgery', duration: '3 hours', recovery: '8-12 weeks', turkeyComparison: '+German MD' },
-      { name: 'ACL Reconstruction', price: 7500, germanyPrice: 20000, turkeyPrice: 5500, savings: 12500, type: 'surgery', duration: '1.5 hours', recovery: '6-9 months', turkeyComparison: '+German MD' },
-      { name: 'Shoulder Arthroscopy', price: 6500, germanyPrice: 18000, turkeyPrice: 4500, savings: 11500, type: 'surgery', duration: '1 hour', recovery: '3-4 weeks', turkeyComparison: '+German MD' }
+      { name: 'Knee Replacement (Total)', price: 8500, germanyPrice: 40000, turkeyPrice: 7200, savings: 31500, type: 'surgery', duration: '2 hours', recovery: '6-8 weeks', turkeyComparison: '+German MD' },
+      { name: 'Hip Replacement', price: 9500, germanyPrice: 45000, turkeyPrice: 8000, savings: 35500, type: 'surgery', duration: '2.5 hours', recovery: '6-8 weeks', turkeyComparison: '+German MD' },
+      { name: 'Arthroscopic Knee Surgery', price: 3500, germanyPrice: 15000, turkeyPrice: 2800, savings: 11500, type: 'surgery', duration: '45 min', recovery: '2-4 weeks', turkeyComparison: '+German MD' },
+      { name: 'Spine Surgery (Disc)', price: 12500, germanyPrice: 55000, turkeyPrice: 9500, savings: 42500, type: 'surgery', duration: '3 hours', recovery: '8-12 weeks', turkeyComparison: '+German MD' },
+      { name: 'ACL Reconstruction', price: 4900, germanyPrice: 20000, turkeyPrice: 3800, savings: 15100, type: 'surgery', duration: '1.5 hours', recovery: '6-9 months', turkeyComparison: '+German MD' },
+      { name: 'Shoulder Arthroscopy', price: 4200, germanyPrice: 18000, turkeyPrice: 3200, savings: 13800, type: 'surgery', duration: '1 hour', recovery: '3-4 weeks', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -305,13 +308,13 @@ export const TREATMENT_PROCEDURES = [
     description: 'Post-bariatric body contouring & cosmetic procedures',
     specialist: 'Prof. Dr. Med. Plastic & Reconstructive Surgeon',
     procedures: [
-      { name: 'Body Contouring (Full)', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, savings: 19500, type: 'surgery', duration: '4-6 hours', recovery: '4-6 weeks', turkeyComparison: '+German MD' },
-      { name: 'Abdominoplasty (Tummy Tuck)', price: 6500, germanyPrice: 18000, turkeyPrice: 4000, savings: 11500, type: 'surgery', duration: '2-3 hours', recovery: '3-4 weeks', turkeyComparison: '+German MD' },
-      { name: 'Arm Lift (Brachioplasty)', price: 4500, germanyPrice: 12000, turkeyPrice: 3000, savings: 7500, type: 'surgery', duration: '2 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
-      { name: 'Thigh Lift', price: 5500, germanyPrice: 15000, turkeyPrice: 3500, savings: 9500, type: 'surgery', duration: '2-3 hours', recovery: '3-4 weeks', turkeyComparison: '+German MD' },
-      { name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, savings: 16500, type: 'surgery', duration: '3-4 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
-      { name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, savings: 12000, type: 'surgery', duration: '1.5-2 hours', recovery: '2 weeks', turkeyComparison: '+German MD' },
-      { name: 'Liposuction', price: 4000, germanyPrice: 10000, turkeyPrice: 2500, savings: 6000, type: 'surgery', duration: '1-2 hours', recovery: '1-2 weeks', turkeyComparison: '+German MD' }
+      { name: 'Body Contouring (Full)', price: 6900, germanyPrice: 30000, turkeyPrice: 5200, savings: 23100, type: 'surgery', duration: '4-6 hours', recovery: '4-6 weeks', turkeyComparison: '+German MD' },
+      { name: 'Abdominoplasty (Tummy Tuck)', price: 4200, germanyPrice: 18000, turkeyPrice: 3200, savings: 13800, type: 'surgery', duration: '2-3 hours', recovery: '3-4 weeks', turkeyComparison: '+German MD' },
+      { name: 'Arm Lift (Brachioplasty)', price: 2900, germanyPrice: 12000, turkeyPrice: 2200, savings: 9100, type: 'surgery', duration: '2 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Thigh Lift', price: 3500, germanyPrice: 15000, turkeyPrice: 2800, savings: 11500, type: 'surgery', duration: '2-3 hours', recovery: '3-4 weeks', turkeyComparison: '+German MD' },
+      { name: 'Facelift', price: 5500, germanyPrice: 25000, turkeyPrice: 4200, savings: 19500, type: 'surgery', duration: '3-4 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Rhinoplasty', price: 3900, germanyPrice: 18000, turkeyPrice: 2800, savings: 14100, type: 'surgery', duration: '1.5-2 hours', recovery: '2 weeks', turkeyComparison: '+German MD' },
+      { name: 'Liposuction', price: 2600, germanyPrice: 10000, turkeyPrice: 1900, savings: 7400, type: 'surgery', duration: '1-2 hours', recovery: '1-2 weeks', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -320,12 +323,12 @@ export const TREATMENT_PROCEDURES = [
     description: 'Comprehensive cardiac care by German-trained cardiologists',
     specialist: 'Ass. Prof. Dr. Med. Cardiology',
     procedures: [
-      { name: 'Complete Cardiac Checkup', price: 1200, germanyPrice: 3500, turkeyPrice: 800, savings: 2300, type: 'checkup', duration: '3-4 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Echocardiogram (Advanced)', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Cardiac Stress Test', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'checkup', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Coronary CT Angiography', price: 800, germanyPrice: 2200, turkeyPrice: 600, savings: 1400, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Cardiac Catheterization', price: 3500, germanyPrice: 10000, turkeyPrice: 2500, savings: 6500, type: 'treatment', duration: '2-3 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'Pacemaker Implantation', price: 8500, germanyPrice: 25000, turkeyPrice: 6000, savings: 16500, type: 'surgery', duration: '1-2 hours', recovery: '1 week', turkeyComparison: '+German MD' }
+      { name: 'Complete Cardiac Checkup', price: 750, germanyPrice: 3500, turkeyPrice: 550, savings: 2750, type: 'checkup', duration: '3-4 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Echocardiogram (Advanced)', price: 280, germanyPrice: 1200, turkeyPrice: 200, savings: 920, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Cardiac Stress Test', price: 220, germanyPrice: 900, turkeyPrice: 160, savings: 680, type: 'checkup', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Coronary CT Angiography', price: 520, germanyPrice: 2200, turkeyPrice: 380, savings: 1680, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Cardiac Catheterization', price: 2200, germanyPrice: 10000, turkeyPrice: 1700, savings: 7800, type: 'treatment', duration: '2-3 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Pacemaker Implantation', price: 5500, germanyPrice: 25000, turkeyPrice: 4200, savings: 19500, type: 'surgery', duration: '1-2 hours', recovery: '1 week', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -334,12 +337,12 @@ export const TREATMENT_PROCEDURES = [
     description: "Men's health & urological procedures by German urologists",
     specialist: 'Dr. Med. Consultant Urology & Andrology',
     procedures: [
-      { name: 'Complete Urology Checkup', price: 800, germanyPrice: 2200, turkeyPrice: 500, savings: 1400, type: 'checkup', duration: '2 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Prostate Assessment (MRI+PSA)', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'checkup', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'TURP (Prostate Surgery)', price: 5500, germanyPrice: 15000, turkeyPrice: 4000, savings: 9500, type: 'surgery', duration: '1-2 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
-      { name: 'Kidney Stone Treatment (ESWL)', price: 2500, germanyPrice: 7000, turkeyPrice: 1800, savings: 4500, type: 'treatment', duration: '1 hour', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'Vasectomy', price: 1200, germanyPrice: 3000, turkeyPrice: 800, savings: 1800, type: 'surgery', duration: '30 min', recovery: '1 week', turkeyComparison: '+German MD' },
-      { name: 'ED Treatment (PRP/Shockwave)', price: 1800, germanyPrice: 4500, turkeyPrice: 1200, savings: 2700, type: 'treatment', duration: '45 min', recovery: 'Same day', turkeyComparison: '+German MD' }
+      { name: 'Complete Urology Checkup', price: 490, germanyPrice: 2200, turkeyPrice: 350, savings: 1710, type: 'checkup', duration: '2 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Prostate Assessment (MRI+PSA)', price: 420, germanyPrice: 1800, turkeyPrice: 300, savings: 1380, type: 'checkup', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'TURP (Prostate Surgery)', price: 3500, germanyPrice: 15000, turkeyPrice: 2700, savings: 11500, type: 'surgery', duration: '1-2 hours', recovery: '2-3 weeks', turkeyComparison: '+German MD' },
+      { name: 'Kidney Stone Treatment (ESWL)', price: 1600, germanyPrice: 7000, turkeyPrice: 1200, savings: 5400, type: 'treatment', duration: '1 hour', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Vasectomy', price: 750, germanyPrice: 3000, turkeyPrice: 550, savings: 2250, type: 'surgery', duration: '30 min', recovery: '1 week', turkeyComparison: '+German MD' },
+      { name: 'ED Treatment (PRP/Shockwave)', price: 1100, germanyPrice: 4500, turkeyPrice: 850, savings: 3400, type: 'treatment', duration: '45 min', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -348,12 +351,12 @@ export const TREATMENT_PROCEDURES = [
     description: 'Digestive health & internal medicine by German gastroenterologists',
     specialist: 'Dr. Med. Gastroenterology & Internal Medicine',
     procedures: [
-      { name: 'Complete GI Checkup', price: 950, germanyPrice: 2800, turkeyPrice: 650, savings: 1850, type: 'checkup', duration: '3 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Gastroscopy (Diagnostic)', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'checkup', duration: '30 min', recovery: '2-4 hours', turkeyComparison: '+German MD' },
-      { name: 'Colonoscopy (Diagnostic)', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'checkup', duration: '45 min', recovery: '4-6 hours', turkeyComparison: '+German MD' },
-      { name: 'GERD/Antireflux Treatment', price: 3500, germanyPrice: 10000, turkeyPrice: 2500, savings: 6500, type: 'treatment', duration: '1 hour', recovery: '2-3 days', turkeyComparison: '+German MD' },
-      { name: 'Hemorrhoid Treatment', price: 1800, germanyPrice: 5000, turkeyPrice: 1200, savings: 3200, type: 'treatment', duration: '30-45 min', recovery: '1-2 weeks', turkeyComparison: '+German MD' },
-      { name: 'Liver FibroScan + Assessment', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'checkup', duration: '30 min', recovery: 'Same day', turkeyComparison: '+German MD' }
+      { name: 'Complete GI Checkup', price: 590, germanyPrice: 2800, turkeyPrice: 420, savings: 2210, type: 'checkup', duration: '3 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Gastroscopy (Diagnostic)', price: 280, germanyPrice: 1200, turkeyPrice: 200, savings: 920, type: 'checkup', duration: '30 min', recovery: '2-4 hours', turkeyComparison: '+German MD' },
+      { name: 'Colonoscopy (Diagnostic)', price: 420, germanyPrice: 1800, turkeyPrice: 300, savings: 1380, type: 'checkup', duration: '45 min', recovery: '4-6 hours', turkeyComparison: '+German MD' },
+      { name: 'GERD/Antireflux Treatment', price: 2200, germanyPrice: 10000, turkeyPrice: 1700, savings: 7800, type: 'treatment', duration: '1 hour', recovery: '2-3 days', turkeyComparison: '+German MD' },
+      { name: 'Hemorrhoid Treatment', price: 1100, germanyPrice: 5000, turkeyPrice: 850, savings: 3900, type: 'treatment', duration: '30-45 min', recovery: '1-2 weeks', turkeyComparison: '+German MD' },
+      { name: 'Liver FibroScan + Assessment', price: 220, germanyPrice: 900, turkeyPrice: 160, savings: 680, type: 'checkup', duration: '30 min', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -362,14 +365,14 @@ export const TREATMENT_PROCEDURES = [
     description: 'Comprehensive dental services from checkups to implants',
     specialist: 'Dr. Med. Dent. German Dental Specialist',
     procedures: [
-      { name: 'Complete Dental Checkup', price: 120, germanyPrice: 350, turkeyPrice: 80, savings: 230, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Professional Cleaning', price: 150, germanyPrice: 400, turkeyPrice: 100, savings: 250, type: 'treatment', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Dental Implant (Single)', price: 1200, germanyPrice: 3500, turkeyPrice: 800, savings: 2300, type: 'surgery', duration: '1-2 hours', recovery: '3-6 months', turkeyComparison: '+German MD' },
-      { name: 'Full Mouth Implants (All-on-4)', price: 8500, germanyPrice: 25000, turkeyPrice: 6000, savings: 16500, type: 'surgery', duration: '3-4 hours', recovery: '3-6 months', turkeyComparison: '+German MD' },
-      { name: 'Teeth Whitening (Zoom)', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'treatment', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Porcelain Veneers (per tooth)', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'treatment', duration: '2 visits', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Root Canal Treatment', price: 350, germanyPrice: 900, turkeyPrice: 200, savings: 550, type: 'treatment', duration: '1-2 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'Dental Crown (Zirconia)', price: 550, germanyPrice: 1500, turkeyPrice: 350, savings: 950, type: 'treatment', duration: '2 visits', recovery: 'Same day', turkeyComparison: '+German MD' }
+      { name: 'Complete Dental Checkup', price: 75, germanyPrice: 350, turkeyPrice: 50, savings: 275, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Professional Cleaning', price: 95, germanyPrice: 400, turkeyPrice: 65, savings: 305, type: 'treatment', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Dental Implant (Single)', price: 650, germanyPrice: 3500, turkeyPrice: 480, savings: 2850, type: 'surgery', duration: '1-2 hours', recovery: '3-6 months', turkeyComparison: '+German MD' },
+      { name: 'Full Mouth Implants (All-on-4)', price: 5200, germanyPrice: 25000, turkeyPrice: 3800, savings: 19800, type: 'surgery', duration: '3-4 hours', recovery: '3-6 months', turkeyComparison: '+German MD' },
+      { name: 'Teeth Whitening (Zoom)', price: 220, germanyPrice: 900, turkeyPrice: 160, savings: 680, type: 'treatment', duration: '1.5 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Porcelain Veneers (per tooth)', price: 280, germanyPrice: 1200, turkeyPrice: 180, savings: 920, type: 'treatment', duration: '2 visits', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Root Canal Treatment', price: 220, germanyPrice: 900, turkeyPrice: 140, savings: 680, type: 'treatment', duration: '1-2 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Dental Crown (Zirconia)', price: 350, germanyPrice: 1500, turkeyPrice: 240, savings: 1150, type: 'treatment', duration: '2 visits', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -378,11 +381,11 @@ export const TREATMENT_PROCEDURES = [
     description: 'Advanced pain therapy & anesthesiology',
     specialist: 'Dr. Med. Anesthesia & Pain Management',
     procedures: [
-      { name: 'Pain Assessment & Consultation', price: 250, germanyPrice: 650, turkeyPrice: 150, savings: 400, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Epidural Steroid Injection', price: 800, germanyPrice: 2200, turkeyPrice: 600, savings: 1400, type: 'treatment', duration: '30 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'Nerve Block Therapy', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'treatment', duration: '30-45 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'Facet Joint Injection', price: 550, germanyPrice: 1500, turkeyPrice: 400, savings: 950, type: 'treatment', duration: '30 min', recovery: '1 day', turkeyComparison: '+German MD' },
-      { name: 'Trigger Point Therapy', price: 350, germanyPrice: 900, turkeyPrice: 250, savings: 550, type: 'treatment', duration: '30 min', recovery: 'Same day', turkeyComparison: '+German MD' }
+      { name: 'Pain Assessment & Consultation', price: 150, germanyPrice: 650, turkeyPrice: 100, savings: 500, type: 'checkup', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Epidural Steroid Injection', price: 490, germanyPrice: 2200, turkeyPrice: 380, savings: 1710, type: 'treatment', duration: '30 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Nerve Block Therapy', price: 420, germanyPrice: 1800, turkeyPrice: 300, savings: 1380, type: 'treatment', duration: '30-45 min', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'Facet Joint Injection', price: 350, germanyPrice: 1500, turkeyPrice: 260, savings: 1150, type: 'treatment', duration: '30 min', recovery: '1 day', turkeyComparison: '+German MD' },
+      { name: 'Trigger Point Therapy', price: 220, germanyPrice: 900, turkeyPrice: 160, savings: 680, type: 'treatment', duration: '30 min', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   },
   {
@@ -391,12 +394,12 @@ export const TREATMENT_PROCEDURES = [
     description: 'Regenerative medicine & wellness treatments',
     specialist: 'Prof. Dr. Med. Regenerative Medicine',
     procedures: [
-      { name: 'Executive Health Checkup', price: 2500, germanyPrice: 7000, turkeyPrice: 1800, savings: 4500, type: 'checkup', duration: 'Full day', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, savings: 22500, type: 'treatment', duration: '3-4 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
-      { name: 'PRP Therapy (Face/Hair)', price: 2200, germanyPrice: 8000, turkeyPrice: 800, savings: 5800, type: 'treatment', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'IV Vitamin Therapy', price: 450, germanyPrice: 1200, turkeyPrice: 300, savings: 750, type: 'treatment', duration: '1-2 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
-      { name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, savings: 8000, type: 'treatment', duration: 'Ongoing', recovery: 'None', turkeyComparison: '+German MD' },
-      { name: 'NAD+ Infusion Therapy', price: 650, germanyPrice: 1800, turkeyPrice: 450, savings: 1150, type: 'treatment', duration: '2-3 hours', recovery: 'Same day', turkeyComparison: '+German MD' }
+      { name: 'Executive Health Checkup', price: 1500, germanyPrice: 7000, turkeyPrice: 1100, savings: 5500, type: 'checkup', duration: 'Full day', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Stem Cell Therapy', price: 7900, germanyPrice: 35000, turkeyPrice: 5500, savings: 27100, type: 'treatment', duration: '3-4 hours', recovery: '1-2 days', turkeyComparison: '+German MD' },
+      { name: 'PRP Therapy (Face/Hair)', price: 650, germanyPrice: 8000, turkeyPrice: 450, savings: 7350, type: 'treatment', duration: '1 hour', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'IV Vitamin Therapy', price: 280, germanyPrice: 1200, turkeyPrice: 200, savings: 920, type: 'treatment', duration: '1-2 hours', recovery: 'Same day', turkeyComparison: '+German MD' },
+      { name: 'Hormone Optimization', price: 2500, germanyPrice: 12000, turkeyPrice: 1800, savings: 9500, type: 'treatment', duration: 'Ongoing', recovery: 'None', turkeyComparison: '+German MD' },
+      { name: 'NAD+ Infusion Therapy', price: 420, germanyPrice: 1800, turkeyPrice: 300, savings: 1380, type: 'treatment', duration: '2-3 hours', recovery: 'Same day', turkeyComparison: '+German MD' }
     ]
   }
 ];

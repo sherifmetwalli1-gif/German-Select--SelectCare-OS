@@ -202,11 +202,196 @@ export const SYMPTOM_CATEGORIES_V4 = {
 };
 
 // ════════════════════════════════════════════════════════════════════════════════
+// 🌐 MULTI-LANGUAGE SUPPORT
+// ════════════════════════════════════════════════════════════════════════════════
+
+const TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    title: 'MediSense AI™ v4.0',
+    subtitle: 'World-Class Symptom Analyzer',
+    selectSymptoms: 'Select Your Symptoms',
+    chooseSymptoms: 'Choose all symptoms you\'re experiencing',
+    analyze: 'Analyze Symptoms',
+    analyzing: 'Analyzing...',
+    results: 'Analysis Results',
+    urgency: 'Urgency Level',
+    recommendations: 'Recommendations',
+    disclaimer: 'This is not a medical diagnosis. Please consult a healthcare professional.',
+    bodyMap: 'Body Map',
+    front: 'Front',
+    back: 'Back',
+    symptomsSelected: 'Symptoms Selected',
+    clickRegion: 'Click a body region to filter symptoms',
+    all: 'All',
+    general: 'General',
+    head: 'Head',
+    eyes: 'Eyes',
+    ears: 'Ears',
+    respiratory: 'Respiratory',
+    cardiovascular: 'Heart',
+    gastrointestinal: 'Digestive',
+    musculoskeletal: 'Muscles',
+    skin: 'Skin',
+    urinary: 'Urinary',
+    mental: 'Mental',
+    searchSymptoms: 'Search symptoms...',
+    patientInfo: 'Patient Information',
+    age: 'Age',
+    gender: 'Gender',
+    male: 'Male',
+    female: 'Female',
+    height: 'Height',
+    weight: 'Weight',
+    conditions: 'Existing Conditions',
+    medications: 'Current Medications',
+    none: 'None',
+    bookConsultation: 'Book Consultation',
+    viewServices: 'View Services'
+  },
+  de: {
+    title: 'MediSense AI™ v4.0',
+    subtitle: 'Weltklasse Symptom-Analysator',
+    selectSymptoms: 'Wählen Sie Ihre Symptome',
+    chooseSymptoms: 'Wählen Sie alle Symptome, die Sie erleben',
+    analyze: 'Symptome Analysieren',
+    analyzing: 'Analysiere...',
+    results: 'Analyseergebnisse',
+    urgency: 'Dringlichkeitsstufe',
+    recommendations: 'Empfehlungen',
+    disclaimer: 'Dies ist keine medizinische Diagnose. Bitte konsultieren Sie einen Arzt.',
+    bodyMap: 'Körperkarte',
+    front: 'Vorne',
+    back: 'Hinten',
+    symptomsSelected: 'Symptome Ausgewählt',
+    clickRegion: 'Klicken Sie auf eine Körperregion',
+    all: 'Alle',
+    general: 'Allgemein',
+    head: 'Kopf',
+    eyes: 'Augen',
+    ears: 'Ohren',
+    respiratory: 'Atmung',
+    cardiovascular: 'Herz',
+    gastrointestinal: 'Verdauung',
+    musculoskeletal: 'Muskeln',
+    skin: 'Haut',
+    urinary: 'Harn',
+    mental: 'Mental',
+    searchSymptoms: 'Symptome suchen...',
+    patientInfo: 'Patienteninformationen',
+    age: 'Alter',
+    gender: 'Geschlecht',
+    male: 'Männlich',
+    female: 'Weiblich',
+    height: 'Größe',
+    weight: 'Gewicht',
+    conditions: 'Vorerkrankungen',
+    medications: 'Aktuelle Medikamente',
+    none: 'Keine',
+    bookConsultation: 'Beratung Buchen',
+    viewServices: 'Services Ansehen'
+  },
+  ar: {
+    title: 'MediSense AI™ v4.0',
+    subtitle: 'محلل الأعراض العالمي',
+    selectSymptoms: 'اختر أعراضك',
+    chooseSymptoms: 'اختر جميع الأعراض التي تعاني منها',
+    analyze: 'تحليل الأعراض',
+    analyzing: 'جاري التحليل...',
+    results: 'نتائج التحليل',
+    urgency: 'مستوى الإلحاح',
+    recommendations: 'التوصيات',
+    disclaimer: 'هذا ليس تشخيصاً طبياً. يرجى استشارة أخصائي رعاية صحية.',
+    bodyMap: 'خريطة الجسم',
+    front: 'الأمام',
+    back: 'الخلف',
+    symptomsSelected: 'الأعراض المختارة',
+    clickRegion: 'انقر على منطقة الجسم',
+    all: 'الكل',
+    general: 'عام',
+    head: 'الرأس',
+    eyes: 'العيون',
+    ears: 'الأذنين',
+    respiratory: 'التنفس',
+    cardiovascular: 'القلب',
+    gastrointestinal: 'الجهاز الهضمي',
+    musculoskeletal: 'العضلات',
+    skin: 'الجلد',
+    urinary: 'البولي',
+    mental: 'النفسي',
+    searchSymptoms: 'البحث عن الأعراض...',
+    patientInfo: 'معلومات المريض',
+    age: 'العمر',
+    gender: 'الجنس',
+    male: 'ذكر',
+    female: 'أنثى',
+    height: 'الطول',
+    weight: 'الوزن',
+    conditions: 'الحالات الموجودة',
+    medications: 'الأدوية الحالية',
+    none: 'لا شيء',
+    bookConsultation: 'حجز استشارة',
+    viewServices: 'عرض الخدمات'
+  },
+  fr: {
+    title: 'MediSense AI™ v4.0',
+    subtitle: 'Analyseur de Symptômes',
+    selectSymptoms: 'Sélectionnez vos symptômes',
+    chooseSymptoms: 'Choisissez tous les symptômes que vous ressentez',
+    analyze: 'Analyser les Symptômes',
+    analyzing: 'Analyse en cours...',
+    results: 'Résultats d\'Analyse',
+    urgency: 'Niveau d\'Urgence',
+    recommendations: 'Recommandations',
+    disclaimer: 'Ceci n\'est pas un diagnostic médical. Veuillez consulter un professionnel de santé.',
+    bodyMap: 'Carte du Corps',
+    front: 'Avant',
+    back: 'Arrière',
+    symptomsSelected: 'Symptômes Sélectionnés',
+    clickRegion: 'Cliquez sur une région du corps',
+    all: 'Tous',
+    general: 'Général',
+    head: 'Tête',
+    eyes: 'Yeux',
+    ears: 'Oreilles',
+    respiratory: 'Respiratoire',
+    cardiovascular: 'Cœur',
+    gastrointestinal: 'Digestif',
+    musculoskeletal: 'Muscles',
+    skin: 'Peau',
+    urinary: 'Urinaire',
+    mental: 'Mental',
+    searchSymptoms: 'Rechercher des symptômes...',
+    patientInfo: 'Informations Patient',
+    age: 'Âge',
+    gender: 'Sexe',
+    male: 'Homme',
+    female: 'Femme',
+    height: 'Taille',
+    weight: 'Poids',
+    conditions: 'Conditions Existantes',
+    medications: 'Médicaments Actuels',
+    none: 'Aucun',
+    bookConsultation: 'Réserver Consultation',
+    viewServices: 'Voir les Services'
+  }
+};
+
+const getTranslation = (lang: string, key: string): string => {
+  const translations = TRANSLATIONS[lang] || TRANSLATIONS['en'];
+  return translations[key] || TRANSLATIONS['en'][key] || key;
+};
+
+// ════════════════════════════════════════════════════════════════════════════════
 // 🎨 MEDISENSE UI PAGE GENERATOR
 // ════════════════════════════════════════════════════════════════════════════════
 
-export const mediSenseV4Page = () => `<!DOCTYPE html>
-<html lang="en">
+export const mediSenseV4Page = (lang: string = 'en') => {
+  const t = (key: string) => getTranslation(lang, key);
+  const isRtl = lang === 'ar';
+  const dir = isRtl ? 'rtl' : 'ltr';
+  
+  return `<!DOCTYPE html>
+<html lang="${lang}" dir="${dir}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2940,3 +3125,4 @@ export const mediSenseV4Page = () => `<!DOCTYPE html>
 </body>
 </html>
 `;
+}

@@ -5349,10 +5349,11 @@ app.post('/api/calculators/ideal-weight', async (c) => {
 // MEDISENSE AI™ v4.0 - World-Class Symptom Analyzer
 // ============================================================================
 
-// MediSense v4 Page
+// MediSense v4 Page with language support
 app.get('/medisense', async (c) => {
+  const lang = c.req.query('lang') || 'en'
   const { mediSenseV4Page } = await import('./pages/medisense-ui')
-  return c.html(mediSenseV4Page())
+  return c.html(mediSenseV4Page(lang))
 })
 
 // MediSense v4 Analysis API
