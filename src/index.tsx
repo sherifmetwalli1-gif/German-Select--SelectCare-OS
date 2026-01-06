@@ -2776,9 +2776,9 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
-            <a href="/medisense-pro" class="nav-item ${activeNav === 'medisense' ? 'active' : ''}">
+            <a href="/medisense" class="nav-item ${activeNav === 'medisense' ? 'active' : ''}">
                 <i class="fas fa-brain"></i>
-                <span>AI Symptom</span>
+                <span>MediSense</span>
             </a>
             <a href="/dashboard" class="nav-item ${activeNav === 'dashboard' ? 'active' : ''}">
                 <i class="fas fa-tachometer-alt"></i>
@@ -6499,8 +6499,8 @@ app.notFound((c) => {
             <a href="/dashboard" class="block w-full bg-white text-navy py-3 rounded-xl font-semibold border-2 border-navy hover:bg-navy hover:text-white transition">
                 <i class="fas fa-tachometer-alt mr-2"></i>View Dashboard
             </a>
-            <a href="/medisense-pro" class="block w-full bg-white text-navy py-3 rounded-xl font-semibold border-2 border-gray-200 hover:border-gold transition">
-                <i class="fas fa-brain mr-2"></i>AI Symptom Analyzer
+            <a href="/medisense" class="block w-full bg-white text-navy py-3 rounded-xl font-semibold border-2 border-gray-200 hover:border-gold transition">
+                <i class="fas fa-brain mr-2"></i>MediSense AI
             </a>
         </div>
         

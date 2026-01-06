@@ -44,11 +44,28 @@ medisenseProRouter.get('/', (c) => {
   <style>
     * { font-family: 'Inter', system-ui, sans-serif; }
     
+    /* Premium Gold Brand Variables */
+    :root {
+      --gold-primary: #C9A227;
+      --gold-champagne: #D4AF37;
+      --gold-soft: #E8D5A3;
+      --gold-bright: #F4D03F;
+      --gold-rose: #B8860B;
+      --german-navy: #1a1a2e;
+      --deep-navy: #16213e;
+      --midnight-blue: #0f0f1a;
+      --warm-cream: #faf8f5;
+      --warm-ivory: #FFFDF7;
+      --shadow-gold-sm: 0 2px 8px rgba(201, 162, 39, 0.15);
+      --shadow-gold-md: 0 4px 16px rgba(201, 162, 39, 0.2);
+      --shadow-gold-lg: 0 8px 32px rgba(201, 162, 39, 0.25);
+    }
+    
     /* Custom scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    ::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold-rose); }
     
     /* Animations */
     @keyframes pulse-ring {
@@ -72,67 +89,92 @@ medisenseProRouter.get('/', (c) => {
       from { opacity: 0; }
       to { opacity: 1; }
     }
+    @keyframes gold-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.4); }
+      50% { box-shadow: 0 0 20px 5px rgba(201, 162, 39, 0.2); }
+    }
     
     .animate-pulse-ring { animation: pulse-ring 2s ease-in-out infinite; }
     .animate-float { animation: float 3s ease-in-out infinite; }
     .animate-shimmer { 
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3), transparent);
       background-size: 200% 100%;
       animation: shimmer 2s infinite;
     }
     .animate-slideUp { animation: slideUp 0.5s ease-out; }
     .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+    .animate-gold-pulse { animation: gold-pulse 2s ease-in-out infinite; }
     
-    /* Glass effect */
+    /* Glass effect with gold tint */
     .glass {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 253, 247, 0.9);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(201, 162, 39, 0.1);
     }
     .glass-dark {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(26, 26, 46, 0.95);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
     
-    /* Gradient text */
+    /* Premium Gold Gradient text */
     .gradient-text {
-      background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 50%, #ec4899 100%);
+      background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-champagne) 50%, var(--gold-bright) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     
-    /* Category cards */
+    /* Premium Gold Gradient backgrounds */
+    .gradient-gold {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));
+    }
+    .gradient-gold-soft {
+      background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(212, 175, 55, 0.05));
+    }
+    .gradient-navy {
+      background: linear-gradient(135deg, var(--german-navy), var(--deep-navy));
+    }
+    
+    /* Category cards with gold hover */
     .category-card {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid #e5e7eb;
     }
     .category-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+      border-color: var(--gold-primary);
+      box-shadow: var(--shadow-gold-md);
     }
     
-    /* Symptom tags */
+    /* Symptom tags with gold selection */
     .symptom-tag {
       transition: all 0.2s ease;
     }
     .symptom-tag:hover {
       transform: scale(1.05);
+      border-color: var(--gold-primary);
     }
     .symptom-tag.selected {
-      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));
       color: white;
       border-color: transparent;
+      box-shadow: var(--shadow-gold-sm);
     }
     
-    /* Progress steps */
+    /* Progress steps with gold theme */
     .step-active {
-      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));
       color: white;
+      box-shadow: var(--shadow-gold-md);
     }
     .step-completed {
-      background: #22c55e;
+      background: var(--gold-primary);
       color: white;
+    }
+    .step-progress {
+      background: linear-gradient(90deg, var(--gold-primary), var(--gold-champagne));
     }
     
     /* Urgency colors */
@@ -141,26 +183,73 @@ medisenseProRouter.get('/', (c) => {
       animation: pulse-ring 1.5s ease-in-out infinite;
     }
     .urgency-urgent { background: linear-gradient(135deg, #f97316, #ea580c); }
-    .urgency-routine { background: linear-gradient(135deg, #eab308, #ca8a04); }
+    .urgency-routine { background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne)); }
     .urgency-selfcare { background: linear-gradient(135deg, #22c55e, #16a34a); }
     
     /* RTL support */
     [dir="rtl"] .rtl-flip { transform: scaleX(-1); }
     
-    /* Voice button */
+    /* Voice button with gold theme */
+    .voice-btn {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));
+      box-shadow: var(--shadow-gold-sm);
+    }
+    .voice-btn:hover {
+      box-shadow: var(--shadow-gold-md);
+    }
     .voice-btn.recording {
       background: linear-gradient(135deg, #ef4444, #dc2626);
       animation: pulse-ring 1s ease-in-out infinite;
     }
     
-    /* Bottom Navigation */
+    /* Premium gold buttons */
+    .btn-gold-primary {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));
+      color: white;
+      border: none;
+      box-shadow: var(--shadow-gold-sm);
+      transition: all 0.3s ease;
+    }
+    .btn-gold-primary:hover {
+      box-shadow: var(--shadow-gold-md);
+      transform: translateY(-1px);
+    }
+    .btn-gold-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .btn-gold-outline {
+      background: white;
+      color: var(--gold-primary);
+      border: 2px solid var(--gold-primary);
+      transition: all 0.3s ease;
+    }
+    .btn-gold-outline:hover {
+      background: rgba(201, 162, 39, 0.1);
+      box-shadow: var(--shadow-gold-sm);
+    }
+    
+    /* Premium gold inputs */
+    .input-gold {
+      border: 2px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .input-gold:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+      outline: none;
+    }
+    
+    /* Bottom Navigation with gold accents */
     .bottom-nav {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background: white;
-        border-top: 1px solid #E5E7EB;
+        background: linear-gradient(to top, var(--german-navy), var(--deep-navy));
+        border-top: 1px solid rgba(201, 162, 39, 0.3);
         padding: 8px 0 max(20px, env(safe-area-inset-bottom));
         z-index: 100;
     }
@@ -169,31 +258,37 @@ medisenseProRouter.get('/', (c) => {
         flex-direction: column;
         align-items: center;
         padding: 8px 12px;
-        color: #9CA3AF;
+        color: rgba(255, 255, 255, 0.6);
         font-size: 10px;
         text-decoration: none;
         transition: all 0.2s;
     }
-    .bottom-nav .nav-item:hover { color: #6B7280; }
-    .bottom-nav .nav-item.active { color: #8B5CF6; }
+    .bottom-nav .nav-item:hover { color: var(--gold-soft); }
+    .bottom-nav .nav-item.active { color: var(--gold-primary); }
     .bottom-nav .nav-item i { font-size: 22px; margin-bottom: 4px; }
     main { padding-bottom: 100px; }
+    
+    /* Gold accent colors */
+    .text-gold { color: var(--gold-primary); }
+    .text-gold-champagne { color: var(--gold-champagne); }
+    .bg-gold-soft { background: rgba(201, 162, 39, 0.1); }
+    .border-gold { border-color: var(--gold-primary); }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
+<body class="bg-gradient-to-br from-[#FFFDF7] via-[#faf8f5] to-[#f5f0e8] min-h-screen">
   
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass border-b border-white/20 shadow-sm">
+  <header class="sticky top-0 z-50 glass shadow-sm" style="border-bottom: 1px solid rgba(201, 162, 39, 0.2);">
     <div class="max-w-7xl mx-auto px-4 py-3">
       <div class="flex items-center justify-between">
         <!-- Logo & Title -->
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
+          <div class="w-12 h-12 rounded-2xl gradient-gold flex items-center justify-center shadow-lg animate-gold-pulse">
             <i class="fas fa-brain text-white text-xl"></i>
           </div>
           <div>
             <h1 class="text-xl font-bold gradient-text">${t('app.title', lang)}</h1>
-            <p class="text-xs text-slate-500">${t('app.subtitle', lang)}</p>
+            <p class="text-xs text-gold-champagne" style="color: var(--gold-rose);">${t('app.subtitle', lang)}</p>
           </div>
         </div>
         
@@ -202,7 +297,7 @@ medisenseProRouter.get('/', (c) => {
           <!-- Language Dropdown -->
           <div class="relative">
             <select id="languageSelect" onchange="changeLanguage(this.value)" 
-                    class="appearance-none bg-white/80 border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm font-medium cursor-pointer hover:bg-white transition-colors">
+                    class="appearance-none bg-white/90 border-2 border-[#C9A227]/30 rounded-xl px-4 py-2 pr-8 text-sm font-medium cursor-pointer hover:border-[#C9A227] focus:border-[#C9A227] focus:ring-2 focus:ring-[#C9A227]/20 transition-colors input-gold">
               ${Object.entries(LANGUAGE_CONFIG).map(([code, config]) => `
                 <option value="${code}" ${code === lang ? 'selected' : ''}>${config.flag} ${config.nativeName}</option>
               `).join('')}
@@ -223,22 +318,22 @@ medisenseProRouter.get('/', (c) => {
   
   <main class="max-w-7xl mx-auto px-4 py-6">
     <!-- Stats Banner -->
-    <div class="glass rounded-3xl p-6 mb-6 border border-white/30 shadow-xl">
+    <div class="glass rounded-3xl p-6 mb-6 shadow-xl" style="border: 1px solid rgba(201, 162, 39, 0.2);">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-cyan-500/5">
-          <div class="text-3xl font-bold text-cyan-600">${MEDISENSE_STATS.totalSymptoms}+</div>
+        <div class="text-center p-4 rounded-2xl gradient-gold-soft" style="border: 1px solid rgba(201, 162, 39, 0.15);">
+          <div class="text-3xl font-bold" style="color: var(--gold-primary);">${MEDISENSE_STATS.totalSymptoms}+</div>
           <div class="text-sm text-slate-600">${t('stats.symptoms', lang)}</div>
         </div>
-        <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-purple-500/5">
-          <div class="text-3xl font-bold text-purple-600">${MEDISENSE_STATS.totalConditions}+</div>
+        <div class="text-center p-4 rounded-2xl gradient-gold-soft" style="border: 1px solid rgba(201, 162, 39, 0.15);">
+          <div class="text-3xl font-bold" style="color: var(--gold-champagne);">${MEDISENSE_STATS.totalConditions}+</div>
           <div class="text-sm text-slate-600">${t('stats.conditions', lang)}</div>
         </div>
-        <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-pink-500/10 to-pink-500/5">
-          <div class="text-3xl font-bold text-pink-600">${MEDISENSE_STATS.accuracy}</div>
+        <div class="text-center p-4 rounded-2xl gradient-gold-soft" style="border: 1px solid rgba(201, 162, 39, 0.15);">
+          <div class="text-3xl font-bold" style="color: var(--gold-rose);">${MEDISENSE_STATS.accuracy}</div>
           <div class="text-sm text-slate-600">${t('stats.accuracy', lang)}</div>
         </div>
-        <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-green-500/5">
-          <div class="text-3xl font-bold text-green-600">50K+</div>
+        <div class="text-center p-4 rounded-2xl gradient-gold-soft" style="border: 1px solid rgba(201, 162, 39, 0.15);">
+          <div class="text-3xl font-bold" style="color: var(--gold-primary);">50K+</div>
           <div class="text-sm text-slate-600">${t('stats.clinicalCases', lang)}</div>
         </div>
       </div>
@@ -251,7 +346,7 @@ medisenseProRouter.get('/', (c) => {
           <div id="step${step}" class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${step === 1 ? 'step-active' : 'bg-slate-200 text-slate-500'}">
             ${step}
           </div>
-          ${step < 4 ? '<div class="w-8 md:w-16 h-1 bg-slate-200 rounded-full"><div id="progress${step}" class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full transition-all duration-500" style="width: 0%"></div></div>' : ''}
+          ${step < 4 ? '<div class="w-8 md:w-16 h-1 bg-slate-200 rounded-full"><div id="progress${step}" class="h-full step-progress rounded-full transition-all duration-500" style="width: 0%"></div></div>' : ''}
         </div>
       `).join('')}
     </div>
@@ -268,13 +363,13 @@ medisenseProRouter.get('/', (c) => {
           <!-- Search & Voice Input -->
           <div class="flex gap-3 mb-6">
             <div class="flex-1 relative">
-              <i class="fas fa-search absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <i class="fas fa-search absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2" style="color: var(--gold-primary);"></i>
               <input type="text" id="symptomSearch" placeholder="${t('symptoms.search', lang)}" 
                      onkeyup="searchSymptoms(this.value)"
-                     class="w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all">
+                     class="w-full ${dir === 'rtl' ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 bg-white border-2 border-slate-200 rounded-2xl input-gold transition-all">
             </div>
             <button id="voiceBtn" onclick="toggleVoiceInput()" 
-                    class="voice-btn w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-500 text-white flex items-center justify-center hover:shadow-lg transition-all">
+                    class="voice-btn w-12 h-12 rounded-2xl text-white flex items-center justify-center hover:shadow-lg transition-all">
               <i class="fas fa-microphone text-lg"></i>
             </button>
           </div>
@@ -311,10 +406,10 @@ medisenseProRouter.get('/', (c) => {
           </div>
           
           <!-- Selected Symptoms -->
-          <div class="bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-2xl p-6 border border-cyan-200/50">
+          <div class="gradient-gold-soft rounded-2xl p-6" style="border: 1px solid rgba(201, 162, 39, 0.2);">
             <div class="flex items-center justify-between mb-4">
               <h3 class="font-bold text-slate-800">${t('symptoms.selected', lang)}</h3>
-              <span id="selectedCount" class="text-sm text-cyan-600 font-semibold">0 selected</span>
+              <span id="selectedCount" class="text-sm font-semibold" style="color: var(--gold-primary);">0 selected</span>
             </div>
             <div id="selectedSymptoms" class="flex flex-wrap gap-2 min-h-[60px]">
               <div class="text-slate-400 text-sm">${t('symptoms.none', lang)}</div>
@@ -325,7 +420,7 @@ medisenseProRouter.get('/', (c) => {
         <!-- Navigation -->
         <div class="flex justify-end">
           <button onclick="goToStep(2)" id="nextStep1Btn" disabled
-                  class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-3 rounded-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all">
+                  class="btn-gold-primary flex items-center gap-2 px-8 py-3 rounded-2xl font-semibold">
             ${t('btn.continue', lang)}
             <i class="fas fa-arrow-${dir === 'rtl' ? 'left rtl-flip' : 'right'}"></i>
           </button>
@@ -344,12 +439,12 @@ medisenseProRouter.get('/', (c) => {
         <!-- Navigation -->
         <div class="flex justify-between">
           <button onclick="goToStep(1)" 
-                  class="flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-3 rounded-2xl font-semibold hover:bg-slate-50 transition-all">
+                  class="btn-gold-outline flex items-center gap-2 px-8 py-3 rounded-2xl font-semibold">
             <i class="fas fa-arrow-${dir === 'rtl' ? 'right rtl-flip' : 'left'}"></i>
             ${t('btn.back', lang)}
           </button>
           <button onclick="goToStep(3)" 
-                  class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all">
+                  class="btn-gold-primary flex items-center gap-2 px-8 py-3 rounded-2xl font-semibold">
             ${t('btn.continue', lang)}
             <i class="fas fa-arrow-${dir === 'rtl' ? 'left rtl-flip' : 'right'}"></i>
           </button>
@@ -369,11 +464,11 @@ medisenseProRouter.get('/', (c) => {
                 <div>
                   <label class="block text-sm font-medium text-slate-700 mb-1">${t('profile.age', lang)}</label>
                   <input type="number" id="profileAge" value="35" min="1" max="120"
-                         class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none">
+                         class="w-full px-4 py-2 border-2 border-slate-200 rounded-xl input-gold">
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-slate-700 mb-1">${t('profile.gender', lang)}</label>
-                  <select id="profileGender" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none">
+                  <select id="profileGender" class="w-full px-4 py-2 border-2 border-slate-200 rounded-xl input-gold">
                     <option value="male">${t('profile.gender.male', lang)}</option>
                     <option value="female">${t('profile.gender.female', lang)}</option>
                     <option value="other">${t('profile.gender.other', lang)}</option>
@@ -387,8 +482,8 @@ medisenseProRouter.get('/', (c) => {
                 <div class="flex flex-wrap gap-2 mb-2" id="conditionTags"></div>
                 <div class="flex gap-2">
                   <input type="text" id="newCondition" placeholder="${t('profile.conditions.add', lang)}"
-                         class="flex-1 px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none text-sm">
-                  <button onclick="addCondition()" class="px-4 py-2 bg-cyan-500 text-white rounded-xl text-sm hover:bg-cyan-600 transition-colors">
+                         class="flex-1 px-4 py-2 border-2 border-slate-200 rounded-xl input-gold text-sm">
+                  <button onclick="addCondition()" class="px-4 py-2 btn-gold-primary rounded-xl text-sm">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
@@ -399,12 +494,12 @@ medisenseProRouter.get('/', (c) => {
                 <label class="block text-sm font-medium text-slate-700 mb-2">${t('profile.lifestyle', lang)}</label>
                 <div class="space-y-2">
                   <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="smokingCheck" class="w-4 h-4 text-cyan-500 rounded">
+                    <input type="checkbox" id="smokingCheck" class="w-4 h-4 rounded accent-[#C9A227]">
                     <span class="text-sm text-slate-600">${t('profile.smoking', lang)}</span>
                   </label>
                   <div class="flex items-center gap-2">
                     <span class="text-sm text-slate-600">${t('profile.exercise', lang)}:</span>
-                    <select id="exerciseLevel" class="px-3 py-1 border border-slate-200 rounded-lg text-sm">
+                    <select id="exerciseLevel" class="px-3 py-1 border-2 border-slate-200 rounded-lg text-sm input-gold">
                       <option value="sedentary">Sedentary</option>
                       <option value="light">Light</option>
                       <option value="moderate" selected>Moderate</option>
@@ -425,8 +520,8 @@ medisenseProRouter.get('/', (c) => {
               <div class="relative">
                 <input type="text" id="medicationSearch" placeholder="${t('medications.search', lang)}"
                        onkeyup="searchMedications(this.value)"
-                       class="w-full px-4 py-2 ${dir === 'rtl' ? 'pr-10' : 'pl-10'} border border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none">
-                <i class="fas fa-pills absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-slate-400"></i>
+                       class="w-full px-4 py-2 ${dir === 'rtl' ? 'pr-10' : 'pl-10'} border-2 border-slate-200 rounded-xl input-gold">
+                <i class="fas fa-pills absolute ${dir === 'rtl' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2" style="color: var(--gold-primary);"></i>
               </div>
               
               <!-- Medication Search Results -->
@@ -458,12 +553,12 @@ medisenseProRouter.get('/', (c) => {
         <!-- Navigation -->
         <div class="flex justify-between">
           <button onclick="goToStep(2)" 
-                  class="flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-3 rounded-2xl font-semibold hover:bg-slate-50 transition-all">
+                  class="btn-gold-outline flex items-center gap-2 px-8 py-3 rounded-2xl font-semibold">
             <i class="fas fa-arrow-${dir === 'rtl' ? 'right rtl-flip' : 'left'}"></i>
             ${t('btn.back', lang)}
           </button>
           <button onclick="runAnalysis()" 
-                  class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all">
+                  class="btn-gold-primary flex items-center gap-2 px-8 py-3 rounded-2xl font-semibold animate-gold-pulse">
             <i class="fas fa-brain"></i>
             ${t('btn.analyze', lang)}
           </button>
@@ -478,17 +573,17 @@ medisenseProRouter.get('/', (c) => {
         <!-- Actions -->
         <div class="flex flex-wrap gap-4 justify-center mt-6">
           <button onclick="bookAppointment()" 
-                  class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all">
+                  class="btn-gold-primary flex items-center gap-2 px-8 py-3 rounded-2xl font-semibold">
             <i class="fas fa-calendar-check"></i>
             ${t('results.bookAppointment', lang)}
           </button>
           <button onclick="saveResults()" 
-                  class="flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-6 py-3 rounded-2xl font-semibold hover:bg-slate-50 transition-all">
+                  class="btn-gold-outline flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold">
             <i class="fas fa-download"></i>
             ${t('results.saveResults', lang)}
           </button>
           <button onclick="resetAnalysis()" 
-                  class="flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-6 py-3 rounded-2xl font-semibold hover:bg-slate-50 transition-all">
+                  class="btn-gold-outline flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold">
             <i class="fas fa-rotate"></i>
             ${t('results.newAnalysis', lang)}
           </button>
@@ -500,26 +595,26 @@ medisenseProRouter.get('/', (c) => {
     <!-- Compliance Badges -->
     <div class="flex flex-wrap items-center justify-center gap-4 mt-8 text-xs text-slate-500">
       <div class="flex items-center gap-1">
-        <i class="fas fa-shield-check text-green-500"></i>
+        <i class="fas fa-shield-check" style="color: var(--gold-primary);"></i>
         <span>${t('compliance.hipaa', lang)}</span>
       </div>
       <div class="flex items-center gap-1">
-        <i class="fas fa-shield-check text-blue-500"></i>
+        <i class="fas fa-shield-check" style="color: var(--gold-champagne);"></i>
         <span>${t('compliance.gdpr', lang)}</span>
       </div>
       <div class="flex items-center gap-1">
-        <i class="fas fa-certificate text-purple-500"></i>
+        <i class="fas fa-certificate" style="color: var(--gold-rose);"></i>
         <span>${t('compliance.icd11', lang)}</span>
       </div>
       <div class="flex items-center gap-1">
-        <i class="fas fa-user-doctor text-cyan-500"></i>
+        <i class="fas fa-user-doctor" style="color: var(--gold-primary);"></i>
         <span>${t('compliance.mdReviewed', lang)}</span>
       </div>
     </div>
     
     <!-- Disclaimer -->
-    <div class="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-2xl text-center">
-      <div class="text-xs text-amber-700">
+    <div class="mt-6 p-4 rounded-2xl text-center gradient-gold-soft" style="border: 1px solid rgba(201, 162, 39, 0.3);">
+      <div class="text-xs" style="color: var(--gold-rose);">
         <i class="fas fa-info-circle mr-1"></i>
         ${t('disclaimer.text', lang)}
       </div>
@@ -548,14 +643,14 @@ medisenseProRouter.get('/', (c) => {
   <!-- Loading Overlay -->
   <div id="loadingOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-white/90">
     <div class="text-center">
-      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center mx-auto mb-4 animate-pulse">
+      <div class="w-20 h-20 rounded-full gradient-gold flex items-center justify-center mx-auto mb-4 animate-pulse animate-gold-pulse">
         <i class="fas fa-brain text-white text-3xl"></i>
       </div>
       <h3 id="loadingText" class="text-xl font-bold text-slate-800 mb-2">${t('analysis.title', lang)}</h3>
       <div class="flex items-center justify-center gap-2 text-slate-500">
-        <div class="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style="animation-delay: 0s"></div>
-        <div class="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-        <div class="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        <div class="w-2 h-2 rounded-full animate-bounce" style="background: var(--gold-primary); animation-delay: 0s"></div>
+        <div class="w-2 h-2 rounded-full animate-bounce" style="background: var(--gold-champagne); animation-delay: 0.1s"></div>
+        <div class="w-2 h-2 rounded-full animate-bounce" style="background: var(--gold-rose); animation-delay: 0.2s"></div>
       </div>
     </div>
   </div>
@@ -623,7 +718,7 @@ function goToStep(step) {
 }
 
 function changeLanguage(lang) {
-  window.location.href = '/medisense-pro?lang=' + lang;
+  window.location.href = '/medisense?lang=' + lang;
 }
 
 // ============================================================================
@@ -702,7 +797,7 @@ function updateSelectedSymptoms() {
                     state.language === 'fr' ? 'nameFr' : 'name';
     const name = symptom ? (symptom[langKey] || symptom.name) : id;
     return \`
-      <div class="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm">
+      <div class="flex items-center gap-2 text-white px-4 py-2 rounded-full text-sm" style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne)); box-shadow: var(--shadow-gold-sm);">
         <span>\${name}</span>
         <button onclick="toggleSymptom('\${id}')" class="hover:bg-white/20 rounded-full w-5 h-5 flex items-center justify-center">
           <i class="fas fa-times text-xs"></i>
@@ -790,10 +885,10 @@ function buildSymptomDetailsPanel() {
     const details = state.symptomDetails[id] || {};
     
     return \`
-      <div class="bg-white rounded-2xl p-5 border border-slate-200">
+      <div class="bg-white rounded-2xl p-5" style="border: 2px solid rgba(201, 162, 39, 0.2);">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center">
-            <i class="fas fa-stethoscope text-cyan-600"></i>
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(201, 162, 39, 0.1);">
+            <i class="fas fa-stethoscope" style="color: var(--gold-primary);"></i>
           </div>
           <h4 class="font-bold text-slate-800">\${name}</h4>
         </div>
@@ -803,7 +898,7 @@ function buildSymptomDetailsPanel() {
           <div>
             <label class="block text-xs font-medium text-slate-500 mb-1">Severity</label>
             <select onchange="updateSymptomDetail('\${id}', 'severity', this.value)"
-                    class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 outline-none">
+                    class="w-full px-3 py-2 border-2 border-slate-200 rounded-xl text-sm input-gold">
               <option value="mild" \${details.severity === 'mild' ? 'selected' : ''}>Mild</option>
               <option value="moderate" \${details.severity === 'moderate' ? 'selected' : ''}>Moderate</option>
               <option value="severe" \${details.severity === 'severe' ? 'selected' : ''}>Severe</option>
@@ -815,7 +910,7 @@ function buildSymptomDetailsPanel() {
           <div>
             <label class="block text-xs font-medium text-slate-500 mb-1">Duration</label>
             <select onchange="updateSymptomDetail('\${id}', 'duration', this.value)"
-                    class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 outline-none">
+                    class="w-full px-3 py-2 border-2 border-slate-200 rounded-xl text-sm input-gold">
               <option value="hours" \${details.duration === 'hours' ? 'selected' : ''}>Hours</option>
               <option value="days" \${details.duration === 'days' ? 'selected' : ''}>Days</option>
               <option value="weeks" \${details.duration === 'weeks' ? 'selected' : ''}>Weeks</option>
@@ -828,7 +923,7 @@ function buildSymptomDetailsPanel() {
           <div>
             <label class="block text-xs font-medium text-slate-500 mb-1">Onset</label>
             <select onchange="updateSymptomDetail('\${id}', 'onset', this.value)"
-                    class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 outline-none">
+                    class="w-full px-3 py-2 border-2 border-slate-200 rounded-xl text-sm input-gold">
               <option value="sudden" \${details.onset === 'sudden' ? 'selected' : ''}>Sudden</option>
               <option value="gradual" \${details.onset === 'gradual' ? 'selected' : ''}>Gradual</option>
             </select>
@@ -838,7 +933,7 @@ function buildSymptomDetailsPanel() {
           <div>
             <label class="block text-xs font-medium text-slate-500 mb-1">Frequency</label>
             <select onchange="updateSymptomDetail('\${id}', 'frequency', this.value)"
-                    class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 outline-none">
+                    class="w-full px-3 py-2 border-2 border-slate-200 rounded-xl text-sm input-gold">
               <option value="constant" \${details.frequency === 'constant' ? 'selected' : ''}>Constant</option>
               <option value="intermittent" \${details.frequency === 'intermittent' ? 'selected' : ''}>Comes & goes</option>
               <option value="occasional" \${details.frequency === 'occasional' ? 'selected' : ''}>Occasional</option>
@@ -883,9 +978,9 @@ function removeCondition(condition) {
 function updateConditionTags() {
   const container = document.getElementById('conditionTags');
   container.innerHTML = state.profile.preExistingConditions.map(c => \`
-    <div class="flex items-center gap-1 bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
+    <div class="flex items-center gap-1 px-3 py-1 rounded-full text-sm" style="background: rgba(201, 162, 39, 0.15); color: var(--gold-rose);">
       <span>\${c}</span>
-      <button onclick="removeCondition('\${c}')" class="hover:text-purple-900">
+      <button onclick="removeCondition('\${c}')" class="hover:opacity-70">
         <i class="fas fa-times text-xs"></i>
       </button>
     </div>
@@ -950,9 +1045,9 @@ function updateMedicationTags() {
     const med = medicationsDatabase.find(m => m.id === id);
     const name = med ? med.name : id;
     return \`
-      <div class="flex items-center gap-1 bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm">
+      <div class="flex items-center gap-1 px-3 py-1 rounded-full text-sm" style="background: rgba(201, 162, 39, 0.15); color: var(--gold-rose);">
         <span>\${name}</span>
-        <button onclick="removeMedication('\${id}')" class="hover:text-pink-900">
+        <button onclick="removeMedication('\${id}')" class="hover:opacity-70">
           <i class="fas fa-times text-xs"></i>
         </button>
       </div>
@@ -1027,7 +1122,7 @@ function displayResults(result) {
     \` : ''}
     
     <!-- Urgency Level -->
-    <div class="glass rounded-3xl p-6 border border-white/30 shadow-xl mb-6">
+    <div class="glass rounded-3xl p-6 shadow-xl mb-6" style="border: 1px solid rgba(201, 162, 39, 0.2);">
       <div class="flex flex-col md:flex-row items-center gap-6">
         <div class="w-24 h-24 rounded-3xl \${urgency.bg} text-white flex items-center justify-center">
           <i class="fas \${urgency.icon} text-4xl"></i>
@@ -1038,24 +1133,24 @@ function displayResults(result) {
           <p class="text-slate-600">\${result.urgencyExplanation[0] || ''}</p>
         </div>
         <div class="text-center">
-          <div class="text-4xl font-bold gradient-text">\${result.analysisConfidence}%</div>
+          <div class="text-4xl font-bold" style="color: var(--gold-primary);">\${result.analysisConfidence}%</div>
           <div class="text-sm text-slate-500">Confidence</div>
         </div>
       </div>
     </div>
     
     <!-- Possible Conditions -->
-    <div class="glass rounded-3xl p-6 border border-white/30 shadow-xl mb-6">
+    <div class="glass rounded-3xl p-6 shadow-xl mb-6" style="border: 1px solid rgba(201, 162, 39, 0.2);">
       <h3 class="text-xl font-bold text-slate-800 mb-4">
-        <i class="fas fa-clipboard-list mr-2 text-purple-500"></i>
+        <i class="fas fa-clipboard-list mr-2" style="color: var(--gold-primary);"></i>
         Possible Conditions
       </h3>
       <div class="space-y-4">
         \${result.possibleConditions.slice(0, 5).map((match, i) => \`
-          <div class="bg-white rounded-2xl p-4 border border-slate-200">
+          <div class="bg-white rounded-2xl p-4" style="border: 2px solid rgba(201, 162, 39, 0.15);">
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center text-sm font-bold text-purple-600">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));">
                   \${i + 1}
                 </div>
                 <div>
@@ -1068,18 +1163,18 @@ function displayResults(result) {
                 </div>
               </div>
               <div class="text-right">
-                <div class="text-2xl font-bold text-purple-600">\${Math.round(match.matchScore)}%</div>
+                <div class="text-2xl font-bold" style="color: var(--gold-primary);">\${Math.round(match.matchScore)}%</div>
                 <div class="text-xs text-slate-500">Match</div>
               </div>
             </div>
             <div class="w-full bg-slate-200 rounded-full h-2 mb-3">
-              <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: \${Math.min(100, match.matchScore)}%"></div>
+              <div class="h-2 rounded-full" style="background: linear-gradient(90deg, var(--gold-primary), var(--gold-champagne)); width: \${Math.min(100, match.matchScore)}%"></div>
             </div>
             <p class="text-sm text-slate-600 mb-2">\${match.condition.description}</p>
             <div class="flex flex-wrap gap-1">
               \${match.matchedSymptoms.slice(0, 5).map(s => \`
-                <span class="text-xs px-2 py-0.5 bg-cyan-100 text-cyan-700 rounded-full">\${s.symptomName}</span>
-              \`).join('')}
+                <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(201, 162, 39, 0.15); color: var(--gold-rose);">\${s.symptomName}</span>
+              \`).join('')
             </div>
           </div>
         \`).join('')}
@@ -1119,9 +1214,9 @@ function displayResults(result) {
     <!-- Recommendations -->
     <div class="grid md:grid-cols-3 gap-6 mb-6">
       <!-- Immediate -->
-      <div class="glass rounded-3xl p-6 border border-white/30 shadow-xl">
+      <div class="glass rounded-3xl p-6 shadow-xl" style="border: 1px solid rgba(201, 162, 39, 0.2);">
         <h3 class="text-lg font-bold text-slate-800 mb-4">
-          <i class="fas fa-bolt mr-2 text-red-500"></i>
+          <i class="fas fa-bolt mr-2" style="color: #ef4444;"></i>
           Immediate Actions
         </h3>
         <ul class="space-y-2">
@@ -1135,9 +1230,9 @@ function displayResults(result) {
       </div>
       
       <!-- Short-term -->
-      <div class="glass rounded-3xl p-6 border border-white/30 shadow-xl">
+      <div class="glass rounded-3xl p-6 shadow-xl" style="border: 1px solid rgba(201, 162, 39, 0.2);">
         <h3 class="text-lg font-bold text-slate-800 mb-4">
-          <i class="fas fa-calendar-day mr-2 text-amber-500"></i>
+          <i class="fas fa-calendar-day mr-2" style="color: var(--gold-primary);"></i>
           Short-term Care
         </h3>
         <ul class="space-y-2">
@@ -1151,9 +1246,9 @@ function displayResults(result) {
       </div>
       
       <!-- Lifestyle -->
-      <div class="glass rounded-3xl p-6 border border-white/30 shadow-xl">
+      <div class="glass rounded-3xl p-6 shadow-xl" style="border: 1px solid rgba(201, 162, 39, 0.2);">
         <h3 class="text-lg font-bold text-slate-800 mb-4">
-          <i class="fas fa-heart mr-2 text-green-500"></i>
+          <i class="fas fa-heart mr-2" style="color: var(--gold-champagne);"></i>
           Lifestyle Advice
         </h3>
         <ul class="space-y-2">
@@ -1168,16 +1263,16 @@ function displayResults(result) {
     </div>
     
     <!-- Specialists -->
-    <div class="glass rounded-3xl p-6 border border-white/30 shadow-xl mb-6">
+    <div class="glass rounded-3xl p-6 shadow-xl mb-6" style="border: 1px solid rgba(201, 162, 39, 0.2);">
       <h3 class="text-xl font-bold text-slate-800 mb-4">
-        <i class="fas fa-user-doctor mr-2 text-cyan-500"></i>
+        <i class="fas fa-user-doctor mr-2" style="color: var(--gold-primary);"></i>
         Recommended Specialists
       </h3>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         \${result.specialists.map(s => \`
-          <div class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-cyan-300 transition-colors cursor-pointer" onclick="bookSpecialist('\${s.type}')">
+          <div class="bg-white rounded-2xl p-4 hover:shadow-md transition-all cursor-pointer" style="border: 2px solid rgba(201, 162, 39, 0.2);" onclick="bookSpecialist('\${s.type}')">
             <div class="flex items-center gap-3 mb-2">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center text-white">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-champagne));">
                 <i class="fas fa-user-md"></i>
               </div>
               <div>
@@ -1328,7 +1423,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fas fa-heart"></i>
             <span>Wellness</span>
         </a>
-        <a href="/medisense-pro" class="nav-item active">
+        <a href="/medisense" class="nav-item active">
             <i class="fas fa-brain"></i>
             <span>MediSense</span>
         </a>
