@@ -1110,7 +1110,7 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                     </div>
                 </div>
                 
-                <!-- CALORIE/TDEE CALCULATOR - Best Practices from MyFitnessPal, Calculator.net, Forbes TDEE -->
+                <!-- CALORIE/TDEE CALCULATOR - Enhanced Version with Best Practices -->
                 <div class="card p-6 calculator-card md:col-span-2 lg:col-span-3">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center">
@@ -1122,9 +1122,28 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                                 <p class="text-sm text-gray-500">Calculate your daily calorie needs using science-backed formulas</p>
                             </div>
                         </div>
-                        <span class="text-xs bg-gradient-to-r from-orange-100 to-red-100 text-orange-600 px-3 py-1 rounded-full font-semibold">
-                            <i class="fas fa-star mr-1"></i>Premium
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <!-- Unit Toggle -->
+                            <div class="flex items-center bg-gray-100 rounded-lg p-1">
+                                <button id="unit-metric" onclick="toggleUnits('metric')" class="px-3 py-1 text-xs font-medium rounded-md bg-white text-navy shadow-sm">Metric</button>
+                                <button id="unit-imperial" onclick="toggleUnits('imperial')" class="px-3 py-1 text-xs font-medium rounded-md text-gray-500">Imperial</button>
+                            </div>
+                            <span class="text-xs bg-gradient-to-r from-orange-100 to-red-100 text-orange-600 px-3 py-1 rounded-full font-semibold">
+                                <i class="fas fa-star mr-1"></i>Premium
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Validation Messages -->
+                    <div id="cal-validation" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm hidden">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span id="cal-validation-msg">Please fill in all required fields</span>
+                    </div>
+                    
+                    <!-- Saved Results Banner -->
+                    <div id="cal-saved-banner" class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm hidden">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Results saved! <button onclick="loadSavedCalories()" class="underline ml-2">View history</button>
                     </div>
                     
                     <div class="grid md:grid-cols-2 gap-6">
@@ -1134,30 +1153,35 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                                 <h4 class="font-semibold text-navy mb-3"><i class="fas fa-user mr-2"></i>Personal Information</h4>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label class="text-xs text-gray-600 font-medium">Age</label>
-                                        <input type="number" id="cal-age" placeholder="35" min="15" max="100" class="input-field" oninput="calculateCalories()">
+                                        <label class="text-xs text-gray-600 font-medium">Age <span class="text-red-500">*</span></label>
+                                        <input type="number" id="cal-age" placeholder="35" min="15" max="100" class="input-field cal-input" oninput="validateAndCalculate()">
+                                        <span class="text-xs text-red-500 hidden" id="cal-age-error">15-100 years</span>
                                     </div>
                                     <div>
                                         <label class="text-xs text-gray-600 font-medium">Gender</label>
-                                        <select id="cal-gender" class="input-field" onchange="calculateCalories()">
+                                        <select id="cal-gender" class="input-field" onchange="validateAndCalculate()">
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="text-xs text-gray-600 font-medium">Height (cm)</label>
-                                        <input type="number" id="cal-height" placeholder="175" min="100" max="250" class="input-field" oninput="calculateCalories()">
+                                        <label class="text-xs text-gray-600 font-medium">Height <span class="text-red-500">*</span> <span id="height-unit-label">(cm)</span></label>
+                                        <div class="flex gap-1" id="height-input-container">
+                                            <input type="number" id="cal-height" placeholder="175" min="100" max="250" class="input-field cal-input" oninput="validateAndCalculate()">
+                                        </div>
+                                        <span class="text-xs text-red-500 hidden" id="cal-height-error">Invalid height</span>
                                     </div>
                                     <div>
-                                        <label class="text-xs text-gray-600 font-medium">Weight (kg)</label>
-                                        <input type="number" id="cal-weight" placeholder="80" min="30" max="300" class="input-field" oninput="calculateCalories()">
+                                        <label class="text-xs text-gray-600 font-medium">Weight <span class="text-red-500">*</span> <span id="weight-unit-label">(kg)</span></label>
+                                        <input type="number" id="cal-weight" placeholder="80" min="30" max="300" class="input-field cal-input" oninput="validateAndCalculate()">
+                                        <span class="text-xs text-red-500 hidden" id="cal-weight-error">Invalid weight</span>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
                                 <h4 class="font-semibold text-navy mb-3"><i class="fas fa-running mr-2"></i>Activity Level</h4>
-                                <select id="cal-activity" class="input-field mb-2" onchange="calculateCalories()">
+                                <select id="cal-activity" class="input-field mb-2" onchange="validateAndCalculate()">
                                     <option value="1.2">Sedentary (little or no exercise)</option>
                                     <option value="1.375">Lightly Active (light exercise 1-3 days/week)</option>
                                     <option value="1.55" selected>Moderately Active (moderate exercise 3-5 days/week)</option>
@@ -1172,7 +1196,7 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                             
                             <div class="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
                                 <h4 class="font-semibold text-navy mb-3"><i class="fas fa-bullseye mr-2"></i>Your Goal</h4>
-                                <select id="cal-goal" class="input-field mb-2" onchange="calculateCalories()">
+                                <select id="cal-goal" class="input-field mb-2" onchange="validateAndCalculate()">
                                     <option value="-1000">Aggressive Weight Loss (-1 kg/week)</option>
                                     <option value="-500">Moderate Weight Loss (-0.5 kg/week)</option>
                                     <option value="-250">Mild Weight Loss (-0.25 kg/week)</option>
@@ -1183,16 +1207,56 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                             </div>
                             
                             <div class="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl">
-                                <h4 class="font-semibold text-navy mb-3"><i class="fas fa-flask mr-2"></i>Formula Method</h4>
-                                <select id="cal-formula" class="input-field" onchange="calculateCalories()">
-                                    <option value="mifflin" selected>Mifflin-St Jeor (Most Accurate)</option>
-                                    <option value="harris">Harris-Benedict (Classic)</option>
-                                    <option value="katch">Katch-McArdle (Requires Body Fat %)</option>
-                                </select>
-                                <div id="body-fat-input" class="mt-3 hidden">
-                                    <label class="text-xs text-gray-600 font-medium">Body Fat Percentage (%)</label>
-                                    <input type="number" id="cal-bodyfat" placeholder="20" min="3" max="60" class="input-field" oninput="calculateCalories()">
+                                <h4 class="font-semibold text-navy mb-3"><i class="fas fa-flask mr-2"></i>Formula & Macros</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="text-xs text-gray-600 font-medium">Formula Method</label>
+                                        <select id="cal-formula" class="input-field" onchange="handleFormulaChange()">
+                                            <option value="mifflin" selected>Mifflin-St Jeor (Most Accurate)</option>
+                                            <option value="harris">Harris-Benedict (Classic)</option>
+                                            <option value="katch">Katch-McArdle (Requires Body Fat %)</option>
+                                        </select>
+                                    </div>
+                                    <div id="body-fat-input" class="hidden">
+                                        <label class="text-xs text-gray-600 font-medium">Body Fat Percentage (%)</label>
+                                        <input type="number" id="cal-bodyfat" placeholder="20" min="3" max="60" class="input-field cal-input" oninput="validateAndCalculate()">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-gray-600 font-medium">Macro Split</label>
+                                        <select id="cal-macro-preset" class="input-field" onchange="applyMacroPreset()">
+                                            <option value="balanced" selected>Balanced (30P/40C/30F)</option>
+                                            <option value="lowcarb">Low Carb (40P/20C/40F)</option>
+                                            <option value="highprotein">High Protein (40P/35C/25F)</option>
+                                            <option value="keto">Keto (25P/5C/70F)</option>
+                                            <option value="custom">Custom</option>
+                                        </select>
+                                    </div>
+                                    <div id="custom-macros" class="hidden grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label class="text-xs text-gray-600">Protein %</label>
+                                            <input type="number" id="custom-protein" value="30" min="10" max="60" class="input-field text-center" oninput="validateAndCalculate()">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-600">Carbs %</label>
+                                            <input type="number" id="custom-carbs" value="40" min="5" max="70" class="input-field text-center" oninput="validateAndCalculate()">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-600">Fat %</label>
+                                            <input type="number" id="custom-fat" value="30" min="10" max="80" class="input-field text-center" oninput="validateAndCalculate()">
+                                        </div>
+                                        <div class="col-span-3 text-xs text-center" id="macro-total-indicator">Total: 100%</div>
+                                    </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="flex gap-2">
+                                <button onclick="saveCalorieResults()" class="flex-1 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+                                    <i class="fas fa-save mr-1"></i> Save Results
+                                </button>
+                                <button onclick="resetCalorieCalculator()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors">
+                                    <i class="fas fa-redo mr-1"></i> Reset
+                                </button>
                             </div>
                         </div>
                         
@@ -1228,32 +1292,75 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                                 <div class="text-green-200 text-xs mt-1" id="cal-goal-text">To maintain your current weight</div>
                             </div>
                             
-                            <!-- Macronutrient Breakdown -->
+                            <!-- Macronutrient Breakdown with Visual Chart -->
                             <div class="p-5 bg-white border-2 border-gray-100 rounded-xl">
-                                <h4 class="font-semibold text-navy mb-4 flex items-center">
-                                    <i class="fas fa-chart-pie text-purple-500 mr-2"></i>
-                                    Recommended Macros
+                                <h4 class="font-semibold text-navy mb-4 flex items-center justify-between">
+                                    <span><i class="fas fa-chart-pie text-purple-500 mr-2"></i>Macros Breakdown</span>
+                                    <span class="text-xs text-gray-500" id="macro-preset-label">Balanced</span>
                                 </h4>
+                                <!-- Visual Pie Chart -->
+                                <div class="flex items-center justify-center mb-4">
+                                    <div class="relative w-32 h-32">
+                                        <svg viewBox="0 0 36 36" class="w-full h-full">
+                                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="3"></circle>
+                                            <circle id="chart-protein" cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="25" class="transition-all duration-500"></circle>
+                                            <circle id="chart-carbs" cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="-5" class="transition-all duration-500"></circle>
+                                            <circle id="chart-fat" cx="18" cy="18" r="15.9" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="-45" class="transition-all duration-500"></circle>
+                                        </svg>
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="text-center">
+                                                <div class="text-lg font-bold text-navy" id="total-cal-display">--</div>
+                                                <div class="text-xs text-gray-500">cal/day</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="grid grid-cols-3 gap-3">
-                                    <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                    <div class="text-center p-3 bg-blue-50 rounded-lg border-2 border-blue-200">
                                         <div class="text-2xl font-bold text-blue-600" id="macro-protein">--g</div>
-                                        <div class="text-xs text-gray-500">Protein (30%)</div>
+                                        <div class="text-xs text-gray-500">Protein (<span id="protein-pct">30</span>%)</div>
                                         <div class="text-xs text-blue-500 font-medium" id="macro-protein-cal">-- cal</div>
                                     </div>
-                                    <div class="text-center p-3 bg-amber-50 rounded-lg">
+                                    <div class="text-center p-3 bg-amber-50 rounded-lg border-2 border-amber-200">
                                         <div class="text-2xl font-bold text-amber-600" id="macro-carbs">--g</div>
-                                        <div class="text-xs text-gray-500">Carbs (40%)</div>
+                                        <div class="text-xs text-gray-500">Carbs (<span id="carbs-pct">40</span>%)</div>
                                         <div class="text-xs text-amber-500 font-medium" id="macro-carbs-cal">-- cal</div>
                                     </div>
-                                    <div class="text-center p-3 bg-green-50 rounded-lg">
+                                    <div class="text-center p-3 bg-green-50 rounded-lg border-2 border-green-200">
                                         <div class="text-2xl font-bold text-green-600" id="macro-fat">--g</div>
-                                        <div class="text-xs text-gray-500">Fat (30%)</div>
+                                        <div class="text-xs text-gray-500">Fat (<span id="fat-pct">30</span>%)</div>
                                         <div class="text-xs text-green-500 font-medium" id="macro-fat-cal">-- cal</div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Weekly Projection -->
+                            <!-- Meal Timing Suggestions -->
+                            <div class="p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+                                <h4 class="font-semibold text-navy mb-3 flex items-center">
+                                    <i class="fas fa-clock text-indigo-500 mr-2"></i>
+                                    Suggested Meal Timing
+                                </h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="p-3 bg-white rounded-lg">
+                                        <div class="text-xs text-gray-500 mb-1"><i class="fas fa-sun text-yellow-500 mr-1"></i>Breakfast (25%)</div>
+                                        <div class="font-bold text-navy" id="meal-breakfast">-- cal</div>
+                                    </div>
+                                    <div class="p-3 bg-white rounded-lg">
+                                        <div class="text-xs text-gray-500 mb-1"><i class="fas fa-cloud-sun text-orange-400 mr-1"></i>Lunch (35%)</div>
+                                        <div class="font-bold text-navy" id="meal-lunch">-- cal</div>
+                                    </div>
+                                    <div class="p-3 bg-white rounded-lg">
+                                        <div class="text-xs text-gray-500 mb-1"><i class="fas fa-moon text-blue-400 mr-1"></i>Dinner (30%)</div>
+                                        <div class="font-bold text-navy" id="meal-dinner">-- cal</div>
+                                    </div>
+                                    <div class="p-3 bg-white rounded-lg">
+                                        <div class="text-xs text-gray-500 mb-1"><i class="fas fa-cookie text-amber-500 mr-1"></i>Snacks (10%)</div>
+                                        <div class="font-bold text-navy" id="meal-snacks">-- cal</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Weight Projection -->
                             <div class="p-5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
                                 <h4 class="font-semibold text-navy mb-3 flex items-center">
                                     <i class="fas fa-calendar-alt text-indigo-500 mr-2"></i>
@@ -1297,6 +1404,23 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                             <p class="text-sm text-gray-500 max-w-xs">
                                 Fill in the form to calculate your daily calorie needs based on the most accurate scientific formulas.
                             </p>
+                            <!-- Quick Load from History -->
+                            <button onclick="loadSavedCalories()" id="load-history-btn" class="mt-4 text-sm text-blue-600 hover:underline hidden">
+                                <i class="fas fa-history mr-1"></i> Load previous calculation
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- History Panel -->
+                    <div id="cal-history-panel" class="mt-6 p-4 bg-gray-50 rounded-xl hidden">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-navy text-sm">
+                                <i class="fas fa-history text-gray-500 mr-2"></i>Calculation History
+                            </h4>
+                            <button onclick="clearCalorieHistory()" class="text-xs text-red-500 hover:underline">Clear All</button>
+                        </div>
+                        <div id="cal-history-list" class="space-y-2 max-h-40 overflow-y-auto">
+                            <!-- History items will be populated here -->
                         </div>
                     </div>
                     
@@ -2280,9 +2404,657 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
         
         setInterval(updateVitals, 5000);
         
-        // Initialize
+        // ============================================================================
+        // CALORIE CALCULATOR ENHANCEMENT FUNCTIONS
+        // Unit Toggle, Save/Load, Validation, Macros, Meal Timing
+        // ============================================================================
+        
+        // State management
+        let currentUnit = 'metric'; // 'metric' or 'imperial'
+        let macroRatios = { protein: 30, carbs: 40, fat: 30 };
+        const STORAGE_KEY = 'selectcare_calorie_history';
+        
+        // Unit Toggle Function
+        function toggleUnits(unit) {
+            const prevUnit = currentUnit;
+            currentUnit = unit;
+            
+            // Update button styles
+            const metricBtn = document.getElementById('unit-metric');
+            const imperialBtn = document.getElementById('unit-imperial');
+            
+            if (unit === 'metric') {
+                metricBtn.classList.add('bg-white', 'text-navy', 'shadow-sm');
+                metricBtn.classList.remove('text-gray-500');
+                imperialBtn.classList.remove('bg-white', 'text-navy', 'shadow-sm');
+                imperialBtn.classList.add('text-gray-500');
+                
+                document.getElementById('height-unit-label').textContent = '(cm)';
+                document.getElementById('weight-unit-label').textContent = '(kg)';
+                
+                // Convert values if switching from imperial
+                if (prevUnit === 'imperial') {
+                    const heightInput = document.getElementById('cal-height');
+                    const weightInput = document.getElementById('cal-weight');
+                    
+                    const feet = parseFloat(document.getElementById('height-feet')?.value) || 0;
+                    const inches = parseFloat(document.getElementById('height-inches')?.value) || 0;
+                    const totalInches = (feet * 12) + inches;
+                    const cm = Math.round(totalInches * 2.54);
+                    
+                    const lbs = parseFloat(weightInput.value) || 0;
+                    const kg = Math.round(lbs / 2.205 * 10) / 10;
+                    
+                    // Restore single height input
+                    const container = document.getElementById('height-input-container');
+                    container.innerHTML = '<input type="number" id="cal-height" placeholder="175" min="100" max="250" class="input-field cal-input" oninput="validateAndCalculate()">';
+                    
+                    if (cm >= 100) document.getElementById('cal-height').value = cm;
+                    if (kg >= 30) weightInput.value = kg;
+                    
+                    // Update placeholders
+                    document.getElementById('cal-height').placeholder = '175';
+                    weightInput.placeholder = '80';
+                    weightInput.min = '30';
+                    weightInput.max = '300';
+                }
+            } else {
+                imperialBtn.classList.add('bg-white', 'text-navy', 'shadow-sm');
+                imperialBtn.classList.remove('text-gray-500');
+                metricBtn.classList.remove('bg-white', 'text-navy', 'shadow-sm');
+                metricBtn.classList.add('text-gray-500');
+                
+                document.getElementById('height-unit-label').textContent = '(ft/in)';
+                document.getElementById('weight-unit-label').textContent = '(lbs)';
+                
+                // Convert values if switching from metric
+                if (prevUnit === 'metric') {
+                    const heightInput = document.getElementById('cal-height');
+                    const weightInput = document.getElementById('cal-weight');
+                    
+                    const cm = parseFloat(heightInput.value) || 0;
+                    const totalInches = cm / 2.54;
+                    const feet = Math.floor(totalInches / 12);
+                    const inches = Math.round(totalInches % 12);
+                    
+                    const kg = parseFloat(weightInput.value) || 0;
+                    const lbs = Math.round(kg * 2.205);
+                    
+                    // Replace with feet/inches inputs
+                    const container = document.getElementById('height-input-container');
+                    container.innerHTML = \`
+                        <input type="number" id="height-feet" placeholder="5" min="3" max="8" class="input-field cal-input w-1/2" oninput="validateAndCalculate()">
+                        <span class="self-center text-xs text-gray-500">ft</span>
+                        <input type="number" id="height-inches" placeholder="9" min="0" max="11" class="input-field cal-input w-1/2" oninput="validateAndCalculate()">
+                        <span class="self-center text-xs text-gray-500">in</span>
+                    \`;
+                    
+                    if (feet >= 3) document.getElementById('height-feet').value = feet;
+                    if (inches >= 0) document.getElementById('height-inches').value = inches;
+                    if (lbs >= 66) weightInput.value = lbs;
+                    
+                    // Update placeholders and limits
+                    weightInput.placeholder = '176';
+                    weightInput.min = '66';
+                    weightInput.max = '660';
+                }
+            }
+            
+            validateAndCalculate();
+        }
+        
+        // Validate and Calculate with visual feedback
+        function validateAndCalculate() {
+            const validationDiv = document.getElementById('cal-validation');
+            const validationMsg = document.getElementById('cal-validation-msg');
+            const errors = [];
+            
+            // Get values based on current unit
+            let heightCm, weightKg;
+            const age = parseFloat(document.getElementById('cal-age')?.value);
+            
+            if (currentUnit === 'metric') {
+                heightCm = parseFloat(document.getElementById('cal-height')?.value);
+                weightKg = parseFloat(document.getElementById('cal-weight')?.value);
+            } else {
+                const feet = parseFloat(document.getElementById('height-feet')?.value) || 0;
+                const inches = parseFloat(document.getElementById('height-inches')?.value) || 0;
+                const totalInches = (feet * 12) + inches;
+                heightCm = totalInches * 2.54;
+                
+                const lbs = parseFloat(document.getElementById('cal-weight')?.value) || 0;
+                weightKg = lbs / 2.205;
+            }
+            
+            // Validate age
+            const ageError = document.getElementById('cal-age-error');
+            if (!age || age < 15 || age > 100) {
+                ageError?.classList.remove('hidden');
+                document.getElementById('cal-age')?.classList.add('border-red-400', 'bg-red-50');
+                if (age && (age < 15 || age > 100)) errors.push('Age must be 15-100 years');
+            } else {
+                ageError?.classList.add('hidden');
+                document.getElementById('cal-age')?.classList.remove('border-red-400', 'bg-red-50');
+            }
+            
+            // Validate height
+            const heightError = document.getElementById('cal-height-error');
+            if (!heightCm || heightCm < 100 || heightCm > 250) {
+                heightError?.classList.remove('hidden');
+                if (currentUnit === 'metric') {
+                    document.getElementById('cal-height')?.classList.add('border-red-400', 'bg-red-50');
+                } else {
+                    document.getElementById('height-feet')?.classList.add('border-red-400', 'bg-red-50');
+                    document.getElementById('height-inches')?.classList.add('border-red-400', 'bg-red-50');
+                }
+                if (heightCm && (heightCm < 100 || heightCm > 250)) errors.push('Height out of valid range');
+            } else {
+                heightError?.classList.add('hidden');
+                if (currentUnit === 'metric') {
+                    document.getElementById('cal-height')?.classList.remove('border-red-400', 'bg-red-50');
+                } else {
+                    document.getElementById('height-feet')?.classList.remove('border-red-400', 'bg-red-50');
+                    document.getElementById('height-inches')?.classList.remove('border-red-400', 'bg-red-50');
+                }
+            }
+            
+            // Validate weight
+            const weightError = document.getElementById('cal-weight-error');
+            if (!weightKg || weightKg < 30 || weightKg > 300) {
+                weightError?.classList.remove('hidden');
+                document.getElementById('cal-weight')?.classList.add('border-red-400', 'bg-red-50');
+                if (weightKg && (weightKg < 30 || weightKg > 300)) errors.push('Weight out of valid range');
+            } else {
+                weightError?.classList.add('hidden');
+                document.getElementById('cal-weight')?.classList.remove('border-red-400', 'bg-red-50');
+            }
+            
+            // Check custom macros
+            const macroPreset = document.getElementById('cal-macro-preset')?.value;
+            if (macroPreset === 'custom') {
+                const protein = parseInt(document.getElementById('custom-protein')?.value) || 0;
+                const carbs = parseInt(document.getElementById('custom-carbs')?.value) || 0;
+                const fat = parseInt(document.getElementById('custom-fat')?.value) || 0;
+                const total = protein + carbs + fat;
+                
+                const indicator = document.getElementById('macro-total-indicator');
+                if (total !== 100) {
+                    indicator.textContent = \`Total: \${total}% (must equal 100%)\`;
+                    indicator.classList.add('text-red-500');
+                    indicator.classList.remove('text-green-600');
+                    errors.push('Macro percentages must total 100%');
+                } else {
+                    indicator.textContent = 'Total: 100% ✓';
+                    indicator.classList.remove('text-red-500');
+                    indicator.classList.add('text-green-600');
+                    macroRatios = { protein, carbs, fat };
+                }
+            }
+            
+            // Show/hide validation message
+            if (errors.length > 0) {
+                validationMsg.textContent = errors.join('. ');
+                validationDiv.classList.remove('hidden');
+            } else {
+                validationDiv.classList.add('hidden');
+            }
+            
+            // Calculate if valid
+            if (age >= 15 && heightCm >= 100 && weightKg >= 30 && errors.length === 0) {
+                calculateCaloriesEnhanced(age, heightCm, weightKg);
+            }
+        }
+        
+        // Handle formula change
+        function handleFormulaChange() {
+            const formula = document.getElementById('cal-formula')?.value;
+            const bodyFatInput = document.getElementById('body-fat-input');
+            
+            if (formula === 'katch') {
+                bodyFatInput.classList.remove('hidden');
+            } else {
+                bodyFatInput.classList.add('hidden');
+            }
+            
+            validateAndCalculate();
+        }
+        
+        // Apply macro preset
+        function applyMacroPreset() {
+            const preset = document.getElementById('cal-macro-preset')?.value;
+            const customDiv = document.getElementById('custom-macros');
+            
+            const presets = {
+                'balanced': { protein: 30, carbs: 40, fat: 30 },
+                'lowcarb': { protein: 40, carbs: 20, fat: 40 },
+                'highprotein': { protein: 40, carbs: 35, fat: 25 },
+                'keto': { protein: 25, carbs: 5, fat: 70 }
+            };
+            
+            if (preset === 'custom') {
+                customDiv.classList.remove('hidden');
+            } else {
+                customDiv.classList.add('hidden');
+                if (presets[preset]) {
+                    macroRatios = presets[preset];
+                }
+            }
+            
+            // Update percentage displays
+            document.getElementById('protein-pct').textContent = macroRatios.protein;
+            document.getElementById('carbs-pct').textContent = macroRatios.carbs;
+            document.getElementById('fat-pct').textContent = macroRatios.fat;
+            
+            // Update preset label
+            const labels = {
+                'balanced': 'Balanced',
+                'lowcarb': 'Low Carb',
+                'highprotein': 'High Protein',
+                'keto': 'Keto',
+                'custom': 'Custom'
+            };
+            document.getElementById('macro-preset-label').textContent = labels[preset] || 'Balanced';
+            
+            validateAndCalculate();
+        }
+        
+        // Enhanced calculation with all features
+        function calculateCaloriesEnhanced(age, heightCm, weightKg) {
+            const gender = document.getElementById('cal-gender')?.value;
+            const activityLevel = parseFloat(document.getElementById('cal-activity')?.value);
+            const goal = parseFloat(document.getElementById('cal-goal')?.value);
+            const formula = document.getElementById('cal-formula')?.value;
+            const bodyFat = parseFloat(document.getElementById('cal-bodyfat')?.value);
+            
+            // For Katch-McArdle, require body fat
+            if (formula === 'katch' && (!bodyFat || bodyFat < 3 || bodyFat > 60)) {
+                return;
+            }
+            
+            let bmr = 0;
+            
+            // Calculate BMR based on selected formula
+            switch (formula) {
+                case 'mifflin':
+                    if (gender === 'male') {
+                        bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+                    } else {
+                        bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+                    }
+                    break;
+                case 'harris':
+                    if (gender === 'male') {
+                        bmr = 88.362 + (13.397 * weightKg) + (4.799 * heightCm) - (5.677 * age);
+                    } else {
+                        bmr = 447.593 + (9.247 * weightKg) + (3.098 * heightCm) - (4.330 * age);
+                    }
+                    break;
+                case 'katch':
+                    const leanMass = weightKg * (1 - bodyFat / 100);
+                    bmr = 370 + (21.6 * leanMass);
+                    break;
+                default:
+                    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + (gender === 'male' ? 5 : -161);
+            }
+            
+            // Calculate TDEE
+            const tdee = bmr * activityLevel;
+            
+            // Calculate target with safety floors
+            const minCal = gender === 'male' ? 1500 : 1200;
+            const targetCalories = Math.max(minCal, tdee + goal);
+            
+            // Get current macro ratios
+            const macroPreset = document.getElementById('cal-macro-preset')?.value;
+            if (macroPreset === 'custom') {
+                macroRatios.protein = parseInt(document.getElementById('custom-protein')?.value) || 30;
+                macroRatios.carbs = parseInt(document.getElementById('custom-carbs')?.value) || 40;
+                macroRatios.fat = parseInt(document.getElementById('custom-fat')?.value) || 30;
+            }
+            
+            // Calculate macros
+            const proteinCal = targetCalories * (macroRatios.protein / 100);
+            const carbsCal = targetCalories * (macroRatios.carbs / 100);
+            const fatCal = targetCalories * (macroRatios.fat / 100);
+            
+            const proteinGrams = Math.round(proteinCal / 4);
+            const carbsGrams = Math.round(carbsCal / 4);
+            const fatGrams = Math.round(fatCal / 9);
+            
+            // Weight projections
+            const weeklyChange = (goal * 7) / 7700;
+            const proj1Month = weightKg + (weeklyChange * 4);
+            const proj3Month = weightKg + (weeklyChange * 12);
+            const proj6Month = weightKg + (weeklyChange * 24);
+            
+            // Update UI
+            document.getElementById('cal-bmr').textContent = Math.round(bmr).toLocaleString() + ' cal';
+            document.getElementById('cal-tdee').textContent = Math.round(tdee).toLocaleString() + ' cal';
+            document.getElementById('cal-target').textContent = Math.round(targetCalories).toLocaleString() + ' cal';
+            document.getElementById('total-cal-display').textContent = Math.round(targetCalories).toLocaleString();
+            
+            // Goal text
+            const goalTexts = {
+                '-1000': 'For aggressive weight loss (-1 kg/week)',
+                '-500': 'For moderate weight loss (-0.5 kg/week)',
+                '-250': 'For mild weight loss (-0.25 kg/week)',
+                '0': 'To maintain your current weight',
+                '250': 'For mild weight gain (+0.25 kg/week)',
+                '500': 'For moderate weight gain (+0.5 kg/week)'
+            };
+            document.getElementById('cal-goal-text').textContent = goalTexts[goal.toString()] || 'To maintain your current weight';
+            
+            // Update macros display
+            document.getElementById('macro-protein').textContent = proteinGrams + 'g';
+            document.getElementById('macro-carbs').textContent = carbsGrams + 'g';
+            document.getElementById('macro-fat').textContent = fatGrams + 'g';
+            document.getElementById('macro-protein-cal').textContent = Math.round(proteinCal) + ' cal';
+            document.getElementById('macro-carbs-cal').textContent = Math.round(carbsCal) + ' cal';
+            document.getElementById('macro-fat-cal').textContent = Math.round(fatCal) + ' cal';
+            
+            // Update percentage displays
+            document.getElementById('protein-pct').textContent = macroRatios.protein;
+            document.getElementById('carbs-pct').textContent = macroRatios.carbs;
+            document.getElementById('fat-pct').textContent = macroRatios.fat;
+            
+            // Update pie chart
+            updateMacroPieChart(macroRatios.protein, macroRatios.carbs, macroRatios.fat);
+            
+            // Meal timing calculations
+            document.getElementById('meal-breakfast').textContent = Math.round(targetCalories * 0.25) + ' cal';
+            document.getElementById('meal-lunch').textContent = Math.round(targetCalories * 0.35) + ' cal';
+            document.getElementById('meal-dinner').textContent = Math.round(targetCalories * 0.30) + ' cal';
+            document.getElementById('meal-snacks').textContent = Math.round(targetCalories * 0.10) + ' cal';
+            
+            // Update projections
+            const unitSuffix = currentUnit === 'metric' ? ' kg' : ' lbs';
+            const multiplier = currentUnit === 'metric' ? 1 : 2.205;
+            document.getElementById('proj-1month').textContent = (proj1Month * multiplier).toFixed(1) + unitSuffix;
+            document.getElementById('proj-3month').textContent = (proj3Month * multiplier).toFixed(1) + unitSuffix;
+            document.getElementById('proj-6month').textContent = (proj6Month * multiplier).toFixed(1) + unitSuffix;
+            
+            // Update tips based on goal
+            updateCalorieTips(goal, gender);
+            
+            // Show results, hide empty state
+            document.getElementById('cal-result').classList.remove('hidden');
+            document.getElementById('cal-empty').classList.add('hidden');
+        }
+        
+        // Update pie chart SVG
+        function updateMacroPieChart(protein, carbs, fat) {
+            // Calculate stroke-dasharray and stroke-dashoffset for each segment
+            const proteinCircle = document.getElementById('chart-protein');
+            const carbsCircle = document.getElementById('chart-carbs');
+            const fatCircle = document.getElementById('chart-fat');
+            
+            if (!proteinCircle || !carbsCircle || !fatCircle) return;
+            
+            // Protein starts at top (offset 25% to start at 12 o'clock)
+            proteinCircle.setAttribute('stroke-dasharray', \`\${protein} \${100 - protein}\`);
+            proteinCircle.setAttribute('stroke-dashoffset', '25');
+            
+            // Carbs follows protein
+            carbsCircle.setAttribute('stroke-dasharray', \`\${carbs} \${100 - carbs}\`);
+            carbsCircle.setAttribute('stroke-dashoffset', \`\${25 - protein}\`);
+            
+            // Fat follows carbs
+            fatCircle.setAttribute('stroke-dasharray', \`\${fat} \${100 - fat}\`);
+            fatCircle.setAttribute('stroke-dashoffset', \`\${25 - protein - carbs}\`);
+        }
+        
+        // Update tips based on goal
+        function updateCalorieTips(goal, gender) {
+            const tipsEl = document.getElementById('cal-tips');
+            if (!tipsEl) return;
+            
+            if (goal < 0) {
+                tipsEl.innerHTML = \`
+                    <li>• Create a calorie deficit through diet and exercise</li>
+                    <li>• Prioritize protein to preserve muscle mass (1.6-2.2g/kg)</li>
+                    <li>• Don't drop below \${gender === 'male' ? '1500' : '1200'} calories daily</li>
+                    <li>• Aim for 0.5-1% body weight loss per week max</li>
+                    <li>• Include strength training to maintain muscle</li>
+                \`;
+            } else if (goal > 0) {
+                tipsEl.innerHTML = \`
+                    <li>• Focus on quality calories, not just quantity</li>
+                    <li>• Include resistance training for muscle gain</li>
+                    <li>• Eat protein with every meal (aim for 1.6-2.2g/kg)</li>
+                    <li>• Track progress with measurements, not just scale</li>
+                    <li>• Aim for 0.25-0.5kg muscle gain per month</li>
+                \`;
+            } else {
+                tipsEl.innerHTML = \`
+                    <li>• Monitor your weight weekly for consistency</li>
+                    <li>• Adjust intake if weight changes significantly</li>
+                    <li>• Balance macros for optimal health</li>
+                    <li>• Stay hydrated (aim for 30-35ml per kg bodyweight)</li>
+                    <li>• Prioritize sleep for metabolic health</li>
+                \`;
+            }
+        }
+        
+        // Save calorie results to localStorage
+        function saveCalorieResults() {
+            const bmr = document.getElementById('cal-bmr')?.textContent;
+            const tdee = document.getElementById('cal-tdee')?.textContent;
+            const target = document.getElementById('cal-target')?.textContent;
+            
+            if (!bmr || bmr === '--') {
+                alert('Please calculate your calories first before saving.');
+                return;
+            }
+            
+            const result = {
+                date: new Date().toISOString(),
+                age: document.getElementById('cal-age')?.value,
+                gender: document.getElementById('cal-gender')?.value,
+                height: currentUnit === 'metric' ? 
+                    document.getElementById('cal-height')?.value + ' cm' :
+                    (document.getElementById('height-feet')?.value || 0) + "'" + (document.getElementById('height-inches')?.value || 0) + '"',
+                weight: document.getElementById('cal-weight')?.value + (currentUnit === 'metric' ? ' kg' : ' lbs'),
+                activity: document.getElementById('cal-activity')?.selectedOptions[0]?.text,
+                goal: document.getElementById('cal-goal')?.selectedOptions[0]?.text,
+                formula: document.getElementById('cal-formula')?.selectedOptions[0]?.text,
+                macroPreset: document.getElementById('cal-macro-preset')?.value,
+                bmr: bmr,
+                tdee: tdee,
+                target: target,
+                macros: {
+                    protein: document.getElementById('macro-protein')?.textContent,
+                    carbs: document.getElementById('macro-carbs')?.textContent,
+                    fat: document.getElementById('macro-fat')?.textContent
+                }
+            };
+            
+            // Get existing history
+            let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            
+            // Add new result (max 10 entries)
+            history.unshift(result);
+            if (history.length > 10) history = history.slice(0, 10);
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+            
+            // Show success banner
+            const banner = document.getElementById('cal-saved-banner');
+            banner.classList.remove('hidden');
+            setTimeout(() => banner.classList.add('hidden'), 3000);
+            
+            // Update history UI
+            updateHistoryUI();
+        }
+        
+        // Load saved calories from localStorage
+        function loadSavedCalories() {
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            
+            if (history.length === 0) {
+                alert('No saved calculations found.');
+                return;
+            }
+            
+            // Show history panel
+            const panel = document.getElementById('cal-history-panel');
+            panel.classList.toggle('hidden');
+            
+            updateHistoryUI();
+        }
+        
+        // Update history UI
+        function updateHistoryUI() {
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const list = document.getElementById('cal-history-list');
+            const loadBtn = document.getElementById('load-history-btn');
+            
+            if (history.length > 0) {
+                loadBtn?.classList.remove('hidden');
+            }
+            
+            if (!list) return;
+            
+            list.innerHTML = history.map((item, index) => \`
+                <div class="flex items-center justify-between p-3 bg-white rounded-lg border hover:border-gold cursor-pointer" onclick="applyHistoryItem(\${index})">
+                    <div>
+                        <div class="font-semibold text-navy text-sm">\${item.target}</div>
+                        <div class="text-xs text-gray-500">\${new Date(item.date).toLocaleDateString()} • \${item.weight} • \${item.goal}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">\${item.formula}</span>
+                        <button onclick="event.stopPropagation(); deleteHistoryItem(\${index})" class="text-red-400 hover:text-red-600">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            \`).join('');
+        }
+        
+        // Apply history item to form
+        function applyHistoryItem(index) {
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const item = history[index];
+            
+            if (!item) return;
+            
+            // Set form values
+            document.getElementById('cal-age').value = item.age;
+            document.getElementById('cal-gender').value = item.gender;
+            
+            // Handle weight based on stored unit
+            if (item.weight.includes('kg')) {
+                toggleUnits('metric');
+                document.getElementById('cal-weight').value = parseFloat(item.weight);
+                if (item.height.includes('cm')) {
+                    document.getElementById('cal-height').value = parseFloat(item.height);
+                }
+            } else {
+                toggleUnits('imperial');
+                document.getElementById('cal-weight').value = parseFloat(item.weight);
+            }
+            
+            // Activity and goal
+            const activitySelect = document.getElementById('cal-activity');
+            for (let opt of activitySelect.options) {
+                if (opt.text === item.activity) {
+                    activitySelect.value = opt.value;
+                    break;
+                }
+            }
+            
+            const goalSelect = document.getElementById('cal-goal');
+            for (let opt of goalSelect.options) {
+                if (opt.text === item.goal) {
+                    goalSelect.value = opt.value;
+                    break;
+                }
+            }
+            
+            // Formula
+            const formulaSelect = document.getElementById('cal-formula');
+            for (let opt of formulaSelect.options) {
+                if (opt.text === item.formula) {
+                    formulaSelect.value = opt.value;
+                    break;
+                }
+            }
+            
+            // Macro preset
+            if (item.macroPreset) {
+                document.getElementById('cal-macro-preset').value = item.macroPreset;
+                applyMacroPreset();
+            }
+            
+            // Close panel and recalculate
+            document.getElementById('cal-history-panel').classList.add('hidden');
+            handleFormulaChange();
+            validateAndCalculate();
+        }
+        
+        // Delete history item
+        function deleteHistoryItem(index) {
+            let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            history.splice(index, 1);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+            updateHistoryUI();
+        }
+        
+        // Clear all history
+        function clearCalorieHistory() {
+            if (confirm('Are you sure you want to clear all saved calculations?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                updateHistoryUI();
+                document.getElementById('cal-history-panel').classList.add('hidden');
+                document.getElementById('load-history-btn')?.classList.add('hidden');
+            }
+        }
+        
+        // Reset calculator
+        function resetCalorieCalculator() {
+            // Reset all inputs
+            document.getElementById('cal-age').value = '';
+            document.getElementById('cal-gender').value = 'male';
+            document.getElementById('cal-activity').value = '1.55';
+            document.getElementById('cal-goal').value = '0';
+            document.getElementById('cal-formula').value = 'mifflin';
+            document.getElementById('cal-bodyfat').value = '';
+            document.getElementById('cal-macro-preset').value = 'balanced';
+            
+            // Reset to metric
+            toggleUnits('metric');
+            document.getElementById('cal-height').value = '';
+            document.getElementById('cal-weight').value = '';
+            
+            // Hide custom macros
+            document.getElementById('custom-macros').classList.add('hidden');
+            document.getElementById('body-fat-input').classList.add('hidden');
+            
+            // Reset macro ratios
+            macroRatios = { protein: 30, carbs: 40, fat: 30 };
+            
+            // Clear validation states
+            document.querySelectorAll('.cal-input').forEach(el => {
+                el.classList.remove('border-red-400', 'bg-red-50');
+            });
+            document.getElementById('cal-validation').classList.add('hidden');
+            
+            // Hide results, show empty state
+            document.getElementById('cal-result').classList.add('hidden');
+            document.getElementById('cal-empty').classList.remove('hidden');
+        }
+        
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             // Default tab is overview
+            
+            // Check for saved history
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            if (history.length > 0) {
+                document.getElementById('load-history-btn')?.classList.remove('hidden');
+            }
+            
+            // Initialize macro pie chart
+            updateMacroPieChart(30, 40, 30);
         });
     </script>
     
