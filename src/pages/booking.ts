@@ -27,113 +27,198 @@ export function bookingPage(c: Context): string {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* ============================================================================
+           SELECTCAREOS™ PREMIUM BOOKING SYSTEM
+           German Select Luxury Healthcare Branding
+           ============================================================================ */
+        
         :root {
-            --primary: #1e40af;
-            --primary-light: #3b82f6;
-            --accent: #d4af37;
+            /* German Navy Spectrum */
+            --german-navy: #1a1a2e;
+            --deep-navy: #0f0f1a;
+            --midnight-blue: #16213e;
+            
+            /* Luxurious Gold Spectrum */
+            --gold-primary: #C9A227;
+            --gold-champagne: #D4AF37;
+            --gold-soft: #E8D5A3;
+            --gold-bright: #F4D03F;
+            --gold-rose: #B8860B;
+            
+            /* Warm Neutrals */
+            --cream: #faf8f5;
+            --warm-ivory: #F5F0E8;
+            --pearl: #FFFDF7;
+            --soft-beige: #F0EBE3;
+            
+            /* Functional Colors */
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            
+            /* Premium Shadows */
+            --shadow-gold-sm: 0 2px 8px rgba(201, 162, 39, 0.2);
+            --shadow-gold-md: 0 4px 15px rgba(201, 162, 39, 0.3);
+            --shadow-gold-lg: 0 8px 30px rgba(201, 162, 39, 0.4);
+            --shadow-navy-md: 0 4px 15px rgba(26, 26, 46, 0.15);
+            --shadow-navy-lg: 0 12px 40px rgba(26, 26, 46, 0.2);
         }
         
+        body {
+            background: var(--cream);
+        }
+        
+        /* Premium German Select Header */
         .german-gradient { 
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+            border-bottom: 2px solid rgba(201, 162, 39, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(201, 162, 39, 0.2) inset;
         }
         
+        /* Luxurious Gold Gradient */
         .gold-gradient {
-            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+            background: linear-gradient(135deg, #D4AF37 0%, #C9A227 50%, #B8860B 100%);
         }
         
-        /* Card Styles */
+        /* Card Styles - Premium */
         .card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%);
+            border: 1px solid rgba(201, 162, 39, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .card:hover {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 40px rgba(26, 26, 46, 0.12), 0 4px 12px rgba(201, 162, 39, 0.08);
+            border-color: rgba(201, 162, 39, 0.2);
         }
         
-        /* Doctor Card */
+        /* Doctor Card - Luxury Style */
         .doctor-card {
+            background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%);
+            border: 2px solid rgba(201, 162, 39, 0.15);
+            border-radius: 16px;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .doctor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #C9A227 0%, #D4AF37 50%, #C9A227 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .doctor-card:hover {
-            border-color: var(--primary-light);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            border-color: rgba(201, 162, 39, 0.4);
+            box-shadow: 0 12px 40px rgba(26, 26, 46, 0.12), 0 4px 12px rgba(201, 162, 39, 0.08);
+        }
+        
+        .doctor-card:hover::before {
+            opacity: 1;
         }
         
         .doctor-card.selected {
-            border-color: var(--primary);
-            background: linear-gradient(to right, #eff6ff, white);
+            border: 2px solid var(--gold-primary);
+            background: linear-gradient(145deg, #FFFDF7 0%, rgba(201, 162, 39, 0.05) 100%);
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.15), 0 0 0 4px rgba(201, 162, 39, 0.1);
         }
         
-        /* Time Slots */
+        .doctor-card.selected::before {
+            opacity: 1;
+        }
+        
+        /* Time Slots - Gold Selection */
         .slot-grid {
             display: grid;
             gap: 0.5rem;
         }
         
         .time-slot {
-            padding: 0.75rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.5rem;
+            padding: 14px 20px;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            background: #FFFFFF;
+            color: var(--german-navy);
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             text-align: center;
+            position: relative;
         }
         
         .time-slot:hover:not(.disabled) {
-            background: #eff6ff;
-            border-color: var(--primary-light);
+            border-color: var(--gold-primary);
+            background: linear-gradient(145deg, #FFFDF7 0%, rgba(201, 162, 39, 0.05) 100%);
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.15);
         }
         
         .time-slot.selected {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+            border-color: var(--gold-primary);
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            color: var(--german-navy);
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .time-slot.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: 700;
         }
         
         .time-slot.disabled {
-            background: #f3f4f6;
-            color: #9ca3af;
+            background: #F5F5F5;
+            border-color: #E0E0E0;
+            color: #B0B0B0;
             cursor: not-allowed;
             text-decoration: line-through;
         }
         
-        /* Date Picker */
+        /* Date Picker - Premium */
         .date-card {
             min-width: 80px;
             text-align: center;
             padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.75rem;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            background: #FFFFFF;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
         
         .date-card:hover:not(.disabled) {
-            border-color: var(--primary-light);
+            border-color: var(--gold-primary);
+            background: rgba(201, 162, 39, 0.05);
         }
         
         .date-card.selected {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            border-color: var(--gold-primary);
+            color: var(--german-navy);
+            box-shadow: var(--shadow-gold-md);
         }
         
         .date-card.today {
-            border-color: var(--accent);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
         }
         
-        /* Progress Steps */
+        /* Progress Steps - Gold Active */
         .step-indicator {
             display: flex;
             align-items: center;
@@ -146,82 +231,199 @@ export function bookingPage(c: Context): string {
         }
         
         .step-number {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
         
         .step-number.active {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, #D4AF37 0%, #C9A227 100%);
+            color: var(--german-navy);
+            border: none;
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2), 0 4px 15px rgba(201, 162, 39, 0.4);
+            animation: pulse-gold 2s infinite;
+        }
+        
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2), 0 4px 15px rgba(201, 162, 39, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(201, 162, 39, 0.1), 0 4px 20px rgba(201, 162, 39, 0.5); }
         }
         
         .step-number.completed {
-            background: var(--success);
-            color: white;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--gold-primary);
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
         }
         
         .step-number.pending {
-            background: #e5e7eb;
-            color: #6b7280;
+            background: var(--soft-beige);
+            color: #8B8B8B;
+            border: 2px solid #D0D0D0;
         }
         
         .step-line {
             width: 60px;
             height: 3px;
-            margin: 0 0.5rem;
-            transition: background 0.3s ease;
+            margin: 0 12px;
+            border-radius: 2px;
+            transition: all 0.4s ease;
         }
         
         .step-line.completed {
-            background: var(--success);
+            background: linear-gradient(90deg, #C9A227 0%, #D4AF37 100%);
+        }
+        
+        .step-line.active {
+            background: linear-gradient(90deg, #C9A227 0%, #E0E0E0 100%);
         }
         
         .step-line.pending {
-            background: #e5e7eb;
+            background: #E0E0E0;
         }
         
-        /* Quick Action Cards */
+        /* Quick Action Cards - Premium */
         .quick-action {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid #e2e8f0;
-            border-radius: 1rem;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            border-radius: 16px;
             padding: 1.5rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quick-action::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .quick-action:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-light);
+            box-shadow: 0 12px 30px rgba(26, 26, 46, 0.1), 0 4px 12px rgba(201, 162, 39, 0.1);
+            border-color: rgba(201, 162, 39, 0.3);
+        }
+        
+        .quick-action:hover::after {
+            opacity: 1;
         }
         
         .quick-action .icon {
-            width: 60px;
-            height: 60px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
             font-size: 1.5rem;
+            background: linear-gradient(145deg, rgba(201, 162, 39, 0.1), rgba(201, 162, 39, 0.05));
+            border: 2px solid rgba(201, 162, 39, 0.2);
+            transition: all 0.3s ease;
         }
         
-        /* Premium Badge */
+        .quick-action:hover .icon {
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            border-color: var(--gold-primary);
+            color: var(--german-navy);
+            box-shadow: var(--shadow-gold-sm);
+        }
+        
+        /* Premium Badge - Enhanced */
         .premium-badge {
-            background: linear-gradient(135deg, #d4af37, #f4d03f);
-            color: #1a1a1a;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            color: var(--german-navy);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(201, 162, 39, 0.3);
+        }
+        
+        /* Primary CTA Button - Gold */
+        .btn-gold-primary {
+            background: linear-gradient(135deg, #D4AF37 0%, #C9A227 50%, #B8860B 100%);
+            color: var(--german-navy);
             font-weight: 600;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+        
+        .btn-gold-primary:hover {
+            background: linear-gradient(135deg, #E8D5A3 0%, #D4AF37 50%, #C9A227 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        
+        .btn-gold-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(201, 162, 39, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Secondary Button - Navy with Gold Border */
+        .btn-navy-secondary {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--gold-primary);
+            font-weight: 600;
+            padding: 12px 28px;
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(26, 26, 46, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-navy-secondary:hover {
+            background: var(--gold-primary);
+            color: var(--german-navy);
+            box-shadow: var(--shadow-gold-md);
+        }
+        
+        /* Form Inputs - Premium */
+        .input-field {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            background: var(--pearl);
+            color: var(--german-navy);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field::placeholder {
+            color: #A0A0A0;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15), 0 4px 12px rgba(201, 162, 39, 0.1);
         }
         
         /* Animations */
@@ -243,16 +445,17 @@ export function bookingPage(c: Context): string {
             animation: pulse 2s ease-in-out infinite;
         }
         
-        /* Bottom Navigation */
+        /* Bottom Navigation - Premium */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
-            border-top: 1px solid #E5E7EB;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF7 100%);
+            border-top: 2px solid rgba(201, 162, 39, 0.15);
             padding: 8px 0 max(20px, env(safe-area-inset-bottom));
             z-index: 100;
+            box-shadow: 0 -4px 20px rgba(26, 26, 46, 0.08);
         }
         
         .nav-item {
@@ -266,8 +469,8 @@ export function bookingPage(c: Context): string {
             transition: all 0.2s;
         }
         
-        .nav-item:hover { color: #6B7280; }
-        .nav-item.active { color: #3B82F6; }
+        .nav-item:hover { color: var(--german-navy); }
+        .nav-item.active { color: var(--gold-primary); }
         .nav-item i { font-size: 22px; margin-bottom: 4px; }
         
         main { padding-bottom: 120px; }
@@ -284,15 +487,129 @@ export function bookingPage(c: Context): string {
             100% { background-position: -200% 0; }
         }
         
-        /* Rating Stars */
+        /* Rating Stars - Gold */
         .star-rating {
-            color: #fbbf24;
+            color: var(--gold-primary);
+            filter: drop-shadow(0 1px 2px rgba(201, 162, 39, 0.3));
         }
         
-        /* Urgency Indicators */
+        /* Urgency Indicators - Premium */
         .urgency-urgent { border-left: 4px solid #ef4444; }
-        .urgency-soon { border-left: 4px solid #f59e0b; }
+        .urgency-soon { border-left: 4px solid var(--gold-primary); }
         .urgency-routine { border-left: 4px solid #10b981; }
+        
+        /* Gold Divider */
+        .gold-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #C9A227 20%, #D4AF37 50%, #C9A227 80%, transparent 100%);
+            margin: 24px 0;
+        }
+        
+        /* Section Header Premium */
+        .section-header {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--german-navy);
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 16px;
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #C9A227 0%, #D4AF37 100%);
+            border-radius: 2px;
+        }
+        
+        /* Confirmation Card - Premium */
+        .confirmation-card {
+            background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%);
+            border: 2px solid rgba(201, 162, 39, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(26, 26, 46, 0.1), 0 8px 24px rgba(201, 162, 39, 0.08);
+        }
+        
+        .confirmation-card::before,
+        .confirmation-card::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+        }
+        
+        .confirmation-card::before { top: -30px; left: -30px; }
+        .confirmation-card::after { bottom: -30px; right: -30px; }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4), 0 0 0 8px rgba(201, 162, 39, 0.1);
+            animation: success-bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes success-bounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .success-icon i { color: var(--german-navy); font-size: 36px; }
+        
+        .confirmation-code {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--gold-primary);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            display: inline-block;
+            margin: 20px 0;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.2), inset 0 1px 0 rgba(201, 162, 39, 0.1);
+        }
+        
+        /* Doctor Avatar Ring */
+        .avatar-ring {
+            padding: 3px;
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 50%, #B8860B 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(201, 162, 39, 0.25);
+        }
+        
+        .avatar-ring img, .avatar-ring .avatar-placeholder {
+            border-radius: 50%;
+            border: 3px solid #FFFFFF;
+        }
+        
+        /* Time Period Headers */
+        .time-period-header {
+            background: linear-gradient(90deg, rgba(201, 162, 39, 0.1) 0%, transparent 100%);
+            border-left: 4px solid var(--gold-primary);
+            padding: 12px 16px;
+            font-weight: 600;
+            color: var(--german-navy);
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 16px;
+        }
         
         /* Calendar Navigation */
         .calendar-nav {
@@ -312,69 +629,103 @@ export function bookingPage(c: Context): string {
             background: #f3f4f6;
         }
         
-        /* Filters */
+        /* Filters - Premium Gold */
         .filter-chip {
             display: inline-flex;
             align-items: center;
-            padding: 0.5rem 1rem;
-            border: 1px solid #e5e7eb;
+            padding: 0.625rem 1.25rem;
+            border: 2px solid #E8E8E8;
             border-radius: 9999px;
             font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
         }
         
         .filter-chip:hover {
-            border-color: var(--primary-light);
+            border-color: var(--gold-primary);
+            background: rgba(201, 162, 39, 0.05);
+            box-shadow: var(--shadow-gold-sm);
         }
         
         .filter-chip.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            border-color: var(--gold-primary);
+            color: var(--german-navy);
+            font-weight: 600;
+            box-shadow: var(--shadow-gold-sm);
         }
         
-        /* Symptom Input */
+        /* Symptom Input - Premium Gold */
         .symptom-tag {
             display: inline-flex;
             align-items: center;
-            padding: 0.375rem 0.75rem;
-            background: #eff6ff;
-            color: var(--primary);
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(201, 162, 39, 0.05) 100%);
+            color: var(--german-navy);
+            border: 1px solid rgba(201, 162, 39, 0.3);
             border-radius: 9999px;
             font-size: 0.875rem;
+            font-weight: 500;
             margin: 0.25rem;
+            transition: all 0.2s ease;
+        }
+        
+        .symptom-tag:hover {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.08) 100%);
+            border-color: var(--gold-primary);
         }
         
         .symptom-tag button {
             margin-left: 0.5rem;
-            color: #6b7280;
+            color: var(--gold-rose);
+            font-weight: 600;
         }
         
         .symptom-tag button:hover {
             color: #ef4444;
         }
         
-        /* Consultation Type Toggle */
+        /* Consultation Type Toggle - Premium Gold */
         .consultation-type {
             display: flex;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.75rem;
+            border: 2px solid rgba(201, 162, 39, 0.2);
+            border-radius: 16px;
             overflow: hidden;
+            background: var(--pearl);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
         .consultation-type button {
             flex: 1;
-            padding: 1rem;
+            padding: 1.25rem;
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
-            background: white;
+            background: transparent;
+            color: var(--german-navy);
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .consultation-type button:hover:not(.active) {
+            background: rgba(201, 162, 39, 0.08);
         }
         
         .consultation-type button.active {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%);
+            color: var(--german-navy);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+        }
+        
+        .consultation-type button i {
+            transition: transform 0.3s ease;
+        }
+        
+        .consultation-type button.active i {
+            transform: scale(1.1);
         }
         
         /* Mobile Responsive */
@@ -390,20 +741,20 @@ export function bookingPage(c: Context): string {
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-hospital text-2xl"></i>
+                    <i class="fas fa-hospital text-2xl" style="color: var(--gold-primary)"></i>
                     <div>
                         <span class="text-xl font-bold">SelectCareOS™</span>
-                        <span class="text-xs block text-blue-200">Book Your Consultation</span>
+                        <span class="text-xs block" style="color: var(--gold-soft)">Book Your Consultation</span>
                     </div>
                 </a>
                 <nav class="hidden md:flex items-center space-x-6">
-                    <a href="/doctors" class="hover:text-blue-200 transition-colors">
+                    <a href="/doctors" class="hover:opacity-80 transition-opacity" style="color: var(--gold-soft)">
                         <i class="fas fa-user-md mr-1"></i> Doctors
                     </a>
-                    <a href="/packages" class="hover:text-blue-200 transition-colors">
+                    <a href="/packages" class="hover:opacity-80 transition-opacity" style="color: var(--gold-soft)">
                         <i class="fas fa-box mr-1"></i> Packages
                     </a>
-                    <a href="/dashboard" class="hover:text-blue-200 transition-colors">
+                    <a href="/dashboard" class="hover:opacity-80 transition-opacity" style="color: var(--gold-soft)">
                         <i class="fas fa-user mr-1"></i> My Account
                     </a>
                     <!-- Language Selector -->
@@ -449,33 +800,33 @@ export function bookingPage(c: Context): string {
 
         <!-- Step 1: Find Doctor -->
         <section id="section-find-doctor" class="animate-slide-in">
-            <!-- Quick Booking Options -->
+            <!-- Quick Booking Options - Premium Gold -->
             <div class="mb-8" id="quick-booking-section">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Quick Booking</h2>
+                <h2 class="section-header">Quick Booking</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="quick-action" onclick="quickBook('general')">
-                        <div class="icon bg-blue-100 text-blue-600">
+                        <div class="icon" style="background: linear-gradient(145deg, rgba(201, 162, 39, 0.15), rgba(201, 162, 39, 0.05)); color: var(--gold-primary);">
                             <i class="fas fa-stethoscope"></i>
                         </div>
                         <h3 class="font-semibold text-gray-800">General Consultation</h3>
                         <p class="text-sm text-gray-500 mt-1">Next available</p>
                     </div>
                     <div class="quick-action" onclick="quickBook('urgent')">
-                        <div class="icon bg-red-100 text-red-600">
+                        <div class="icon" style="background: linear-gradient(145deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05)); color: #ef4444;">
                             <i class="fas fa-bolt"></i>
                         </div>
                         <h3 class="font-semibold text-gray-800">Urgent Care</h3>
                         <p class="text-sm text-gray-500 mt-1">Same day</p>
                     </div>
                     <div class="quick-action" onclick="quickBook('specialist')">
-                        <div class="icon bg-purple-100 text-purple-600">
+                        <div class="icon" style="background: linear-gradient(145deg, rgba(26, 26, 46, 0.1), rgba(26, 26, 46, 0.05)); color: var(--german-navy);">
                             <i class="fas fa-user-md"></i>
                         </div>
                         <h3 class="font-semibold text-gray-800">See Specialist</h3>
                         <p class="text-sm text-gray-500 mt-1">Expert care</p>
                     </div>
                     <div class="quick-action" onclick="quickBook('followup')">
-                        <div class="icon bg-green-100 text-green-600">
+                        <div class="icon" style="background: linear-gradient(145deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05)); color: #10b981;">
                             <i class="fas fa-redo"></i>
                         </div>
                         <h3 class="font-semibold text-gray-800">Follow-up</h3>
@@ -484,10 +835,10 @@ export function bookingPage(c: Context): string {
                 </div>
             </div>
 
-            <!-- Symptom-Based Suggestions -->
+            <!-- Symptom-Based Suggestions - Premium Gold -->
             <div class="card p-6 mb-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                    <i class="fas fa-search-plus text-blue-600 mr-2"></i>
+                    <i class="fas fa-search-plus mr-2" style="color: var(--gold-primary)"></i>
                     What's your concern? <span class="text-sm font-normal text-gray-500">(Optional)</span>
                 </h3>
                 <div class="flex flex-wrap gap-2 mb-4" id="selected-symptoms">
@@ -496,33 +847,33 @@ export function bookingPage(c: Context): string {
                 <div class="flex gap-2">
                     <input type="text" id="symptom-input" 
                         placeholder="Type a symptom (e.g., back pain, weight loss)" 
-                        class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                        class="input-field flex-1">
                     <button onclick="addSymptom()" 
-                        class="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        class="btn-gold-primary px-4 py-3">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
                 <div class="mt-3">
                     <span class="text-sm text-gray-500">Suggested: </span>
-                    <button onclick="addSuggestedSymptom('Back pain')" class="text-sm text-blue-600 hover:underline">Back pain</button>,
-                    <button onclick="addSuggestedSymptom('Weight management')" class="text-sm text-blue-600 hover:underline">Weight management</button>,
-                    <button onclick="addSuggestedSymptom('Heart health')" class="text-sm text-blue-600 hover:underline">Heart health</button>,
-                    <button onclick="addSuggestedSymptom('Joint pain')" class="text-sm text-blue-600 hover:underline">Joint pain</button>
+                    <button onclick="addSuggestedSymptom('Back pain')" class="text-sm hover:underline" style="color: var(--gold-primary)">Back pain</button>,
+                    <button onclick="addSuggestedSymptom('Weight management')" class="text-sm hover:underline" style="color: var(--gold-primary)">Weight management</button>,
+                    <button onclick="addSuggestedSymptom('Heart health')" class="text-sm hover:underline" style="color: var(--gold-primary)">Heart health</button>,
+                    <button onclick="addSuggestedSymptom('Joint pain')" class="text-sm hover:underline" style="color: var(--gold-primary)">Joint pain</button>
                 </div>
                 <button onclick="getSuggestions()" id="get-suggestions-btn"
-                    class="mt-4 w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all hidden">
+                    class="mt-4 w-full py-3 btn-gold-primary hidden">
                     <i class="fas fa-magic mr-2"></i>Find Best Doctor for My Symptoms
                 </button>
             </div>
 
-            <!-- AI Suggestions -->
-            <div id="ai-suggestions" class="card p-6 mb-6 hidden">
+            <!-- AI Suggestions - Premium Gold -->
+            <div id="ai-suggestions" class="card p-6 mb-6 hidden" style="border: 2px solid rgba(201, 162, 39, 0.2); background: linear-gradient(145deg, #FFFDF7 0%, rgba(201, 162, 39, 0.03) 100%);">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">
-                        <i class="fas fa-robot text-purple-600 mr-2"></i>
+                        <i class="fas fa-robot mr-2" style="color: var(--gold-primary)"></i>
                         Recommended for You
                     </h3>
-                    <span class="text-sm text-gray-500">Based on your symptoms</span>
+                    <span class="premium-badge"><i class="fas fa-sparkles mr-1"></i>AI Powered</span>
                 </div>
                 <div id="suggestions-list" class="space-y-4">
                     <!-- Suggestions will be loaded here -->
@@ -564,7 +915,7 @@ export function bookingPage(c: Context): string {
 
             <!-- Doctor List -->
             <div class="mb-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <h2 class="section-header">
                     <span id="doctor-count">Loading...</span> Available Doctors
                 </h2>
                 <div id="doctor-list" class="space-y-4">
@@ -585,12 +936,12 @@ export function bookingPage(c: Context): string {
 
         <!-- Step 2: Select Time -->
         <section id="section-select-time" class="hidden animate-slide-in">
-            <button onclick="goToStep(1)" class="mb-6 text-blue-600 hover:text-blue-800 font-medium">
+            <button onclick="goToStep(1)" class="mb-6 font-medium hover:opacity-80 transition-opacity" style="color: var(--gold-primary)">
                 <i class="fas fa-arrow-left mr-2"></i>Back to Doctor Selection
             </button>
 
-            <!-- Selected Doctor Summary -->
-            <div id="selected-doctor-summary" class="card p-6 mb-6 bg-gradient-to-r from-blue-50 to-white">
+            <!-- Selected Doctor Summary - Premium Gold -->
+            <div id="selected-doctor-summary" class="card p-6 mb-6" style="background: linear-gradient(145deg, rgba(201, 162, 39, 0.08) 0%, #FFFDF7 100%); border: 2px solid rgba(201, 162, 39, 0.2);">
                 <!-- Populated dynamically -->
             </div>
 
@@ -664,20 +1015,19 @@ export function bookingPage(c: Context): string {
                 </div>
             </div>
 
-            <!-- Selected Slot Summary -->
-            <div id="slot-summary" class="card p-6 mb-6 border-2 border-green-500 bg-green-50 hidden">
+            <!-- Selected Slot Summary - Premium Gold -->
+            <div id="slot-summary" class="card p-6 mb-6 hidden" style="border: 2px solid var(--gold-primary); background: linear-gradient(145deg, rgba(201, 162, 39, 0.08) 0%, #FFFDF7 100%);">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-check text-green-600 text-xl"></i>
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center mr-4" style="background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%); box-shadow: var(--shadow-gold-sm);">
+                            <i class="fas fa-check text-xl" style="color: var(--german-navy)"></i>
                         </div>
                         <div>
-                            <p class="font-semibold text-gray-800" id="summary-datetime">-</p>
+                            <p class="font-semibold" style="color: var(--german-navy)" id="summary-datetime">-</p>
                             <p class="text-sm text-gray-500" id="summary-duration">30 minute consultation</p>
                         </div>
                     </div>
-                    <button onclick="goToStep(3)" 
-                        class="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                    <button onclick="goToStep(3)" class="btn-gold-primary">
                         Continue <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -686,7 +1036,7 @@ export function bookingPage(c: Context): string {
 
         <!-- Step 3: Confirm Booking -->
         <section id="section-confirm" class="hidden animate-slide-in">
-            <button onclick="goToStep(2)" class="mb-6 text-blue-600 hover:text-blue-800 font-medium">
+            <button onclick="goToStep(2)" class="mb-6 font-medium hover:opacity-80 transition-opacity" style="color: var(--gold-primary)">
                 <i class="fas fa-arrow-left mr-2"></i>Back to Time Selection
             </button>
 
@@ -695,31 +1045,31 @@ export function bookingPage(c: Context): string {
                 <div class="md:col-span-2 space-y-6">
                     <div class="card p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                            <i class="fas fa-user text-blue-600 mr-2"></i>Your Information
+                            <i class="fas fa-user mr-2" style="color: var(--gold-primary)"></i>Your Information
                         </h3>
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                                 <input type="text" id="patient-name" 
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                                    class="input-field"
                                     placeholder="John Doe">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                                 <input type="email" id="patient-email" 
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                                    class="input-field"
                                     placeholder="john@example.com">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                                 <input type="tel" id="patient-phone" 
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                                    class="input-field"
                                     placeholder="+49 123 456 7890">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
                                 <select id="patient-country" 
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors">
+                                    class="input-field">
                                     <option value="DE">Germany</option>
                                     <option value="GB">United Kingdom</option>
                                     <option value="US">United States</option>
@@ -733,14 +1083,14 @@ export function bookingPage(c: Context): string {
 
                     <div class="card p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                            <i class="fas fa-notes-medical text-blue-600 mr-2"></i>Additional Information
+                            <i class="fas fa-notes-medical mr-2" style="color: var(--gold-primary)"></i>Additional Information
                         </h3>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Reason for Visit / Notes
                             </label>
                             <textarea id="patient-notes" rows="4"
-                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                                class="input-field"
                                 placeholder="Please describe your symptoms or reason for the consultation..."></textarea>
                         </div>
                         <div class="mt-4">
@@ -748,30 +1098,30 @@ export function bookingPage(c: Context): string {
                                 Referral Code (Optional)
                             </label>
                             <input type="text" id="affiliate-code"
-                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                                class="input-field"
                                 placeholder="Enter referral code for discount">
                         </div>
                     </div>
 
                     <div class="card p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                            <i class="fas fa-bell text-blue-600 mr-2"></i>Reminder Preferences
+                            <i class="fas fa-bell mr-2" style="color: var(--gold-primary)"></i>Reminder Preferences
                         </h3>
                         <div class="space-y-3">
-                            <label class="flex items-center cursor-pointer">
+                            <label class="flex items-center cursor-pointer group">
                                 <input type="checkbox" id="reminder-email" checked
-                                    class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
-                                <span class="ml-3 text-gray-700">Email reminder 24 hours before</span>
+                                    class="w-5 h-5 rounded border-2 border-gray-300 focus:ring-2 focus:ring-offset-0" style="accent-color: var(--gold-primary);">
+                                <span class="ml-3 text-gray-700 group-hover:text-gray-900">Email reminder 24 hours before</span>
                             </label>
-                            <label class="flex items-center cursor-pointer">
+                            <label class="flex items-center cursor-pointer group">
                                 <input type="checkbox" id="reminder-sms"
-                                    class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
-                                <span class="ml-3 text-gray-700">SMS reminder 1 hour before</span>
+                                    class="w-5 h-5 rounded border-2 border-gray-300 focus:ring-2 focus:ring-offset-0" style="accent-color: var(--gold-primary);">
+                                <span class="ml-3 text-gray-700 group-hover:text-gray-900">SMS reminder 1 hour before</span>
                             </label>
-                            <label class="flex items-center cursor-pointer">
+                            <label class="flex items-center cursor-pointer group">
                                 <input type="checkbox" id="reminder-calendar" checked
-                                    class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
-                                <span class="ml-3 text-gray-700">Add to calendar</span>
+                                    class="w-5 h-5 rounded border-2 border-gray-300 focus:ring-2 focus:ring-offset-0" style="accent-color: var(--gold-primary);">
+                                <span class="ml-3 text-gray-700 group-hover:text-gray-900">Add to calendar</span>
                             </label>
                         </div>
                     </div>
@@ -801,13 +1151,13 @@ export function bookingPage(c: Context): string {
                             </div>
                         </div>
 
-                        <div class="mb-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
-                            <i class="fas fa-coins mr-2"></i>
-                            You'll earn <strong id="points-earned">0</strong> SelectPoints!
+                        <div class="mb-4 p-3 rounded-lg text-sm" style="background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(201, 162, 39, 0.05) 100%); border: 1px solid rgba(201, 162, 39, 0.2); color: var(--german-navy);">
+                            <i class="fas fa-coins mr-2" style="color: var(--gold-primary)"></i>
+                            You'll earn <strong id="points-earned" style="color: var(--gold-primary)">0</strong> SelectPoints!
                         </div>
 
                         <button onclick="confirmBooking()" id="confirm-btn"
-                            class="w-full py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-semibold text-lg hover:from-green-700 hover:to-green-800 transition-all">
+                            class="w-full py-4 btn-gold-primary text-lg">
                             <i class="fas fa-lock mr-2"></i>Confirm Booking
                         </button>
 
@@ -820,38 +1170,37 @@ export function bookingPage(c: Context): string {
             </div>
         </section>
 
-        <!-- Confirmation Success -->
+        <!-- Confirmation Success - Premium Gold -->
         <section id="section-success" class="hidden animate-slide-in">
             <div class="max-w-2xl mx-auto">
-                <div class="card p-8 text-center">
-                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-check text-green-600 text-4xl"></i>
+                <div class="confirmation-card">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Booking Confirmed!</h2>
-                    <p class="text-gray-600 mb-6">Your consultation has been successfully scheduled.</p>
+                    <h2 class="text-2xl font-bold mb-2" style="color: var(--german-navy)">Booking Confirmed!</h2>
+                    <p class="text-gray-600 mb-4">Your consultation has been successfully scheduled.</p>
                     
-                    <div id="confirmation-details" class="bg-gray-50 rounded-xl p-6 text-left mb-6">
+                    <div class="confirmation-code" id="booking-confirmation-code">-</div>
+                    
+                    <div id="confirmation-details" class="rounded-xl p-6 text-left mb-6" style="background: linear-gradient(145deg, rgba(201, 162, 39, 0.08) 0%, #FFFDF7 100%); border: 1px solid rgba(201, 162, 39, 0.2);">
                         <!-- Populated dynamically -->
                     </div>
 
-                    <div class="bg-blue-50 rounded-lg p-4 mb-6">
-                        <h4 class="font-semibold text-blue-800 mb-2">What's Next?</h4>
-                        <ul class="text-sm text-blue-700 text-left space-y-2" id="next-steps">
+                    <div class="rounded-lg p-4 mb-6 text-left" style="background: linear-gradient(135deg, var(--german-navy) 0%, #16213e 100%);">
+                        <h4 class="font-semibold mb-2" style="color: var(--gold-primary)"><i class="fas fa-lightbulb mr-2"></i>What's Next?</h4>
+                        <ul class="text-sm text-gray-300 space-y-2" id="next-steps">
                             <!-- Populated dynamically -->
                         </ul>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="/dashboard" 
-                            class="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        <a href="/dashboard" class="btn-gold-primary">
                             <i class="fas fa-home mr-2"></i>Go to Dashboard
                         </a>
-                        <button onclick="window.print()" 
-                            class="px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                        <button onclick="window.print()" class="btn-navy-secondary">
                             <i class="fas fa-print mr-2"></i>Print Details
                         </button>
-                        <button onclick="addToCalendar()" 
-                            class="px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                        <button onclick="addToCalendar()" class="btn-navy-secondary">
                             <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
                         </button>
                     </div>
@@ -860,10 +1209,11 @@ export function bookingPage(c: Context): string {
         </section>
     </main>
 
-    <!-- Floating AI Assistant -->
+    <!-- Floating AI Assistant - Premium Gold -->
     <a href="/ai-concierge" 
-        class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all z-40">
-        <i class="fas fa-robot text-white text-xl"></i>
+        class="fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all z-40"
+        style="background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%); box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);">
+        <i class="fas fa-robot text-xl" style="color: var(--german-navy)"></i>
     </a>
 
     <!-- Bottom Navigation -->
@@ -995,15 +1345,17 @@ export function bookingPage(c: Context): string {
                 <div class="card doctor-card p-6" data-id="\${doctor.id}" onclick="selectDoctor(state.doctors.find(d => d.id === '\${doctor.id}'))">
                     <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                         <div class="flex items-start space-x-4">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl">
-                                \${doctor.avatar || doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                            <div class="avatar-ring">
+                                <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl" style="background: linear-gradient(135deg, var(--german-navy) 0%, #16213e 100%);">
+                                    \${doctor.avatar || doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                                </div>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center flex-wrap gap-2">
                                     <h3 class="font-bold text-gray-800">\${doctor.name}</h3>
                                     \${doctor.isPremium ? '<span class="premium-badge"><i class="fas fa-crown mr-1"></i>Premium</span>' : ''}
                                 </div>
-                                <p class="text-blue-600 font-medium">\${doctor.specialization}</p>
+                                <p class="font-medium" style="color: var(--gold-primary)">\${doctor.specialization}</p>
                                 <p class="text-gray-500 text-sm mt-1">
                                     <i class="fas fa-map-marker-alt mr-1"></i>\${doctor.location}
                                 </p>
@@ -1023,16 +1375,16 @@ export function bookingPage(c: Context): string {
                                 \${doctor.subspecialties?.length > 0 ? \`
                                     <div class="flex flex-wrap gap-1 mt-2">
                                         \${doctor.subspecialties.slice(0, 3).map(s => 
-                                            \`<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">\${s}</span>\`
+                                            \`<span class="text-xs px-2 py-1 rounded" style="background: rgba(201, 162, 39, 0.1); color: var(--german-navy);">\${s}</span>\`
                                         ).join('')}
                                     </div>
                                 \` : ''}
                             </div>
                         </div>
                         <div class="text-right">
-                            <p class="text-2xl font-bold text-gray-800">€\${doctor.consultationFee}</p>
+                            <p class="text-2xl font-bold" style="color: var(--german-navy)">€\${doctor.consultationFee}</p>
                             <p class="text-sm text-gray-500">per consultation</p>
-                            <button class="mt-3 w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                            <button class="mt-3 w-full sm:w-auto btn-gold-primary">
                                 Book Now
                             </button>
                         </div>
@@ -1044,21 +1396,23 @@ export function bookingPage(c: Context): string {
         function selectDoctor(doctor) {
             state.selectedDoctor = doctor;
             
-            // Update summary
+            // Update summary - Premium Gold Style
             document.getElementById('selected-doctor-summary').innerHTML = \`
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                            \${doctor.avatar || doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                        <div class="avatar-ring">
+                            <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg" style="background: linear-gradient(135deg, var(--german-navy) 0%, #16213e 100%);">
+                                \${doctor.avatar || doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                            </div>
                         </div>
                         <div>
-                            <h3 class="font-bold text-gray-800">\${doctor.name}</h3>
-                            <p class="text-blue-600">\${doctor.specialization}</p>
+                            <h3 class="font-bold" style="color: var(--german-navy)">\${doctor.name}</h3>
+                            <p style="color: var(--gold-primary); font-weight: 500;">\${doctor.specialization}</p>
                             <p class="text-sm text-gray-500">\${doctor.location}</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="text-2xl font-bold text-gray-800">€\${doctor.consultationFee}</p>
+                        <p class="text-2xl font-bold" style="color: var(--german-navy)">€\${doctor.consultationFee}</p>
                         <div class="flex items-center justify-end mt-1">
                             <div class="star-rating text-sm">
                                 <i class="fas fa-star"></i>
@@ -1521,45 +1875,51 @@ export function bookingPage(c: Context): string {
             const booking = data.booking;
             const date = new Date(booking.date);
             
+            // Update confirmation code
+            const codeEl = document.getElementById('booking-confirmation-code');
+            if (codeEl) {
+                codeEl.textContent = booking.confirmationCode || booking.id;
+            }
+            
             document.getElementById('confirmation-details').innerHTML = \`
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <p class="text-sm text-gray-500">Booking ID</p>
-                        <p class="font-mono font-semibold text-gray-800">\${booking.id}</p>
+                        <p class="font-mono font-semibold" style="color: var(--german-navy)">\${booking.id}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Status</p>
-                        <p class="font-semibold text-green-600"><i class="fas fa-check-circle mr-1"></i>Confirmed</p>
+                        <p class="font-semibold" style="color: var(--gold-primary)"><i class="fas fa-check-circle mr-1"></i>Confirmed</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Doctor</p>
-                        <p class="font-semibold text-gray-800">\${booking.doctorName}</p>
+                        <p class="font-semibold" style="color: var(--german-navy)">\${booking.doctorName}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Specialization</p>
-                        <p class="text-gray-800">\${booking.doctorSpecialization}</p>
+                        <p style="color: var(--gold-primary)">\${booking.doctorSpecialization}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Date & Time</p>
-                        <p class="font-semibold text-gray-800">\${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at \${booking.time}</p>
+                        <p class="font-semibold" style="color: var(--german-navy)">\${date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at \${booking.time}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Location</p>
-                        <p class="text-gray-800">\${booking.location}</p>
+                        <p style="color: var(--german-navy)">\${booking.location}</p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Amount Paid</p>
-                        <p class="text-xl font-bold text-gray-800">€\${booking.price}</p>
+                        <p class="text-sm text-gray-500">Amount</p>
+                        <p class="text-xl font-bold" style="color: var(--german-navy)">€\${booking.price}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Points Earned</p>
-                        <p class="text-green-600 font-semibold">+\${data.pointsEarned} SelectPoints</p>
+                        <p class="font-semibold" style="color: var(--gold-primary)">+\${data.pointsEarned} SelectPoints</p>
                     </div>
                 </div>
             \`;
             
             document.getElementById('next-steps').innerHTML = data.nextSteps.map(step => 
-                \`<li><i class="fas fa-check text-green-500 mr-2"></i>\${step}</li>\`
+                \`<li><i class="fas fa-check mr-2" style="color: var(--gold-primary)"></i>\${step}</li>\`
             ).join('');
             
             // Hide all sections and show success
