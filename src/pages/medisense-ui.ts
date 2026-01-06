@@ -496,7 +496,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .body-map-container {
             position: relative;
             width: 100%;
-            max-width: 280px;
+            max-width: 380px;
             margin: 0 auto;
             padding: 0;
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
@@ -1571,7 +1571,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                                 <!-- Front View Anatomical Image -->
                                 <img 
                                     id="anatomy-front" 
-                                    src="https://www.genspark.ai/api/files/s/TObu3pbf" 
+                                    src="/static/images/anatomy-front.png" 
                                     alt="Human Anatomy Front View" 
                                     class="anatomy-image active"
                                     loading="eager"
@@ -1579,7 +1579,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                                 <!-- Back View Anatomical Image -->
                                 <img 
                                     id="anatomy-back" 
-                                    src="https://www.genspark.ai/api/files/s/nQ7jkVWL" 
+                                    src="/static/images/anatomy-back.png" 
                                     alt="Human Anatomy Back View" 
                                     class="anatomy-image hidden"
                                     loading="eager"
