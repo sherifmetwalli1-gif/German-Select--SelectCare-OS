@@ -550,7 +550,7 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
             <div class="gradient-gold rounded-2xl p-6 mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 class="text-2xl font-bold text-navy mb-2">Welcome back, John!</h1>
+                        <h1 class="text-2xl font-bold text-navy mb-2">Welcome back, Sherif!</h1>
                         <p class="text-navy/80">Your next appointment is in 3 days</p>
                     </div>
                     <div class="mt-4 md:mt-0 flex items-center space-x-6">

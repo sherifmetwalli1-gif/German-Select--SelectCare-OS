@@ -274,11 +274,11 @@ export const premiumHomePage = (userTier: string = 'plus') => {
         <div class="flex justify-between items-center mb-5">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 gradient-gold rounded-full flex items-center justify-center text-navy font-bold text-lg">
-                    JD
+                    SM
                 </div>
                 <div>
                     <p class="text-white/60 text-xs">Good morning,</p>
-                    <h2 class="text-white font-bold text-lg">John Doe</h2>
+                    <h2 class="text-white font-bold text-lg">Welcome back, Sherif</h2>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -799,7 +799,7 @@ export const premiumHomePage = (userTier: string = 'plus') => {
             <div class="card p-4">
                 <div class="flex items-center gap-4 mb-4">
                     <div class="flex -space-x-2">
-                        <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white text-sm font-bold border-2 border-white">JD</div>
+                        <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white text-sm font-bold border-2 border-white">SM</div>
                         <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold border-2 border-white">SD</div>
                         <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold border-2 border-white">MD</div>
                         <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-sm border-2 border-white">

@@ -103,7 +103,7 @@ export const aiConciergePage = () => `
                     <i class="fas fa-robot text-navy text-sm"></i>
                 </div>
                 <div>
-                    <p class="text-sm mb-3">Hello John! I'm your personal AI Health Concierge. I can help you with:</p>
+                    <p class="text-sm mb-3">Hello Sherif! I'm your personal AI Health Concierge. I can help you with:</p>
                     <ul class="text-sm text-gray-600 space-y-1 mb-3">
                         <li><i class="fas fa-check text-green-500 mr-2"></i>Health questions & symptom analysis</li>
                         <li><i class="fas fa-check text-green-500 mr-2"></i>Medication information</li>

@@ -204,17 +204,20 @@ const DOCTORS = [
   }
 ]
 
+// Service Package Names and Symbols - Redesigned for clarity and appeal
 const CARE_PACKAGES = [
   {
-    id: 'selectcare-essential',
-    name: 'SELECTCARE™',
+    id: 'healbridge-essential',
+    name: 'HealBridge Essential',
+    symbol: '🌉',
+    icon: 'bridge',
     tier: 'Essential',
     price_range: { min: 5500, max: 10000 },
     base_price: 7500,
     turkey_comparison: 5500,
     savings_vs_germany: 14500,
     currency: 'EUR',
-    description: 'Essential Protocol with German Standard Care',
+    description: 'Your bridge to German-standard bariatric care',
     // Surgery Timeline for Bariatric: 2 nights hospital + 3 nights recovery
     hospitalNights: 2,
     recoveryNights: 3,
@@ -237,15 +240,17 @@ const CARE_PACKAGES = [
     popular: false
   },
   {
-    id: 'selectcare-plus',
-    name: 'SELECTCARE+™',
-    tier: 'Plus',
+    id: 'vitacare-premium',
+    name: 'VitaCare Premium',
+    symbol: '✨',
+    icon: 'star',
+    tier: 'Premium',
     price_range: { min: 9500, max: 18000 },
     base_price: 12000,
     turkey_comparison: 9000,
     savings_vs_germany: 20000,
     currency: 'EUR',
-    description: 'Enhanced Comfort with Premium Services',
+    description: 'Premium aesthetic surgery with luxury recovery',
     // Surgery Timeline for Elective Plastic: 2-3 nights hospital + 3-5 nights recovery
     hospitalNights: 3,
     recoveryNights: 5,
@@ -270,22 +275,24 @@ const CARE_PACKAGES = [
     popular: true
   },
   {
-    id: 'selectcrown',
-    name: 'SELECTCROWN™',
-    tier: 'Crown',
+    id: 'elitecare-royal',
+    name: 'EliteCare Royal',
+    symbol: '👑',
+    icon: 'crown',
+    tier: 'Royal',
     price_range: { min: 18000, max: 30000 },
     base_price: 22000,
     turkey_comparison: null,
     savings_vs_germany: 33000,
     currency: 'EUR',
-    description: 'Ultimate Luxury with Lifetime Support',
+    description: 'Complex surgery with world-class luxury care',
     // Surgery Timeline for Complex: 5-7 nights hospital + extended recovery
     hospitalNights: 7,
     recoveryNights: 14,
     totalNights: 21,
     surgeryType: 'complex',
     features: [
-      'All Plus Features',
+      'All Premium Features',
       '5-7 Nights Premium Hospital Suite',
       'Extended Recovery Stay',
       'Private Villa Accommodation',
@@ -304,17 +311,19 @@ const CARE_PACKAGES = [
     recovery_days: 14,
     popular: false
   },
-  // NEW: 3-Night Rejuvenation Package
+  // 3-Night Rejuvenation Package
   {
-    id: 'selectcare-rejuvenation',
-    name: 'SELECTCARE REJUVENATION™',
+    id: 'renew-retreat',
+    name: 'Renew Retreat',
+    symbol: '🌿',
+    icon: 'leaf',
     tier: 'Rejuvenation',
     price_range: { min: 2500, max: 5000 },
     base_price: 3500,
     turkey_comparison: 2000,
     savings_vs_germany: 8000,
     currency: 'EUR',
-    description: '3-Night Anti-Aging & Rejuvenation Retreat',
+    description: '3-Night anti-aging & wellness escape',
     hospitalNights: 0,
     recoveryNights: 3,
     totalNights: 3,
@@ -334,17 +343,19 @@ const CARE_PACKAGES = [
     recovery_days: 0,
     popular: true
   },
-  // NEW: Single-Day Elective Package
+  // Single-Day Elective Package
   {
-    id: 'selectcare-express',
-    name: 'SELECTCARE EXPRESS™',
+    id: 'glow-express',
+    name: 'Glow Express',
+    symbol: '⚡',
+    icon: 'bolt',
     tier: 'Express',
     price_range: { min: 800, max: 2500 },
     base_price: 1500,
     turkey_comparison: 800,
     savings_vs_germany: 3000,
     currency: 'EUR',
-    description: 'Single-Day Elective Treatments',
+    description: 'Same-day beauty treatments',
     hospitalNights: 0,
     recoveryNights: 0,
     totalNights: 0,
@@ -366,11 +377,16 @@ const CARE_PACKAGES = [
   }
 ]
 
+// Treatment Categories - Prioritized for Medical Tourism with Better Names & Symbols
 const TREATMENT_CATEGORIES = [
+  // HIGH PRIORITY - Core Medical Procedures
   {
     id: 'bariatric',
-    name: 'Bariatric Surgery',
+    name: 'Weight Loss Surgery',
+    displayName: 'MetaFit™ Bariatric',
+    symbol: '⚖️',
     icon: 'weight',
+    priority: 1,
     surgeryTimeline: {
       hospitalStay: '2 nights',
       recoveryStay: '3 nights',
@@ -385,8 +401,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'orthopedic',
-    name: 'Orthopedic Surgery',
+    name: 'Bone & Joint Surgery',
+    displayName: 'MoveWell™ Orthopedics',
+    symbol: '🦴',
     icon: 'bone',
+    priority: 2,
     surgeryTimeline: {
       hospitalStay: '5-7 nights',
       recoveryStay: '7-14 nights',
@@ -401,8 +420,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'aesthetic',
-    name: 'Aesthetic Surgery',
+    name: 'Plastic Surgery',
+    displayName: 'SculptBeauty™ Aesthetic',
+    symbol: '💎',
     icon: 'sparkles',
+    priority: 3,
     surgeryTimeline: {
       hospitalStay: '2-3 nights',
       recoveryStay: '3-5 nights',
@@ -417,8 +439,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'antiaging',
-    name: 'Anti-Aging & Longevity',
+    name: 'Anti-Aging & Regenerative',
+    displayName: 'AgeLess™ Longevity',
+    symbol: '🌟',
     icon: 'clock',
+    priority: 4,
     surgeryTimeline: {
       hospitalStay: '0-1 night',
       recoveryStay: '2-3 nights',
@@ -435,8 +460,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'cardiology',
-    name: 'Cardiology',
+    name: 'Heart & Vascular',
+    displayName: 'HeartCare™ Cardiology',
+    symbol: '❤️',
     icon: 'heart',
+    priority: 5,
     surgeryTimeline: {
       hospitalStay: '3-5 nights',
       recoveryStay: '5-7 nights',
@@ -451,8 +479,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'aesthetic-surgical',
-    name: 'Aesthetic Surgical Procedures',
+    name: 'Cosmetic Surgery',
+    displayName: 'TransformU™ Cosmetic',
+    symbol: '✨',
     icon: 'user-nurse',
+    priority: 6,
     surgeryTimeline: {
       hospitalStay: '2-3 nights',
       recoveryStay: '3-5 nights',
@@ -472,8 +503,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'non-surgical-face',
-    name: 'Non-Surgical Face Treatments',
+    name: 'Non-Surgical Facial',
+    displayName: 'FaceLift™ Express',
+    symbol: '🌸',
     icon: 'spa',
+    priority: 7,
     surgeryTimeline: {
       hospitalStay: '0 nights',
       recoveryStay: '0-3 nights',
@@ -492,8 +526,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'body-contouring-treatments',
-    name: 'Body Contouring',
+    name: 'Body Sculpting',
+    displayName: 'BodyShape™ Contouring',
+    symbol: '🎯',
     icon: 'person-dress',
+    priority: 8,
     surgeryTimeline: {
       hospitalStay: '1-3 nights',
       recoveryStay: '3-5 nights',
@@ -510,8 +547,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'skin-treatments',
-    name: 'Skin Treatments',
+    name: 'Skin Rejuvenation',
+    displayName: 'SkinGlow™ Treatments',
+    symbol: '✹',
     icon: 'wand-magic-sparkles',
+    priority: 9,
     surgeryTimeline: {
       hospitalStay: '0 nights',
       recoveryStay: '0-3 nights',
@@ -529,8 +569,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'laser-hair-removal',
-    name: 'Laser Hair Removal (6 Sessions)',
+    name: 'Hair Removal',
+    displayName: 'SmoothSkin™ Laser',
+    symbol: '⚡',
     icon: 'bolt',
+    priority: 10,
     surgeryTimeline: {
       hospitalStay: '0 nights',
       recoveryStay: '0 nights',
@@ -547,8 +590,11 @@ const TREATMENT_CATEGORIES = [
   },
   {
     id: 'intimate-aesthetics',
-    name: 'Intimate Aesthetics',
+    name: 'Intimate Wellness',
+    displayName: 'IntimateCare™ Aesthetics',
+    symbol: '🌸',
     icon: 'venus',
+    priority: 11,
     surgeryTimeline: {
       hospitalStay: '0-2 nights',
       recoveryStay: '2-4 nights',
@@ -3247,7 +3293,7 @@ app.get('/', (c) => {
                 <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white">
                     <i class="fas fa-bell"></i>
                 </button>
-                <div class="avatar avatar-gold">JD</div>
+                <div class="avatar avatar-gold">SM</div>
             </div>
         </div>
         
@@ -3764,7 +3810,7 @@ app.get('/profile', (c) => {
         <div class="w-24 h-24 mx-auto bg-gold rounded-full flex items-center justify-center text-navy text-3xl font-bold mb-4">
             JD
         </div>
-        <h1 class="text-white text-xl font-bold">John Doe</h1>
+        <h1 class="text-white text-xl font-bold">Sherif Metwalli</h1>
         <p class="text-gold">SELECTCARE+ Patient</p>
         <p class="text-white/60 text-sm mt-1">Patient ID: GS-2024-00847</p>
     </header>
@@ -4294,7 +4340,7 @@ app.get('/doctor-dashboard', (c) => {
                         <div>
                             <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">Surgery</span>
                             <h4 class="font-bold text-navy mt-2">Gastric Sleeve - Patient #847</h4>
-                            <p class="text-sm text-gray-500">John D. • Male, 42</p>
+                            <p class="text-sm text-gray-500">Sherif M. • Male, 42</p>
                         </div>
                         <div class="text-right">
                             <p class="font-bold text-navy">9:00 AM</p>
@@ -4346,7 +4392,7 @@ app.get('/doctor-dashboard', (c) => {
                         <i class="fas fa-exclamation-triangle text-yellow-600 mt-1"></i>
                         <div>
                             <p class="font-semibold text-navy">Low Activity Alert</p>
-                            <p class="text-sm text-gray-600">Patient #847 (John D.) - Steps below target for 2 days</p>
+                            <p class="text-sm text-gray-600">Patient #847 (Sherif M.) - Steps below target for 2 days</p>
                             <button class="text-gold text-sm font-semibold mt-2">Send Reminder</button>
                         </div>
                     </div>
@@ -5041,7 +5087,7 @@ app.get('/onboarding', (c) => {
             <form class="space-y-4">
                 <div class="card p-4">
                     <label class="block text-sm text-gray-500 mb-2">Full Name *</label>
-                    <input type="text" placeholder="John Doe" class="w-full p-3 border rounded-xl">
+                    <input type="text" placeholder="Sherif Metwalli" class="w-full p-3 border rounded-xl">
                 </div>
                 <div class="card p-4">
                     <label class="block text-sm text-gray-500 mb-2">Email *</label>
@@ -6665,7 +6711,7 @@ app.get('/api/user/stats', (c) => {
     data: {
       user: {
         id: 'user-123',
-        name: 'John Doe',
+        name: 'Sherif Metwalli',
         tier: 'plus',
         avatar: 'JD'
       },

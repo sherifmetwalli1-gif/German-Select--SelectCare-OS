@@ -1052,7 +1052,7 @@ export function bookingPage(c: Context): string {
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                                 <input type="text" id="patient-name" 
                                     class="input-field"
-                                    placeholder="John Doe">
+                                    placeholder="Sherif Metwalli">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>

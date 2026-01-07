@@ -7,7 +7,7 @@
 export const FAMILY_MEMBERS = [
   {
     id: 'member-1',
-    name: 'John Doe',
+    name: 'Sherif Metwalli',
     role: 'primary',
     avatar: 'JD',
     avatarColor: '#001F3F',
@@ -224,7 +224,7 @@ export const familyHubPage = () => `
                         </div>
                         <div class="flex-1">
                             <p class="font-bold text-navy">Cardiology Follow-up</p>
-                            <p class="text-sm text-gray-500">John • Today, 10:00 AM</p>
+                            <p class="text-sm text-gray-500">Sherif • Today, 10:00 AM</p>
                         </div>
                         <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Video</span>
                     </div>
@@ -348,7 +348,7 @@ export const familyHubPage = () => `
             <div class="card p-4">
                 <div class="space-y-3">
                     <div class="flex items-center gap-3 p-3 bg-green-50 rounded-xl">
-                        <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white text-sm font-bold">JD</div>
+                        <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white text-sm font-bold">SM</div>
                         <div class="flex-1">
                             <p class="font-medium text-navy">Vitamin D3 • Omega-3 • Metformin</p>
                             <p class="text-xs text-gray-500">Morning dose taken</p>
