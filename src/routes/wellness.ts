@@ -1,9 +1,19 @@
 /**
  * SelectCareOS™ Daily Wellness & Health Tracking Routes
  * Gamified health logging with SelectPoints integration
+ * Includes Meal & Exercise Plans based on symptoms/conditions
  */
 
 import { Hono } from 'hono';
+import { 
+  MEAL_PLANS, 
+  EXERCISE_PLANS, 
+  getMealPlansBySymptoms, 
+  getMealPlansByConditions,
+  getExercisePlansBySymptoms,
+  getExercisePlansByConditions,
+  getWellnessRecommendations
+} from '../services/wellness-plans';
 
 const wellness = new Hono();
 
@@ -617,5 +627,188 @@ function checkAchievements(metricType: string): any[] {
   
   return achievements;
 }
+
+// ============================================================================
+// MEAL & EXERCISE PLANS API
+// ============================================================================
+
+/**
+ * GET /api/wellness/plans/meals
+ * Get all available meal plans
+ */
+wellness.get('/plans/meals', (c) => {
+  const plans = Object.values(MEAL_PLANS).map(plan => ({
+    id: plan.id,
+    name: plan.name,
+    description: plan.description,
+    targetConditions: plan.targetConditions,
+    targetSymptoms: plan.targetSymptoms,
+    goals: plan.goals,
+    dailyCalories: plan.dailyCalories,
+    duration: plan.duration
+  }));
+  
+  return c.json({
+    success: true,
+    count: plans.length,
+    plans
+  });
+});
+
+/**
+ * GET /api/wellness/plans/meals/:id
+ * Get a specific meal plan by ID
+ */
+wellness.get('/plans/meals/:id', (c) => {
+  const { id } = c.req.param();
+  const plan = MEAL_PLANS[id];
+  
+  if (!plan) {
+    return c.json({ success: false, error: 'Meal plan not found' }, 404);
+  }
+  
+  return c.json({
+    success: true,
+    plan
+  });
+});
+
+/**
+ * GET /api/wellness/plans/exercises
+ * Get all available exercise plans
+ */
+wellness.get('/plans/exercises', (c) => {
+  const plans = Object.values(EXERCISE_PLANS).map(plan => ({
+    id: plan.id,
+    name: plan.name,
+    description: plan.description,
+    targetConditions: plan.targetConditions,
+    targetSymptoms: plan.targetSymptoms,
+    goals: plan.goals,
+    intensity: plan.intensity,
+    frequency: plan.frequency,
+    duration: plan.duration
+  }));
+  
+  return c.json({
+    success: true,
+    count: plans.length,
+    plans
+  });
+});
+
+/**
+ * GET /api/wellness/plans/exercises/:id
+ * Get a specific exercise plan by ID
+ */
+wellness.get('/plans/exercises/:id', (c) => {
+  const { id } = c.req.param();
+  const plan = EXERCISE_PLANS[id];
+  
+  if (!plan) {
+    return c.json({ success: false, error: 'Exercise plan not found' }, 404);
+  }
+  
+  return c.json({
+    success: true,
+    plan
+  });
+});
+
+/**
+ * POST /api/wellness/plans/recommend
+ * Get personalized meal & exercise recommendations based on symptoms/conditions
+ */
+wellness.post('/plans/recommend', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { symptoms = [], conditions = [], goals = [] } = body;
+    
+    const { mealPlans, exercisePlans } = getWellnessRecommendations(symptoms, conditions);
+    
+    return c.json({
+      success: true,
+      input: { symptoms, conditions, goals },
+      recommendations: {
+        mealPlans: mealPlans.map(plan => ({
+          id: plan.id,
+          name: plan.name,
+          description: plan.description,
+          goals: plan.goals,
+          dailyCalories: plan.dailyCalories,
+          macros: plan.macros,
+          duration: plan.duration,
+          medicalWarning: plan.medicalWarning,
+          keyFoods: {
+            recommended: plan.foods.recommended.slice(0, 5),
+            avoid: plan.foods.avoid.slice(0, 3)
+          },
+          supplements: plan.supplements
+        })),
+        exercisePlans: exercisePlans.map(plan => ({
+          id: plan.id,
+          name: plan.name,
+          description: plan.description,
+          goals: plan.goals,
+          intensity: plan.intensity,
+          frequency: plan.frequency,
+          duration: plan.duration,
+          medicalWarning: plan.medicalWarning,
+          keyExercises: plan.mainExercises.slice(0, 3).map(e => ({
+            name: e.name,
+            description: e.description,
+            icon: e.icon
+          })),
+          contraindications: plan.contraindications
+        }))
+      },
+      disclaimer: 'These recommendations are for informational purposes only. Consult a healthcare professional before starting any new diet or exercise program.'
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Invalid request body' }, 400);
+  }
+});
+
+/**
+ * GET /api/wellness/plans/conditions
+ * Get all target conditions covered by wellness plans
+ */
+wellness.get('/plans/conditions', (c) => {
+  const allConditions = new Set<string>();
+  
+  Object.values(MEAL_PLANS).forEach(plan => {
+    plan.targetConditions.forEach(cond => allConditions.add(cond));
+  });
+  
+  Object.values(EXERCISE_PLANS).forEach(plan => {
+    plan.targetConditions.forEach(cond => allConditions.add(cond));
+  });
+  
+  return c.json({
+    success: true,
+    conditions: Array.from(allConditions).sort()
+  });
+});
+
+/**
+ * GET /api/wellness/plans/symptoms
+ * Get all target symptoms covered by wellness plans
+ */
+wellness.get('/plans/symptoms', (c) => {
+  const allSymptoms = new Set<string>();
+  
+  Object.values(MEAL_PLANS).forEach(plan => {
+    plan.targetSymptoms.forEach(s => allSymptoms.add(s));
+  });
+  
+  Object.values(EXERCISE_PLANS).forEach(plan => {
+    plan.targetSymptoms.forEach(s => allSymptoms.add(s));
+  });
+  
+  return c.json({
+    success: true,
+    symptoms: Array.from(allSymptoms).sort()
+  });
+});
 
 export { wellness };
