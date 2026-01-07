@@ -215,19 +215,25 @@ const CARE_PACKAGES = [
     savings_vs_germany: 14500,
     currency: 'EUR',
     description: 'Essential Protocol with German Standard Care',
+    // Surgery Timeline for Bariatric: 2 nights hospital + 3 nights recovery
+    hospitalNights: 2,
+    recoveryNights: 3,
+    totalNights: 5,
+    surgeryType: 'bariatric',
     features: [
       'German Board-Certified Surgeon',
       'JCI-Certified Facility',
+      '2 Nights Hospital Stay',
+      '3 Nights Resort Recovery',
       '4-Star Accommodation',
-      'Standard Suite Recovery',
       'Airport Transfers',
       '1-Year Digital Follow-up',
       'SelectCareOS™ Access',
       '24/7 Support Line'
     ],
-    inclusions: ['Surgery', 'Hospital Stay', 'Medications', 'Lab Tests', 'Accommodation', 'Transfers'],
-    duration_days: 14,
-    recovery_days: 7,
+    inclusions: ['Surgery', '2 Nights Hospital', '3 Nights Recovery', 'Medications', 'Lab Tests', 'Accommodation', 'Transfers'],
+    duration_days: 5,
+    recovery_days: 3,
     popular: false
   },
   {
@@ -240,8 +246,15 @@ const CARE_PACKAGES = [
     savings_vs_germany: 20000,
     currency: 'EUR',
     description: 'Enhanced Comfort with Premium Services',
+    // Surgery Timeline for Elective Plastic: 2-3 nights hospital + 3-5 nights recovery
+    hospitalNights: 3,
+    recoveryNights: 5,
+    totalNights: 8,
+    surgeryType: 'elective-plastic',
     features: [
       'All Essential Features',
+      '2-3 Nights Hospital Stay',
+      '3-5 Nights Resort Recovery',
       '5-Star Resort Accommodation',
       'Premium Suite Recovery',
       'VIP Airport Transfer',
@@ -251,9 +264,9 @@ const CARE_PACKAGES = [
       'Family Accommodation Option',
       'Physiotherapy Sessions'
     ],
-    inclusions: ['Surgery', 'Hospital Stay', 'Medications', 'Lab Tests', '5-Star Resort', 'VIP Transfers', 'Wellness', 'Physio'],
-    duration_days: 21,
-    recovery_days: 14,
+    inclusions: ['Surgery', '2-3 Nights Hospital', '3-5 Nights Recovery', 'Medications', 'Lab Tests', '5-Star Resort', 'VIP Transfers', 'Wellness', 'Physio'],
+    duration_days: 8,
+    recovery_days: 5,
     popular: true
   },
   {
@@ -266,8 +279,15 @@ const CARE_PACKAGES = [
     savings_vs_germany: 33000,
     currency: 'EUR',
     description: 'Ultimate Luxury with Lifetime Support',
+    // Surgery Timeline for Complex: 5-7 nights hospital + extended recovery
+    hospitalNights: 7,
+    recoveryNights: 14,
+    totalNights: 21,
+    surgeryType: 'complex',
     features: [
       'All Plus Features',
+      '5-7 Nights Premium Hospital Suite',
+      'Extended Recovery Stay',
       'Private Villa Accommodation',
       'Personal Chef Service',
       'Private Nurse 24/7',
@@ -279,9 +299,69 @@ const CARE_PACKAGES = [
       'Red Sea Yacht Experience',
       'Anti-Aging Treatments'
     ],
-    inclusions: ['Surgery', 'Hospital Stay', 'Medications', 'Lab Tests', 'Private Villa', 'Helicopter', 'Chef', 'Nurse', 'Unlimited Wellness'],
-    duration_days: 28,
-    recovery_days: 21,
+    inclusions: ['Surgery', '5-7 Nights Hospital', '14 Nights Recovery', 'Medications', 'Lab Tests', 'Private Villa', 'Helicopter', 'Chef', 'Nurse', 'Unlimited Wellness'],
+    duration_days: 21,
+    recovery_days: 14,
+    popular: false
+  },
+  // NEW: 3-Night Rejuvenation Package
+  {
+    id: 'selectcare-rejuvenation',
+    name: 'SELECTCARE REJUVENATION™',
+    tier: 'Rejuvenation',
+    price_range: { min: 2500, max: 5000 },
+    base_price: 3500,
+    turkey_comparison: 2000,
+    savings_vs_germany: 8000,
+    currency: 'EUR',
+    description: '3-Night Anti-Aging & Rejuvenation Retreat',
+    hospitalNights: 0,
+    recoveryNights: 3,
+    totalNights: 3,
+    surgeryType: 'rejuvenation',
+    features: [
+      'No Surgery Required',
+      '3 Nights Spa Resort Stay',
+      'Anti-Aging Treatments',
+      'PRP Therapy',
+      'IV Vitamin Drips',
+      'Wellness Consultations',
+      'Nutritionist Session',
+      'Spa Treatments Included'
+    ],
+    inclusions: ['Anti-Aging Treatments', '3 Nights Resort', 'PRP/IV Therapy', 'Wellness Program', 'Spa Package', 'Meals'],
+    duration_days: 3,
+    recovery_days: 0,
+    popular: true
+  },
+  // NEW: Single-Day Elective Package
+  {
+    id: 'selectcare-express',
+    name: 'SELECTCARE EXPRESS™',
+    tier: 'Express',
+    price_range: { min: 800, max: 2500 },
+    base_price: 1500,
+    turkey_comparison: 800,
+    savings_vs_germany: 3000,
+    currency: 'EUR',
+    description: 'Single-Day Elective Treatments',
+    hospitalNights: 0,
+    recoveryNights: 0,
+    totalNights: 0,
+    surgeryType: 'single-day',
+    features: [
+      'Same Day Treatment',
+      'No Overnight Stay Required',
+      'Minor Aesthetic Procedures',
+      'Laser Treatments',
+      'Botox & Fillers',
+      'VIP Day Suite',
+      'Light Refreshments',
+      'Transportation Included'
+    ],
+    inclusions: ['Treatment', 'Day Suite', 'Refreshments', 'Transportation', 'Follow-up Consultation'],
+    duration_days: 1,
+    recovery_days: 0,
     popular: false
   }
 ]
@@ -291,144 +371,354 @@ const TREATMENT_CATEGORIES = [
     id: 'bariatric',
     name: 'Bariatric Surgery',
     icon: 'weight',
+    surgeryTimeline: {
+      hospitalStay: '2 nights',
+      recoveryStay: '3 nights',
+      totalProgram: '5 nights',
+      description: 'Standard bariatric surgery recovery with 5-star resort accommodation'
+    },
     procedures: [
-      { id: 'gastric-sleeve', name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, duration: '2-3 hours', recovery: '2-4 weeks' },
-      { id: 'gastric-bypass', name: 'Gastric Bypass', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, duration: '3-4 hours', recovery: '4-6 weeks' },
-      { id: 'revision-surgery', name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, duration: '3-5 hours', recovery: '4-6 weeks' }
+      { id: 'gastric-sleeve', name: 'Gastric Sleeve', price: 7500, germanyPrice: 22000, turkeyPrice: 4500, duration: '2-3 hours', recovery: '2-4 weeks', hospitalNights: 2, recoveryNights: 3 },
+      { id: 'gastric-bypass', name: 'Gastric Bypass', price: 10500, germanyPrice: 28000, turkeyPrice: 6500, duration: '3-4 hours', recovery: '4-6 weeks', hospitalNights: 2, recoveryNights: 3 },
+      { id: 'revision-surgery', name: 'Revision Surgery', price: 13000, germanyPrice: 35000, turkeyPrice: 7500, duration: '3-5 hours', recovery: '4-6 weeks', hospitalNights: 3, recoveryNights: 4 }
     ]
   },
   {
     id: 'orthopedic',
     name: 'Orthopedic Surgery',
     icon: 'bone',
+    surgeryTimeline: {
+      hospitalStay: '5-7 nights',
+      recoveryStay: '7-14 nights',
+      totalProgram: '12-21 nights',
+      description: 'Complex orthopedic procedures require extended hospital and recovery stays'
+    },
     procedures: [
-      { id: 'knee-replacement', name: 'Knee Replacement', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, duration: '2-3 hours', recovery: '6-12 weeks' },
-      { id: 'hip-replacement', name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, duration: '2-3 hours', recovery: '6-12 weeks' },
-      { id: 'spine-surgery', name: 'Spine Surgery', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, duration: '4-6 hours', recovery: '8-16 weeks' }
+      { id: 'knee-replacement', name: 'Knee Replacement', price: 13500, germanyPrice: 40000, turkeyPrice: 9000, duration: '2-3 hours', recovery: '6-12 weeks', hospitalNights: 5, recoveryNights: 10, complexity: 'complex' },
+      { id: 'hip-replacement', name: 'Hip Replacement', price: 15000, germanyPrice: 45000, turkeyPrice: 12000, duration: '2-3 hours', recovery: '6-12 weeks', hospitalNights: 6, recoveryNights: 12, complexity: 'complex' },
+      { id: 'spine-surgery', name: 'Spine Surgery', price: 19500, germanyPrice: 55000, turkeyPrice: 14000, duration: '4-6 hours', recovery: '8-16 weeks', hospitalNights: 7, recoveryNights: 14, complexity: 'complex' }
     ]
   },
   {
     id: 'aesthetic',
     name: 'Aesthetic Surgery',
     icon: 'sparkles',
+    surgeryTimeline: {
+      hospitalStay: '2-3 nights',
+      recoveryStay: '3-5 nights',
+      totalProgram: '5-8 nights',
+      description: 'Elective plastic surgeries based on complexity'
+    },
     procedures: [
-      { id: 'facelift', name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, duration: '3-5 hours', recovery: '2-4 weeks' },
-      { id: 'body-contouring', name: 'Body Contouring', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, duration: '4-6 hours', recovery: '4-6 weeks' },
-      { id: 'rhinoplasty', name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '2-3 weeks' }
+      { id: 'facelift', name: 'Facelift', price: 8500, germanyPrice: 25000, turkeyPrice: 5500, duration: '3-5 hours', recovery: '2-4 weeks', hospitalNights: 2, recoveryNights: 4, complexity: 'moderate' },
+      { id: 'body-contouring', name: 'Body Contouring', price: 10500, germanyPrice: 30000, turkeyPrice: 6500, duration: '4-6 hours', recovery: '4-6 weeks', hospitalNights: 3, recoveryNights: 5, complexity: 'moderate-complex' },
+      { id: 'rhinoplasty', name: 'Rhinoplasty', price: 6000, germanyPrice: 18000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '2-3 weeks', hospitalNights: 1, recoveryNights: 3, complexity: 'moderate' }
     ]
   },
   {
     id: 'antiaging',
     name: 'Anti-Aging & Longevity',
     icon: 'clock',
+    surgeryTimeline: {
+      hospitalStay: '0-1 night',
+      recoveryStay: '2-3 nights',
+      totalProgram: '3 nights',
+      description: 'Rejuvenation and anti-aging treatments with spa-resort recovery'
+    },
     procedures: [
-      { id: 'stem-cell', name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, duration: '1-2 hours', recovery: '1 week' },
-      { id: 'prp-therapy', name: 'PRP Therapy', price: 2200, germanyPrice: 8000, turkeyPrice: 800, duration: '1 hour', recovery: '1-2 days' },
-      { id: 'hormone-therapy', name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, duration: 'Ongoing', recovery: 'None' }
+      { id: 'stem-cell', name: 'Stem Cell Therapy', price: 12500, germanyPrice: 35000, turkeyPrice: 8000, duration: '1-2 hours', recovery: '1 week', hospitalNights: 1, recoveryNights: 2, programType: 'rejuvenation' },
+      { id: 'prp-therapy', name: 'PRP Therapy', price: 2200, germanyPrice: 8000, turkeyPrice: 800, duration: '1 hour', recovery: '1-2 days', hospitalNights: 0, recoveryNights: 1, programType: 'single-day' },
+      { id: 'hormone-therapy', name: 'Hormone Optimization', price: 4000, germanyPrice: 12000, turkeyPrice: 2500, duration: 'Ongoing', recovery: 'None', hospitalNights: 0, recoveryNights: 2, programType: 'rejuvenation' },
+      { id: 'iv-therapy', name: 'IV Vitamin & NAD+ Therapy', price: 1500, germanyPrice: 4000, turkeyPrice: 1000, duration: '2-4 hours', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'exosome-therapy', name: 'Exosome Therapy', price: 8500, germanyPrice: 25000, turkeyPrice: 6000, duration: '1-2 hours', recovery: '2-3 days', hospitalNights: 0, recoveryNights: 2, programType: 'rejuvenation' }
     ]
   },
   {
     id: 'cardiology',
     name: 'Cardiology',
     icon: 'heart',
+    surgeryTimeline: {
+      hospitalStay: '3-5 nights',
+      recoveryStay: '5-7 nights',
+      totalProgram: '8-12 nights',
+      description: 'Cardiac procedures with close monitoring and cardiac rehabilitation'
+    },
     procedures: [
-      { id: 'cardiac-checkup', name: 'Comprehensive Cardiac Checkup', price: 1800, germanyPrice: 5000, turkeyPrice: 1250, duration: '1 day', recovery: 'None' },
-      { id: 'angioplasty', name: 'Angioplasty', price: 9500, germanyPrice: 20000, turkeyPrice: 5000, duration: '1-2 hours', recovery: '1-2 weeks' }
+      { id: 'cardiac-checkup', name: 'Comprehensive Cardiac Checkup', price: 1800, germanyPrice: 5000, turkeyPrice: 1250, duration: '1 day', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'angioplasty', name: 'Angioplasty', price: 9500, germanyPrice: 20000, turkeyPrice: 5000, duration: '1-2 hours', recovery: '1-2 weeks', hospitalNights: 3, recoveryNights: 5, complexity: 'complex' },
+      { id: 'cardiac-stent', name: 'Cardiac Stent Placement', price: 12000, germanyPrice: 28000, turkeyPrice: 7500, duration: '1-2 hours', recovery: '2-3 weeks', hospitalNights: 3, recoveryNights: 7, complexity: 'complex' }
     ]
   },
   {
     id: 'aesthetic-surgical',
     name: 'Aesthetic Surgical Procedures',
     icon: 'user-nurse',
+    surgeryTimeline: {
+      hospitalStay: '2-3 nights',
+      recoveryStay: '3-5 nights',
+      totalProgram: '5-8 nights',
+      description: 'Elective plastic surgeries with recovery based on complexity level'
+    },
     procedures: [
-      { id: 'rhinoplasty-full', name: 'Rhinoplasty', price: 3200, germanyPrice: 15000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '2-3 weeks' },
-      { id: 'breast-augmentation', name: 'Breast Augmentation', price: 3200, germanyPrice: 10000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '4-6 weeks' },
-      { id: 'breast-reduction', name: 'Breast Reduction', price: 2700, germanyPrice: 12000, turkeyPrice: 2800, duration: '3-4 hours', recovery: '4-6 weeks' },
-      { id: 'breast-lift', name: 'Breast Lift', price: 2200, germanyPrice: 8000, turkeyPrice: 2400, duration: '2-3 hours', recovery: '3-4 weeks' },
-      { id: 'liposuction-area', name: 'Liposuction (per area)', price: 2200, germanyPrice: 8000, turkeyPrice: 2400, duration: '1-2 hours', recovery: '2-4 weeks' },
-      { id: 'facelift-surgical', name: 'Facelift (Surgical)', price: 3800, germanyPrice: 20000, turkeyPrice: 4000, duration: '4-6 hours', recovery: '3-4 weeks' },
-      { id: 'blepharoplasty', name: 'Blepharoplasty (Eyelid)', price: 1600, germanyPrice: 5000, turkeyPrice: 1800, duration: '1-2 hours', recovery: '1-2 weeks' },
-      { id: 'otoplasty', name: 'Otoplasty (Ear Pinning)', price: 1900, germanyPrice: 6000, turkeyPrice: 2000, duration: '1-2 hours', recovery: '1-2 weeks' }
+      { id: 'rhinoplasty-full', name: 'Rhinoplasty', price: 3200, germanyPrice: 15000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '2-3 weeks', hospitalNights: 1, recoveryNights: 3, complexity: 'moderate' },
+      { id: 'breast-augmentation', name: 'Breast Augmentation', price: 3200, germanyPrice: 10000, turkeyPrice: 3500, duration: '2-3 hours', recovery: '4-6 weeks', hospitalNights: 1, recoveryNights: 4, complexity: 'moderate' },
+      { id: 'breast-reduction', name: 'Breast Reduction', price: 2700, germanyPrice: 12000, turkeyPrice: 2800, duration: '3-4 hours', recovery: '4-6 weeks', hospitalNights: 2, recoveryNights: 4, complexity: 'moderate' },
+      { id: 'breast-lift', name: 'Breast Lift', price: 2200, germanyPrice: 8000, turkeyPrice: 2400, duration: '2-3 hours', recovery: '3-4 weeks', hospitalNights: 1, recoveryNights: 3, complexity: 'moderate' },
+      { id: 'liposuction-area', name: 'Liposuction (per area)', price: 2200, germanyPrice: 8000, turkeyPrice: 2400, duration: '1-2 hours', recovery: '2-4 weeks', hospitalNights: 0, recoveryNights: 2, complexity: 'minor', programType: 'single-day' },
+      { id: 'facelift-surgical', name: 'Facelift (Surgical)', price: 3800, germanyPrice: 20000, turkeyPrice: 4000, duration: '4-6 hours', recovery: '3-4 weeks', hospitalNights: 2, recoveryNights: 5, complexity: 'moderate-complex' },
+      { id: 'blepharoplasty', name: 'Blepharoplasty (Eyelid)', price: 1600, germanyPrice: 5000, turkeyPrice: 1800, duration: '1-2 hours', recovery: '1-2 weeks', hospitalNights: 0, recoveryNights: 2, complexity: 'minor', programType: 'single-day' },
+      { id: 'otoplasty', name: 'Otoplasty (Ear Pinning)', price: 1900, germanyPrice: 6000, turkeyPrice: 2000, duration: '1-2 hours', recovery: '1-2 weeks', hospitalNights: 0, recoveryNights: 2, complexity: 'minor', programType: 'single-day' }
     ]
   },
   {
     id: 'non-surgical-face',
     name: 'Non-Surgical Face Treatments',
     icon: 'spa',
+    surgeryTimeline: {
+      hospitalStay: '0 nights',
+      recoveryStay: '0-3 nights',
+      totalProgram: '1-3 nights',
+      description: 'Single-day and 3-night rejuvenation programs'
+    },
     procedures: [
-      { id: 'hifu-face', name: 'HIFU Face Lift', price: 950, germanyPrice: 1400, turkeyPrice: 1200, duration: '60-90 min', recovery: 'None' },
-      { id: 'ultherapy', name: 'Ultherapy (Branded HIFU)', price: 1500, germanyPrice: 2000, turkeyPrice: 1800, duration: '90 min', recovery: 'None' },
-      { id: 'rf-tightening', name: 'RF Skin Tightening', price: 750, germanyPrice: 1100, turkeyPrice: 1000, duration: '45-60 min', recovery: 'None' },
-      { id: 'plasma-pen', name: 'Plasma Pen Treatment', price: 550, germanyPrice: 800, turkeyPrice: 700, duration: '30-60 min', recovery: '5-7 days' },
-      { id: 'thread-lift', name: 'Thread Lift', price: 1600, germanyPrice: 4000, turkeyPrice: 1800, duration: '60-90 min', recovery: '1-2 weeks' },
-      { id: 'botox-full', name: 'Botox (Full Face)', price: 450, germanyPrice: 1000, turkeyPrice: 600, duration: '15-30 min', recovery: 'None' },
-      { id: 'dermal-fillers', name: 'Dermal Fillers (1ml)', price: 300, germanyPrice: 450, turkeyPrice: 400, duration: '30-45 min', recovery: 'None' }
+      { id: 'hifu-face', name: 'HIFU Face Lift', price: 950, germanyPrice: 1400, turkeyPrice: 1200, duration: '60-90 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'ultherapy', name: 'Ultherapy (Branded HIFU)', price: 1500, germanyPrice: 2000, turkeyPrice: 1800, duration: '90 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'rf-tightening', name: 'RF Skin Tightening', price: 750, germanyPrice: 1100, turkeyPrice: 1000, duration: '45-60 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'plasma-pen', name: 'Plasma Pen Treatment', price: 550, germanyPrice: 800, turkeyPrice: 700, duration: '30-60 min', recovery: '5-7 days', hospitalNights: 0, recoveryNights: 2, programType: 'rejuvenation' },
+      { id: 'thread-lift', name: 'Thread Lift', price: 1600, germanyPrice: 4000, turkeyPrice: 1800, duration: '60-90 min', recovery: '1-2 weeks', hospitalNights: 0, recoveryNights: 3, programType: 'rejuvenation' },
+      { id: 'botox-full', name: 'Botox (Full Face)', price: 450, germanyPrice: 1000, turkeyPrice: 600, duration: '15-30 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'dermal-fillers', name: 'Dermal Fillers (1ml)', price: 300, germanyPrice: 450, turkeyPrice: 400, duration: '30-45 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' }
     ]
   },
   {
     id: 'body-contouring-treatments',
     name: 'Body Contouring',
     icon: 'person-dress',
+    surgeryTimeline: {
+      hospitalStay: '1-3 nights',
+      recoveryStay: '3-5 nights',
+      totalProgram: '4-8 nights',
+      description: 'Elective body contouring surgeries with complexity-based timelines'
+    },
     procedures: [
-      { id: 'vaser-lipo', name: 'VASER Liposuction', price: 3000, germanyPrice: 3800, turkeyPrice: 3500, duration: '2-4 hours', recovery: '2-4 weeks' },
-      { id: 'coolsculpting', name: 'CoolSculpting (per cycle)', price: 650, germanyPrice: 900, turkeyPrice: 750, duration: '45-60 min', recovery: 'None' },
-      { id: 'tummy-tuck', name: 'Tummy Tuck (Abdominoplasty)', price: 3500, germanyPrice: 10000, turkeyPrice: 4000, duration: '3-4 hours', recovery: '4-6 weeks' },
-      { id: 'arm-lift', name: 'Arm Lift (Brachioplasty)', price: 2800, germanyPrice: 8000, turkeyPrice: 3200, duration: '2-3 hours', recovery: '2-4 weeks' },
-      { id: 'thigh-lift', name: 'Thigh Lift', price: 3200, germanyPrice: 9000, turkeyPrice: 3600, duration: '2-3 hours', recovery: '3-4 weeks' }
+      { id: 'vaser-lipo', name: 'VASER Liposuction', price: 3000, germanyPrice: 3800, turkeyPrice: 3500, duration: '2-4 hours', recovery: '2-4 weeks', hospitalNights: 0, recoveryNights: 3, complexity: 'minor', programType: 'single-day' },
+      { id: 'coolsculpting', name: 'CoolSculpting (per cycle)', price: 650, germanyPrice: 900, turkeyPrice: 750, duration: '45-60 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'tummy-tuck', name: 'Tummy Tuck (Abdominoplasty)', price: 3500, germanyPrice: 10000, turkeyPrice: 4000, duration: '3-4 hours', recovery: '4-6 weeks', hospitalNights: 2, recoveryNights: 5, complexity: 'moderate-complex' },
+      { id: 'arm-lift', name: 'Arm Lift (Brachioplasty)', price: 2800, germanyPrice: 8000, turkeyPrice: 3200, duration: '2-3 hours', recovery: '2-4 weeks', hospitalNights: 1, recoveryNights: 3, complexity: 'moderate' },
+      { id: 'thigh-lift', name: 'Thigh Lift', price: 3200, germanyPrice: 9000, turkeyPrice: 3600, duration: '2-3 hours', recovery: '3-4 weeks', hospitalNights: 2, recoveryNights: 4, complexity: 'moderate' }
     ]
   },
   {
     id: 'skin-treatments',
     name: 'Skin Treatments',
     icon: 'wand-magic-sparkles',
+    surgeryTimeline: {
+      hospitalStay: '0 nights',
+      recoveryStay: '0-3 nights',
+      totalProgram: '1-3 nights',
+      description: 'Single-day treatments and rejuvenation programs'
+    },
     procedures: [
-      { id: 'fractional-co2', name: 'Fractional CO2 Laser', price: 550, germanyPrice: 1500, turkeyPrice: 700, duration: '30-60 min', recovery: '5-7 days' },
-      { id: 'chemical-peel', name: 'Chemical Peel (Deep)', price: 300, germanyPrice: 800, turkeyPrice: 350, duration: '30-45 min', recovery: '7-14 days' },
-      { id: 'microneedling-prp', name: 'Microneedling + PRP', price: 350, germanyPrice: 1000, turkeyPrice: 450, duration: '45-60 min', recovery: '2-3 days' },
-      { id: 'laser-tattoo', name: 'Laser Tattoo Removal (session)', price: 150, germanyPrice: 300, turkeyPrice: 170, duration: '15-30 min', recovery: '1-2 weeks' },
-      { id: 'laser-scar', name: 'Laser Scar Revision (session)', price: 220, germanyPrice: 450, turkeyPrice: 250, duration: '30-45 min', recovery: '3-5 days' },
-      { id: 'hydrafacial', name: 'Hydrafacial', price: 115, germanyPrice: 350, turkeyPrice: 130, duration: '45-60 min', recovery: 'None' }
+      { id: 'fractional-co2', name: 'Fractional CO2 Laser', price: 550, germanyPrice: 1500, turkeyPrice: 700, duration: '30-60 min', recovery: '5-7 days', hospitalNights: 0, recoveryNights: 2, programType: 'rejuvenation' },
+      { id: 'chemical-peel', name: 'Chemical Peel (Deep)', price: 300, germanyPrice: 800, turkeyPrice: 350, duration: '30-45 min', recovery: '7-14 days', hospitalNights: 0, recoveryNights: 3, programType: 'rejuvenation' },
+      { id: 'microneedling-prp', name: 'Microneedling + PRP', price: 350, germanyPrice: 1000, turkeyPrice: 450, duration: '45-60 min', recovery: '2-3 days', hospitalNights: 0, recoveryNights: 1, programType: 'single-day' },
+      { id: 'laser-tattoo', name: 'Laser Tattoo Removal (session)', price: 150, germanyPrice: 300, turkeyPrice: 170, duration: '15-30 min', recovery: '1-2 weeks', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'laser-scar', name: 'Laser Scar Revision (session)', price: 220, germanyPrice: 450, turkeyPrice: 250, duration: '30-45 min', recovery: '3-5 days', hospitalNights: 0, recoveryNights: 1, programType: 'single-day' },
+      { id: 'hydrafacial', name: 'Hydrafacial', price: 115, germanyPrice: 350, turkeyPrice: 130, duration: '45-60 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' }
     ]
   },
   {
     id: 'laser-hair-removal',
     name: 'Laser Hair Removal (6 Sessions)',
     icon: 'bolt',
+    surgeryTimeline: {
+      hospitalStay: '0 nights',
+      recoveryStay: '0 nights',
+      totalProgram: 'Single day',
+      description: 'Same-day treatments with no recovery time needed'
+    },
     procedures: [
-      { id: 'lhr-full-body-female', name: 'Full Body (Female)', price: 1000, germanyPrice: 3500, turkeyPrice: 1250, duration: '2-3 hours', recovery: 'None' },
-      { id: 'lhr-full-body-male', name: 'Full Body (Male)', price: 1250, germanyPrice: 4500, turkeyPrice: 1500, duration: '2-3 hours', recovery: 'None' },
-      { id: 'lhr-brazilian', name: 'Brazilian/Bikini', price: 400, germanyPrice: 1200, turkeyPrice: 500, duration: '30-45 min', recovery: 'None' },
-      { id: 'lhr-legs', name: 'Legs (Full)', price: 500, germanyPrice: 1500, turkeyPrice: 600, duration: '60-90 min', recovery: 'None' },
-      { id: 'lhr-face', name: 'Face (Full)', price: 320, germanyPrice: 1200, turkeyPrice: 400, duration: '30 min', recovery: 'None' }
+      { id: 'lhr-full-body-female', name: 'Full Body (Female)', price: 1000, germanyPrice: 3500, turkeyPrice: 1250, duration: '2-3 hours', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'lhr-full-body-male', name: 'Full Body (Male)', price: 1250, germanyPrice: 4500, turkeyPrice: 1500, duration: '2-3 hours', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'lhr-brazilian', name: 'Brazilian/Bikini', price: 400, germanyPrice: 1200, turkeyPrice: 500, duration: '30-45 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'lhr-legs', name: 'Legs (Full)', price: 500, germanyPrice: 1500, turkeyPrice: 600, duration: '60-90 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'lhr-face', name: 'Face (Full)', price: 320, germanyPrice: 1200, turkeyPrice: 400, duration: '30 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' }
     ]
   },
   {
     id: 'intimate-aesthetics',
     name: 'Intimate Aesthetics',
     icon: 'venus',
+    surgeryTimeline: {
+      hospitalStay: '0-2 nights',
+      recoveryStay: '2-4 nights',
+      totalProgram: '2-6 nights',
+      description: 'Non-surgical same-day treatments to elective surgical procedures'
+    },
     procedures: [
-      { id: 'vaginal-laser', name: 'Vaginal Tightening (Laser)', price: 700, germanyPrice: 3000, turkeyPrice: 850, duration: '30-45 min', recovery: '2-3 days' },
-      { id: 'vaginal-rf', name: 'Vaginal Tightening (RF)', price: 420, germanyPrice: 2000, turkeyPrice: 500, duration: '30-45 min', recovery: '1-2 days' },
-      { id: 'vaginal-hifu', name: 'Vaginal Tightening (HIFU)', price: 320, germanyPrice: 2500, turkeyPrice: 400, duration: '30-45 min', recovery: 'None' },
-      { id: 'vaginoplasty', name: 'Vaginoplasty (Surgical)', price: 1400, germanyPrice: 5000, turkeyPrice: 1750, duration: '1-2 hours', recovery: '4-6 weeks' },
-      { id: 'labiaplasty', name: 'Labiaplasty', price: 1200, germanyPrice: 3500, turkeyPrice: 1400, duration: '1-2 hours', recovery: '2-4 weeks' }
+      { id: 'vaginal-laser', name: 'Vaginal Tightening (Laser)', price: 700, germanyPrice: 3000, turkeyPrice: 850, duration: '30-45 min', recovery: '2-3 days', hospitalNights: 0, recoveryNights: 1, programType: 'single-day' },
+      { id: 'vaginal-rf', name: 'Vaginal Tightening (RF)', price: 420, germanyPrice: 2000, turkeyPrice: 500, duration: '30-45 min', recovery: '1-2 days', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'vaginal-hifu', name: 'Vaginal Tightening (HIFU)', price: 320, germanyPrice: 2500, turkeyPrice: 400, duration: '30-45 min', recovery: 'None', hospitalNights: 0, recoveryNights: 0, programType: 'single-day' },
+      { id: 'vaginoplasty', name: 'Vaginoplasty (Surgical)', price: 1400, germanyPrice: 5000, turkeyPrice: 1750, duration: '1-2 hours', recovery: '4-6 weeks', hospitalNights: 1, recoveryNights: 4, complexity: 'moderate' },
+      { id: 'labiaplasty', name: 'Labiaplasty', price: 1200, germanyPrice: 3500, turkeyPrice: 1400, duration: '1-2 hours', recovery: '2-4 weeks', hospitalNights: 0, recoveryNights: 3, complexity: 'minor', programType: 'single-day' }
     ]
   }
 ]
 
+// Surgery Timeline Programs
+const SURGERY_TIMELINE_PROGRAMS = {
+  bariatric: {
+    name: 'Bariatric Surgery Program',
+    hospitalStay: 2,
+    recoveryStay: 3,
+    totalNights: 5,
+    description: 'Standard bariatric surgery with 2 nights hospital stay followed by 3 nights recovery at 5-star resort'
+  },
+  complex: {
+    name: 'Complex Surgery Program',
+    hospitalStay: { min: 5, max: 7 },
+    recoveryStay: { min: 7, max: 14 },
+    totalNights: { min: 12, max: 21 },
+    description: 'Major orthopedic, cardiac, or complex surgical procedures requiring extended hospital monitoring'
+  },
+  electivePlastic: {
+    name: 'Elective Plastic Surgery Program',
+    hospitalStay: { min: 2, max: 3 },
+    recoveryStay: { min: 3, max: 5 },
+    totalNights: { min: 5, max: 8 },
+    description: 'Cosmetic and reconstructive surgeries with recovery based on procedure complexity'
+  },
+  rejuvenation: {
+    name: '3-Night Rejuvenation Program',
+    hospitalStay: 0,
+    recoveryStay: 3,
+    totalNights: 3,
+    description: 'Anti-aging, regenerative, and wellness treatments with spa-resort recovery'
+  },
+  singleDay: {
+    name: 'Single-Day Elective Program',
+    hospitalStay: 0,
+    recoveryStay: 0,
+    totalNights: 0,
+    description: 'Non-surgical treatments and minor procedures completed in a single day visit'
+  }
+}
+
 // Aesthetic Tourism Packages (All-Inclusive)
 const AESTHETIC_PACKAGES = [
+  // NEW: 3-Night Rejuvenation & Anti-Aging Programs
+  {
+    id: 'rejuvenation-essentials',
+    name: 'Rejuvenation Essentials',
+    tagline: '3-Night Anti-Aging Retreat',
+    priceRange: { min: 2200, max: 3200 },
+    currency: 'USD',
+    duration: '3 nights',
+    hospitalNights: 0,
+    recoveryNights: 3,
+    programType: 'rejuvenation',
+    accommodation: '5-Star Resort',
+    targetMarket: 'Adults 35-65',
+    proceduresIncluded: ['PRP Therapy', 'IV Vitamin Drip', 'Hydrafacial', 'Anti-aging consultation'],
+    features: ['No Surgery Required', 'Immediate Results', 'German Specialist Consultation', 'Spa Treatments', 'Nutritionist Plan', 'Red Sea Relaxation'],
+    popular: true
+  },
+  {
+    id: 'stem-cell-renewal',
+    name: 'Stem Cell Renewal',
+    tagline: '3-Night Regenerative Program',
+    priceRange: { min: 8500, max: 12000 },
+    currency: 'USD',
+    duration: '3 nights',
+    hospitalNights: 0,
+    recoveryNights: 3,
+    programType: 'rejuvenation',
+    accommodation: 'Private Villa',
+    targetMarket: 'Premium clientele 40-70',
+    proceduresIncluded: ['Stem Cell Therapy', 'Exosome Treatment', 'NAD+ IV Drip', 'Full wellness assessment'],
+    features: ['Cutting-Edge Regenerative Medicine', 'Private Villa Stay', 'Personal Concierge', 'German Longevity Specialist', 'Personalized Protocol'],
+    popular: true
+  },
+  {
+    id: 'anti-aging-weekend',
+    name: 'Anti-Aging Weekend',
+    tagline: '3-Night Youth Restoration',
+    priceRange: { min: 3500, max: 5000 },
+    currency: 'USD',
+    duration: '3 nights',
+    hospitalNights: 0,
+    recoveryNights: 3,
+    programType: 'rejuvenation',
+    accommodation: '5-Star Resort',
+    targetMarket: 'Professionals 40-60',
+    proceduresIncluded: ['Thread Lift OR HIFU Face Lift', 'Botox', 'Dermal Fillers', 'Skin analysis'],
+    features: ['Non-Surgical Face Lift', 'Minimal Downtime', 'Combine with Red Sea Holiday', 'German Aesthetic Specialist', 'Discreet Service'],
+    popular: true
+  },
+  // NEW: Single-Day Elective Programs
+  {
+    id: 'beauty-day',
+    name: 'Beauty Day Express',
+    tagline: 'Single-Day Aesthetic Treatment',
+    priceRange: { min: 800, max: 1500 },
+    currency: 'USD',
+    duration: 'Same day',
+    hospitalNights: 0,
+    recoveryNights: 0,
+    programType: 'single-day',
+    accommodation: 'Not required',
+    targetMarket: 'All ages',
+    proceduresIncluded: ['Botox OR Fillers', 'Hydrafacial', 'Consultation'],
+    features: ['No Overnight Stay', 'Return Same Day', 'German-Trained Practitioner', 'Premium Products'],
+    popular: false
+  },
+  {
+    id: 'laser-day',
+    name: 'Laser Treatment Day',
+    tagline: 'Single-Day Laser Procedures',
+    priceRange: { min: 500, max: 1200 },
+    currency: 'USD',
+    duration: 'Same day',
+    hospitalNights: 0,
+    recoveryNights: 0,
+    programType: 'single-day',
+    accommodation: 'Not required',
+    targetMarket: 'All ages',
+    proceduresIncluded: ['Laser Hair Removal OR Laser Skin Treatment', 'Consultation'],
+    features: ['No Downtime', 'Advanced Laser Technology', 'Quick Treatment', 'Same Day Results'],
+    popular: false
+  },
+  {
+    id: 'lipo-express',
+    name: 'Lipo Express',
+    tagline: 'Single-Day Body Sculpting',
+    priceRange: { min: 2500, max: 4000 },
+    currency: 'USD',
+    duration: 'Same day + optional recovery',
+    hospitalNights: 0,
+    recoveryNights: 0,
+    programType: 'single-day',
+    accommodation: 'Optional',
+    targetMarket: 'Adults 25-55',
+    proceduresIncluded: ['VASER Liposuction (single area)', 'Compression garment', 'Follow-up'],
+    features: ['Minimally Invasive', 'Quick Recovery', 'German Plastic Surgeon', 'Local Anesthesia'],
+    popular: true
+  },
+  // Updated existing packages with timeline info
   {
     id: 'red-sea-renewal',
     name: 'Red Sea Renewal',
     tagline: 'Transform & Recover by the Sea',
     priceRange: { min: 4500, max: 5500 },
     currency: 'USD',
-    duration: '7 nights',
+    duration: '5-7 nights',
+    hospitalNights: 2,
+    recoveryNights: 5,
+    programType: 'elective-plastic',
     accommodation: '4-Star Beachfront',
     targetMarket: 'European females 25-45',
     proceduresIncluded: ['Rhinoplasty OR Breast Aug/Lift', 'Post-op care', 'Recovery spa treatments'],
-    features: ['German Board-Certified Surgeon', 'JCI Hospital', 'Beachfront Recovery', 'Daily Spa', 'Airport VIP Transfer', 'Nutritionist Meals'],
+    features: ['German Board-Certified Surgeon', 'JCI Hospital', '2-3 Nights Hospital Stay', 'Beachfront Recovery', 'Daily Spa', 'Airport VIP Transfer', 'Nutritionist Meals'],
     popular: true
   },
   {
@@ -438,10 +728,13 @@ const AESTHETIC_PACKAGES = [
     priceRange: { min: 3800, max: 4800 },
     currency: 'USD',
     duration: '5 nights',
+    hospitalNights: 2,
+    recoveryNights: 3,
+    programType: 'elective-plastic',
     accommodation: '5-Star Resort',
     targetMarket: 'European females 30-50',
     proceduresIncluded: ['Liposuction (3 areas)', 'VASER + Body RF', 'Compression garments'],
-    features: ['German Plastic Surgeon', 'Advanced VASER Technology', '5-Star Recovery Suite', 'Lymphatic Massage', 'Wellness Activities'],
+    features: ['German Plastic Surgeon', 'Advanced VASER Technology', '2 Nights Hospital Stay', '5-Star Recovery Suite', 'Lymphatic Massage', 'Wellness Activities'],
     popular: true
   },
   {
@@ -451,6 +744,9 @@ const AESTHETIC_PACKAGES = [
     priceRange: { min: 2200, max: 3200 },
     currency: 'USD',
     duration: '3 nights',
+    hospitalNights: 0,
+    recoveryNights: 3,
+    programType: 'rejuvenation',
     accommodation: '5-Star Resort',
     targetMarket: 'Business travelers 40-60',
     proceduresIncluded: ['Non-surgical facelift (HIFU)', 'Botox', 'Fillers', 'Medical-grade skincare'],
@@ -463,7 +759,10 @@ const AESTHETIC_PACKAGES = [
     tagline: 'Feminine Rejuvenation Retreat',
     priceRange: { min: 2500, max: 3500 },
     currency: 'USD',
-    duration: '5 nights',
+    duration: '3 nights',
+    hospitalNights: 0,
+    recoveryNights: 3,
+    programType: 'rejuvenation',
     accommodation: 'Private Villa Option',
     targetMarket: 'European females 35-55',
     proceduresIncluded: ['Vaginal rejuvenation (Laser OR RF, 3 sessions)'],
@@ -476,11 +775,14 @@ const AESTHETIC_PACKAGES = [
     tagline: 'Complete Post-Pregnancy Transformation',
     priceRange: { min: 6500, max: 8500 },
     currency: 'USD',
-    duration: '10 nights',
+    duration: '8-10 nights',
+    hospitalNights: 3,
+    recoveryNights: 7,
+    programType: 'elective-plastic',
     accommodation: '5-Star Resort',
     targetMarket: 'Post-pregnancy women 28-45',
     proceduresIncluded: ['Tummy Tuck', 'Breast Lift/Augmentation', 'Liposuction (2 areas)'],
-    features: ['Comprehensive Body Restoration', 'Extended Recovery Support', 'Childcare Assistance Available', 'Family Suite Option', 'Physiotherapy'],
+    features: ['Comprehensive Body Restoration', '3 Nights Hospital Stay', 'Extended Recovery Support', 'Childcare Assistance Available', 'Family Suite Option', 'Physiotherapy'],
     popular: true
   },
   {
@@ -489,12 +791,65 @@ const AESTHETIC_PACKAGES = [
     tagline: 'Complete Aesthetic Journey',
     priceRange: { min: 12000, max: 18000 },
     currency: 'USD',
-    duration: '21 nights',
+    duration: '14-21 nights',
+    hospitalNights: 5,
+    recoveryNights: 16,
+    programType: 'complex-multi-procedure',
     accommodation: 'Private Villa',
     targetMarket: 'Premium clientele',
     proceduresIncluded: ['Multiple procedures (customized)', 'Full body contouring', 'Facial rejuvenation', 'Anti-aging treatments'],
-    features: ['Personal Care Manager', 'Private Chef', 'Unlimited Spa', 'Yacht Excursion', 'Lifetime Follow-up'],
+    features: ['Personal Care Manager', 'Private Chef', '5+ Nights Hospital Stay', 'Unlimited Spa', 'Yacht Excursion', 'Lifetime Follow-up'],
     popular: false
+  },
+  // NEW: Bariatric Surgery Program
+  {
+    id: 'bariatric-essentials',
+    name: 'Bariatric Essentials',
+    tagline: 'Weight Loss Surgery Program',
+    priceRange: { min: 7500, max: 12000 },
+    currency: 'USD',
+    duration: '5 nights',
+    hospitalNights: 2,
+    recoveryNights: 3,
+    programType: 'bariatric',
+    accommodation: '5-Star Resort',
+    targetMarket: 'Patients with obesity seeking surgical intervention',
+    proceduresIncluded: ['Gastric Sleeve OR Gastric Bypass', 'Pre-op workup', 'Post-op care', 'Nutrition consultation'],
+    features: ['2 Nights Hospital Stay', '3 Nights Resort Recovery', 'German Board-Certified Bariatric Surgeon', 'Nutritionist Support', 'Lifetime Follow-up Access'],
+    popular: true
+  },
+  {
+    id: 'bariatric-premium',
+    name: 'Bariatric Premium',
+    tagline: 'VIP Weight Loss Surgery',
+    priceRange: { min: 12000, max: 18000 },
+    currency: 'USD',
+    duration: '7 nights',
+    hospitalNights: 2,
+    recoveryNights: 5,
+    programType: 'bariatric',
+    accommodation: 'Private Villa',
+    targetMarket: 'Premium patients seeking weight loss surgery',
+    proceduresIncluded: ['Gastric Sleeve OR Gastric Bypass', 'Full body assessment', 'Post-op intensive care', 'Personal nutritionist', 'Fitness program design'],
+    features: ['2 Nights Premium Hospital Suite', '5 Nights Private Villa', 'German Senior Bariatric Surgeon', 'Personal Chef', 'Lifetime Nutrition Support'],
+    popular: true
+  },
+  // NEW: Complex Surgery Programs
+  {
+    id: 'orthopedic-joint',
+    name: 'Joint Replacement Program',
+    tagline: 'Comprehensive Joint Surgery',
+    priceRange: { min: 15000, max: 25000 },
+    currency: 'USD',
+    duration: '12-14 nights',
+    hospitalNights: 6,
+    recoveryNights: 8,
+    programType: 'complex',
+    accommodation: '5-Star Medical Resort',
+    targetMarket: 'Patients requiring knee or hip replacement',
+    proceduresIncluded: ['Knee OR Hip Replacement', 'Pre-op assessment', 'Surgery', 'Intensive physiotherapy', 'Rehabilitation'],
+    features: ['5-7 Nights Hospital Stay', 'German Orthopedic Surgeon', 'Intensive Physiotherapy', 'Hydrotherapy Pool', 'Dedicated Rehabilitation Team'],
+    popular: true
   }
 ]
 
@@ -2005,6 +2360,88 @@ app.get('/api/treatments/:categoryId', (c) => {
 // Wellness API
 app.get('/api/wellness', (c) => {
   return c.json({ success: true, data: WELLNESS_SERVICES })
+})
+
+// Surgery Timeline Programs API
+app.get('/api/surgery-timelines', (c) => {
+  return c.json({ 
+    success: true, 
+    data: SURGERY_TIMELINE_PROGRAMS,
+    summary: {
+      bariatric: '2 nights hospital + 3 nights recovery = 5 nights total',
+      complex: '5-7 nights hospital + 7-14 nights recovery = 12-21 nights total',
+      electivePlastic: '2-3 nights hospital + 3-5 nights recovery = 5-8 nights total',
+      rejuvenation: '0 nights hospital + 3 nights recovery = 3 nights total',
+      singleDay: 'Same day treatment, no overnight stay required'
+    }
+  })
+})
+
+// Get timeline for specific procedure
+app.get('/api/surgery-timelines/:procedureId', (c) => {
+  const procedureId = c.req.param('procedureId')
+  
+  // Search all treatment categories for the procedure
+  for (const category of TREATMENT_CATEGORIES) {
+    const procedure = category.procedures.find((p: any) => p.id === procedureId)
+    if (procedure) {
+      return c.json({
+        success: true,
+        data: {
+          procedure: procedure,
+          category: {
+            id: category.id,
+            name: category.name,
+            surgeryTimeline: (category as any).surgeryTimeline
+          },
+          timeline: {
+            hospitalNights: (procedure as any).hospitalNights || 0,
+            recoveryNights: (procedure as any).recoveryNights || 0,
+            totalNights: ((procedure as any).hospitalNights || 0) + ((procedure as any).recoveryNights || 0),
+            complexity: (procedure as any).complexity || 'standard',
+            programType: (procedure as any).programType || 'standard'
+          }
+        }
+      })
+    }
+  }
+  
+  return c.json({ success: false, error: 'Procedure not found' }, 404)
+})
+
+// Get all procedures by program type
+app.get('/api/surgery-timelines/by-program/:programType', (c) => {
+  const programType = c.req.param('programType')
+  const procedures: any[] = []
+  
+  for (const category of TREATMENT_CATEGORIES) {
+    for (const procedure of category.procedures) {
+      const procType = (procedure as any).programType || 'standard'
+      const complexity = (procedure as any).complexity
+      
+      let matches = false
+      if (programType === 'single-day' && procType === 'single-day') matches = true
+      if (programType === 'rejuvenation' && procType === 'rejuvenation') matches = true
+      if (programType === 'bariatric' && category.id === 'bariatric') matches = true
+      if (programType === 'complex' && complexity === 'complex') matches = true
+      if (programType === 'elective-plastic' && (complexity === 'moderate' || complexity === 'moderate-complex')) matches = true
+      
+      if (matches) {
+        procedures.push({
+          ...procedure,
+          categoryId: category.id,
+          categoryName: category.name
+        })
+      }
+    }
+  }
+  
+  return c.json({
+    success: true,
+    data: procedures,
+    program: (SURGERY_TIMELINE_PROGRAMS as any)[programType === 'elective-plastic' ? 'electivePlastic' : programType] || null,
+    total: procedures.length
+  })
 })
 
 // Aesthetic Packages API
