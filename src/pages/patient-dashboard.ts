@@ -1873,44 +1873,161 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                 </div>
             </div>
             
-            <!-- Tracking Metrics -->
-            <h2 class="text-lg font-bold text-navy mb-4">Daily Tracking</h2>
+            <!-- Tracking Metrics - Clickable with Charts -->
+            <h2 class="text-lg font-bold text-navy mb-4">
+                <i class="fas fa-chart-line text-gold mr-2"></i>Daily Tracking
+                <span class="text-sm font-normal text-gray-500 ml-2">Click for detailed charts</span>
+            </h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-                <div class="card p-4 text-center">
-                    <i class="fas fa-weight text-purple-500 text-xl mb-2"></i>
+                <div onclick="openTrackingChart('weight')" class="card p-4 text-center cursor-pointer hover:shadow-lg hover:border-purple-300 transition-all duration-300 group">
+                    <div class="relative">
+                        <i class="fas fa-weight text-purple-500 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                        <i class="fas fa-chart-line absolute -top-1 -right-1 text-xs text-purple-300 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
                     <div class="text-2xl font-bold text-navy">82.4</div>
                     <div class="text-xs text-gray-500">Weight (kg)</div>
                     <div class="text-xs text-green-500 mt-1">-0.3 today</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <i class="fas fa-walking text-green-500 text-xl mb-2"></i>
+                <div onclick="openTrackingChart('steps')" class="card p-4 text-center cursor-pointer hover:shadow-lg hover:border-green-300 transition-all duration-300 group">
+                    <div class="relative">
+                        <i class="fas fa-walking text-green-500 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                        <i class="fas fa-chart-line absolute -top-1 -right-1 text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
                     <div class="text-2xl font-bold text-navy">5,240</div>
                     <div class="text-xs text-gray-500">Steps</div>
                     <div class="text-xs text-yellow-500 mt-1">70% of goal</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <i class="fas fa-tint text-blue-500 text-xl mb-2"></i>
+                <div onclick="openTrackingChart('water')" class="card p-4 text-center cursor-pointer hover:shadow-lg hover:border-blue-300 transition-all duration-300 group">
+                    <div class="relative">
+                        <i class="fas fa-tint text-blue-500 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                        <i class="fas fa-chart-line absolute -top-1 -right-1 text-xs text-blue-300 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
                     <div class="text-2xl font-bold text-navy">1,800</div>
                     <div class="text-xs text-gray-500">Water (ml)</div>
                     <div class="text-xs text-yellow-500 mt-1">75% of goal</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <i class="fas fa-moon text-indigo-500 text-xl mb-2"></i>
+                <div onclick="openTrackingChart('sleep')" class="card p-4 text-center cursor-pointer hover:shadow-lg hover:border-indigo-300 transition-all duration-300 group">
+                    <div class="relative">
+                        <i class="fas fa-moon text-indigo-500 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                        <i class="fas fa-chart-line absolute -top-1 -right-1 text-xs text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
                     <div class="text-2xl font-bold text-navy">7.2</div>
                     <div class="text-xs text-gray-500">Sleep (hours)</div>
                     <div class="text-xs text-green-500 mt-1">Good quality</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <i class="fas fa-fire text-red-500 text-xl mb-2"></i>
+                <div onclick="openTrackingChart('calories')" class="card p-4 text-center cursor-pointer hover:shadow-lg hover:border-red-300 transition-all duration-300 group">
+                    <div class="relative">
+                        <i class="fas fa-fire text-red-500 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                        <i class="fas fa-chart-line absolute -top-1 -right-1 text-xs text-red-300 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
                     <div class="text-2xl font-bold text-navy">1,420</div>
                     <div class="text-xs text-gray-500">Calories</div>
                     <div class="text-xs text-green-500 mt-1">On target</div>
                 </div>
-                <div class="card p-4 text-center">
-                    <i class="fas fa-drumstick-bite text-orange-500 text-xl mb-2"></i>
+                <div onclick="openTrackingChart('protein')" class="card p-4 text-center cursor-pointer hover:shadow-lg hover:border-orange-300 transition-all duration-300 group">
+                    <div class="relative">
+                        <i class="fas fa-drumstick-bite text-orange-500 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                        <i class="fas fa-chart-line absolute -top-1 -right-1 text-xs text-orange-300 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
                     <div class="text-2xl font-bold text-navy">68</div>
                     <div class="text-xs text-gray-500">Protein (g)</div>
                     <div class="text-xs text-green-500 mt-1">85% of goal</div>
+                </div>
+            </div>
+            
+            <!-- Tracking Chart Modal -->
+            <div id="tracking-chart-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                    <!-- Modal Header -->
+                    <div class="bg-gradient-to-r from-navy to-navy-light p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div id="chart-icon-container" class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
+                                    <i id="chart-modal-icon" class="fas fa-chart-line text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h2 id="chart-modal-title" class="text-2xl font-bold">Tracking Data</h2>
+                                    <p id="chart-modal-subtitle" class="text-gold text-sm">Historical trends and analysis</p>
+                                </div>
+                            </div>
+                            <button onclick="closeTrackingChart()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Time Period Selector -->
+                    <div class="p-4 bg-cream border-b flex items-center justify-center gap-2">
+                        <button onclick="updateChartPeriod(30)" id="period-30" class="px-6 py-2 rounded-full font-semibold text-sm transition-all bg-navy text-white">
+                            30 Days
+                        </button>
+                        <button onclick="updateChartPeriod(60)" id="period-60" class="px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gray-200 text-gray-600 hover:bg-gray-300">
+                            60 Days
+                        </button>
+                        <button onclick="updateChartPeriod(90)" id="period-90" class="px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gray-200 text-gray-600 hover:bg-gray-300">
+                            90 Days
+                        </button>
+                    </div>
+                    
+                    <!-- Chart Container -->
+                    <div class="p-6">
+                        <div class="h-80 relative">
+                            <canvas id="tracking-detail-chart"></canvas>
+                        </div>
+                        
+                        <!-- Statistics Summary -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 text-center border border-green-100">
+                                <div class="text-sm text-gray-500 mb-1">Average</div>
+                                <div id="stat-average" class="text-2xl font-bold text-navy">--</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-4 text-center border border-blue-100">
+                                <div class="text-sm text-gray-500 mb-1">Minimum</div>
+                                <div id="stat-min" class="text-2xl font-bold text-navy">--</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-4 text-center border border-purple-100">
+                                <div class="text-sm text-gray-500 mb-1">Maximum</div>
+                                <div id="stat-max" class="text-2xl font-bold text-navy">--</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-gold/10 to-amber-50 rounded-2xl p-4 text-center border border-gold/20">
+                                <div class="text-sm text-gray-500 mb-1">Trend</div>
+                                <div id="stat-trend" class="text-2xl font-bold text-navy flex items-center justify-center gap-1">
+                                    <i id="trend-icon" class="fas fa-arrow-up text-green-500"></i>
+                                    <span id="trend-value">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Insights -->
+                        <div class="mt-6 p-4 bg-gradient-to-r from-gold/10 to-amber-50 rounded-2xl border border-gold/20">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-lightbulb text-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-navy mb-1">AI Insight</h4>
+                                    <p id="chart-insight" class="text-sm text-gray-600">Loading personalized insights...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal Footer -->
+                    <div class="p-4 bg-gray-50 border-t flex items-center justify-between">
+                        <button onclick="exportChartData()" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-navy flex items-center gap-2">
+                            <i class="fas fa-download"></i>
+                            Export Data
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <button onclick="shareChart()" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-navy flex items-center gap-2">
+                                <i class="fas fa-share-alt"></i>
+                                Share
+                            </button>
+                            <button onclick="closeTrackingChart()" class="px-6 py-2 bg-navy text-white rounded-xl font-semibold hover:bg-navy-light transition-colors">
+                                Close
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -4159,6 +4276,402 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
+        
+        // ============================================================================
+        // TRACKING CHARTS - 30/60/90 Day Views
+        // ============================================================================
+        
+        let trackingChart = null;
+        let currentMetric = 'weight';
+        let currentPeriod = 30;
+        
+        const trackingConfig = {
+            weight: {
+                label: 'Weight Progress',
+                subtitle: 'Track your weight loss journey',
+                icon: 'fa-weight',
+                iconColor: 'text-purple-500',
+                color: 'rgb(147, 51, 234)',
+                bgColor: 'rgba(147, 51, 234, 0.1)',
+                unit: 'kg',
+                goal: 75,
+                generateData: (days) => generateWeightData(days),
+                insights: [
+                    'Your weight loss is consistent. Keep up the great work!',
+                    'Consider adding more protein to maintain muscle mass during weight loss.',
+                    'Your weekly average shows a healthy 0.5kg loss pattern.'
+                ]
+            },
+            steps: {
+                label: 'Daily Steps',
+                subtitle: 'Activity and movement tracking',
+                icon: 'fa-walking',
+                iconColor: 'text-green-500',
+                color: 'rgb(34, 197, 94)',
+                bgColor: 'rgba(34, 197, 94, 0.1)',
+                unit: 'steps',
+                goal: 7500,
+                generateData: (days) => generateStepsData(days),
+                insights: [
+                    'You\\'re averaging 5,200 steps daily. Try to hit 7,500 for optimal health.',
+                    'Great job on weekends! You tend to walk more on Saturdays.',
+                    'Consider a 15-minute walk after lunch to boost your daily count.'
+                ]
+            },
+            water: {
+                label: 'Water Intake',
+                subtitle: 'Hydration monitoring',
+                icon: 'fa-tint',
+                iconColor: 'text-blue-500',
+                color: 'rgb(59, 130, 246)',
+                bgColor: 'rgba(59, 130, 246, 0.1)',
+                unit: 'ml',
+                goal: 2400,
+                generateData: (days) => generateWaterData(days),
+                insights: [
+                    'Staying well hydrated! Your average is 1,850ml daily.',
+                    'Try to drink more water in the morning hours.',
+                    'Good hydration supports your weight loss and recovery goals.'
+                ]
+            },
+            sleep: {
+                label: 'Sleep Quality',
+                subtitle: 'Rest and recovery analysis',
+                icon: 'fa-moon',
+                iconColor: 'text-indigo-500',
+                color: 'rgb(99, 102, 241)',
+                bgColor: 'rgba(99, 102, 241, 0.1)',
+                unit: 'hours',
+                goal: 8,
+                generateData: (days) => generateSleepData(days),
+                insights: [
+                    'Your sleep quality has improved 15% this month.',
+                    'Try to maintain a consistent bedtime for better sleep.',
+                    'Deep sleep duration is excellent for muscle recovery.'
+                ]
+            },
+            calories: {
+                label: 'Calorie Intake',
+                subtitle: 'Nutrition and diet tracking',
+                icon: 'fa-fire',
+                iconColor: 'text-red-500',
+                color: 'rgb(239, 68, 68)',
+                bgColor: 'rgba(239, 68, 68, 0.1)',
+                unit: 'kcal',
+                goal: 1800,
+                generateData: (days) => generateCaloriesData(days),
+                insights: [
+                    'You\\'re staying within your calorie target most days.',
+                    'Weekend calories tend to be higher - plan ahead!',
+                    'Consistent calorie deficit is supporting your weight goals.'
+                ]
+            },
+            protein: {
+                label: 'Protein Intake',
+                subtitle: 'Muscle recovery nutrition',
+                icon: 'fa-drumstick-bite',
+                iconColor: 'text-orange-500',
+                color: 'rgb(249, 115, 22)',
+                bgColor: 'rgba(249, 115, 22, 0.1)',
+                unit: 'g',
+                goal: 80,
+                generateData: (days) => generateProteinData(days),
+                insights: [
+                    'Increase protein to 80g daily for optimal muscle recovery.',
+                    'Post-surgery recovery requires adequate protein intake.',
+                    'Consider adding a protein shake after exercise.'
+                ]
+            }
+        };
+        
+        // Data generation functions with realistic patterns
+        function generateWeightData(days) {
+            const data = [];
+            let weight = 90.8; // Starting weight
+            const targetLoss = 0.1; // Average daily loss
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                // Add some randomness but trending down
+                weight = Math.max(75, weight - targetLoss + (Math.random() - 0.4) * 0.3);
+                data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value: parseFloat(weight.toFixed(1)) });
+            }
+            return data;
+        }
+        
+        function generateStepsData(days) {
+            const data = [];
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                const base = isWeekend ? 6500 : 4500;
+                const value = Math.floor(base + Math.random() * 3000);
+                data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value });
+            }
+            return data;
+        }
+        
+        function generateWaterData(days) {
+            const data = [];
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const value = Math.floor(1500 + Math.random() * 1200);
+                data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value });
+            }
+            return data;
+        }
+        
+        function generateSleepData(days) {
+            const data = [];
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                const base = isWeekend ? 8 : 6.5;
+                const value = parseFloat((base + Math.random() * 2).toFixed(1));
+                data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value });
+            }
+            return data;
+        }
+        
+        function generateCaloriesData(days) {
+            const data = [];
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                const base = isWeekend ? 1900 : 1400;
+                const value = Math.floor(base + Math.random() * 500);
+                data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value });
+            }
+            return data;
+        }
+        
+        function generateProteinData(days) {
+            const data = [];
+            for (let i = days; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const value = Math.floor(55 + Math.random() * 35);
+                data.push({ date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value });
+            }
+            return data;
+        }
+        
+        function openTrackingChart(metric) {
+            currentMetric = metric;
+            const config = trackingConfig[metric];
+            const modal = document.getElementById('tracking-chart-modal');
+            
+            // Update modal header
+            document.getElementById('chart-modal-title').textContent = config.label;
+            document.getElementById('chart-modal-subtitle').textContent = config.subtitle;
+            document.getElementById('chart-modal-icon').className = \`fas \${config.icon} text-2xl\`;
+            document.getElementById('chart-icon-container').className = \`w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center \${config.iconColor}\`;
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Render chart
+            updateChartPeriod(30);
+        }
+        
+        function closeTrackingChart() {
+            document.getElementById('tracking-chart-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+            if (trackingChart) {
+                trackingChart.destroy();
+                trackingChart = null;
+            }
+        }
+        
+        function updateChartPeriod(days) {
+            currentPeriod = days;
+            const config = trackingConfig[currentMetric];
+            const data = config.generateData(days);
+            
+            // Update period buttons
+            [30, 60, 90].forEach(d => {
+                const btn = document.getElementById(\`period-\${d}\`);
+                if (d === days) {
+                    btn.className = 'px-6 py-2 rounded-full font-semibold text-sm transition-all bg-navy text-white';
+                } else {
+                    btn.className = 'px-6 py-2 rounded-full font-semibold text-sm transition-all bg-gray-200 text-gray-600 hover:bg-gray-300';
+                }
+            });
+            
+            // Calculate statistics
+            const values = data.map(d => d.value);
+            const avg = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
+            const min = Math.min(...values).toFixed(1);
+            const max = Math.max(...values).toFixed(1);
+            const trend = ((values[values.length - 1] - values[0]) / values[0] * 100).toFixed(1);
+            
+            document.getElementById('stat-average').textContent = \`\${avg} \${config.unit}\`;
+            document.getElementById('stat-min').textContent = \`\${min} \${config.unit}\`;
+            document.getElementById('stat-max').textContent = \`\${max} \${config.unit}\`;
+            document.getElementById('trend-value').textContent = \`\${Math.abs(trend)}%\`;
+            
+            const trendIcon = document.getElementById('trend-icon');
+            if (currentMetric === 'weight') {
+                // For weight, down is good
+                trendIcon.className = trend < 0 ? 'fas fa-arrow-down text-green-500' : 'fas fa-arrow-up text-red-500';
+            } else {
+                // For other metrics, up is good
+                trendIcon.className = trend > 0 ? 'fas fa-arrow-up text-green-500' : 'fas fa-arrow-down text-red-500';
+            }
+            
+            // Update insight
+            const insights = config.insights;
+            document.getElementById('chart-insight').textContent = insights[Math.floor(Math.random() * insights.length)];
+            
+            // Render chart
+            renderTrackingChart(data, config);
+        }
+        
+        function renderTrackingChart(data, config) {
+            const ctx = document.getElementById('tracking-detail-chart').getContext('2d');
+            
+            if (trackingChart) {
+                trackingChart.destroy();
+            }
+            
+            // Sample labels for display (show every nth label based on period)
+            const skipLabels = currentPeriod === 30 ? 5 : currentPeriod === 60 ? 10 : 15;
+            
+            trackingChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [
+                        {
+                            label: config.label,
+                            data: data.map(d => d.value),
+                            borderColor: config.color,
+                            backgroundColor: config.bgColor,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: currentPeriod <= 30 ? 4 : 2,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: config.color,
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2
+                        },
+                        {
+                            label: 'Goal',
+                            data: Array(data.length).fill(config.goal),
+                            borderColor: 'rgba(201, 162, 39, 0.8)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: 12, weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 12,
+                            cornerRadius: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return \`\${context.dataset.label}: \${context.parsed.y} \${config.unit}\`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                maxRotation: 45,
+                                callback: function(value, index) {
+                                    return index % skipLabels === 0 ? this.getLabelForValue(value) : '';
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' ' + config.unit;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function exportChartData() {
+            const config = trackingConfig[currentMetric];
+            const data = config.generateData(currentPeriod);
+            
+            let csv = 'Date,' + config.label + ' (' + config.unit + ')\\n';
+            data.forEach(d => {
+                csv += d.date + ',' + d.value + '\\n';
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = \`\${currentMetric}_\${currentPeriod}days_\${new Date().toISOString().split('T')[0]}.csv\`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Data exported successfully!', 'success');
+        }
+        
+        function shareChart() {
+            if (navigator.share) {
+                navigator.share({
+                    title: trackingConfig[currentMetric].label + ' - SelectCareOS',
+                    text: \`Check out my \${currentPeriod}-day \${trackingConfig[currentMetric].label.toLowerCase()} progress!\`,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                showToast('Link copied to clipboard!', 'success');
+            }
+        }
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTrackingChart();
+            }
+        });
+        
+        // Close modal on backdrop click
+        document.getElementById('tracking-chart-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTrackingChart();
+            }
+        });
     </script>
     
     <!-- Bottom Navigation -->
