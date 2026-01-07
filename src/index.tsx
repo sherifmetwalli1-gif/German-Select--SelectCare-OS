@@ -2978,19 +2978,36 @@ app.get('/', (c) => {
             </div>
         </div>
         
-        <!-- AI Insights -->
-        <div class="ai-insight">
-            <div class="flex items-start space-x-3">
-                <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-robot text-navy"></i>
+        <!-- AI Insights - Modern Design -->
+        <a href="/medisense" class="block ai-insight hover:shadow-lg transition-all duration-300 cursor-pointer group">
+            <div class="flex items-start space-x-4">
+                <div class="relative flex-shrink-0">
+                    <!-- Modern AI Icon with animated gradient -->
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold via-amber-400 to-orange-500 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <svg class="w-7 h-7 text-navy" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L12 4M12 20L12 22M4 12L2 12M22 12L20 12M6.34 6.34L4.93 4.93M19.07 4.93L17.66 6.34M17.66 17.66L19.07 19.07M4.93 19.07L6.34 17.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8C9.79 8 8 9.79 8 12M16 12C16 9.79 14.21 8 12 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <!-- Pulse animation -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-gold to-amber-400 rounded-2xl opacity-30 blur group-hover:opacity-50 transition-opacity duration-300 animate-pulse"></div>
                 </div>
-                <div>
-                    <h4 class="font-bold text-navy mb-1">AI Health Insight</h4>
-                    <p class="text-sm text-gray-600">Your recovery is progressing well! Based on your activity data, consider increasing your daily walk by 500 steps. Your vitals are within optimal range.</p>
-                    <button class="text-gold text-sm font-semibold mt-2">View Full Analysis →</button>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-navy">AI Health Insight</h4>
+                        <span class="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-gold/20 to-amber-100 text-amber-700 rounded-full">LIVE</span>
+                    </div>
+                    <p class="text-sm text-gray-600 line-clamp-2">Your recovery is progressing well! Based on your activity data, consider increasing your daily walk by 500 steps. Your vitals are within optimal range.</p>
+                    <div class="flex items-center gap-2 mt-3 text-gold text-sm font-semibold group-hover:text-amber-600 transition-colors">
+                        <span>View Full Analysis</span>
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
         
         <!-- Quick Actions -->
         <div class="grid grid-cols-2 gap-4">

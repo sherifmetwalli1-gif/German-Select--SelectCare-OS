@@ -475,25 +475,50 @@ export const premiumHomePage = (userTier: string = 'plus') => {
             </div>
         </div>
         
-        <!-- AI Health Insight -->
-        <div class="card p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-gold">
-            <div class="flex items-start gap-4">
-                <div class="w-12 h-12 gradient-gold rounded-full flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-robot text-navy"></i>
-                </div>
-                <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-1">
-                        <h3 class="font-bold text-navy">AI Health Insight</h3>
-                        <span class="text-xs bg-gold/20 text-gold px-2 py-0.5 rounded-full">Daily</span>
+        <!-- AI Health Insight - Premium Modern Design -->
+        <a href="/medisense" class="block card p-5 bg-gradient-to-br from-amber-50/80 via-white to-orange-50/50 border border-gold/20 hover:border-gold/40 hover:shadow-xl transition-all duration-300 group cursor-pointer relative overflow-hidden">
+            <!-- Background decoration -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gold/10 to-amber-200/20 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-orange-100/30 to-transparent rounded-full translate-y-1/2 -translate-x-1/2"></div>
+            
+            <div class="flex items-start gap-4 relative">
+                <div class="relative flex-shrink-0">
+                    <!-- Ultra-modern AI Icon -->
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold via-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-gold/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <svg class="w-7 h-7 text-navy" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Sparkle/AI Magic Icon -->
+                            <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
                     </div>
-                    <p class="text-sm text-gray-700">Your recovery is <strong>25% ahead of schedule</strong>. Consider increasing protein intake by 10g for optimal muscle recovery. Your sleep quality has improved 15% this week!</p>
-                    <div class="flex items-center gap-3 mt-3">
-                        <a href="/ai-concierge" class="text-gold text-sm font-bold">Ask AI More →</a>
-                        <span class="text-xs text-gray-400">42/50 queries left</span>
+                    <!-- Animated pulse ring -->
+                    <div class="absolute inset-0 rounded-2xl border-2 border-gold/50 animate-ping opacity-0 group-hover:opacity-100"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-2">
+                        <h3 class="font-bold text-navy text-lg">AI Health Insight</h3>
+                        <span class="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-gold to-amber-500 text-white rounded-full shadow-sm">
+                            ✨ Daily
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">Your recovery is <strong class="text-emerald-600">25% ahead of schedule</strong>. Consider increasing protein intake by <strong class="text-navy">10g</strong> for optimal muscle recovery. Your sleep quality has improved <strong class="text-gold">15%</strong> this week!</p>
+                    <div class="flex items-center gap-4 mt-4">
+                        <div class="flex items-center gap-2 text-gold font-bold text-sm group-hover:text-amber-600 transition-colors">
+                            <span>Explore AI Analysis</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs text-gray-400">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>42/50 queries left</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
         
         <!-- Today's Appointments -->
         <div>

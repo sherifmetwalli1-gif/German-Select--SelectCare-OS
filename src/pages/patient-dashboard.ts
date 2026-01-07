@@ -692,22 +692,55 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                         </div>
                     </div>
                     
-                    <!-- AI Insights -->
-                    <div class="card p-6 border-l-4 border-gold">
+                    <!-- AI Insights - Modern Premium Design -->
+                    <a href="/medisense" class="block card p-6 border-l-4 border-gold hover:shadow-xl transition-all duration-300 group cursor-pointer bg-gradient-to-r from-white via-white to-amber-50/30">
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-robot text-navy text-xl"></i>
+                            <div class="relative flex-shrink-0">
+                                <!-- Premium AI Icon -->
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold via-amber-400 to-orange-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-7 h-7 text-navy" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Brain/AI Neural Network Icon -->
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                        <path d="M9 21v-2M15 21v-2M12 17v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <circle cx="9" cy="9" r="1" fill="currentColor"/>
+                                        <circle cx="15" cy="9" r="1" fill="currentColor"/>
+                                        <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                        <path d="M9 9l3 3M15 9l-3 3" stroke="currentColor" stroke-width="1"/>
+                                    </svg>
+                                </div>
+                                <!-- Animated glow -->
+                                <div class="absolute -inset-1 bg-gradient-to-r from-gold to-amber-400 rounded-2xl opacity-0 group-hover:opacity-40 blur-lg transition-opacity duration-500"></div>
+                                <!-- Status indicator -->
+                                <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-navy mb-2">AI Health Insight</h3>
-                                <p class="text-gray-600 mb-3">Based on your recent data, your cardiovascular health is improving. Your resting heart rate has decreased by 5 bpm over the past 2 weeks, indicating better fitness. Consider increasing your daily steps to 7,500 for optimal pre-surgical conditioning.</p>
-                                <div class="flex items-center space-x-4">
-                                    <button onclick="window.location.href='/medisense'" class="text-gold font-semibold text-sm hover:text-navy transition-colors">View Full Analysis →</button>
-                                    <span class="text-xs text-gray-400">Updated 2 hours ago</span>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="font-bold text-navy text-lg">AI Health Insight</h3>
+                                    <span class="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                        LIVE
+                                    </span>
+                                </div>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Based on your recent data, your cardiovascular health is improving. Your resting heart rate has decreased by <strong class="text-navy">5 bpm</strong> over the past 2 weeks, indicating better fitness. Consider increasing your daily steps to <strong class="text-gold">7,500</strong> for optimal pre-surgical conditioning.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2 text-gold font-semibold group-hover:text-amber-600 transition-colors">
+                                        <span>Explore Full Analysis</span>
+                                        <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-xs text-gray-400 flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        Updated 2 hours ago
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <!-- Right Column -->
