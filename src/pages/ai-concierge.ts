@@ -1,11 +1,20 @@
 /**
  * SelectCareOS™ AI Health Concierge
  * Premium AI-Powered Health Assistant with Upselling
+ * Multi-language support: EN, AR, DE, FR
  */
 
-export const aiConciergePage = () => `
+import { LANGUAGE_CONFIG, t, getDir, generateLanguageSelector, type SupportedLanguage } from '../services/app-i18n'
+
+export const aiConciergePage = (lang: SupportedLanguage = 'en') => {
+  const dir = getDir(lang)
+  const langOptions = Object.entries(LANGUAGE_CONFIG)
+    .map(([code, config]) => `<option value="${code}" ${code === lang ? 'selected' : ''}>${config.flag} ${config.nativeName}</option>`)
+    .join('')
+  
+  return `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}" dir="${dir}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,27 +79,30 @@ export const aiConciergePage = () => `
 <body class="flex flex-col">
     <!-- Header -->
     <header class="bg-navy px-5 pt-12 pb-4">
-        <div class="flex items-center justify-between mb-4">
-            <a href="/" class="text-gold"><i class="fas fa-arrow-left"></i></a>
+        <div class="flex items-center justify-between mb-4 ${dir === 'rtl' ? 'flex-row-reverse' : ''}">
+            <a href="/?lang=${lang}" class="text-gold"><i class="fas fa-arrow-${dir === 'rtl' ? 'right' : 'left'}"></i></a>
             <div class="flex items-center gap-3">
                 <div class="ai-avatar w-10 h-10 bg-gold rounded-full flex items-center justify-center">
                     <i class="fas fa-robot text-navy"></i>
                 </div>
                 <div>
-                    <h1 class="text-white font-bold">SelectCare AI</h1>
-                    <p class="text-green-400 text-xs"><i class="fas fa-circle text-xs mr-1"></i>Online</p>
+                    <h1 class="text-white font-bold">${t('ai.title', lang)}</h1>
+                    <p class="text-green-400 text-xs"><i class="fas fa-circle text-xs ${dir === 'rtl' ? 'ml-1' : 'mr-1'}"></i>${t('status.online', lang)}</p>
                 </div>
             </div>
-            <button class="text-white"><i class="fas fa-ellipsis-v"></i></button>
+            <select id="languageSelect" onchange="changeLanguage(this.value)" 
+                    class="appearance-none bg-white/10 text-white px-2 py-1 rounded-lg text-sm cursor-pointer border border-white/20">
+                ${langOptions}
+            </select>
         </div>
         
         <!-- Usage Banner -->
-        <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
+        <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between ${dir === 'rtl' ? 'flex-row-reverse' : ''}">
             <div class="flex items-center gap-2">
                 <i class="fas fa-bolt text-gold"></i>
-                <span class="text-white text-sm">42/50 AI queries this month</span>
+                <span class="text-white text-sm">42/50 ${lang === 'ar' ? 'استفسارات هذا الشهر' : lang === 'de' ? 'Anfragen diesen Monat' : lang === 'fr' ? 'requêtes ce mois' : 'AI queries this month'}</span>
             </div>
-            <a href="/subscription" class="text-gold text-sm font-bold">Upgrade</a>
+            <a href="/subscription?lang=${lang}" class="text-gold text-sm font-bold">${t('btn.upgrade', lang)}</a>
         </div>
     </header>
     
@@ -103,7 +115,7 @@ export const aiConciergePage = () => `
                     <i class="fas fa-robot text-navy text-sm"></i>
                 </div>
                 <div>
-                    <p class="text-sm mb-3">Hello Sherif! I'm your personal AI Health Concierge. I can help you with:</p>
+                    <p class="text-sm mb-3">${t('ai.greeting', lang).replace('Hello!', `${t('welcome.hello', lang)} Sherif!`)}</p>
                     <ul class="text-sm text-gray-600 space-y-1 mb-3">
                         <li><i class="fas fa-check text-green-500 mr-2"></i>Health questions & symptom analysis</li>
                         <li><i class="fas fa-check text-green-500 mr-2"></i>Medication information</li>
@@ -304,31 +316,42 @@ export const aiConciergePage = () => `
         <p class="text-center text-xs text-gray-400 mt-2">AI responses are informational only. Always consult a doctor for medical advice.</p>
     </div>
     
+    <!-- Language Change Script -->
+    <script>
+        function changeLanguage(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            localStorage.setItem('selectcare-language', lang);
+            window.location.href = url.toString();
+        }
+    </script>
+    
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="nav-item">
+            <a href="/?lang=${lang}" class="nav-item">
                 <i class="fas fa-home"></i>
-                <span>Home</span>
+                <span>${t('nav.home', lang)}</span>
             </a>
-            <a href="/daily-wellness" class="nav-item">
+            <a href="/daily-wellness?lang=${lang}" class="nav-item">
                 <i class="fas fa-heart"></i>
-                <span>Wellness</span>
+                <span>${t('nav.wellness', lang)}</span>
             </a>
-            <a href="/ai-concierge" class="nav-item active">
+            <a href="/ai-concierge?lang=${lang}" class="nav-item active">
                 <i class="fas fa-robot"></i>
                 <span>AI</span>
             </a>
-            <a href="/medisense" class="nav-item">
+            <a href="/medisense?lang=${lang}" class="nav-item">
                 <i class="fas fa-stethoscope"></i>
                 <span>MediSense</span>
             </a>
-            <a href="/dashboard" class="nav-item">
+            <a href="/patient-dashboard?lang=${lang}" class="nav-item">
                 <i class="fas fa-user"></i>
-                <span>Profile</span>
+                <span>${t('nav.profile', lang)}</span>
             </a>
         </div>
     </nav>
 </body>
 </html>
-`;
+`
+};

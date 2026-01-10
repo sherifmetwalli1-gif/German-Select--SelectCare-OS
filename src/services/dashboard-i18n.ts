@@ -173,7 +173,23 @@ export const DASHBOARD_TRANSLATIONS: Record<SupportedLanguage, Record<string, st
     
     // Language
     'lang.select': 'Select Language',
-    'lang.change': 'Change Language'
+    'lang.change': 'Change Language',
+    
+    // Treatments Section
+    'treatments.title': 'Treatments',
+    'treatments.viewAll': 'View All',
+    'treatments.bariatric': 'Bariatric Surgery',
+    'treatments.bariatricDesc': 'Weight loss procedures',
+    'treatments.orthopedic': 'Orthopedic',
+    'treatments.orthopedicDesc': 'Joint & bone surgery',
+    'treatments.cosmetic': 'Cosmetic Surgery',
+    'treatments.cosmeticDesc': 'Aesthetic procedures',
+    'treatments.dental': 'Dental Care',
+    'treatments.dentalDesc': 'Implants & cosmetic',
+    'treatments.cost': 'cost',
+    'treatments.popular': 'MOST POPULAR',
+    'treatments.gastricSleeve': 'Gastric Sleeve Surgery',
+    'treatments.gastricSleeveDesc': 'All-inclusive package with resort stay'
   },
   
   ar: {
@@ -302,7 +318,23 @@ export const DASHBOARD_TRANSLATIONS: Record<SupportedLanguage, Record<string, st
     
     // Language
     'lang.select': 'اختر اللغة',
-    'lang.change': 'تغيير اللغة'
+    'lang.change': 'تغيير اللغة',
+    
+    // Treatments Section
+    'treatments.title': 'العلاجات',
+    'treatments.viewAll': 'عرض الكل',
+    'treatments.bariatric': 'جراحة السمنة',
+    'treatments.bariatricDesc': 'إجراءات إنقاص الوزن',
+    'treatments.orthopedic': 'جراحة العظام',
+    'treatments.orthopedicDesc': 'جراحة المفاصل والعظام',
+    'treatments.cosmetic': 'الجراحة التجميلية',
+    'treatments.cosmeticDesc': 'الإجراءات التجميلية',
+    'treatments.dental': 'العناية بالأسنان',
+    'treatments.dentalDesc': 'زراعة وتجميل الأسنان',
+    'treatments.cost': 'التكلفة',
+    'treatments.popular': 'الأكثر شعبية',
+    'treatments.gastricSleeve': 'جراحة تكميم المعدة',
+    'treatments.gastricSleeveDesc': 'باقة شاملة مع إقامة منتجع'
   },
   
   de: {
@@ -431,7 +463,23 @@ export const DASHBOARD_TRANSLATIONS: Record<SupportedLanguage, Record<string, st
     
     // Language
     'lang.select': 'Sprache wählen',
-    'lang.change': 'Sprache ändern'
+    'lang.change': 'Sprache ändern',
+    
+    // Treatments Section
+    'treatments.title': 'Behandlungen',
+    'treatments.viewAll': 'Alle anzeigen',
+    'treatments.bariatric': 'Adipositas-Chirurgie',
+    'treatments.bariatricDesc': 'Gewichtsverlust-Operationen',
+    'treatments.orthopedic': 'Orthopädie',
+    'treatments.orthopedicDesc': 'Gelenk- & Knochenchirurgie',
+    'treatments.cosmetic': 'Schönheitschirurgie',
+    'treatments.cosmeticDesc': 'Ästhetische Eingriffe',
+    'treatments.dental': 'Zahnbehandlung',
+    'treatments.dentalDesc': 'Implantate & Kosmetik',
+    'treatments.cost': 'Kosten',
+    'treatments.popular': 'BELIEBTESTE',
+    'treatments.gastricSleeve': 'Schlauchmagen-Operation',
+    'treatments.gastricSleeveDesc': 'All-inclusive Paket mit Resort-Aufenthalt'
   },
   
   fr: {
@@ -560,7 +608,23 @@ export const DASHBOARD_TRANSLATIONS: Record<SupportedLanguage, Record<string, st
     
     // Language
     'lang.select': 'Choisir la Langue',
-    'lang.change': 'Changer de Langue'
+    'lang.change': 'Changer de Langue',
+    
+    // Treatments Section
+    'treatments.title': 'Traitements',
+    'treatments.viewAll': 'Voir Tout',
+    'treatments.bariatric': 'Chirurgie Bariatrique',
+    'treatments.bariatricDesc': 'Procédures de perte de poids',
+    'treatments.orthopedic': 'Orthopédie',
+    'treatments.orthopedicDesc': 'Chirurgie articulaire & osseuse',
+    'treatments.cosmetic': 'Chirurgie Esthétique',
+    'treatments.cosmeticDesc': 'Procédures esthétiques',
+    'treatments.dental': 'Soins Dentaires',
+    'treatments.dentalDesc': 'Implants & esthétique',
+    'treatments.cost': 'coût',
+    'treatments.popular': 'PLUS POPULAIRE',
+    'treatments.gastricSleeve': 'Sleeve Gastrique',
+    'treatments.gastricSleeveDesc': 'Forfait tout inclus avec séjour resort'
   }
 }
 

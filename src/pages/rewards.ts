@@ -37,9 +37,17 @@ export const REWARDS_CONFIG = {
   ],
 };
 
-export const rewardsPage = () => `
+import { LANGUAGE_CONFIG, t, getDir, type SupportedLanguage } from '../services/app-i18n'
+
+export const rewardsPage = (lang: SupportedLanguage = 'en') => {
+  const dir = getDir(lang)
+  const langOptions = Object.entries(LANGUAGE_CONFIG)
+    .map(([code, config]) => `<option value="${code}" ${code === lang ? 'selected' : ''}>${config.flag} ${config.nativeName}</option>`)
+    .join('')
+  
+  return `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}" dir="${dir}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,18 +86,20 @@ export const rewardsPage = () => `
 <body>
     <!-- Header with Points Balance -->
     <header class="bg-navy px-5 pt-12 pb-8">
-        <div class="flex justify-between items-start mb-6">
-            <a href="/" class="text-gold"><i class="fas fa-arrow-left mr-2"></i>Back</a>
-            <div class="text-right">
-                <span class="tier-badge tier-gold">GOLD MEMBER</span>
-            </div>
+        <div class="flex justify-between items-start mb-6 ${dir === 'rtl' ? 'flex-row-reverse' : ''}">
+            <a href="/?lang=${lang}" class="text-gold"><i class="fas fa-arrow-${dir === 'rtl' ? 'right' : 'left'} ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('btn.back', lang)}</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)" 
+                    class="appearance-none bg-white/10 text-white px-2 py-1 rounded-lg text-sm cursor-pointer border border-white/20">
+                ${langOptions}
+            </select>
         </div>
         
         <div class="text-center">
-            <div class="inline-flex items-center justify-center w-24 h-24 bg-gold/20 rounded-full mb-4">
+            <span class="tier-badge tier-gold">${t('rewards.gold', lang).toUpperCase()}</span>
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-gold/20 rounded-full my-4">
                 <i class="fas fa-coins text-gold text-4xl"></i>
             </div>
-            <h1 class="text-white text-lg mb-1">Your SelectPoints</h1>
+            <h1 class="text-white text-lg mb-1">${t('rewards.yourPoints', lang)}</h1>
             <p class="text-5xl font-bold text-gold mb-2">8,450</p>
             <p class="text-white/60 text-sm">Worth approximately €211</p>
         </div>
@@ -355,36 +365,47 @@ export const rewardsPage = () => `
         </div>
     </main>
     
+    <!-- Language Change Script -->
+    <script>
+        function changeLanguage(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            localStorage.setItem('selectcare-language', lang);
+            window.location.href = url.toString();
+        }
+    </script>
+    
     <!-- Floating AI Button -->
-    <a href="/ai-concierge" class="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center text-navy text-2xl shadow-lg z-50 hover:scale-105 transition-transform" title="AI Health Assistant">
+    <a href="/ai-concierge?lang=${lang}" class="fixed bottom-24 ${dir === 'rtl' ? 'left-5' : 'right-5'} w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center text-navy text-2xl shadow-lg z-50 hover:scale-105 transition-transform" title="${t('ai.title', lang)}">
         <i class="fas fa-robot"></i>
     </a>
     
     <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-40">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+            <a href="/?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
                 <i class="fas fa-home text-xl mb-1"></i>
-                <span class="text-xs">Home</span>
+                <span class="text-xs">${t('nav.home', lang)}</span>
             </a>
-            <a href="/daily-wellness" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+            <a href="/daily-wellness?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
                 <i class="fas fa-heart text-xl mb-1"></i>
-                <span class="text-xs">Wellness</span>
+                <span class="text-xs">${t('nav.wellness', lang)}</span>
             </a>
-            <a href="/medisense" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+            <a href="/medisense?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
                 <i class="fas fa-stethoscope text-xl mb-1"></i>
                 <span class="text-xs">MediSense</span>
             </a>
-            <a href="/rewards" class="flex flex-col items-center py-2 px-3 text-yellow-600">
+            <a href="/rewards?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-yellow-600">
                 <i class="fas fa-coins text-xl mb-1"></i>
-                <span class="text-xs">Rewards</span>
+                <span class="text-xs">${t('nav.rewards', lang)}</span>
             </a>
-            <a href="/marketplace" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
+            <a href="/marketplace?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
                 <i class="fas fa-store text-xl mb-1"></i>
-                <span class="text-xs">Shop</span>
+                <span class="text-xs">${t('nav.shop', lang)}</span>
             </a>
         </div>
     </nav>
 </body>
 </html>
-`;
+`
+};

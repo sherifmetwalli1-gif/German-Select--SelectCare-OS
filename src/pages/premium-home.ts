@@ -130,14 +130,16 @@ export const premiumHomePage = (userTier: string = 'plus', lang: SupportedLangua
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 12px;
+            justify-content: center;
+            padding: 12px 16px;
             color: #9CA3AF;
-            font-size: 10px;
             transition: all 0.2s;
+            border-radius: 12px;
         }
         
-        .nav-item.active { color: var(--gold); }
-        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item:hover { color: var(--navy); background: rgba(0, 31, 63, 0.05); }
+        .nav-item.active { color: var(--gold); background: rgba(201, 162, 39, 0.1); }
+        .nav-item i { font-size: 24px; }
         
         /* Buttons */
         .btn-gold {
@@ -392,6 +394,85 @@ export const premiumHomePage = (userTier: string = 'plus', lang: SupportedLangua
     </header>
     
     <main class="px-5 py-6 space-y-6">
+        <!-- TREATMENTS - Prioritized Section -->
+        <div>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="font-bold text-navy text-lg">
+                    <i class="fas fa-procedures text-gold mr-2"></i>${t('treatments.title', lang)}
+                </h2>
+                <a href="/services?lang=${lang}" class="text-gold text-sm font-bold">${t('treatments.viewAll', lang)}</a>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Bariatric Surgery -->
+                <a href="/services?category=bariatric&lang=${lang}" class="card p-4 hover:border-gold hover:border transition-all group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-gold/20 to-amber-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-weight text-gold text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-navy text-sm">${t('treatments.bariatric', lang)}</h4>
+                    <p class="text-xs text-gray-500 mt-1">${t('treatments.bariatricDesc', lang)}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">-60% ${t('treatments.cost', lang)}</span>
+                    </div>
+                </a>
+                
+                <!-- Orthopedic -->
+                <a href="/services?category=orthopedic&lang=${lang}" class="card p-4 hover:border-gold hover:border transition-all group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bone text-blue-600 text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-navy text-sm">${t('treatments.orthopedic', lang)}</h4>
+                    <p class="text-xs text-gray-500 mt-1">${t('treatments.orthopedicDesc', lang)}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">-55% ${t('treatments.cost', lang)}</span>
+                    </div>
+                </a>
+                
+                <!-- Cosmetic Surgery -->
+                <a href="/services?category=cosmetic&lang=${lang}" class="card p-4 hover:border-gold hover:border transition-all group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pink-100 to-rose-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-star text-pink-500 text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-navy text-sm">${t('treatments.cosmetic', lang)}</h4>
+                    <p class="text-xs text-gray-500 mt-1">${t('treatments.cosmeticDesc', lang)}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">-50% ${t('treatments.cost', lang)}</span>
+                    </div>
+                </a>
+                
+                <!-- Dental -->
+                <a href="/services?category=dental&lang=${lang}" class="card p-4 hover:border-gold hover:border transition-all group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-tooth text-emerald-600 text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-navy text-sm">${t('treatments.dental', lang)}</h4>
+                    <p class="text-xs text-gray-500 mt-1">${t('treatments.dentalDesc', lang)}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">-65% ${t('treatments.cost', lang)}</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Featured Treatment Banner -->
+            <div class="card mt-4 p-4 bg-gradient-to-r from-navy to-blue-900 text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-gold/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gold rounded-xl flex items-center justify-center">
+                        <i class="fas fa-fire-alt text-navy text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span class="text-xs bg-gold text-navy px-2 py-0.5 rounded-full font-bold">${t('treatments.popular', lang)}</span>
+                        <h4 class="font-bold text-white mt-1">${t('treatments.gastricSleeve', lang)}</h4>
+                        <p class="text-white/70 text-xs">${t('treatments.gastricSleeveDesc', lang)}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-gold text-lg font-bold">€4,500</p>
+                        <p class="text-white/50 text-xs line-through">€12,000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Daily Streak & Points Summary -->
         <div class="flex gap-3">
             <a href="/rewards" class="card flex-1 p-4 flex items-center gap-3">
@@ -878,28 +959,23 @@ export const premiumHomePage = (userTier: string = 'plus', lang: SupportedLangua
         <i class="fas fa-robot"></i>
     </a>
     
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation - Icons Only -->
     <nav class="bottom-nav">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/?lang=${lang}" class="nav-item active">
-                <i class="fas fa-home"></i>
-                <span>${t('nav.home', lang)}</span>
+            <a href="/?lang=${lang}" class="nav-item active" title="${t('nav.home', lang)}">
+                <i class="fas fa-home text-2xl"></i>
             </a>
-            <a href="/daily-wellness?lang=${lang}" class="nav-item">
-                <i class="fas fa-heart"></i>
-                <span>${t('nav.wellness', lang)}</span>
+            <a href="/services?lang=${lang}" class="nav-item" title="${t('treatments.title', lang)}">
+                <i class="fas fa-procedures text-2xl"></i>
             </a>
-            <a href="/rewards?lang=${lang}" class="nav-item">
-                <i class="fas fa-coins"></i>
-                <span>${t('nav.rewards', lang)}</span>
+            <a href="/daily-wellness?lang=${lang}" class="nav-item" title="${t('nav.wellness', lang)}">
+                <i class="fas fa-heart text-2xl"></i>
             </a>
-            <a href="/marketplace?lang=${lang}" class="nav-item">
-                <i class="fas fa-store"></i>
-                <span>${t('nav.shop', lang)}</span>
+            <a href="/rewards?lang=${lang}" class="nav-item" title="${t('nav.rewards', lang)}">
+                <i class="fas fa-coins text-2xl"></i>
             </a>
-            <a href="/patient-dashboard?lang=${lang}" class="nav-item">
-                <i class="fas fa-user"></i>
-                <span>${t('nav.profile', lang)}</span>
+            <a href="/patient-dashboard?lang=${lang}" class="nav-item" title="${t('nav.profile', lang)}">
+                <i class="fas fa-user text-2xl"></i>
             </a>
         </div>
     </nav>
