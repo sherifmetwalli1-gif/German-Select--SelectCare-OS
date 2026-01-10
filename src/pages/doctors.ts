@@ -1,5 +1,6 @@
 /**
- * Doctors Page - SelectCareOS™ Branding
+ * Doctors Page - SelectCareOS™ Premium Design
+ * Inspired by German Select SurgeryBridge design
  */
 import { Context } from 'hono'
 
@@ -9,31 +10,211 @@ export function doctorsPage(c: Context): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Doctors - SelectCareOS™</title>
+    <title>Our Medical Specialists - SelectCareOS™</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --navy: #001F3F;
-            --navy-light: #003366;
-            --gold: #C9A227;
-            --gold-light: #E8D5A3;
-            --cream: #F8F6F0;
+            --primary: #1E3A5F;
+            --primary-light: #4A90A4;
+            --gold: #D4AF37;
+            --gold-light: #F7E7CE;
+            --coral: #FF6B35;
+            --success: #06D6A0;
+            --cream: #FAF8F5;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
             background: var(--cream);
+            color: #2D3748;
         }
         
-        .gradient-navy { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); }
-        .bg-navy { background-color: var(--navy); }
-        .text-navy { color: var(--navy); }
-        .text-gold { color: var(--gold); }
-        .bg-gold { background-color: var(--gold); }
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--primary);
+        }
         
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,31,63,0.15); border-color: var(--gold); }
+        /* Hero Background */
+        .hero-bg { 
+            background: linear-gradient(135deg, rgba(30,58,95,0.92), rgba(74,144,164,0.85)), 
+                        url('https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1400');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Gradients */
+        .gradient-primary { background: linear-gradient(135deg, #1E3A5F 0%, #4A90A4 100%); }
+        .gradient-gold { background: linear-gradient(135deg, #D4AF37 0%, #F7E7CE 100%); }
+        .gradient-coral { background: linear-gradient(135deg, #FF6B35 0%, #F77F00 100%); }
+        .gradient-success { background: linear-gradient(135deg, #06D6A0 0%, #2D6A4F 100%); }
+        
+        /* Badges */
+        .badge-german {
+            background: linear-gradient(135deg, #1E3A5F 0%, #0066CC 100%);
+            box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+        }
+        .badge-medical {
+            background: linear-gradient(135deg, #06D6A0 0%, #2D6A4F 100%);
+            box-shadow: 0 4px 12px rgba(6,214,160,0.3);
+        }
+        .badge-premium {
+            background: linear-gradient(135deg, #D4AF37 0%, #F7E7CE 100%);
+            color: #0A2540;
+            box-shadow: 0 6px 16px rgba(212,175,55,0.4);
+        }
+        
+        /* Card Styles */
+        .card {
+            background: white;
+            border: 2px solid #EAE3DA;
+            border-radius: 16px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(30,58,95,0.15);
+            border-color: var(--gold);
+        }
+        
+        .card-premium {
+            position: relative;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 30px rgba(212,175,55,0.2);
+        }
+        .card-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #D4AF37 0%, #F7E7CE 50%, #D4AF37 100%);
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #1E3A5F 0%, #0066CC 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0A2540 0%, #0066CC 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,102,204,0.35);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #CD7F32 100%);
+            color: white;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(212,175,55,0.4);
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #F7E7CE 0%, #D4AF37 100%);
+            color: #0A2540;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 16px 32px rgba(212,175,55,0.5);
+        }
+        
+        .btn-coral {
+            background: linear-gradient(135deg, #FF6B35 0%, #F77F00 100%);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-coral:hover {
+            background: linear-gradient(135deg, #E64500 0%, #FF6B35 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 16px 32px rgba(255,107,53,0.45);
+        }
+        
+        /* Stats Card */
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(30,58,95,0.1);
+        }
+        
+        /* Doctor Card Enhanced */
+        .doctor-card {
+            background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%);
+            border: 2px solid #EAE3DA;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .doctor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .doctor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(30,58,95,0.15);
+            border-color: var(--gold);
+        }
+        .doctor-card:hover::before {
+            opacity: 1;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+        }
+        
+        .doctor-card.premium-doctor {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212,175,55,0.15);
+        }
+        .doctor-card.premium-doctor::before {
+            opacity: 1;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+        }
+        
+        /* Avatar */
+        .avatar-ring {
+            padding: 3px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 50%;
+        }
+        
+        /* Animations */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .shimmer-gold {
+            background: linear-gradient(90deg, #D4AF37 0%, #F7E7CE 50%, #D4AF37 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pulse-badge {
+            animation: pulse 2s infinite;
+        }
         
         /* Bottom Navigation */
         .bottom-nav {
@@ -57,94 +238,196 @@ export function doctorsPage(c: Context): string {
             transition: all 0.2s;
             border-radius: 12px;
         }
-        .nav-item:hover { color: var(--navy); background: rgba(0, 31, 63, 0.05); }
-        .nav-item.active { color: var(--gold); background: rgba(201, 162, 39, 0.1); }
+        .nav-item:hover { color: var(--primary); background: rgba(30, 58, 95, 0.05); }
+        .nav-item.active { color: var(--gold); background: rgba(212, 175, 55, 0.1); }
         .nav-item i { font-size: 24px; }
+        
         main { padding-bottom: 100px; }
         
-        .btn-gold {
-            background: var(--gold);
-            color: var(--navy);
-            transition: all 0.3s;
-        }
-        .btn-gold:hover {
-            background: #B8922A;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(201, 162, 39, 0.4);
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
     </style>
 </head>
 <body>
-    <header class="gradient-navy text-white">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
                 <a href="/premium" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gold rounded-xl flex items-center justify-center">
-                        <i class="fas fa-plus text-navy text-lg"></i>
+                    <div class="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-plus text-white text-lg"></i>
                     </div>
-                    <span class="text-xl font-bold">SelectCare<span class="text-gold">OS</span>™</span>
+                    <span class="text-xl font-bold text-gray-800">SelectCare<span class="text-gold">OS</span>™</span>
                 </a>
-                <nav class="flex items-center space-x-6">
-                    <a href="/doctors" class="text-gold font-semibold">Doctors</a>
-                    <a href="/services" class="hover:text-gold transition">Services</a>
-                    <a href="/booking" class="hover:text-gold transition">Book Now</a>
-                    <a href="/patient-dashboard" class="hover:text-gold transition">Dashboard</a>
-                </nav>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="/premium" class="text-gray-600 hover:text-primary transition">Home</a>
+                    <a href="/services" class="text-gray-600 hover:text-primary transition">Services</a>
+                    <a href="/doctors" class="text-primary font-semibold">Doctors</a>
+                    <a href="/booking" class="text-gray-600 hover:text-primary transition">Book Now</a>
+                    <a href="/patient-dashboard" class="btn-coral text-white px-5 py-2 rounded-lg text-sm">
+                        <i class="fas fa-user-md mr-2"></i>Patient Portal
+                    </a>
+                </div>
+                <button class="md:hidden text-gray-600 p-2">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <section class="gradient-navy text-white py-16">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl font-bold mb-4">Our Medical <span class="text-gold">Specialists</span></h1>
-            <p class="text-xl text-white/70 max-w-2xl mx-auto">
-                World-class German-certified doctors ready to provide exceptional care
-            </p>
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center">
+                <!-- Trust Badges -->
+                <div class="flex justify-center gap-3 mb-6 flex-wrap">
+                    <div class="badge-german backdrop-blur-sm px-5 py-2 rounded-full inline-flex items-center space-x-2">
+                        <i class="fas fa-shield-alt"></i>
+                        <span class="font-semibold text-sm">German Medical Standards</span>
+                    </div>
+                    <div class="badge-medical backdrop-blur-sm px-5 py-2 rounded-full text-white inline-flex items-center space-x-2">
+                        <i class="fas fa-hospital"></i>
+                        <span class="font-semibold text-sm">JCI Accredited</span>
+                    </div>
+                    <div class="badge-premium backdrop-blur-sm px-5 py-2 rounded-full inline-flex items-center space-x-2">
+                        <i class="fas fa-star"></i>
+                        <span class="font-semibold text-sm">5-Star Care</span>
+                    </div>
+                </div>
+                
+                <!-- Main Headline -->
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+                    World-Class Medical <span class="text-yellow-300">Specialists</span>
+                </h1>
+                <p class="text-xl text-white/80 max-w-3xl mx-auto mb-8">
+                    German-certified surgeons with 15+ years experience • Personalized care plans • Lifetime follow-up support
+                </p>
+                
+                <!-- Stats Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="bg-white/15 backdrop-blur-md rounded-2xl p-5 border border-white/20">
+                        <div class="text-4xl font-bold text-white mb-1" id="doctor-count">0</div>
+                        <div class="text-sm text-white/80">Specialists</div>
+                    </div>
+                    <div class="bg-white/15 backdrop-blur-md rounded-2xl p-5 border border-white/20">
+                        <div class="text-4xl font-bold text-yellow-300 mb-1" id="spec-count">0</div>
+                        <div class="text-sm text-white/80">Specializations</div>
+                    </div>
+                    <div class="bg-white/15 backdrop-blur-md rounded-2xl p-5 border border-white/20">
+                        <div class="text-4xl font-bold text-white mb-1">4.9</div>
+                        <div class="text-sm text-white/80">Average Rating</div>
+                        <div class="flex justify-center gap-0.5 mt-1 text-yellow-400 text-xs">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white/15 backdrop-blur-md rounded-2xl p-5 border border-white/20">
+                        <div class="text-4xl font-bold text-yellow-300 mb-1">16+</div>
+                        <div class="text-sm text-white/80">Years Experience</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <main class="container mx-auto px-4 py-12">
-        <!-- Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
-                <div class="text-3xl font-bold text-navy" id="doctor-count">0</div>
-                <div class="text-gray-500">Specialists</div>
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <!-- Search & Filters -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-10 border border-gray-100">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1 relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="search" placeholder="Search by name or specialty..." 
+                           class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition text-gray-700">
+                </div>
+                <select id="specialization-filter" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition bg-white min-w-[200px]">
+                    <option value="">All Specializations</option>
+                </select>
+                <select id="premium-filter" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition bg-white min-w-[160px]">
+                    <option value="">All Doctors</option>
+                    <option value="true">⭐ Premium Only</option>
+                </select>
+                <button onclick="document.getElementById('search').value=''; document.getElementById('specialization-filter').value=''; document.getElementById('premium-filter').value=''; setupFilters();" 
+                        class="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition text-gray-600 font-medium">
+                    <i class="fas fa-redo mr-2"></i>Reset
+                </button>
             </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
-                <div class="text-3xl font-bold text-gold" id="spec-count">0</div>
-                <div class="text-gray-500">Specializations</div>
-            </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
-                <div class="text-3xl font-bold text-navy">4.83</div>
-                <div class="text-gray-500">Avg. Rating</div>
-            </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
-                <div class="text-3xl font-bold text-gold">16+</div>
-                <div class="text-gray-500">Years Experience</div>
-            </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="flex flex-wrap gap-4 mb-8">
-            <input type="text" id="search" placeholder="Search doctors..." class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold focus:border-gold w-64 transition">
-            <select id="specialization-filter" class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold focus:border-gold transition">
-                <option value="">All Specializations</option>
-            </select>
-            <select id="premium-filter" class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold focus:border-gold transition">
-                <option value="">All Doctors</option>
-                <option value="true">Premium Only</option>
-            </select>
         </div>
 
         <!-- Doctors Grid -->
-        <div id="doctors-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Loaded dynamically -->
+        <div id="doctors-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Loading State -->
+            <div class="col-span-full text-center py-12">
+                <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p class="text-gray-500">Loading specialists...</p>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="mt-16 gradient-primary rounded-3xl p-10 text-white text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+            <div class="relative">
+                <h2 class="text-3xl font-bold mb-4 text-white">Can't Find Your Specialist?</h2>
+                <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+                    Book a free consultation and our medical team will match you with the perfect doctor for your needs.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/booking" class="btn-gold px-8 py-4 rounded-xl text-lg inline-flex items-center justify-center">
+                        <i class="fas fa-calendar-check mr-2"></i>Book Free Consultation
+                    </a>
+                    <a href="/medisense" class="bg-white/10 backdrop-blur-md border-2 border-white text-white px-8 py-4 rounded-xl text-lg hover:bg-white hover:text-primary transition inline-flex items-center justify-center">
+                        <i class="fas fa-brain mr-2"></i>AI Symptom Checker
+                    </a>
+                </div>
+            </div>
         </div>
     </main>
 
-    <footer class="bg-navy text-white py-8 mt-16">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-white/60">&copy; 2024 SelectCareOS™. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="gradient-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center">
+                            <i class="fas fa-plus text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">SelectCareOS™</span>
+                    </div>
+                    <p class="text-white/70 text-sm">German medical excellence with Red Sea recovery. Your health transformation journey starts here.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="/services" class="hover:text-white transition">Our Services</a></li>
+                        <li><a href="/doctors" class="hover:text-white transition">Find a Doctor</a></li>
+                        <li><a href="/booking" class="hover:text-white transition">Book Consultation</a></li>
+                        <li><a href="/patient-dashboard" class="hover:text-white transition">Patient Portal</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Treatments</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><a href="/services?category=bariatric" class="hover:text-white transition">Bariatric Surgery</a></li>
+                        <li><a href="/services?category=orthopedic" class="hover:text-white transition">Orthopedic</a></li>
+                        <li><a href="/services?category=cosmetic" class="hover:text-white transition">Cosmetic Surgery</a></li>
+                        <li><a href="/services?category=dental" class="hover:text-white transition">Dental Care</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Contact</h4>
+                    <ul class="space-y-2 text-white/70 text-sm">
+                        <li><i class="fas fa-phone mr-2"></i>+49 123 456 789</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@selectcareos.com</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Munich, Germany</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/20 pt-8 text-center text-white/60 text-sm">
+                <p>&copy; 2024 SelectCareOS™. All rights reserved. German Quality • Egyptian Hospitality • Lifetime Care</p>
+            </div>
         </div>
     </footer>
 
@@ -168,6 +451,7 @@ export function doctorsPage(c: Context): string {
                 }
             } catch (error) {
                 console.error('Error:', error);
+                document.getElementById('doctors-grid').innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">Unable to load doctors. Please try again.</div>';
             }
         }
 
@@ -192,58 +476,86 @@ export function doctorsPage(c: Context): string {
 
         function renderDoctors(docs) {
             const grid = document.getElementById('doctors-grid');
+            
+            if (docs.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-12"><i class="fas fa-search text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">No doctors found matching your criteria.</p></div>';
+                return;
+            }
+            
             grid.innerHTML = docs.map(doctor => \`
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                <div class="doctor-card \${doctor.isPremium ? 'premium-doctor' : ''}">
+                    \${doctor.isPremium ? '<div class="shimmer-gold text-center py-2 text-xs font-bold text-white uppercase tracking-wider"><i class="fas fa-crown mr-1"></i>Premium Specialist</div>' : ''}
                     <div class="p-6">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center space-x-4">
-                                <div class="bg-gold/10 p-4 rounded-full">
-                                    <i class="fas fa-user-md text-gold text-2xl"></i>
+                        <!-- Doctor Header -->
+                        <div class="flex items-start gap-4 mb-5">
+                            <div class="avatar-ring">
+                                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-xl font-bold">
+                                    \${doctor.name.split(' ').map(n => n[0]).join('').substring(0,2)}
                                 </div>
-                                <div>
-                                    <div class="flex items-center">
-                                        <h3 class="font-bold text-gray-800">\${doctor.name}</h3>
-                                        \${doctor.isPremium ? '<i class="fas fa-crown text-yellow-500 ml-2" title="Premium Doctor"></i>' : ''}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="font-bold text-lg text-gray-800">\${doctor.name}</h3>
+                                    \${doctor.isPremium ? '<i class="fas fa-check-circle text-yellow-500" title="Verified Premium"></i>' : ''}
+                                </div>
+                                <p class="text-primary font-medium text-sm">\${doctor.title}</p>
+                                <div class="flex items-center gap-1 mt-1">
+                                    <div class="flex text-yellow-400 text-xs">
+                                        \${Array(5).fill().map((_, i) => i < Math.floor(doctor.rating) ? '<i class="fas fa-star"></i>' : '<i class="far fa-star text-gray-300"></i>').join('')}
                                     </div>
-                                    <p class="text-gray-500 text-sm">\${doctor.title}</p>
+                                    <span class="text-sm font-semibold text-gray-700">\${doctor.rating}</span>
+                                    <span class="text-xs text-gray-400">(\${doctor.reviewCount} reviews)</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="space-y-2 mb-4">
+                        <!-- Specialization Badge -->
+                        <div class="mb-4">
+                            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold badge-german text-white">
+                                <i class="fas fa-stethoscope"></i>
+                                \${doctor.specialization.split(',')[0]}
+                            </span>
+                        </div>
+
+                        <!-- Doctor Info -->
+                        <div class="space-y-3 mb-5">
                             <div class="flex items-center text-gray-600 text-sm">
-                                <i class="fas fa-stethoscope w-5 mr-2 text-gold"></i>
-                                <span>\${doctor.specialization.split(',')[0]}</span>
-                            </div>
-                            <div class="flex items-center text-gray-600 text-sm">
-                                <i class="fas fa-map-marker-alt w-5 mr-2 text-red-500"></i>
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-map-marker-alt text-blue-500"></i>
+                                </div>
                                 <span>\${doctor.location}</span>
                             </div>
                             <div class="flex items-center text-gray-600 text-sm">
-                                <i class="fas fa-clock w-5 mr-2 text-green-500"></i>
+                                <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-clock text-green-500"></i>
+                                </div>
                                 <span>\${doctor.experienceYears} years experience</span>
                             </div>
                             <div class="flex items-center text-gray-600 text-sm">
-                                <i class="fas fa-globe w-5 mr-2 text-purple-500"></i>
+                                <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-globe text-purple-500"></i>
+                                </div>
                                 <span>\${doctor.languages.join(', ')}</span>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between pt-4 border-t">
-                            <div class="flex items-center">
-                                <i class="fas fa-star text-yellow-400 mr-1"></i>
-                                <span class="font-semibold">\${doctor.rating}</span>
-                                <span class="text-gray-400 text-sm ml-1">(\${doctor.reviewCount})</span>
+                        <!-- Pricing & CTA -->
+                        <div class="pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <span class="text-xs text-gray-500 uppercase tracking-wider">Consultation</span>
+                                    <p class="text-2xl font-bold text-primary">€\${doctor.consultationFee}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                                        <i class="fas fa-video"></i> Video Available
+                                    </span>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <p class="text-xl font-bold text-gray-800">€\${doctor.consultationFee}</p>
-                                <p class="text-gray-400 text-xs">per consultation</p>
-                            </div>
+                            <a href="/booking?doctor=\${doctor.id}" class="w-full \${doctor.isPremium ? 'btn-gold' : 'btn-primary'} py-3 rounded-xl font-semibold flex items-center justify-center text-sm">
+                                <i class="fas fa-calendar-check mr-2"></i>Book Consultation
+                            </a>
                         </div>
-
-                        <a href="/booking?doctor=\${doctor.id}" class="mt-4 w-full btn-gold py-3 rounded-xl font-semibold flex items-center justify-center">
-                            <i class="fas fa-calendar-plus mr-2"></i>Book Consultation
-                        </a>
                     </div>
                 </div>
             \`).join('');
