@@ -483,19 +483,19 @@ export function doctorsPage(c: Context): string {
             }
             
             grid.innerHTML = docs.map(doctor => \`
-                <div class="doctor-card \${doctor.isPremium ? 'premium-doctor' : ''}">
+                <div class="doctor-card \${doctor.isPremium ? 'premium-doctor' : ''}" onclick="window.location.href='/doctor/\${doctor.id}'" style="cursor:pointer">
                     \${doctor.isPremium ? '<div class="shimmer-gold text-center py-2 text-xs font-bold text-white uppercase tracking-wider"><i class="fas fa-crown mr-1"></i>Premium Specialist</div>' : ''}
                     <div class="p-6">
                         <!-- Doctor Header -->
                         <div class="flex items-start gap-4 mb-5">
-                            <div class="avatar-ring">
+                            <a href="/doctor/\${doctor.id}" class="avatar-ring">
                                 <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-xl font-bold">
                                     \${doctor.name.split(' ').map(n => n[0]).join('').substring(0,2)}
                                 </div>
-                            </div>
+                            </a>
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-1">
-                                    <h3 class="font-bold text-lg text-gray-800">\${doctor.name}</h3>
+                                    <a href="/doctor/\${doctor.id}" class="font-bold text-lg text-gray-800 hover:text-primary transition">\${doctor.name}</a>
                                     \${doctor.isPremium ? '<i class="fas fa-check-circle text-yellow-500" title="Verified Premium"></i>' : ''}
                                 </div>
                                 <p class="text-primary font-medium text-sm">\${doctor.title}</p>
@@ -552,9 +552,14 @@ export function doctorsPage(c: Context): string {
                                     </span>
                                 </div>
                             </div>
-                            <a href="/booking?doctor=\${doctor.id}" class="w-full \${doctor.isPremium ? 'btn-gold' : 'btn-primary'} py-3 rounded-xl font-semibold flex items-center justify-center text-sm">
-                                <i class="fas fa-calendar-check mr-2"></i>Book Consultation
-                            </a>
+                            <div class="flex gap-2">
+                                <a href="/doctor/\${doctor.id}" class="flex-1 btn-outline py-3 rounded-xl font-semibold flex items-center justify-center text-sm" onclick="event.stopPropagation()">
+                                    <i class="fas fa-user mr-2"></i>View Profile
+                                </a>
+                                <a href="/booking?doctor=\${doctor.id}" class="flex-1 \${doctor.isPremium ? 'btn-gold' : 'btn-primary'} py-3 rounded-xl font-semibold flex items-center justify-center text-sm" onclick="event.stopPropagation()">
+                                    <i class="fas fa-calendar-check mr-2"></i>Book
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

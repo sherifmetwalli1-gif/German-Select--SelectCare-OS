@@ -5390,6 +5390,13 @@ app.get('/doctors', async (c) => {
   return c.html(doctorsPage(c))
 })
 
+// Individual Doctor Profile Page
+app.get('/doctor/:id', async (c) => {
+  const { doctorProfilePage } = await import('./pages/doctor-profile')
+  const doctorId = c.req.param('id')
+  return c.html(doctorProfilePage(doctorId))
+})
+
 // ============================================================================
 // MONETIZATION & ENGAGEMENT PAGES
 // ============================================================================
