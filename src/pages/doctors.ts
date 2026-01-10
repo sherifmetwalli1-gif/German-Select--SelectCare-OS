@@ -1,5 +1,5 @@
 /**
- * Doctors Page
+ * Doctors Page - SelectCareOS™ Branding
  */
 import { Context } from 'hono'
 
@@ -9,13 +9,31 @@ export function doctorsPage(c: Context): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Doctors - German Select</title>
+    <title>Our Doctors - SelectCareOS™</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .german-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); }
+        :root {
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --cream: #F8F6F0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--cream);
+        }
+        
+        .gradient-navy { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); }
+        .bg-navy { background-color: var(--navy); }
+        .text-navy { color: var(--navy); }
+        .text-gold { color: var(--gold); }
+        .bg-gold { background-color: var(--gold); }
+        
         .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,31,63,0.15); border-color: var(--gold); }
         
         /* Bottom Navigation */
         .bottom-nav {
@@ -32,40 +50,54 @@ export function doctorsPage(c: Context): string {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 12px;
+            justify-content: center;
+            padding: 12px 16px;
             color: #9CA3AF;
-            font-size: 10px;
             text-decoration: none;
             transition: all 0.2s;
+            border-radius: 12px;
         }
-        .nav-item:hover { color: #6B7280; }
-        .nav-item.active { color: #3B82F6; }
-        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item:hover { color: var(--navy); background: rgba(0, 31, 63, 0.05); }
+        .nav-item.active { color: var(--gold); background: rgba(201, 162, 39, 0.1); }
+        .nav-item i { font-size: 24px; }
         main { padding-bottom: 100px; }
+        
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+            transition: all 0.3s;
+        }
+        .btn-gold:hover {
+            background: #B8922A;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 162, 39, 0.4);
+        }
     </style>
 </head>
-<body class="bg-gray-50">
-    <header class="german-gradient text-white">
+<body>
+    <header class="gradient-navy text-white">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="/dashboard" class="flex items-center space-x-3">
-                    <i class="fas fa-hospital text-2xl"></i>
-                    <span class="text-xl font-bold">German Select</span>
+                <a href="/premium" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gold rounded-xl flex items-center justify-center">
+                        <i class="fas fa-plus text-navy text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold">SelectCare<span class="text-gold">OS</span>™</span>
                 </a>
                 <nav class="flex items-center space-x-6">
-                    <a href="/doctors" class="text-white font-semibold">Doctors</a>
-                    <a href="/packages" class="hover:text-blue-200">Packages</a>
-                    <a href="/booking" class="hover:text-blue-200">Book Now</a>
-                    <a href="/dashboard" class="hover:text-blue-200">Dashboard</a>
+                    <a href="/doctors" class="text-gold font-semibold">Doctors</a>
+                    <a href="/services" class="hover:text-gold transition">Services</a>
+                    <a href="/booking" class="hover:text-gold transition">Book Now</a>
+                    <a href="/patient-dashboard" class="hover:text-gold transition">Dashboard</a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <section class="german-gradient text-white py-16">
+    <section class="gradient-navy text-white py-16">
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl font-bold mb-4">German Medical Specialists</h1>
-            <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+            <h1 class="text-4xl font-bold mb-4">Our Medical <span class="text-gold">Specialists</span></h1>
+            <p class="text-xl text-white/70 max-w-2xl mx-auto">
                 World-class German-certified doctors ready to provide exceptional care
             </p>
         </div>
@@ -73,32 +105,32 @@ export function doctorsPage(c: Context): string {
 
     <main class="container mx-auto px-4 py-12">
         <!-- Stats -->
-        <div class="grid grid-cols-4 gap-6 mb-12">
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-3xl font-bold text-blue-600" id="doctor-count">0</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
+                <div class="text-3xl font-bold text-navy" id="doctor-count">0</div>
                 <div class="text-gray-500">Specialists</div>
             </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-3xl font-bold text-green-600" id="spec-count">0</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
+                <div class="text-3xl font-bold text-gold" id="spec-count">0</div>
                 <div class="text-gray-500">Specializations</div>
             </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-3xl font-bold text-yellow-600">4.83</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
+                <div class="text-3xl font-bold text-navy">4.83</div>
                 <div class="text-gray-500">Avg. Rating</div>
             </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-sm">
-                <div class="text-3xl font-bold text-purple-600">16+</div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-transparent hover:border-gold transition">
+                <div class="text-3xl font-bold text-gold">16+</div>
                 <div class="text-gray-500">Years Experience</div>
             </div>
         </div>
 
         <!-- Filters -->
         <div class="flex flex-wrap gap-4 mb-8">
-            <input type="text" id="search" placeholder="Search doctors..." class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 w-64">
-            <select id="specialization-filter" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <input type="text" id="search" placeholder="Search doctors..." class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold focus:border-gold w-64 transition">
+            <select id="specialization-filter" class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold focus:border-gold transition">
                 <option value="">All Specializations</option>
             </select>
-            <select id="premium-filter" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <select id="premium-filter" class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold focus:border-gold transition">
                 <option value="">All Doctors</option>
                 <option value="true">Premium Only</option>
             </select>
@@ -110,9 +142,9 @@ export function doctorsPage(c: Context): string {
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-white py-8 mt-16">
+    <footer class="bg-navy text-white py-8 mt-16">
         <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 German Select. All rights reserved.</p>
+            <p class="text-white/60">&copy; 2024 SelectCareOS™. All rights reserved.</p>
         </div>
     </footer>
 
@@ -165,8 +197,8 @@ export function doctorsPage(c: Context): string {
                     <div class="p-6">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex items-center space-x-4">
-                                <div class="bg-blue-100 p-4 rounded-full">
-                                    <i class="fas fa-user-md text-blue-600 text-2xl"></i>
+                                <div class="bg-gold/10 p-4 rounded-full">
+                                    <i class="fas fa-user-md text-gold text-2xl"></i>
                                 </div>
                                 <div>
                                     <div class="flex items-center">
@@ -180,7 +212,7 @@ export function doctorsPage(c: Context): string {
 
                         <div class="space-y-2 mb-4">
                             <div class="flex items-center text-gray-600 text-sm">
-                                <i class="fas fa-stethoscope w-5 mr-2 text-blue-500"></i>
+                                <i class="fas fa-stethoscope w-5 mr-2 text-gold"></i>
                                 <span>\${doctor.specialization.split(',')[0]}</span>
                             </div>
                             <div class="flex items-center text-gray-600 text-sm">
@@ -209,7 +241,7 @@ export function doctorsPage(c: Context): string {
                             </div>
                         </div>
 
-                        <a href="/booking?doctor=\${doctor.id}" class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center">
+                        <a href="/booking?doctor=\${doctor.id}" class="mt-4 w-full btn-gold py-3 rounded-xl font-semibold flex items-center justify-center">
                             <i class="fas fa-calendar-plus mr-2"></i>Book Consultation
                         </a>
                     </div>
@@ -245,28 +277,23 @@ export function doctorsPage(c: Context): string {
         }
     </script>
     
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation - Icons Only -->
     <nav class="bottom-nav">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="nav-item">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
+            <a href="/premium" class="nav-item" title="Home">
+                <i class="fas fa-home text-2xl"></i>
             </a>
-            <a href="/doctors" class="nav-item active">
-                <i class="fas fa-user-md"></i>
-                <span>Doctors</span>
+            <a href="/services" class="nav-item" title="Treatments">
+                <i class="fas fa-procedures text-2xl"></i>
             </a>
-            <a href="/booking" class="nav-item">
-                <i class="fas fa-calendar-plus"></i>
-                <span>Book</span>
+            <a href="/doctors" class="nav-item active" title="Doctors">
+                <i class="fas fa-user-md text-2xl"></i>
             </a>
-            <a href="/medisense" class="nav-item">
-                <i class="fas fa-stethoscope"></i>
-                <span>MediSense</span>
+            <a href="/booking" class="nav-item" title="Book">
+                <i class="fas fa-calendar-plus text-2xl"></i>
             </a>
-            <a href="/dashboard" class="nav-item">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
+            <a href="/patient-dashboard" class="nav-item" title="Profile">
+                <i class="fas fa-user text-2xl"></i>
             </a>
         </div>
     </nav>
