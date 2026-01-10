@@ -2,15 +2,28 @@
  * SelectCareOS™ Premium Home Dashboard
  * World-Class Patient Dashboard with Integrated Monetization
  * Enhanced for daily life applications, engagement & conversion
+ * 
+ * Multi-language support: EN, AR, DE, FR
  */
 
+import { LANGUAGE_CONFIG, DASHBOARD_TRANSLATIONS, type SupportedLanguage } from '../services/dashboard-i18n'
+
+// Helper function for translations
+const t = (key: string, lang: SupportedLanguage) => DASHBOARD_TRANSLATIONS[lang]?.[key] || DASHBOARD_TRANSLATIONS.en[key] || key
+const getDir = (lang: SupportedLanguage) => LANGUAGE_CONFIG[lang]?.dir || 'ltr'
+
 // Premium Home Dashboard with full monetization ecosystem
-export const premiumHomePage = (userTier: string = 'plus') => {
+export const premiumHomePage = (userTier: string = 'plus', lang: SupportedLanguage = 'en') => {
   const isPremium = userTier !== 'free';
-  const currentDate = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const locale = LANGUAGE_CONFIG[lang]?.locale || 'en-US';
+  const currentDate = new Date().toLocaleDateString(locale, { weekday: 'long', month: 'long', day: 'numeric' });
+  const dir = getDir(lang);
+  const langOptions = Object.entries(LANGUAGE_CONFIG)
+    .map(([code, config]) => `<option value="${code}" ${code === lang ? 'selected' : ''}>${config.flag} ${config.nativeName}</option>`)
+    .join('');
   
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}" dir="${dir}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -277,18 +290,23 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                     SM
                 </div>
                 <div>
-                    <p class="text-white/60 text-xs">Good morning,</p>
-                    <h2 class="text-white font-bold text-lg">Welcome back, Sherif</h2>
+                    <p class="text-white/60 text-xs">${currentDate}</p>
+                    <h2 class="text-white font-bold text-lg">${t('welcome.back', lang)} Sherif</h2>
                 </div>
             </div>
             <div class="flex items-center gap-3">
+                <!-- Language Selector -->
+                <select id="languageSelect" onchange="changeLanguage(this.value)" 
+                        class="appearance-none bg-white/10 text-white px-3 py-1.5 pr-8 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition border border-white/20">
+                    ${langOptions}
+                </select>
                 <!-- SelectPoints Badge -->
-                <a href="/rewards" class="points-badge flex items-center gap-1">
+                <a href="/rewards?lang=${lang}" class="points-badge flex items-center gap-1">
                     <i class="fas fa-coins"></i>
                     <span>8,450</span>
                 </a>
                 <!-- Notifications -->
-                <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white relative">
+                <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white relative" title="${t('header.notifications', lang)}">
                     <i class="fas fa-bell"></i>
                     <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
                 </button>
@@ -303,8 +321,8 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                         <i class="fas fa-crown mr-1"></i>PLUS
                     </span>
                     <div>
-                        <p class="text-white text-sm font-medium">SelectCare Plus Member</p>
-                        <p class="text-white/60 text-xs">2x SelectPoints earning active</p>
+                        <p class="text-white text-sm font-medium">SelectCare ${t('premium.plus', lang)} ${t('premium.patient', lang)}</p>
+                        <p class="text-white/60 text-xs">${t('premium.doublePoints', lang)} ${t('premium.earning', lang)}</p>
                     </div>
                 </div>
                 <a href="/subscription" class="text-gold text-xs font-bold">
@@ -320,8 +338,8 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                     <i class="fas fa-heartbeat text-navy"></i>
                 </div>
                 <div>
-                    <p class="text-navy font-bold">POST-OP RECOVERY</p>
-                    <p class="text-navy/70 text-sm">Day 14 • Week 2 of 6</p>
+                    <p class="text-navy font-bold">${t('premium.postOp', lang).toUpperCase()} ${t('premium.recovery', lang).toUpperCase()}</p>
+                    <p class="text-navy/70 text-sm">${t('premium.day', lang)} 14 • ${t('journey.week', lang)} 2 ${t('journey.of', lang)} 6</p>
                 </div>
             </div>
             
@@ -341,7 +359,7 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                 <div class="flex-1 space-y-2">
                     <div>
                         <div class="flex justify-between text-xs mb-1">
-                            <span class="text-navy/80">Physical Recovery</span>
+                            <span class="text-navy/80">${t('premium.physicalRecovery', lang)}</span>
                             <span class="text-navy font-bold">82%</span>
                         </div>
                         <div class="progress-bar bg-navy/10">
@@ -350,7 +368,7 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                     </div>
                     <div>
                         <div class="flex justify-between text-xs mb-1">
-                            <span class="text-navy/80">Weight Goal</span>
+                            <span class="text-navy/80">${t('premium.weightGoal', lang)}</span>
                             <span class="text-navy font-bold">68%</span>
                         </div>
                         <div class="progress-bar bg-navy/10">
@@ -366,8 +384,8 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                     <i class="fas fa-check text-white text-sm"></i>
                 </div>
                 <div class="flex-1">
-                    <p class="text-navy text-sm font-medium">Milestone reached! 25% faster than average</p>
-                    <p class="text-navy/60 text-xs">+100 SelectPoints earned</p>
+                    <p class="text-navy text-sm font-medium">${t('premium.milestone', lang)} 25% ${t('premium.fasterThanAvg', lang)}</p>
+                    <p class="text-navy/60 text-xs">+100 ${t('premium.selectPoints', lang)} ${t('premium.earned', lang)}</p>
                 </div>
             </div>
         </div>
@@ -382,7 +400,7 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-navy">14</p>
-                    <p class="text-xs text-gray-500">Day Streak</p>
+                    <p class="text-xs text-gray-500">${t('premium.dayStreak', lang)}</p>
                 </div>
             </a>
             
@@ -392,7 +410,7 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-navy">4/7</p>
-                    <p class="text-xs text-gray-500">Daily Tasks</p>
+                    <p class="text-xs text-gray-500">${t('premium.dailyTasks', lang)}</p>
                 </div>
             </a>
         </div>
@@ -401,11 +419,11 @@ export const premiumHomePage = (userTier: string = 'plus') => {
         <div>
             <div class="flex justify-between items-center mb-4">
                 <h2 class="font-bold text-navy text-lg">
-                    <i class="fas fa-heartbeat text-gold mr-2"></i>Live Health Metrics
+                    <i class="fas fa-heartbeat text-gold mr-2"></i>${t('premium.liveMetrics', lang)}
                 </h2>
                 <span class="text-xs text-green-600 flex items-center gap-1">
                     <span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span>
-                    Synced 2m ago
+                    ${t('premium.synced', lang)} 2m ${t('premium.ago', lang)}
                 </span>
             </div>
             
@@ -416,8 +434,8 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                         <i class="fas fa-heartbeat text-red-500 text-lg"></i>
                     </div>
                     <p class="text-2xl font-bold text-navy">72</p>
-                    <p class="text-xs text-gray-500">Heart Rate</p>
-                    <p class="text-xs text-green-600 mt-1">Normal</p>
+                    <p class="text-xs text-gray-500">${t('stats.heartRate', lang)}</p>
+                    <p class="text-xs text-green-600 mt-1">${t('stats.normal', lang)}</p>
                 </div>
                 
                 <!-- Blood Pressure -->
@@ -840,17 +858,17 @@ export const premiumHomePage = (userTier: string = 'plus') => {
                     <i class="fas fa-gift text-navy text-xl"></i>
                 </div>
                 <div class="flex-1">
-                    <h3 class="font-bold text-navy">Share & Earn</h3>
-                    <p class="text-sm text-gray-600">Refer friends, earn €50 + 1,000 points each</p>
+                    <h3 class="font-bold text-navy">${t('referral.title', lang)}</h3>
+                    <p class="text-sm text-gray-600">${t('referral.desc', lang)} €50 + 1,000 ${t('nav.rewards', lang).toLowerCase()} ${t('referral.each', lang)}</p>
                     <div class="flex items-center gap-2 mt-2">
-                        <code class="bg-white px-3 py-1 rounded-lg text-navy font-mono font-bold text-sm">JOHN2024</code>
+                        <code class="bg-white px-3 py-1 rounded-lg text-navy font-mono font-bold text-sm">SHERIF2024</code>
                         <button class="text-gold text-sm"><i class="fas fa-copy"></i></button>
                     </div>
                 </div>
             </div>
             <div class="mt-4 pt-4 border-t border-gold/20 flex justify-between items-center">
-                <span class="text-sm text-gray-600"><strong>3</strong> friends referred</span>
-                <span class="text-gold font-bold">€150 + 3,000 pts earned</span>
+                <span class="text-sm text-gray-600"><strong>3</strong> ${t('referral.friends', lang)}</span>
+                <span class="text-gold font-bold">€150 + 3,000 pts ${t('referral.earned', lang)}</span>
             </div>
         </div>
     </main>
@@ -863,30 +881,38 @@ export const premiumHomePage = (userTier: string = 'plus') => {
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="nav-item active">
+            <a href="/?lang=${lang}" class="nav-item active">
                 <i class="fas fa-home"></i>
-                <span>Home</span>
+                <span>${t('nav.home', lang)}</span>
             </a>
-            <a href="/daily-wellness" class="nav-item">
+            <a href="/daily-wellness?lang=${lang}" class="nav-item">
                 <i class="fas fa-heart"></i>
-                <span>Wellness</span>
+                <span>${t('nav.wellness', lang)}</span>
             </a>
-            <a href="/rewards" class="nav-item">
+            <a href="/rewards?lang=${lang}" class="nav-item">
                 <i class="fas fa-coins"></i>
-                <span>Rewards</span>
+                <span>${t('nav.rewards', lang)}</span>
             </a>
-            <a href="/marketplace" class="nav-item">
+            <a href="/marketplace?lang=${lang}" class="nav-item">
                 <i class="fas fa-store"></i>
-                <span>Shop</span>
+                <span>${t('nav.shop', lang)}</span>
             </a>
-            <a href="/profile" class="nav-item">
+            <a href="/patient-dashboard?lang=${lang}" class="nav-item">
                 <i class="fas fa-user"></i>
-                <span>Profile</span>
+                <span>${t('nav.profile', lang)}</span>
             </a>
         </div>
     </nav>
     
     <script>
+        // Language change function
+        function changeLanguage(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            localStorage.setItem('selectcare-language', lang);
+            window.location.href = url.toString();
+        }
+        
         // Real-time metric updates simulation
         function updateMetrics() {
             // Update heart rate with slight variation

@@ -5470,15 +5470,17 @@ app.get('/breathing-exercises', async (c) => {
   return c.html(breathingPage())
 })
 
-// Premium Home Dashboard
+// Premium Home Dashboard with language support
 app.get('/premium', async (c) => {
   const { premiumHomePage } = await import('./pages/premium-home')
-  return c.html(premiumHomePage('plus'))
+  const lang = (c.req.query('lang') || 'en') as 'en' | 'ar' | 'de' | 'fr'
+  return c.html(premiumHomePage('plus', lang))
 })
 
 app.get('/dashboard-v2', async (c) => {
   const { premiumHomePage } = await import('./pages/premium-home')
-  return c.html(premiumHomePage('plus'))
+  const lang = (c.req.query('lang') || 'en') as 'en' | 'ar' | 'de' | 'fr'
+  return c.html(premiumHomePage('plus', lang))
 })
 
 // Family Health Hub
@@ -5502,10 +5504,11 @@ app.get('/symptom-analyzer', async (c) => {
   return c.html(mediSenseAIPage())
 })
 
-// Patient Dashboard alias
+// Patient Dashboard with language support
 app.get('/patient-dashboard', async (c) => {
   const { patientDashboardPage } = await import('./pages/patient-dashboard')
-  return c.html(patientDashboardPage())
+  const lang = (c.req.query('lang') || 'en') as 'en' | 'ar' | 'de' | 'fr'
+  return c.html(patientDashboardPage(lang))
 })
 
 // Alias routes for symptom checker (redirect to v4 MediSense)
@@ -5617,7 +5620,8 @@ app.get('/api/medisense/stats', async (c) => {
 // Patient Dashboard (comprehensive health monitoring & calculators)
 app.get('/dashboard', async (c) => {
   const { patientDashboardPage } = await import('./pages/patient-dashboard')
-  return c.html(patientDashboardPage())
+  const lang = (c.req.query('lang') || 'en') as 'en' | 'ar' | 'de' | 'fr'
+  return c.html(patientDashboardPage(lang))
 })
 
 // Dashboard API endpoints

@@ -2,7 +2,15 @@
  * SelectCareOS™ Patient Dashboard
  * Comprehensive health monitoring, calculators, and journey tracking
  * Inspired by SurgeryBridge design with enhanced health tools
+ * 
+ * Multi-language support: EN, AR, DE, FR
  */
+
+import { LANGUAGE_CONFIG, DASHBOARD_TRANSLATIONS, type SupportedLanguage } from '../services/dashboard-i18n'
+
+// Helper function for translations
+const t = (key: string, lang: SupportedLanguage) => DASHBOARD_TRANSLATIONS[lang]?.[key] || DASHBOARD_TRANSLATIONS.en[key] || key
+const getDir = (lang: SupportedLanguage) => LANGUAGE_CONFIG[lang]?.dir || 'ltr'
 
 // ============================================================================
 // HEALTH CALCULATORS DATA
@@ -249,8 +257,14 @@ export const HEALTH_METRICS_CONFIG = {
 // DASHBOARD PAGE HTML
 // ============================================================================
 
-export const patientDashboardPage = () => `<!DOCTYPE html>
-<html lang="en">
+export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
+  const dir = getDir(lang)
+  const langOptions = Object.entries(LANGUAGE_CONFIG)
+    .map(([code, config]) => `<option value="${code}" ${code === lang ? 'selected' : ''}>${config.flag} ${config.nativeName}</option>`)
+    .join('')
+  
+  return `<!DOCTYPE html>
+<html lang="${lang}" dir="${dir}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -507,37 +521,42 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                     <a href="/" class="text-2xl font-bold text-white">
                         SelectCare<span class="text-gold">OS</span>™
                     </a>
-                    <span class="px-3 py-1 bg-gold/20 text-gold text-sm rounded-full">Patient Portal</span>
+                    <span class="px-3 py-1 bg-gold/20 text-gold text-sm rounded-full">${t('header.patientPortal', lang)}</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white">
+                    <!-- Language Selector -->
+                    <select id="languageSelect" onchange="changeLanguage(this.value)" 
+                            class="appearance-none bg-white/10 text-white px-3 py-1.5 pr-8 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition border border-white/20">
+                        ${langOptions}
+                    </select>
+                    <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white" title="${t('header.notifications', lang)}">
                         <i class="fas fa-bell"></i>
                     </button>
-                    <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white">
+                    <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white" title="${t('header.settings', lang)}">
                         <i class="fas fa-cog"></i>
                     </button>
                     <div class="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-navy font-bold">
-                        JD
+                        SM
                     </div>
                 </div>
             </div>
             
             <!-- Tab Navigation -->
-            <div class="flex space-x-2 mt-6 overflow-x-auto pb-2">
+            <div class="flex space-x-2 mt-6 overflow-x-auto pb-2 ${dir === 'rtl' ? 'flex-row-reverse' : ''}">
                 <button class="tab-button active" onclick="showTab('overview')">
-                    <i class="fas fa-home mr-2"></i>Overview
+                    <i class="fas fa-home ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.overview', lang)}
                 </button>
                 <button class="tab-button" onclick="showTab('calculators')">
-                    <i class="fas fa-calculator mr-2"></i>Health Calculators
+                    <i class="fas fa-calculator ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.calculators', lang)}
                 </button>
                 <button class="tab-button" onclick="showTab('journey')">
-                    <i class="fas fa-road mr-2"></i>My Journey
+                    <i class="fas fa-road ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.journey', lang)}
                 </button>
                 <button class="tab-button" onclick="showTab('vitals')">
-                    <i class="fas fa-heartbeat mr-2"></i>Vitals & Metrics
+                    <i class="fas fa-heartbeat ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.vitals', lang)}
                 </button>
                 <button class="tab-button" onclick="showTab('appointments')">
-                    <i class="fas fa-calendar mr-2"></i>Appointments
+                    <i class="fas fa-calendar ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.appointments', lang)}
                 </button>
             </div>
         </div>
@@ -550,13 +569,13 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
             <div class="gradient-gold rounded-2xl p-6 mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 class="text-2xl font-bold text-navy mb-2">Welcome back, Sherif!</h1>
-                        <p class="text-navy/80">Your next appointment is in 3 days</p>
+                        <h1 class="text-2xl font-bold text-navy mb-2">${t('welcome.back', lang)} Sherif!</h1>
+                        <p class="text-navy/80">${t('welcome.nextAppointment', lang)} 3 ${t('welcome.days', lang)}</p>
                     </div>
                     <div class="mt-4 md:mt-0 flex items-center space-x-6">
                         <div class="text-center">
                             <div class="text-3xl font-bold text-navy">35%</div>
-                            <div class="text-sm text-navy/70">Journey Progress</div>
+                            <div class="text-sm text-navy/70">${t('welcome.journeyProgress', lang)}</div>
                         </div>
                         <div class="w-24 h-24">
                             <svg class="progress-ring" viewBox="0 0 100 100">
@@ -573,10 +592,10 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                 <div class="card p-4">
                     <div class="flex items-center justify-between mb-2">
                         <i class="fas fa-heartbeat text-red-500 text-xl"></i>
-                        <span class="text-xs text-green-600 font-semibold">Normal</span>
+                        <span class="text-xs text-green-600 font-semibold">${t('stats.normal', lang)}</span>
                     </div>
                     <div class="text-2xl font-bold text-navy" id="heart-rate">72</div>
-                    <div class="text-sm text-gray-500">Heart Rate (bpm)</div>
+                    <div class="text-sm text-gray-500">${t('stats.heartRate', lang)}</div>
                 </div>
                 <div class="card p-4">
                     <div class="flex items-center justify-between mb-2">
@@ -584,7 +603,7 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                         <span class="text-xs text-green-600 font-semibold">-8.4 kg</span>
                     </div>
                     <div class="text-2xl font-bold text-navy">82.4</div>
-                    <div class="text-sm text-gray-500">Weight (kg)</div>
+                    <div class="text-sm text-gray-500">${t('stats.weight', lang)}</div>
                 </div>
                 <div class="card p-4">
                     <div class="flex items-center justify-between mb-2">
@@ -592,7 +611,7 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
                         <span class="text-xs text-yellow-600 font-semibold">70%</span>
                     </div>
                     <div class="text-2xl font-bold text-navy" id="steps-today">5,240</div>
-                    <div class="text-sm text-gray-500">Steps Today</div>
+                    <div class="text-sm text-gray-500">${t('stats.stepsToday', lang)}</div>
                 </div>
                 <div class="card p-4">
                     <div class="flex items-center justify-between mb-2">
@@ -4674,31 +4693,42 @@ export const patientDashboardPage = () => `<!DOCTYPE html>
         });
     </script>
     
+    <!-- Language Change Script -->
+    <script>
+        function changeLanguage(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            localStorage.setItem('selectcare-language', lang);
+            window.location.href = url.toString();
+        }
+    </script>
+    
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="nav-item">
+            <a href="/?lang=${lang}" class="nav-item">
                 <i class="fas fa-home"></i>
-                <span>Home</span>
+                <span>${t('nav.home', lang)}</span>
             </a>
-            <a href="/daily-wellness" class="nav-item">
+            <a href="/daily-wellness?lang=${lang}" class="nav-item">
                 <i class="fas fa-heart"></i>
-                <span>Wellness</span>
+                <span>${t('nav.wellness', lang)}</span>
             </a>
-            <a href="/medisense" class="nav-item">
+            <a href="/medisense?lang=${lang}" class="nav-item">
                 <i class="fas fa-stethoscope"></i>
                 <span>MediSense</span>
             </a>
-            <a href="/rewards" class="nav-item">
+            <a href="/rewards?lang=${lang}" class="nav-item">
                 <i class="fas fa-coins"></i>
-                <span>Rewards</span>
+                <span>${t('nav.rewards', lang)}</span>
             </a>
-            <a href="/patient-dashboard" class="nav-item active">
+            <a href="/patient-dashboard?lang=${lang}" class="nav-item active">
                 <i class="fas fa-user"></i>
-                <span>Profile</span>
+                <span>${t('nav.profile', lang)}</span>
             </a>
         </div>
     </nav>
 </body>
 </html>
 `
+}
