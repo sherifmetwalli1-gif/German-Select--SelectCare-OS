@@ -11,11 +11,22 @@ export function packagesPage(c: Context): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Care Packages - German Select</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .german-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        :root {
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --cream: #FAF8F5;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .german-gradient { background: linear-gradient(135deg, #001F3F 0%, #003366 50%, #001530 100%); }
+        .card-hover { transition: all 0.3s ease; border: 1px solid rgba(201,162,39,0.1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,31,63,0.15); border-color: var(--gold); }
         
         /* Bottom Navigation */
         .bottom-nav {
@@ -38,8 +49,8 @@ export function packagesPage(c: Context): string {
             text-decoration: none;
             transition: all 0.2s;
         }
-        .nav-item:hover { color: #6B7280; }
-        .nav-item.active { color: #3B82F6; }
+        .nav-item:hover { color: var(--navy); }
+        .nav-item.active { color: var(--gold); }
         .nav-item i { font-size: 22px; margin-bottom: 4px; }
         main { padding-bottom: 100px; }
     </style>

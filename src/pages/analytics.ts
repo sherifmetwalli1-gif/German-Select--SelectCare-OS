@@ -13,10 +13,21 @@ export const analyticsPage = (c: Context) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Dashboard - German Select Enterprise Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        :root {
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --cream: #FAF8F5;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #001F3F 0%, #003366 100%); }
         .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
         .metric-card { transition: all 0.3s; border-left: 4px solid transparent; }
         .metric-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgb(0 0 0 / 0.1); }
@@ -25,7 +36,7 @@ export const analyticsPage = (c: Context) => {
         .metric-card.patients { border-left-color: #8b5cf6; }
         .metric-card.conversion { border-left-color: #f59e0b; }
         .tab-btn { transition: all 0.2s; }
-        .tab-btn.active { background: #3b82f6; color: white; }
+        .tab-btn.active { background: var(--gold); color: white; }
         
         /* Bottom Navigation */
         .bottom-nav {
@@ -48,8 +59,8 @@ export const analyticsPage = (c: Context) => {
             text-decoration: none;
             transition: all 0.2s;
         }
-        .nav-item:hover { color: #6B7280; }
-        .nav-item.active { color: #3B82F6; }
+        .nav-item:hover { color: var(--navy); }
+        .nav-item.active { color: var(--gold); }
         .nav-item i { font-size: 22px; margin-bottom: 4px; }
         main { padding-bottom: 100px; }
     </style>

@@ -13,10 +13,21 @@ export const affiliatePage = (c: Context) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Affiliate Portal - German Select Enterprise Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .gradient-header { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
+        :root {
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --cream: #FAF8F5;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #001F3F 0%, #003366 100%); }
         .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
         .stat-card { transition: all 0.3s; }
         .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 40px -10px rgb(0 0 0 / 0.2); }
@@ -24,8 +35,8 @@ export const affiliatePage = (c: Context) => {
         .badge-success { background: #dcfce7; color: #166534; }
         .badge-pending { background: #fef3c7; color: #92400e; }
         .badge-paid { background: #dbeafe; color: #1e40af; }
-        .link-box { background: linear-gradient(135deg, #f3e8ff 0%, #fdf2f8 100%); border: 1px dashed #a855f7; }
-        .copy-btn:hover { background: #7c3aed; color: white; }
+        .link-box { background: linear-gradient(135deg, #FAF8F5 0%, #E8D5A3 100%); border: 1px dashed var(--gold); }
+        .copy-btn:hover { background: var(--gold); color: white; }
         
         /* Bottom Navigation */
         .bottom-nav {
@@ -48,8 +59,8 @@ export const affiliatePage = (c: Context) => {
             text-decoration: none;
             transition: all 0.2s;
         }
-        .nav-item:hover { color: #6B7280; }
-        .nav-item.active { color: #8B5CF6; }
+        .nav-item:hover { color: var(--navy); }
+        .nav-item.active { color: var(--gold); }
         .nav-item i { font-size: 22px; margin-bottom: 4px; }
         .page-content { padding-bottom: 100px; }
     </style>

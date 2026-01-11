@@ -443,6 +443,9 @@ export const servicesPage = () => `<!DOCTYPE html>
     <title>Our Services - SelectCareOS™ | German Select Medical Tourism</title>
     <meta name="description" content="German-quality healthcare in Egypt. German trained surgeons, Red Sea recovery, complete digital guidance. Save up to 70% compared to German hospitals.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -454,7 +457,7 @@ export const servicesPage = () => `<!DOCTYPE html>
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--cream);
         }
         

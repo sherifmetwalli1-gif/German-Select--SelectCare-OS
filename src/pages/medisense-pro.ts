@@ -42,7 +42,7 @@ medisenseProRouter.get('/', (c) => {
   <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     
     /* Premium Gold Brand Variables */
     :root {
@@ -51,9 +51,11 @@ medisenseProRouter.get('/', (c) => {
       --gold-soft: #E8D5A3;
       --gold-bright: #F4D03F;
       --gold-rose: #B8860B;
-      --german-navy: #1a1a2e;
-      --deep-navy: #16213e;
-      --midnight-blue: #0f0f1a;
+      --navy: #001F3F;
+      --navy-light: #003366;
+      --german-navy: #001F3F;
+      --deep-navy: #001530;
+      --midnight-blue: #003366;
       --warm-cream: #faf8f5;
       --warm-ivory: #FFFDF7;
       --shadow-gold-sm: 0 2px 8px rgba(201, 162, 39, 0.15);

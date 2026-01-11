@@ -12,16 +12,23 @@ export function doctorsPage(c: Context): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Medical Specialists - SelectCareOS™</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #1E3A5F;
-            --primary-light: #4A90A4;
-            --gold: #D4AF37;
-            --gold-light: #F7E7CE;
+            /* SelectCareOS™ Brand Colors */
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --primary: #001F3F;
+            --primary-light: #003366;
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
             --coral: #FF6B35;
-            --success: #06D6A0;
-            --cream: #FAF8F5;
+            --success: #22C55E;
+            --cream: #F8F6F0;
+            --green: #22C55E;
         }
         
         body { 
@@ -46,14 +53,14 @@ export function doctorsPage(c: Context): string {
         }
         
         /* Gradients */
-        .gradient-primary { background: linear-gradient(135deg, #1E3A5F 0%, #4A90A4 100%); }
-        .gradient-gold { background: linear-gradient(135deg, #D4AF37 0%, #F7E7CE 100%); }
+        .gradient-primary { background: linear-gradient(135deg, #001F3F 0%, #003366 100%); }
+        .gradient-gold { background: linear-gradient(135deg, #C9A227 0%, #E8D5A3 100%); }
         .gradient-coral { background: linear-gradient(135deg, #FF6B35 0%, #F77F00 100%); }
         .gradient-success { background: linear-gradient(135deg, #06D6A0 0%, #2D6A4F 100%); }
         
         /* Badges */
         .badge-german {
-            background: linear-gradient(135deg, #1E3A5F 0%, #0066CC 100%);
+            background: linear-gradient(135deg, #001F3F 0%, #0066CC 100%);
             box-shadow: 0 4px 12px rgba(0,102,204,0.3);
         }
         .badge-medical {
@@ -61,8 +68,8 @@ export function doctorsPage(c: Context): string {
             box-shadow: 0 4px 12px rgba(6,214,160,0.3);
         }
         .badge-premium {
-            background: linear-gradient(135deg, #D4AF37 0%, #F7E7CE 100%);
-            color: #0A2540;
+            background: linear-gradient(135deg, #C9A227 0%, #E8D5A3 100%);
+            color: #001530;
             box-shadow: 0 6px 16px rgba(212,175,55,0.4);
         }
         
@@ -91,32 +98,32 @@ export function doctorsPage(c: Context): string {
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #D4AF37 0%, #F7E7CE 50%, #D4AF37 100%);
+            background: linear-gradient(90deg, #C9A227 0%, #E8D5A3 50%, #C9A227 100%);
         }
         
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, #1E3A5F 0%, #0066CC 100%);
+            background: linear-gradient(135deg, #001F3F 0%, #0066CC 100%);
             color: white;
             font-weight: 600;
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #0A2540 0%, #0066CC 100%);
+            background: linear-gradient(135deg, #001530 0%, #0066CC 100%);
             transform: translateY(-2px);
             box-shadow: 0 12px 24px rgba(0,102,204,0.35);
         }
         
         .btn-gold {
-            background: linear-gradient(135deg, #D4AF37 0%, #CD7F32 100%);
+            background: linear-gradient(135deg, #C9A227 0%, #CD7F32 100%);
             color: white;
             font-weight: 700;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(212,175,55,0.4);
         }
         .btn-gold:hover {
-            background: linear-gradient(135deg, #F7E7CE 0%, #D4AF37 100%);
-            color: #0A2540;
+            background: linear-gradient(135deg, #E8D5A3 0%, #C9A227 100%);
+            color: #001530;
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 16px 32px rgba(212,175,55,0.5);
         }
@@ -202,7 +209,7 @@ export function doctorsPage(c: Context): string {
         }
         
         .shimmer-gold {
-            background: linear-gradient(90deg, #D4AF37 0%, #F7E7CE 50%, #D4AF37 100%);
+            background: linear-gradient(90deg, #C9A227 0%, #E8D5A3 50%, #C9A227 100%);
             background-size: 200% 100%;
             animation: shimmer 3s linear infinite;
         }

@@ -25,6 +25,9 @@ export function bookingPage(c: Context): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Consultation - SelectCareOS™</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         /* ============================================================================
@@ -33,10 +36,12 @@ export function bookingPage(c: Context): string {
            ============================================================================ */
         
         :root {
-            /* German Navy Spectrum */
-            --german-navy: #1a1a2e;
-            --deep-navy: #0f0f1a;
-            --midnight-blue: #16213e;
+            /* SelectCareOS™ Brand Colors */
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --german-navy: #001F3F;
+            --deep-navy: #001530;
+            --midnight-blue: #003366;
             
             /* Luxurious Gold Spectrum */
             --gold-primary: #C9A227;
@@ -65,12 +70,14 @@ export function bookingPage(c: Context): string {
         }
         
         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--cream);
+            -webkit-font-smoothing: antialiased;
         }
         
         /* Premium German Select Header */
         .german-gradient { 
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+            background: linear-gradient(135deg, #001F3F 0%, #003366 50%, #001530 100%);
             border-bottom: 2px solid rgba(201, 162, 39, 0.3);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(201, 162, 39, 0.2) inset;
         }

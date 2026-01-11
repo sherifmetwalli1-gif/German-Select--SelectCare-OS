@@ -13,17 +13,28 @@ export const adminPage = (c: Context) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - German Select Enterprise Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        :root {
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --gold: #C9A227;
+            --gold-light: #E8D5A3;
+            --cream: #FAF8F5;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #001F3F 0%, #003366 100%); }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid rgba(201,162,39,0.1); }
         .stat-card { transition: transform 0.2s; }
         .stat-card:hover { transform: translateY(-2px); }
-        .sidebar { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+        .sidebar { background: linear-gradient(180deg, #001F3F 0%, #001530 100%); }
         .menu-item { transition: all 0.2s; }
-        .menu-item:hover { background: rgba(59, 130, 246, 0.2); }
-        .menu-item.active { background: rgba(59, 130, 246, 0.3); border-left: 3px solid #3b82f6; }
+        .menu-item:hover { background: rgba(201, 162, 39, 0.15); }
+        .menu-item.active { background: rgba(201, 162, 39, 0.25); border-left: 3px solid #C9A227; }
         .data-table tr:hover { background: #f8fafc; }
         .badge { padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
         .badge-success { background: #dcfce7; color: #166534; }
@@ -52,8 +63,8 @@ export const adminPage = (c: Context) => {
             text-decoration: none;
             transition: all 0.2s;
         }
-        .nav-item:hover { color: #6B7280; }
-        .nav-item.active { color: #3B82F6; }
+        .nav-item:hover { color: var(--navy); }
+        .nav-item.active { color: var(--gold); }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
         
         @media (max-width: 768px) {

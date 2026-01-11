@@ -271,6 +271,9 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
     <title>Patient Dashboard - SelectCareOS™</title>
     <meta name="description" content="Your personalized health dashboard with calculators, journey tracking, and real-time vitals monitoring.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -283,7 +286,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--cream);
             min-height: 100vh;
         }
@@ -3463,7 +3466,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SelectCareOS - Personalized Meal Plan</title>
+    <title>SelectCareOS™ - Personalized Meal Plan</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #1a1a2e; }
         .header { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 20px; margin-bottom: 30px; }
@@ -4668,7 +4671,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         function shareChart() {
             if (navigator.share) {
                 navigator.share({
-                    title: trackingConfig[currentMetric].label + ' - SelectCareOS',
+                    title: trackingConfig[currentMetric].label + ' - SelectCareOS™',
                     text: \`Check out my \${currentPeriod}-day \${trackingConfig[currentMetric].label.toLowerCase()} progress!\`,
                     url: window.location.href
                 });

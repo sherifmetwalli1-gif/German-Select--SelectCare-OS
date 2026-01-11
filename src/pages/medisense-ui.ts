@@ -398,6 +398,9 @@ export const mediSenseV4Page = (lang: string = 'en') => {
     <title>MediSense AI™ v4.0 - World-Class Symptom Analyzer | SelectCareOS™</title>
     <meta name="description" content="Advanced AI-powered symptom analysis with medical-grade accuracy. Get instant health insights, risk assessment, and specialist recommendations.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         /* ============================================================================
@@ -406,11 +409,11 @@ export const mediSenseV4Page = (lang: string = 'en') => {
            ============================================================================ */
         
         :root {
-            /* German Navy Spectrum */
-            --navy: #1a1a2e;
-            --navy-light: #16213e;
-            --deep-navy: #0f0f1a;
-            --midnight-blue: #16213e;
+            /* SelectCareOS™ Brand Colors */
+            --navy: #001F3F;
+            --navy-light: #003366;
+            --deep-navy: #001530;
+            --midnight-blue: #003366;
             
             /* Luxurious Gold Spectrum */
             --gold: #C9A227;
@@ -445,7 +448,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         * { box-sizing: border-box; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--cream);
             margin: 0;
             padding: 0;

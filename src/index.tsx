@@ -2628,7 +2628,7 @@ app.post('/api/export/meal-plan', async (c) => {
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>SelectCareOS - Personalized Meal Plan</title>
+  <title>SelectCareOS™ - Personalized Meal Plan</title>
   <style>
     body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #1a1a2e; }
     .header { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 20px; margin-bottom: 30px; }

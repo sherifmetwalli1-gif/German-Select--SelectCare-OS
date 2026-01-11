@@ -9,7 +9,7 @@
  * - Urgency triage classification (Emergency/Urgent/Routine/Self-Care)
  * - Body region mapping
  * - Specialist recommendation engine
- * - Integration with SelectCareOS doctors and booking
+ * - Integration with SelectCareOS™ doctors and booking
  */
 
 // ============================================================================
@@ -699,6 +699,9 @@ export const mediSenseAIPage = () => `<!DOCTYPE html>
     <title>MediSense AI™ - Intelligent Symptom Analyzer | SelectCareOS™</title>
     <meta name="description" content="Advanced AI-powered symptom analysis with medical-grade accuracy. Get instant health insights and specialist recommendations.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -712,7 +715,7 @@ export const mediSenseAIPage = () => `<!DOCTYPE html>
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--cream);
         }
         
