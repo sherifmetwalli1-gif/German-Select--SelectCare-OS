@@ -19,6 +19,9 @@ import { logger } from 'hono/logger'
 import { prettyJSON } from 'hono/pretty-json'
 import { secureHeaders } from 'hono/secure-headers'
 
+// Import Instant Connect Telemedicine System
+import { instantConnectAPI, smartMatchingService } from './services/instant-connect'
+
 // Types
 type Bindings = {
   DB: D1Database
@@ -1022,16 +1025,343 @@ const EXCURSIONS = [
 // API ROUTES
 // ============================================================================
 
+// ============================================================================
+// INITIALIZE INSTANT CONNECT SYSTEM
+// ============================================================================
+
+// Initialize the instant connect system with existing doctors
+// This happens at app startup
+let instantConnectInitialized = false;
+
+function initializeInstantConnect() {
+  if (!instantConnectInitialized) {
+    instantConnectAPI.initialize(DOCTORS);
+    instantConnectInitialized = true;
+    console.log('[SelectCareOS] Instant Connect system initialized');
+  }
+}
+
 // Health check
 app.get('/api/health', (c) => {
+  // Ensure instant connect is initialized
+  initializeInstantConnect();
+  
   return c.json({
     success: true,
     status: 'healthy',
     service: 'SelectCareOS™ Platform',
     version: '2.0.0',
     provider: 'German Select',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    instantConnect: {
+      initialized: instantConnectInitialized,
+      stats: instantConnectAPI.getDoctorStats()
+    }
   })
+})
+
+// ============================================================================
+// INSTANT CONNECT TELEMEDICINE API
+// ============================================================================
+
+// Initialize on first API call
+app.use('/api/instant-connect/*', async (c, next) => {
+  initializeInstantConnect();
+  await next();
+});
+
+// Get instant connect system stats
+app.get('/api/instant-connect/stats', (c) => {
+  const doctorStats = instantConnectAPI.getDoctorStats();
+  const queueStats = instantConnectAPI.getQueueStats();
+  
+  return c.json({
+    success: true,
+    data: {
+      doctors: doctorStats,
+      queue: queueStats,
+      timestamp: new Date().toISOString()
+    }
+  });
+});
+
+// Get available doctors for instant connect
+app.get('/api/instant-connect/doctors', (c) => {
+  const specialty = c.req.query('specialty');
+  const language = c.req.query('language');
+  const limit = parseInt(c.req.query('limit') || '10');
+  
+  const doctors = instantConnectAPI.findDoctors({
+    specialty: specialty || undefined,
+    language: language || undefined,
+    limit
+  });
+  
+  return c.json({
+    success: true,
+    data: doctors,
+    total: doctors.length
+  });
+});
+
+// Patient: Connect Now - Request instant doctor connection
+app.post('/api/instant-connect/connect', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { 
+      patientId, 
+      patientName, 
+      preferredSpecialty, 
+      preferredLanguage,
+      urgency = 'routine',
+      symptoms,
+      symptomDescription 
+    } = body;
+    
+    if (!patientId || !patientName) {
+      return c.json({ 
+        success: false, 
+        error: 'Patient ID and name are required' 
+      }, 400);
+    }
+    
+    const result = instantConnectAPI.connectNow({
+      patientId,
+      patientName,
+      preferredSpecialty,
+      preferredLanguage,
+      urgency,
+      symptoms,
+      symptomDescription
+    });
+    
+    return c.json({
+      success: true,
+      data: result,
+      message: result.status === 'matched' 
+        ? `Matched with ${result.matchedDoctor?.name}! Waiting for acceptance...`
+        : `Added to queue. Position: ${result.queuePosition || 1}. Estimated wait: ${result.estimatedWaitSeconds}s`
+    });
+  } catch (error) {
+    console.error('[InstantConnect] Connect error:', error);
+    return c.json({ success: false, error: 'Failed to process connection request' }, 500);
+  }
+});
+
+// Get consultation request status
+app.get('/api/instant-connect/request/:id', (c) => {
+  const requestId = c.req.param('id');
+  const request = instantConnectAPI.getStatus(requestId);
+  
+  if (!request) {
+    return c.json({ success: false, error: 'Request not found' }, 404);
+  }
+  
+  return c.json({
+    success: true,
+    data: {
+      id: request.id,
+      status: request.status,
+      doctor: request.doctorId ? smartMatchingService.getDoctor(request.doctorId) : null,
+      videoRoomUrl: request.videoRoomUrl,
+      requestedAt: request.requestedAt,
+      matchedAt: request.matchedAt,
+      startedAt: request.startedAt,
+      waitTimeSeconds: request.waitTimeSeconds
+    }
+  });
+});
+
+// Cancel a consultation request
+app.delete('/api/instant-connect/request/:id', (c) => {
+  const requestId = c.req.param('id');
+  const success = instantConnectAPI.cancel(requestId);
+  
+  if (!success) {
+    return c.json({ success: false, error: 'Unable to cancel request' }, 400);
+  }
+  
+  return c.json({ success: true, message: 'Request cancelled' });
+});
+
+// Doctor: Accept a consultation request
+app.post('/api/instant-connect/doctor/accept', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { requestId, doctorId } = body;
+    
+    if (!requestId || !doctorId) {
+      return c.json({ 
+        success: false, 
+        error: 'Request ID and Doctor ID are required' 
+      }, 400);
+    }
+    
+    const result = instantConnectAPI.doctorAccept(requestId, doctorId);
+    
+    if (!result.success) {
+      return c.json({ success: false, error: result.error }, 400);
+    }
+    
+    return c.json({
+      success: true,
+      data: {
+        consultationId: result.consultationId,
+        videoRoomUrl: result.videoRoomUrl
+      },
+      message: 'Consultation accepted! Video room is ready.'
+    });
+  } catch (error) {
+    console.error('[InstantConnect] Accept error:', error);
+    return c.json({ success: false, error: 'Failed to accept request' }, 500);
+  }
+});
+
+// Doctor: Decline a consultation request
+app.post('/api/instant-connect/doctor/decline', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { requestId, doctorId, reason } = body;
+    
+    if (!requestId || !doctorId) {
+      return c.json({ 
+        success: false, 
+        error: 'Request ID and Doctor ID are required' 
+      }, 400);
+    }
+    
+    const success = instantConnectAPI.doctorDecline(requestId, doctorId);
+    
+    if (!success) {
+      return c.json({ success: false, error: 'Unable to decline request' }, 400);
+    }
+    
+    return c.json({ 
+      success: true, 
+      message: 'Request declined. Patient will be matched with another doctor.' 
+    });
+  } catch (error) {
+    console.error('[InstantConnect] Decline error:', error);
+    return c.json({ success: false, error: 'Failed to decline request' }, 500);
+  }
+});
+
+// Doctor: Update status (available/busy/offline)
+app.post('/api/instant-connect/doctor/status', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { doctorId, status } = body;
+    
+    if (!doctorId || !status) {
+      return c.json({ 
+        success: false, 
+        error: 'Doctor ID and status are required' 
+      }, 400);
+    }
+    
+    if (!['available', 'busy', 'offline'].includes(status)) {
+      return c.json({ 
+        success: false, 
+        error: 'Invalid status. Must be: available, busy, or offline' 
+      }, 400);
+    }
+    
+    const success = instantConnectAPI.updateDoctorStatus(doctorId, status);
+    
+    if (!success) {
+      return c.json({ success: false, error: 'Doctor not found' }, 404);
+    }
+    
+    return c.json({ 
+      success: true, 
+      data: { doctorId, status },
+      message: `Doctor status updated to ${status}` 
+    });
+  } catch (error) {
+    console.error('[InstantConnect] Status update error:', error);
+    return c.json({ success: false, error: 'Failed to update status' }, 500);
+  }
+});
+
+// Doctor: Heartbeat (keep alive)
+app.post('/api/instant-connect/doctor/heartbeat', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { doctorId } = body;
+    
+    if (!doctorId) {
+      return c.json({ success: false, error: 'Doctor ID is required' }, 400);
+    }
+    
+    const success = instantConnectAPI.doctorHeartbeat(doctorId);
+    
+    return c.json({ 
+      success, 
+      timestamp: new Date().toISOString() 
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Heartbeat failed' }, 500);
+  }
+});
+
+// Consultation: Start video call
+app.post('/api/instant-connect/consultation/:id/start', (c) => {
+  const consultationId = c.req.param('id');
+  const success = instantConnectAPI.startCall(consultationId);
+  
+  if (!success) {
+    return c.json({ success: false, error: 'Unable to start consultation' }, 400);
+  }
+  
+  return c.json({ 
+    success: true, 
+    message: 'Consultation started',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Consultation: End video call
+app.post('/api/instant-connect/consultation/:id/end', async (c) => {
+  const consultationId = c.req.param('id');
+  
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const success = instantConnectAPI.endCall(consultationId, body);
+    
+    if (!success) {
+      return c.json({ success: false, error: 'Unable to end consultation' }, 400);
+    }
+    
+    return c.json({ 
+      success: true, 
+      message: 'Consultation completed',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to end consultation' }, 500);
+  }
+});
+
+// Get video room URL
+app.get('/api/instant-connect/consultation/:id/video', (c) => {
+  const consultationId = c.req.param('id');
+  const role = c.req.query('role') as 'patient' | 'doctor' || 'patient';
+  const displayName = c.req.query('name') || 'User';
+  
+  const videoUrl = instantConnectAPI.getVideoUrl(consultationId, role, displayName);
+  
+  if (!videoUrl) {
+    return c.json({ success: false, error: 'Video room not found' }, 404);
+  }
+  
+  return c.json({
+    success: true,
+    data: {
+      videoUrl,
+      provider: 'jitsi',
+      instructions: 'Click the URL to join the video call. Allow camera and microphone access.'
+    }
+  });
 })
 
 // API info
