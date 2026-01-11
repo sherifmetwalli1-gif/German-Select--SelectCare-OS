@@ -890,6 +890,39 @@ export const servicesPage = () => `<!DOCTYPE html>
         </div>
     </section>
 
+    <!-- 24/7 Instant Doctor Access Banner -->
+    <section class="py-8 px-6 bg-gradient-to-r from-green-600 to-emerald-700 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 right-0 w-48 h-48 bg-white rounded-full translate-x-1/4 translate-y-1/4"></div>
+        </div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-video text-white text-2xl"></i>
+                </div>
+                <div class="text-white">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
+                        <span class="text-sm font-semibold text-green-200">24/7 Available</span>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold">Instant Doctor Access</h3>
+                    <p class="text-green-100 text-sm">Connect with a German-certified doctor in under 2 minutes</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-white text-center">
+                    <span class="text-3xl font-bold">€50</span>
+                    <span class="text-sm text-green-200 block">/ 30 min session</span>
+                </div>
+                <a href="/instant-doctor" class="bg-white text-green-700 font-bold px-8 py-4 rounded-xl hover:bg-green-50 transition shadow-lg flex items-center gap-2">
+                    <i class="fas fa-bolt"></i>
+                    Connect Now
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Why Red Sea Recovery Section -->
     <section class="py-20 px-6 bg-white">
         <div class="max-w-7xl mx-auto">
@@ -1188,6 +1221,57 @@ export const servicesPage = () => `<!DOCTYPE html>
             
             <!-- Category Cards -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="serviceGrid">
+                <!-- Instant Doctor Card - Featured -->
+                <div class="card p-6 service-category bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 relative overflow-hidden" data-category="instant">
+                    <div class="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        <i class="fas fa-bolt mr-1"></i>INSTANT
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-video text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy text-lg">24/7 Doctor Access</h3>
+                            <p class="text-xs text-gray-500">Video consultations anytime</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 mb-4">Connect with a German-certified doctor instantly via HD video for urgent questions, second opinions, or follow-up care.</p>
+                    
+                    <div class="space-y-3 mb-4">
+                        <div class="p-4 bg-white rounded-xl border border-green-100">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <p class="font-semibold text-navy text-sm">Instant Video Consultation</p>
+                                        <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                            <i class="fas fa-video mr-1"></i>Video
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-green-600">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                        <span>Doctors online now</span>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-green-600 text-lg">€50</p>
+                                    <span class="text-xs text-gray-500">/ 30 min</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-xs text-gray-500">
+                                <span><i class="fas fa-clock mr-1"></i>&lt; 2 min wait</span>
+                                <span><i class="fas fa-globe mr-1"></i>EN, DE, AR</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-green-200">
+                        <a href="/instant-doctor" class="w-full text-center block bg-green-600 text-white font-semibold py-3 rounded-xl hover:bg-green-700 transition">
+                            <i class="fas fa-bolt mr-2"></i>Connect Now
+                        </a>
+                    </div>
+                </div>
+                
                 ${TREATMENT_PROCEDURES.map(category => `
                     <div class="card p-6 service-category" data-category="${category.category}">
                         <div class="flex items-center gap-4 mb-4">

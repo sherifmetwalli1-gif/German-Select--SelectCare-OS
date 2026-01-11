@@ -5397,6 +5397,23 @@ app.get('/doctor/:id', async (c) => {
   return c.html(doctorProfilePage(doctorId))
 })
 
+// Instant Doctor Access - 24/7 Emergency Consultation
+app.get('/instant-doctor', async (c) => {
+  const { instantDoctorPage } = await import('./pages/instant-doctor')
+  return c.html(instantDoctorPage(c))
+})
+
+// Alias for instant doctor
+app.get('/emergency', async (c) => {
+  const { instantDoctorPage } = await import('./pages/instant-doctor')
+  return c.html(instantDoctorPage(c))
+})
+
+app.get('/24-7', async (c) => {
+  const { instantDoctorPage } = await import('./pages/instant-doctor')
+  return c.html(instantDoctorPage(c))
+})
+
 // ============================================================================
 // MONETIZATION & ENGAGEMENT PAGES
 // ============================================================================
