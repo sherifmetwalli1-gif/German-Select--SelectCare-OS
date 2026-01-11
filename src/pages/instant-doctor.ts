@@ -902,26 +902,224 @@ export function instantDoctorPage(c: Context): string {
     </nav>
 
     <script>
+        // State management
+        let currentRequestId = null;
+        let pollInterval = null;
+        const patientId = 'patient-' + Math.random().toString(36).substring(7);
+        const patientName = 'Patient User';
+        
         // Language change
         function changeLang(lang) {
             window.location.href = '/instant-doctor?lang=' + lang;
         }
         
-        // Start instant connection
-        function startInstantConnect() {
-            document.getElementById('connectionModal').classList.remove('hidden');
-            document.getElementById('connectionModal').classList.add('flex');
+        // Fetch and update live stats from API
+        async function updateLiveStats() {
+            try {
+                const response = await fetch('/api/instant-connect/stats');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const { doctors, queue } = result.data;
+                    
+                    // Update UI
+                    document.getElementById('doctorsOnline').textContent = doctors.availableDoctors;
+                    document.getElementById('queueCount').textContent = queue.totalInQueue;
+                    
+                    // Format wait time (seconds to MM:SS)
+                    const waitSecs = queue.estimatedNextMatchSeconds || doctors.avgResponseTime;
+                    const mins = Math.floor(waitSecs / 60);
+                    const secs = Math.round(waitSecs % 60);
+                    document.getElementById('waitTime').textContent = mins + ':' + secs.toString().padStart(2, '0');
+                }
+            } catch (error) {
+                console.error('Failed to fetch stats:', error);
+            }
+        }
+        
+        // Start instant connection with real API
+        async function startInstantConnect() {
+            const modal = document.getElementById('connectionModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             
-            // Simulate connection process
-            setTimeout(() => {
-                // Would redirect to video call
-                alert('Demo: You would now be connected to a video consultation');
-                cancelConnection();
-            }, 3000);
+            // Update modal content
+            updateModalStatus('connecting', 'Finding the best available doctor...');
+            
+            try {
+                // Call the Connect Now API
+                const response = await fetch('/api/instant-connect/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patientId: patientId,
+                        patientName: patientName,
+                        urgency: 'routine'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentRequestId = result.data.requestId;
+                    
+                    if (result.data.status === 'matched') {
+                        // Doctor found! Update UI and start polling for acceptance
+                        const doctor = result.data.matchedDoctor;
+                        updateModalStatus('matched', 
+                            'Matched with ' + doctor.name + '!\\nWaiting for doctor to accept...',
+                            doctor
+                        );
+                        startPolling();
+                    } else {
+                        // In queue
+                        updateModalStatus('queued', 
+                            'Added to queue. Position: ' + (result.data.queuePosition || 1),
+                            null,
+                            result.data.estimatedWaitSeconds
+                        );
+                        startPolling();
+                    }
+                } else {
+                    updateModalStatus('error', 'Failed to connect: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Connection error:', error);
+                updateModalStatus('error', 'Connection failed. Please try again.');
+            }
+        }
+        
+        // Update modal status display
+        function updateModalStatus(status, message, doctor = null, waitTime = null) {
+            const modalContent = document.querySelector('#connectionModal > div');
+            let icon, title, dots;
+            
+            switch(status) {
+                case 'connecting':
+                    icon = 'fa-user-md';
+                    title = 'Connecting you now...';
+                    dots = true;
+                    break;
+                case 'matched':
+                    icon = 'fa-check-circle';
+                    title = 'Doctor Found!';
+                    dots = true;
+                    break;
+                case 'queued':
+                    icon = 'fa-users';
+                    title = 'In Queue';
+                    dots = true;
+                    break;
+                case 'accepted':
+                    icon = 'fa-video';
+                    title = 'Connecting Video...';
+                    dots = false;
+                    break;
+                case 'error':
+                    icon = 'fa-exclamation-triangle';
+                    title = 'Connection Issue';
+                    dots = false;
+                    break;
+            }
+            
+            let doctorInfo = '';
+            if (doctor) {
+                doctorInfo = '<div class="mt-4 p-4 bg-gray-50 rounded-xl">' +
+                    '<div class="flex items-center gap-3">' +
+                    '<div class="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center font-bold text-navy">' + 
+                    doctor.avatar + '</div>' +
+                    '<div class="text-left">' +
+                    '<p class="font-bold text-navy">' + doctor.name + '</p>' +
+                    '<p class="text-sm text-gray-600">' + doctor.specialty + '</p>' +
+                    '<p class="text-xs text-gold">★ ' + doctor.rating + '</p>' +
+                    '</div></div></div>';
+            }
+            
+            let waitInfo = '';
+            if (waitTime) {
+                const mins = Math.floor(waitTime / 60);
+                const secs = Math.round(waitTime % 60);
+                waitInfo = '<p class="text-sm text-gray-500 mt-4">Estimated wait: <span class="font-bold">' + 
+                    mins + ':' + secs.toString().padStart(2, '0') + '</span></p>';
+            }
+            
+            modalContent.innerHTML = 
+                '<div class="w-24 h-24 mx-auto bg-gold/10 rounded-full flex items-center justify-center mb-6">' +
+                    '<i class="fas ' + icon + ' text-gold text-4xl"></i>' +
+                '</div>' +
+                '<h3 class="text-xl font-bold text-navy mb-2">' + title + '</h3>' +
+                '<p class="text-gray-600 mb-4">' + message.replace(/\\n/g, '<br>') + '</p>' +
+                (dots ? '<div class="connecting-dots text-4xl text-gold mb-4">' +
+                    '<span class="inline-block w-3 h-3 bg-gold rounded-full mx-1"></span>' +
+                    '<span class="inline-block w-3 h-3 bg-gold rounded-full mx-1"></span>' +
+                    '<span class="inline-block w-3 h-3 bg-gold rounded-full mx-1"></span>' +
+                '</div>' : '') +
+                doctorInfo +
+                waitInfo +
+                '<button onclick="cancelConnection()" class="mt-6 text-gray-500 hover:text-gray-700 py-2 px-4 border border-gray-300 rounded-lg">' +
+                    'Cancel' +
+                '</button>';
+        }
+        
+        // Poll for request status updates
+        function startPolling() {
+            if (pollInterval) clearInterval(pollInterval);
+            
+            pollInterval = setInterval(async () => {
+                if (!currentRequestId) return;
+                
+                try {
+                    const response = await fetch('/api/instant-connect/request/' + currentRequestId);
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        const status = result.data.status;
+                        
+                        if (status === 'accepted') {
+                            // Doctor accepted! Redirect to video
+                            clearInterval(pollInterval);
+                            updateModalStatus('accepted', 'Doctor accepted! Connecting to video call...');
+                            
+                            // Simulate doctor accepting (in a real app, we'd wait for their real accept)
+                            // Start the consultation
+                            await fetch('/api/instant-connect/consultation/' + currentRequestId + '/start', {
+                                method: 'POST'
+                            });
+                            
+                            // Redirect to video room
+                            setTimeout(() => {
+                                window.open(result.data.videoRoomUrl, '_blank');
+                                cancelConnection();
+                            }, 1500);
+                        } else if (status === 'completed' || status === 'cancelled') {
+                            clearInterval(pollInterval);
+                            cancelConnection();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 2000);
         }
         
         // Cancel connection
-        function cancelConnection() {
+        async function cancelConnection() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
+            }
+            
+            if (currentRequestId) {
+                try {
+                    await fetch('/api/instant-connect/request/' + currentRequestId, {
+                        method: 'DELETE'
+                    });
+                } catch (e) {
+                    // Ignore cancel errors
+                }
+                currentRequestId = null;
+            }
+            
             document.getElementById('connectionModal').classList.add('hidden');
             document.getElementById('connectionModal').classList.remove('flex');
         }
@@ -931,30 +1129,61 @@ export function instantDoctorPage(c: Context): string {
             window.location.href = '/doctor/' + doctorId;
         }
         
-        // Book doctor
-        function bookDoctor(doctorId) {
-            document.getElementById('connectionModal').classList.remove('hidden');
-            document.getElementById('connectionModal').classList.add('flex');
+        // Book specific doctor
+        async function bookDoctor(doctorId) {
+            const modal = document.getElementById('connectionModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             
-            setTimeout(() => {
-                alert('Demo: Connecting you to doctor...');
-                cancelConnection();
-            }, 2000);
+            updateModalStatus('connecting', 'Connecting to selected doctor...');
+            
+            try {
+                const response = await fetch('/api/instant-connect/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patientId: patientId,
+                        patientName: patientName,
+                        urgency: 'routine'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentRequestId = result.data.requestId;
+                    
+                    // Simulate doctor accepting for demo
+                    setTimeout(async () => {
+                        // Doctor accepts
+                        await fetch('/api/instant-connect/doctor/accept', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                requestId: currentRequestId,
+                                doctorId: result.data.matchedDoctor?.id || doctorId
+                            })
+                        });
+                    }, 2000);
+                    
+                    if (result.data.matchedDoctor) {
+                        updateModalStatus('matched', 
+                            'Connecting with ' + result.data.matchedDoctor.name + '...',
+                            result.data.matchedDoctor
+                        );
+                    }
+                    
+                    startPolling();
+                }
+            } catch (error) {
+                console.error('Booking error:', error);
+                updateModalStatus('error', 'Failed to connect. Please try again.');
+            }
         }
         
-        // Update live stats (simulation)
-        setInterval(() => {
-            // Random fluctuations for demo
-            const queueEl = document.getElementById('queueCount');
-            const queue = parseInt(queueEl.textContent);
-            queueEl.textContent = Math.max(1, queue + (Math.random() > 0.5 ? 1 : -1));
-            
-            const consultEl = document.getElementById('consultToday');
-            const consult = parseInt(consultEl.textContent);
-            if (Math.random() > 0.7) {
-                consultEl.textContent = consult + 1;
-            }
-        }, 5000);
+        // Update stats on load and periodically
+        updateLiveStats();
+        setInterval(updateLiveStats, 10000);
     </script>
 </body>
 </html>`;
