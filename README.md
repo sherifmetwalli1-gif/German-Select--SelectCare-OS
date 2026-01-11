@@ -4,10 +4,79 @@
 - **Name**: SelectCareOS™
 - **Organization**: German Select
 - **Goal**: World-class digital health platform combining German medical excellence with Red Sea recovery
-- **Version**: 2.2.0 Enhanced (Market-Competitive Pricing + Monetization)
+- **Version**: 2.3.0 Enhanced (Instant Connect Telemedicine System)
 - **Launch**: Q1 2026 in Hurghada, Egypt
-- **Last Updated**: January 1, 2026
-- **New**: Market Research-Based Pricing Adjustments (15-25% reduction)
+- **Last Updated**: January 11, 2026
+- **New**: 🚀 Instant Connect Telemedicine - Connect to doctors in <2 minutes!
+
+## 🆕 What's New in v2.3.0 - Instant Connect Telemedicine System
+
+### ⚡ Instant Doctor Connection (MAJOR FEATURE)
+A world-class instant telemedicine system that connects patients to doctors in under 2 minutes:
+
+**Live URLs:**
+- **Instant Doctor Page**: [/instant-doctor](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/instant-doctor)
+- **API Stats**: [/api/instant-connect/stats](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/api/instant-connect/stats)
+- **Available Doctors**: [/api/instant-connect/doctors](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/api/instant-connect/doctors)
+
+**Features Implemented:**
+1. **Smart Matching Service** - AI-powered doctor-patient matching with scoring:
+   - Specialty match: +50 points
+   - Language match: +30 points
+   - Fast response time bonus: up to +60 points
+   - Rating bonus: +50 points max
+   - Emergency priority: +100 points
+
+2. **Consultation Queue Manager** - Priority-based queue system:
+   - Emergency > Urgent > Routine prioritization
+   - Automatic re-queue on doctor decline
+   - 60-second acceptance timeout
+   - Cloudflare Workers compatible (no setInterval)
+
+3. **Video Integration** - FREE Jitsi Meet (no API key needed):
+   - Unique room IDs per consultation
+   - Patient/doctor specific URLs
+   - HD video with no usage limits
+   - Auto-redirect when doctor accepts
+
+4. **REST API Endpoints:**
+   | Endpoint | Method | Description |
+   |----------|--------|-------------|
+   | `/api/instant-connect/stats` | GET | Get queue and doctor stats |
+   | `/api/instant-connect/doctors` | GET | List available doctors |
+   | `/api/instant-connect/connect` | POST | Request instant connection |
+   | `/api/instant-connect/request/:id` | GET | Get request status |
+   | `/api/instant-connect/request/:id` | DELETE | Cancel request |
+   | `/api/instant-connect/doctor/accept` | POST | Doctor accepts request |
+   | `/api/instant-connect/doctor/decline` | POST | Doctor declines request |
+   | `/api/instant-connect/doctor/status` | POST | Update doctor status |
+   | `/api/instant-connect/consultation/:id/start` | POST | Start video call |
+   | `/api/instant-connect/consultation/:id/end` | POST | End consultation |
+   | `/api/instant-connect/consultation/:id/video` | GET | Get video room URL |
+
+5. **Database Schema** (Supabase PostgreSQL ready):
+   - `instant_doctors` - Doctor profiles with real-time availability
+   - `instant_patients` - Patient profiles with subscriptions
+   - `consultation_requests` - Full lifecycle queue tracking
+   - `doctor_notifications` - Real-time push notifications
+   - `consultation_queue` - Priority overflow handling
+   - Performance indexes for <500ms matching
+
+### 🏥 German Select Medical Team (10 Doctors)
+| Doctor | Specialty | Rating | Fee |
+|--------|-----------|--------|-----|
+| Dr. med. Sherif Akram Metwalli | Plastic Surgery | ★4.9 | €150 |
+| Dr. Sherif Aly, FACS | Bariatric Surgery | ★4.95 | €200 |
+| Dr. Hesham El Zahi | General Surgery | ★4.8 | €160 |
+| Dr. K. Müller | Cardiology | ★4.9 | €200 |
+| Dr. L. Weber | Orthopedics | ★4.8 | €180 |
+| Dr. A. Schmidt | Nutritional Medicine | ★4.7 | €120 |
+| Dr. H. Fischer | Bariatric Surgery | ★4.9 | €180 |
+| Dr. M. Bauer | Urology | ★4.8 | €160 |
+| Dr. P. Koch | Anesthesia | ★4.9 | €140 |
+| Dr. J. Hoffmann | Internal Medicine | ★4.7 | €150 |
+
+---
 
 ## 🆕 What's New in v2.1.0
 
