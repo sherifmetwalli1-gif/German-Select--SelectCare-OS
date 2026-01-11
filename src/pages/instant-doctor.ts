@@ -12,11 +12,13 @@
 
 import { Context } from 'hono'
 
-// Available doctors for instant consultations
+// Complete German Select Medical Team for Instant Consultations
+// Source: www.germanselect.org/our-team/
 const INSTANT_DOCTORS = [
+  // FOUNDERS & LEADERSHIP
   {
     id: 'dr-metwalli',
-    name: 'Dr. med. Sherif Akram Metwalli',
+    name: 'Dr. med. Sherif Akram Metwalli, M.Sc.',
     title: 'Founder, CEO & CMO',
     specialization: 'Plastic & Reconstructive Surgery',
     avatar: 'SM',
@@ -28,24 +30,41 @@ const INSTANT_DOCTORS = [
     nextAvailable: null,
     consultations_today: 12
   },
+  // CHIEF BARIATRIC SURGEON
   {
-    id: 'dr-fischer',
-    name: 'Dr. H. Fischer',
-    title: 'Senior Consultant',
+    id: 'dr-sherif-aly',
+    name: 'Dr. Sherif Aly, FACS',
+    title: 'Chief Consultant Bariatric Surgery',
     specialization: 'Bariatric Surgery',
-    avatar: 'HF',
+    avatar: 'SA',
     languages: ['German', 'English', 'Arabic'],
-    rating: 4.9,
-    reviews: 312,
+    rating: 4.95,
+    reviews: 487,
     available: true,
     status: 'online',
     nextAvailable: null,
-    consultations_today: 15
+    consultations_today: 18
   },
+  // GENERAL SURGERY
+  {
+    id: 'dr-hesham-elzahi',
+    name: 'Dr. Hesham El Zahi',
+    title: 'Consultant General Surgery',
+    specialization: 'General & GI Surgery',
+    avatar: 'HE',
+    languages: ['German', 'English', 'Arabic'],
+    rating: 4.8,
+    reviews: 156,
+    available: true,
+    status: 'busy',
+    nextAvailable: '10 min',
+    consultations_today: 9
+  },
+  // CARDIOLOGY
   {
     id: 'dr-muller',
     name: 'Dr. K. Müller',
-    title: 'Deputy Head of Cardiology',
+    title: 'Assoc. Prof., Deputy Head of Cardiology',
     specialization: 'Cardiology',
     avatar: 'KM',
     languages: ['German', 'English'],
@@ -56,10 +75,11 @@ const INSTANT_DOCTORS = [
     nextAvailable: '5 min',
     consultations_today: 8
   },
+  // ORTHOPEDICS
   {
     id: 'dr-weber',
     name: 'Dr. L. Weber',
-    title: 'Head of Arthroscopy Unit',
+    title: 'Senior Consultant, Head of Arthroscopy Unit',
     specialization: 'Orthopedics',
     avatar: 'LW',
     languages: ['German', 'English'],
@@ -70,10 +90,11 @@ const INSTANT_DOCTORS = [
     nextAvailable: null,
     consultations_today: 10
   },
+  // ANESTHESIA
   {
     id: 'dr-koch',
     name: 'Dr. P. Koch',
-    title: 'Head of Anesthesia Department',
+    title: 'Dept. Head Anesthesia & Pain Management',
     specialization: 'Anesthesia & Pain Management',
     avatar: 'PK',
     languages: ['German', 'English'],

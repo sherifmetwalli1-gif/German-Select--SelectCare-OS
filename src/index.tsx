@@ -65,14 +65,16 @@ app.use('*', async (c, next) => {
 // STATIC DATA - German Select Doctors & Packages
 // ============================================================================
 
+// Complete German Select Medical Team - from www.germanselect.org
 const DOCTORS = [
+  // LEADERSHIP & FOUNDERS
   {
     id: 'dr-metwalli',
-    name: 'Dr. med. Sherif Akram Metwalli',
+    name: 'Dr. med. Sherif Akram Metwalli, M.Sc.',
     title: 'Founder, CEO & CMO',
     specialization: 'Plastic & Reconstructive Surgery',
     subspecialties: ['Post-Bariatric Surgery', 'Body Contouring', 'Facial Surgery'],
-    qualifications: ['Triple Board-Certified German Facharzt', '20+ Years International Experience'],
+    qualifications: ['Triple Board-Certified German Facharzt', '20+ Years International Experience', 'German Select Founder'],
     languages: ['German', 'English', 'Arabic'],
     experience_years: 20,
     location: 'Germany / Hurghada',
@@ -81,15 +83,54 @@ const DOCTORS = [
     total_reviews: 247,
     is_premium: true,
     avatar: 'SM',
-    available: true
+    available: true,
+    photo_url: null // From germanselect.org
   },
+  // BARIATRIC SURGERY TEAM
+  {
+    id: 'dr-sherif-aly',
+    name: 'Dr. Sherif Aly, FACS',
+    title: 'Chief Consultant Bariatric Surgery',
+    specialization: 'Bariatric Surgery',
+    subspecialties: ['Gastric Sleeve', 'Gastric Bypass', 'Antireflux Surgery', 'Colorectal Surgery'],
+    qualifications: ['Fellow American College of Surgeons (FACS)', 'Chief Consultant Nagold Hospital Germany', 'Bielefeld University Hospitals'],
+    languages: ['German', 'English', 'Arabic'],
+    experience_years: 25,
+    location: 'Nagold, Germany / Hurghada',
+    consultation_fee: 200,
+    rating: 4.95,
+    total_reviews: 487,
+    is_premium: true,
+    avatar: 'SA',
+    available: true,
+    photo_url: null
+  },
+  {
+    id: 'dr-hesham-elzahi',
+    name: 'Dr. Hesham El Zahi',
+    title: 'Consultant Surgeon',
+    specialization: 'General & Gastrointestinal Surgery',
+    subspecialties: ['Laparoscopic Surgery', 'GI Surgery', 'Hernia Repair'],
+    qualifications: ['German Board Certified', 'St. Augustinus Krankenhaus Düren'],
+    languages: ['German', 'English', 'Arabic'],
+    experience_years: 18,
+    location: 'Düren, Germany / Hurghada',
+    consultation_fee: 160,
+    rating: 4.8,
+    total_reviews: 156,
+    is_premium: true,
+    avatar: 'HE',
+    available: true,
+    photo_url: null
+  },
+  // ORTHOPEDICS
   {
     id: 'dr-weber',
     name: 'Dr. L. Weber',
-    title: 'Senior Consultant',
+    title: 'Senior Consultant Orthopedics',
     specialization: 'Orthopedics',
-    subspecialties: ['Joint Surgery', 'Sports Medicine', 'Arthroscopy'],
-    qualifications: ['German Board Certified', 'Head of Arthroscopy Unit'],
+    subspecialties: ['Joint Surgery', 'Sports Medicine', 'Arthroscopy', 'Sports Injuries'],
+    qualifications: ['German Board Certified', 'Head of Arthroscopy Unit', 'Senior Consultant Orthopedic Surgeon'],
     languages: ['German', 'English'],
     experience_years: 18,
     location: 'Germany / Hurghada',
@@ -100,16 +141,17 @@ const DOCTORS = [
     avatar: 'LW',
     available: true
   },
+  // CARDIOLOGY
   {
     id: 'dr-muller',
     name: 'Dr. K. Müller',
-    title: 'Consultant',
+    title: 'Assoc. Prof. Cardiology',
     specialization: 'Cardiology',
-    subspecialties: ['Interventional Cardiology', 'Cardiac Imaging'],
-    qualifications: ['Ass. Prof of Cardiology', 'University Hospital Kiel'],
+    subspecialties: ['Interventional Cardiology', 'Cardiac Imaging', 'Heart Disease'],
+    qualifications: ['Ass. Prof of Cardiology', 'Deputy Head of Cardiology', 'University Hospital Kiel Germany'],
     languages: ['German', 'English'],
     experience_years: 15,
-    location: 'Germany / Hurghada',
+    location: 'Kiel, Germany / Hurghada',
     consultation_fee: 200,
     rating: 4.9,
     total_reviews: 156,
@@ -117,13 +159,14 @@ const DOCTORS = [
     avatar: 'KM',
     available: true
   },
+  // NUTRITIONAL MEDICINE
   {
     id: 'dr-schmidt',
     name: 'Dr. A. Schmidt',
-    title: 'Consultant',
-    specialization: 'Nutritionist',
+    title: 'Consultant Nutritional Medicine',
+    specialization: 'Nutritional Medicine',
     subspecialties: ['Bariatric Nutrition', 'Metabolic Health', 'Weight Management'],
-    qualifications: ['Nutritional Medicine Specialist', 'German Board Certified'],
+    qualifications: ['Nutritional Medicine Specialist', 'German Board Certified', 'Consultant of Nutritional Medicine'],
     languages: ['German', 'English'],
     experience_years: 12,
     location: 'Germany / Hurghada',
@@ -134,6 +177,7 @@ const DOCTORS = [
     avatar: 'AS',
     available: true
   },
+  // LEGACY - Keeping for backward compatibility
   {
     id: 'dr-fischer',
     name: 'Dr. H. Fischer',
