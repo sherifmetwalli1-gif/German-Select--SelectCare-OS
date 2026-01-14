@@ -5788,6 +5788,17 @@ app.get('/24-7', async (c) => {
   return c.html(instantDoctorPage(c))
 })
 
+// Video Consultation Room - Live video call interface
+app.get('/consultation/:id', async (c) => {
+  const { videoConsultationPage } = await import('./pages/video-consultation')
+  return c.html(videoConsultationPage(c))
+})
+
+app.get('/call/:id', async (c) => {
+  const { videoConsultationPage } = await import('./pages/video-consultation')
+  return c.html(videoConsultationPage(c))
+})
+
 // ============================================================================
 // MONETIZATION & ENGAGEMENT PAGES
 // ============================================================================

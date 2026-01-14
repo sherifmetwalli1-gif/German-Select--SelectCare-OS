@@ -12,6 +12,8 @@ export * from './types';
 export { SmartMatchingService, smartMatchingService } from './smart-matching';
 export { ConsultationQueueManager, consultationQueue } from './consultation-queue';
 export { VideoService, videoService } from './video-service';
+export { videoProviderService } from './video-provider';
+export type { VideoRoomConfig, VideoRoomResult } from './video-provider';
 
 // ============================================================================
 // INSTANT CONNECT API
