@@ -1364,6 +1364,289 @@ app.get('/api/instant-connect/consultation/:id/video', (c) => {
   });
 })
 
+// ============================================================================
+// DOCTOR SCHEDULE MANAGEMENT API - Online Booking Integration
+// ============================================================================
+
+// In-memory storage for doctor schedules (in production, use D1 database)
+const doctorSchedules: Map<string, {
+  weeklySchedule: Record<number, { enabled: boolean; slots: { start: string; end: string }[] }>;
+  blockedTimes: { id: string; reason: string; startTime: string; endTime: string; notes: string }[];
+  settings: {
+    slotDuration: number;
+    bufferTime: number;
+    maxDailySlots: number;
+    allowInstantBooking: boolean;
+    allowOnlineBooking: boolean;
+    bookingWindowDays: number;
+  };
+}> = new Map();
+
+// Initialize default schedule for doctor
+function getOrCreateDoctorSchedule(doctorId: string) {
+  if (!doctorSchedules.has(doctorId)) {
+    // Default schedule: Mon-Fri 9-12, 14-18
+    const defaultWeekly: Record<number, { enabled: boolean; slots: { start: string; end: string }[] }> = {};
+    for (let day = 0; day <= 6; day++) {
+      defaultWeekly[day] = {
+        enabled: day >= 1 && day <= 5, // Mon-Fri enabled
+        slots: day >= 1 && day <= 5 ? [
+          { start: '09:00', end: '12:00' },
+          { start: '14:00', end: '18:00' }
+        ] : []
+      };
+    }
+    
+    doctorSchedules.set(doctorId, {
+      weeklySchedule: defaultWeekly,
+      blockedTimes: [],
+      settings: {
+        slotDuration: 30,
+        bufferTime: 5,
+        maxDailySlots: 20,
+        allowInstantBooking: true,
+        allowOnlineBooking: true,
+        bookingWindowDays: 30
+      }
+    });
+  }
+  return doctorSchedules.get(doctorId)!;
+}
+
+// Get doctor's full schedule
+app.get('/api/instant-connect/doctor/:id/schedule', (c) => {
+  const doctorId = c.req.param('id');
+  const schedule = getOrCreateDoctorSchedule(doctorId);
+  
+  return c.json({
+    success: true,
+    data: {
+      doctorId,
+      weeklySchedule: schedule.weeklySchedule,
+      blockedTimes: schedule.blockedTimes,
+      settings: schedule.settings
+    }
+  });
+});
+
+// Save doctor's weekly schedule
+app.post('/api/instant-connect/doctor/schedule', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { doctorId, schedule: weeklySchedule, settings } = body;
+    
+    if (!doctorId) {
+      return c.json({ success: false, error: 'Doctor ID is required' }, 400);
+    }
+    
+    const existing = getOrCreateDoctorSchedule(doctorId);
+    
+    if (weeklySchedule) {
+      existing.weeklySchedule = weeklySchedule;
+    }
+    
+    if (settings) {
+      existing.settings = { ...existing.settings, ...settings };
+    }
+    
+    doctorSchedules.set(doctorId, existing);
+    
+    return c.json({
+      success: true,
+      message: 'Schedule saved successfully',
+      data: {
+        doctorId,
+        weeklySchedule: existing.weeklySchedule,
+        settings: existing.settings
+      }
+    });
+  } catch (error) {
+    console.error('[Schedule] Save error:', error);
+    return c.json({ success: false, error: 'Failed to save schedule' }, 500);
+  }
+});
+
+// Add blocked time (vacation, personal, etc.)
+app.post('/api/instant-connect/doctor/:id/blocked-time', async (c) => {
+  try {
+    const doctorId = c.req.param('id');
+    const body = await c.req.json();
+    const { reason, startTime, endTime, notes } = body;
+    
+    if (!startTime || !endTime) {
+      return c.json({ success: false, error: 'Start and end time are required' }, 400);
+    }
+    
+    const schedule = getOrCreateDoctorSchedule(doctorId);
+    
+    const blockedTime = {
+      id: `bt-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+      reason: reason || 'personal',
+      startTime,
+      endTime,
+      notes: notes || ''
+    };
+    
+    schedule.blockedTimes.push(blockedTime);
+    doctorSchedules.set(doctorId, schedule);
+    
+    return c.json({
+      success: true,
+      message: 'Time blocked successfully',
+      data: blockedTime
+    });
+  } catch (error) {
+    console.error('[Schedule] Block time error:', error);
+    return c.json({ success: false, error: 'Failed to block time' }, 500);
+  }
+});
+
+// Remove blocked time
+app.delete('/api/instant-connect/doctor/:id/blocked-time/:blockId', (c) => {
+  const doctorId = c.req.param('id');
+  const blockId = c.req.param('blockId');
+  
+  const schedule = getOrCreateDoctorSchedule(doctorId);
+  const initialLength = schedule.blockedTimes.length;
+  
+  schedule.blockedTimes = schedule.blockedTimes.filter(bt => bt.id !== blockId);
+  
+  if (schedule.blockedTimes.length === initialLength) {
+    return c.json({ success: false, error: 'Blocked time not found' }, 404);
+  }
+  
+  doctorSchedules.set(doctorId, schedule);
+  
+  return c.json({
+    success: true,
+    message: 'Blocked time removed successfully'
+  });
+});
+
+// Get available slots for booking (patient-facing)
+app.get('/api/instant-connect/doctor/:id/available-slots', (c) => {
+  const doctorId = c.req.param('id');
+  const date = c.req.query('date'); // YYYY-MM-DD format
+  const weekOffset = parseInt(c.req.query('week') || '0');
+  
+  const schedule = getOrCreateDoctorSchedule(doctorId);
+  
+  // Generate available slots based on schedule
+  const availableSlots: any[] = [];
+  const startDate = date ? new Date(date) : new Date();
+  startDate.setDate(startDate.getDate() + (weekOffset * 7));
+  
+  // Generate for next 7 days (or specific date)
+  const daysToGenerate = date ? 1 : 7;
+  
+  for (let dayOffset = 0; dayOffset < daysToGenerate; dayOffset++) {
+    const currentDate = new Date(startDate);
+    currentDate.setDate(startDate.getDate() + dayOffset);
+    const dayOfWeek = currentDate.getDay();
+    const dateStr = currentDate.toISOString().split('T')[0];
+    
+    const daySchedule = schedule.weeklySchedule[dayOfWeek];
+    if (!daySchedule?.enabled) continue;
+    
+    // Check if date is within blocked times
+    const isBlocked = schedule.blockedTimes.some(bt => {
+      const blockStart = new Date(bt.startTime);
+      const blockEnd = new Date(bt.endTime);
+      return currentDate >= blockStart && currentDate <= blockEnd;
+    });
+    
+    if (isBlocked) continue;
+    
+    // Generate slots from time ranges
+    for (const range of daySchedule.slots) {
+      let [startHour, startMin] = range.start.split(':').map(Number);
+      const [endHour, endMin] = range.end.split(':').map(Number);
+      const endMinutes = endHour * 60 + endMin;
+      
+      let currentMinutes = startHour * 60 + startMin;
+      
+      while (currentMinutes + schedule.settings.slotDuration <= endMinutes) {
+        const slotStart = `${String(Math.floor(currentMinutes / 60)).padStart(2, '0')}:${String(currentMinutes % 60).padStart(2, '0')}`;
+        const slotEnd = `${String(Math.floor((currentMinutes + schedule.settings.slotDuration) / 60)).padStart(2, '0')}:${String((currentMinutes + schedule.settings.slotDuration) % 60).padStart(2, '0')}`;
+        
+        availableSlots.push({
+          id: `${doctorId}-${dateStr}-${slotStart}`,
+          doctorId,
+          date: dateStr,
+          dayOfWeek,
+          startTime: slotStart,
+          endTime: slotEnd,
+          duration: schedule.settings.slotDuration,
+          available: true,
+          type: 'telemedicine'
+        });
+        
+        currentMinutes += schedule.settings.slotDuration + schedule.settings.bufferTime;
+      }
+    }
+  }
+  
+  return c.json({
+    success: true,
+    data: availableSlots,
+    total: availableSlots.length,
+    settings: {
+      allowOnlineBooking: schedule.settings.allowOnlineBooking,
+      bookingWindowDays: schedule.settings.bookingWindowDays
+    }
+  });
+});
+
+// Get doctor's pending consultation requests (for dashboard)
+app.get('/api/instant-connect/doctor/:id/requests', (c) => {
+  const doctorId = c.req.param('id');
+  const status = c.req.query('status') || 'pending';
+  
+  // In production, this would query the database
+  // For now, return simulated data
+  return c.json({
+    success: true,
+    data: [],
+    message: 'No pending requests'
+  });
+});
+
+// Get doctor's consultation history
+app.get('/api/instant-connect/doctor/:id/history', (c) => {
+  const doctorId = c.req.param('id');
+  const limit = parseInt(c.req.query('limit') || '20');
+  const offset = parseInt(c.req.query('offset') || '0');
+  const filter = c.req.query('filter') || 'all';
+  
+  // In production, this would query the database
+  return c.json({
+    success: true,
+    data: [],
+    total: 0,
+    limit,
+    offset
+  });
+});
+
+// Get doctor's earnings summary
+app.get('/api/instant-connect/doctor/:id/earnings', (c) => {
+  const doctorId = c.req.param('id');
+  const period = c.req.query('period') || 'month'; // week, month, year
+  
+  // In production, calculate from transactions
+  return c.json({
+    success: true,
+    data: {
+      period,
+      totalEarnings: 0,
+      consultationCount: 0,
+      avgPerConsultation: 0,
+      pendingPayouts: 0,
+      lastPayout: null
+    }
+  });
+});
+
 // API info
 app.get('/api', (c) => {
   return c.json({
@@ -5797,6 +6080,23 @@ app.get('/consultation/:id', async (c) => {
 app.get('/call/:id', async (c) => {
   const { videoConsultationPage } = await import('./pages/video-consultation')
   return c.html(videoConsultationPage(c))
+})
+
+// Doctor Dashboard - Telemedicine Control Center with Schedule Management
+app.get('/doctor-dashboard', async (c) => {
+  const { doctorDashboardPage } = await import('./pages/doctor-dashboard')
+  return c.html(doctorDashboardPage(c))
+})
+
+// Alias for doctor dashboard
+app.get('/doctor/dashboard', async (c) => {
+  const { doctorDashboardPage } = await import('./pages/doctor-dashboard')
+  return c.html(doctorDashboardPage(c))
+})
+
+app.get('/dr', async (c) => {
+  const { doctorDashboardPage } = await import('./pages/doctor-dashboard')
+  return c.html(doctorDashboardPage(c))
 })
 
 // ============================================================================
