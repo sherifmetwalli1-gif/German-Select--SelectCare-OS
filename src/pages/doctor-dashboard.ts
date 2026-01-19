@@ -1920,16 +1920,55 @@ export function doctorDashboardPage(c: Context): string {
         // SCHEDULE MANAGEMENT
         // ============================================
         function loadSchedule() {
-            // Load from localStorage or API
+            // Initialize default schedule structure (Mon-Fri 9-12, 14-18)
+            for (let i = 0; i <= 6; i++) {
+                schedule[i] = {
+                    enabled: i >= 1 && i <= 5,
+                    slots: i >= 1 && i <= 5 ? [
+                        { start: '09:00', end: '12:00' },
+                        { start: '14:00', end: '18:00' }
+                    ] : []
+                };
+            }
+            
+            // Try to load from localStorage first
             const saved = localStorage.getItem('doctor_schedule_' + config.doctorId);
             if (saved) {
-                schedule = JSON.parse(saved);
-                renderSchedule();
+                try {
+                    schedule = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Failed to parse saved schedule:', e);
+                }
             }
+            
+            // Also fetch from API
+            fetch(\`\${config.apiBase}/doctor/\${config.doctorId}/schedule\`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data.weeklySchedule) {
+                        schedule = data.data.weeklySchedule;
+                        blockedTimes = data.data.blockedTimes || [];
+                        renderBlockedTimes();
+                        renderSchedule();
+                    }
+                })
+                .catch(err => console.error('Failed to load schedule from API:', err));
+            
+            renderSchedule();
         }
         
         function renderSchedule() {
-            // Already rendered in HTML, just update states
+            // Update toggle states based on schedule data
+            for (let i = 0; i <= 6; i++) {
+                const toggle = document.getElementById('toggle-day-' + i);
+                if (toggle && schedule[i]) {
+                    if (schedule[i].enabled) {
+                        toggle.classList.add('active');
+                    } else {
+                        toggle.classList.remove('active');
+                    }
+                }
+            }
         }
         
         function toggleDay(dayIndex) {
