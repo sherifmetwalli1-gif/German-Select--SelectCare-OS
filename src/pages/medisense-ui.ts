@@ -1389,6 +1389,429 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                 transition-duration: 0.01ms !important;
             }
         }
+        
+        /* ============================================================================
+           3D ANATOMICAL BACKGROUND STYLES
+           Premium Medical Visualization
+           ============================================================================ */
+        
+        .anatomy-3d-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            min-height: 800px;
+            background: linear-gradient(135deg, #0a0a1a 0%, #001F3F 30%, #003366 70%, #0a1628 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        #anatomy-3d-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .anatomy-3d-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 31, 63, 0.4) 0%,
+                rgba(0, 51, 102, 0.3) 30%,
+                transparent 50%,
+                rgba(0, 31, 63, 0.3) 70%,
+                rgba(10, 10, 26, 0.5) 100%
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        /* Floating Anatomy Labels */
+        .anatomy-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+        
+        .anatomy-label {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .anatomy-label:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .label-brain { top: 8%; left: 15%; animation-delay: 0s; }
+        .label-heart { top: 35%; left: 10%; animation-delay: 0.5s; }
+        .label-lungs { top: 30%; right: 12%; animation-delay: 1s; }
+        .label-liver { top: 48%; left: 8%; animation-delay: 1.5s; }
+        .label-stomach { top: 55%; right: 10%; animation-delay: 2s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .label-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(201, 162, 39, 0.5);
+        }
+        
+        .label-dot.pulse-red {
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444, 0 0 20px rgba(239, 68, 68, 0.5);
+            animation: pulse-glow-red 1.2s ease-in-out infinite;
+        }
+        
+        .label-dot.pulse-blue {
+            background: #3b82f6;
+            box-shadow: 0 0 10px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.5);
+            animation: pulse-glow-blue 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow-red {
+            0%, 100% { box-shadow: 0 0 10px #ef4444, 0 0 20px rgba(239, 68, 68, 0.3); transform: scale(1); }
+            50% { box-shadow: 0 0 20px #ef4444, 0 0 40px rgba(239, 68, 68, 0.6); transform: scale(1.2); }
+        }
+        
+        @keyframes pulse-glow-blue {
+            0%, 100% { box-shadow: 0 0 10px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 0 20px #3b82f6, 0 0 40px rgba(59, 130, 246, 0.6); }
+        }
+        
+        .label-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* DNA Helix Animation */
+        .dna-helix {
+            position: absolute;
+            right: 5%;
+            top: 20%;
+            width: 60px;
+            height: 300px;
+            z-index: 2;
+            opacity: 0.3;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 10px,
+                rgba(201, 162, 39, 0.3) 10px,
+                rgba(201, 162, 39, 0.3) 12px
+            );
+            animation: dna-rotate 8s linear infinite;
+            transform-style: preserve-3d;
+        }
+        
+        @keyframes dna-rotate {
+            0% { transform: rotateY(0deg) perspective(500px); }
+            100% { transform: rotateY(360deg) perspective(500px); }
+        }
+        
+        /* ECG Vital Signs Line */
+        .vitals-visual {
+            position: absolute;
+            bottom: 15%;
+            left: 5%;
+            width: 250px;
+            height: 50px;
+            z-index: 3;
+            opacity: 0.6;
+        }
+        
+        .ecg-line {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .ecg-path {
+            fill: none;
+            stroke: #10b981;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 400;
+            stroke-dashoffset: 400;
+            animation: ecg-draw 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));
+        }
+        
+        @keyframes ecg-draw {
+            0% { stroke-dashoffset: 400; }
+            50% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -400; }
+        }
+        
+        /* Profile Form Container */
+        .profile-form-container {
+            position: relative;
+            z-index: 10;
+            padding: 40px 20px;
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 40px rgba(201, 162, 39, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        /* Form Group Styles */
+        .form-group {
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .form-label-small {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            color: #6B7280;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        
+        .input-hint {
+            display: block;
+            font-size: 10px;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+        
+        .input-animated {
+            transition: all 0.3s ease;
+            border: 2px solid #E5E7EB;
+        }
+        
+        .input-animated:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15), 0 4px 12px rgba(201, 162, 39, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Lifestyle Cards */
+        .lifestyle-section {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.05) 0%, rgba(201, 162, 39, 0.02) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(201, 162, 39, 0.1);
+        }
+        
+        .lifestyle-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+        }
+        
+        .lifestyle-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .lifestyle-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 10px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 16px;
+        }
+        
+        .input-field-small {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .input-field-small:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.1);
+        }
+        
+        /* BMI Calculator */
+        .bmi-calculator {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+        
+        .bmi-value-container {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .bmi-label {
+            display: block;
+            font-size: 12px;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        
+        .bmi-value {
+            display: block;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+        
+        .bmi-category {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .bmi-category.underweight { background: #fef3c7; color: #92400e; }
+        .bmi-category.normal { background: #d1fae5; color: #065f46; }
+        .bmi-category.overweight { background: #fed7aa; color: #9a3412; }
+        .bmi-category.obese { background: #fee2e2; color: #991b1b; }
+        
+        .bmi-scale {
+            margin-top: 16px;
+        }
+        
+        .bmi-scale-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #fbbf24 0%, #22c55e 25%, #22c55e 40%, #f97316 60%, #ef4444 100%);
+            position: relative;
+        }
+        
+        .bmi-indicator {
+            position: absolute;
+            top: -4px;
+            width: 16px;
+            height: 16px;
+            background: var(--navy);
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: left 0.5s ease;
+            left: 0%;
+        }
+        
+        .bmi-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 9px;
+            color: #9CA3AF;
+            text-transform: uppercase;
+        }
+        
+        /* Glowing Button */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: btn-shine 3s ease-in-out infinite;
+        }
+        
+        @keyframes btn-shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        /* Responsive for 3D Section */
+        @media (max-width: 768px) {
+            .anatomy-3d-container {
+                min-height: 950px;
+            }
+            
+            .anatomy-labels {
+                display: none;
+            }
+            
+            .dna-helix, .vitals-visual {
+                opacity: 0.2;
+            }
+            
+            .profile-form-container {
+                padding: 20px 10px;
+            }
+            
+            .lifestyle-card {
+                padding: 12px 8px;
+            }
+            
+            .lifestyle-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body class="bg-cream min-h-screen">
@@ -1477,95 +1900,201 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             <div class="step inactive" id="step4-indicator">4</div>
         </div>
         
-        <!-- Step 1: Patient Profile -->
-        <div id="step1" class="card p-6 mb-6 fade-in">
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-navy font-bold mr-3">1</div>
-                <div>
-                    <h2 class="text-lg font-bold text-navy">Your Profile</h2>
-                    <p class="text-sm text-gray-500">Help us understand your baseline health</p>
+        <!-- Step 1: Patient Profile with 3D Anatomical Background -->
+        <div id="step1" class="relative mb-6 fade-in">
+            <!-- 3D Anatomical Model Background Container -->
+            <div class="anatomy-3d-container">
+                <!-- Three.js 3D Canvas -->
+                <canvas id="anatomy-3d-canvas"></canvas>
+                
+                <!-- Anatomical Overlay Gradient -->
+                <div class="anatomy-3d-overlay"></div>
+                
+                <!-- Floating Anatomy Labels -->
+                <div class="anatomy-labels">
+                    <div class="anatomy-label label-brain" data-organ="brain">
+                        <span class="label-dot"></span>
+                        <span class="label-text">Brain</span>
+                    </div>
+                    <div class="anatomy-label label-heart" data-organ="heart">
+                        <span class="label-dot pulse-red"></span>
+                        <span class="label-text">Heart</span>
+                    </div>
+                    <div class="anatomy-label label-lungs" data-organ="lungs">
+                        <span class="label-dot pulse-blue"></span>
+                        <span class="label-text">Lungs</span>
+                    </div>
+                    <div class="anatomy-label label-liver" data-organ="liver">
+                        <span class="label-dot"></span>
+                        <span class="label-text">Liver</span>
+                    </div>
+                    <div class="anatomy-label label-stomach" data-organ="stomach">
+                        <span class="label-dot"></span>
+                        <span class="label-text">Stomach</span>
+                    </div>
+                </div>
+                
+                <!-- DNA Helix Animation -->
+                <div class="dna-helix"></div>
+                
+                <!-- Vital Signs Visualization -->
+                <div class="vitals-visual">
+                    <svg viewBox="0 0 200 50" class="ecg-line">
+                        <path class="ecg-path" d="M0,25 L20,25 L25,25 L30,10 L35,40 L40,15 L45,35 L50,25 L70,25 L75,25 L80,5 L85,45 L90,20 L95,30 L100,25 L120,25 L125,25 L130,8 L135,42 L140,18 L145,32 L150,25 L200,25"/>
+                    </svg>
                 </div>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Age *</label>
-                    <input type="number" id="patient-age" placeholder="35" class="input-field" min="1" max="120" required>
+            <!-- Patient Profile Form (Floating over 3D background) -->
+            <div class="profile-form-container">
+                <div class="card profile-card p-6 md:p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center text-navy font-bold mr-4 shadow-lg">
+                            <i class="fas fa-user-md text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy">Your Health Profile</h2>
+                            <p class="text-sm text-gray-500">Help our AI understand your baseline health</p>
+                        </div>
+                    </div>
+                    
+                    <!-- BMI Calculator Display -->
+                    <div id="bmi-display" class="bmi-calculator mb-6 hidden">
+                        <div class="bmi-value-container">
+                            <span class="bmi-label">Your BMI</span>
+                            <span id="bmi-value" class="bmi-value">--</span>
+                            <span id="bmi-category" class="bmi-category">Enter height & weight</span>
+                        </div>
+                        <div class="bmi-scale">
+                            <div class="bmi-scale-bar">
+                                <div id="bmi-indicator" class="bmi-indicator"></div>
+                            </div>
+                            <div class="bmi-scale-labels">
+                                <span>Underweight</span>
+                                <span>Normal</span>
+                                <span>Overweight</span>
+                                <span>Obese</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar-alt mr-1 text-gold"></i> Age *
+                            </label>
+                            <input type="number" id="patient-age" placeholder="35" class="input-field input-animated" min="1" max="120" required oninput="updateAnatomyVisualization()">
+                            <span class="input-hint">Years old</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-venus-mars mr-1 text-gold"></i> Gender *
+                            </label>
+                            <select id="patient-gender" class="input-field input-animated" required onchange="updateAnatomyVisualization()">
+                                <option value="">Select...</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-ruler-vertical mr-1 text-gold"></i> Height
+                            </label>
+                            <input type="number" id="patient-height" placeholder="170" class="input-field input-animated" min="50" max="250" oninput="calculateBMI()">
+                            <span class="input-hint">centimeters</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-weight mr-1 text-gold"></i> Weight
+                            </label>
+                            <input type="number" id="patient-weight" placeholder="70" class="input-field input-animated" min="20" max="300" oninput="calculateBMI()">
+                            <span class="input-hint">kilograms</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-notes-medical mr-1 text-gold"></i> Pre-existing Conditions
+                            </label>
+                            <input type="text" id="pre-conditions" placeholder="e.g., Diabetes, Hypertension, Asthma..." class="input-field input-animated">
+                            <span class="input-hint">Separate multiple conditions with commas</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-pills mr-1 text-gold"></i> Current Medications
+                            </label>
+                            <input type="text" id="medications" placeholder="e.g., Metformin, Aspirin, Lisinopril..." class="input-field input-animated">
+                            <span class="input-hint">Separate multiple medications with commas</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Lifestyle Section with Visual Icons -->
+                    <div class="lifestyle-section mb-6">
+                        <h3 class="text-sm font-semibold text-navy mb-3 flex items-center">
+                            <i class="fas fa-heartbeat mr-2 text-gold"></i> Lifestyle Factors
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="form-group lifestyle-card">
+                                <div class="lifestyle-icon">
+                                    <i class="fas fa-smoking"></i>
+                                </div>
+                                <label class="form-label-small">Smoking</label>
+                                <select id="lifestyle-smoking" class="input-field-small">
+                                    <option value="never">Never</option>
+                                    <option value="former">Former</option>
+                                    <option value="current">Current</option>
+                                </select>
+                            </div>
+                            <div class="form-group lifestyle-card">
+                                <div class="lifestyle-icon">
+                                    <i class="fas fa-wine-glass-alt"></i>
+                                </div>
+                                <label class="form-label-small">Alcohol</label>
+                                <select id="lifestyle-alcohol" class="input-field-small">
+                                    <option value="none">None</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="heavy">Heavy</option>
+                                </select>
+                            </div>
+                            <div class="form-group lifestyle-card">
+                                <div class="lifestyle-icon">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <label class="form-label-small">Exercise</label>
+                                <select id="lifestyle-exercise" class="input-field-small">
+                                    <option value="sedentary">Sedentary</option>
+                                    <option value="light">Light</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="active">Active</option>
+                                </select>
+                            </div>
+                            <div class="form-group lifestyle-card">
+                                <div class="lifestyle-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <label class="form-label-small">Diet</label>
+                                <select id="lifestyle-diet" class="input-field-small">
+                                    <option value="standard">Standard</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                    <option value="keto">Keto</option>
+                                    <option value="mediterranean">Mediterranean</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mt-6">
+                        <div class="text-xs text-gray-400">
+                            <i class="fas fa-lock mr-1"></i> Your data is encrypted and HIPAA compliant
+                        </div>
+                        <button onclick="goToStep(2)" class="btn-primary btn-glow">
+                            Continue to Symptoms <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Gender *</label>
-                    <select id="patient-gender" class="input-field" required>
-                        <option value="">Select...</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Height (cm)</label>
-                    <input type="number" id="patient-height" placeholder="170" class="input-field" min="50" max="250">
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Weight (kg)</label>
-                    <input type="number" id="patient-weight" placeholder="70" class="input-field" min="20" max="300">
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Pre-existing Conditions</label>
-                    <input type="text" id="pre-conditions" placeholder="e.g., Diabetes, Hypertension, Asthma..." class="input-field">
-                    <p class="text-xs text-gray-400 mt-1">Separate multiple conditions with commas</p>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Current Medications</label>
-                    <input type="text" id="medications" placeholder="e.g., Metformin, Aspirin, Lisinopril..." class="input-field">
-                    <p class="text-xs text-gray-400 mt-1">Separate multiple medications with commas</p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Smoking</label>
-                    <select id="lifestyle-smoking" class="input-field">
-                        <option value="never">Never</option>
-                        <option value="former">Former</option>
-                        <option value="current">Current</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Alcohol</label>
-                    <select id="lifestyle-alcohol" class="input-field">
-                        <option value="none">None</option>
-                        <option value="moderate">Moderate</option>
-                        <option value="heavy">Heavy</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Exercise</label>
-                    <select id="lifestyle-exercise" class="input-field">
-                        <option value="sedentary">Sedentary</option>
-                        <option value="light">Light</option>
-                        <option value="moderate">Moderate</option>
-                        <option value="active">Active</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-600 mb-2 font-medium">Diet</label>
-                    <select id="lifestyle-diet" class="input-field">
-                        <option value="standard">Standard</option>
-                        <option value="vegetarian">Vegetarian</option>
-                        <option value="vegan">Vegan</option>
-                        <option value="keto">Keto</option>
-                        <option value="mediterranean">Mediterranean</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="mt-6 text-right">
-                <button onclick="goToStep(2)" class="btn-primary">
-                    Continue to Symptoms <i class="fas fa-arrow-right ml-2"></i>
-                </button>
             </div>
         </div>
         
@@ -2343,7 +2872,285 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             setupBodyMap();
             setupSearch();
             setupFormValidation();
+            init3DAnatomyBackground();
         });
+        
+        // ============================================================================
+        // 3D ANATOMICAL BACKGROUND VISUALIZATION
+        // ============================================================================
+        
+        let anatomy3DScene, anatomy3DCamera, anatomy3DRenderer;
+        let anatomyParticles = [];
+        let anatomyRotation = 0;
+        
+        function init3DAnatomyBackground() {
+            const canvas = document.getElementById('anatomy-3d-canvas');
+            if (!canvas) return;
+            
+            const container = canvas.parentElement;
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            
+            // Set canvas size
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            
+            // Create particles for medical visualization
+            for (let i = 0; i < 150; i++) {
+                anatomyParticles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5 + 0.2,
+                    color: Math.random() > 0.7 ? '#C9A227' : (Math.random() > 0.5 ? '#3b82f6' : '#10b981'),
+                    pulse: Math.random() * Math.PI * 2
+                });
+            }
+            
+            // Create human silhouette points for body outline
+            const bodyOutlinePoints = createBodyOutline(width, height);
+            
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                
+                // Draw gradient background
+                const gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height)/1.5);
+                gradient.addColorStop(0, 'rgba(0, 51, 102, 0.1)');
+                gradient.addColorStop(0.5, 'rgba(0, 31, 63, 0.05)');
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+                
+                // Draw body outline
+                drawBodyOutline(ctx, bodyOutlinePoints, width, height);
+                
+                // Draw and animate particles
+                anatomyParticles.forEach((particle, index) => {
+                    particle.pulse += 0.02;
+                    const pulseSize = Math.sin(particle.pulse) * 0.5 + 1;
+                    
+                    // Move particle
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // Wrap around
+                    if (particle.x < 0) particle.x = width;
+                    if (particle.x > width) particle.x = 0;
+                    if (particle.y < 0) particle.y = height;
+                    if (particle.y > height) particle.y = 0;
+                    
+                    // Draw particle with glow
+                    ctx.beginPath();
+                    const glowGradient = ctx.createRadialGradient(
+                        particle.x, particle.y, 0,
+                        particle.x, particle.y, particle.size * 3 * pulseSize
+                    );
+                    glowGradient.addColorStop(0, particle.color);
+                    glowGradient.addColorStop(0.5, particle.color.replace(')', ', 0.3)').replace('rgb', 'rgba').replace('#', 'rgba(').replace(/([A-Fa-f0-9]{6})/, (m) => {
+                        const r = parseInt(m.slice(0,2), 16);
+                        const g = parseInt(m.slice(2,4), 16);
+                        const b = parseInt(m.slice(4,6), 16);
+                        return r + ',' + g + ',' + b + ', 0.3';
+                    }));
+                    glowGradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = glowGradient;
+                    ctx.arc(particle.x, particle.y, particle.size * 3 * pulseSize, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw core
+                    ctx.beginPath();
+                    ctx.fillStyle = particle.color;
+                    ctx.globalAlpha = particle.opacity;
+                    ctx.arc(particle.x, particle.y, particle.size * pulseSize, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                });
+                
+                // Draw connecting lines between close particles
+                ctx.strokeStyle = 'rgba(201, 162, 39, 0.1)';
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i < anatomyParticles.length; i++) {
+                    for (let j = i + 1; j < anatomyParticles.length; j++) {
+                        const dx = anatomyParticles[i].x - anatomyParticles[j].x;
+                        const dy = anatomyParticles[i].y - anatomyParticles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 100) {
+                            ctx.globalAlpha = (1 - distance / 100) * 0.3;
+                            ctx.beginPath();
+                            ctx.moveTo(anatomyParticles[i].x, anatomyParticles[i].y);
+                            ctx.lineTo(anatomyParticles[j].x, anatomyParticles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                ctx.globalAlpha = 1;
+                
+                // Draw organs visualization
+                drawOrgans(ctx, width, height);
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                const newWidth = container.offsetWidth;
+                const newHeight = container.offsetHeight;
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+            });
+        }
+        
+        function createBodyOutline(width, height) {
+            const centerX = width * 0.35;
+            const scale = height / 800;
+            
+            return {
+                centerX: centerX,
+                scale: scale,
+                headY: 80 * scale,
+                shoulderY: 180 * scale,
+                chestY: 280 * scale,
+                waistY: 380 * scale,
+                hipY: 450 * scale
+            };
+        }
+        
+        function drawBodyOutline(ctx, points, width, height) {
+            const { centerX, scale } = points;
+            
+            // Draw subtle body silhouette
+            ctx.strokeStyle = 'rgba(201, 162, 39, 0.15)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 10]);
+            
+            // Head
+            ctx.beginPath();
+            ctx.ellipse(centerX, 70 * scale, 45 * scale, 55 * scale, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Neck
+            ctx.beginPath();
+            ctx.moveTo(centerX - 20 * scale, 125 * scale);
+            ctx.lineTo(centerX - 20 * scale, 155 * scale);
+            ctx.moveTo(centerX + 20 * scale, 125 * scale);
+            ctx.lineTo(centerX + 20 * scale, 155 * scale);
+            ctx.stroke();
+            
+            // Shoulders and torso
+            ctx.beginPath();
+            ctx.moveTo(centerX - 20 * scale, 155 * scale);
+            ctx.quadraticCurveTo(centerX - 100 * scale, 165 * scale, centerX - 120 * scale, 200 * scale);
+            ctx.lineTo(centerX - 80 * scale, 400 * scale);
+            ctx.quadraticCurveTo(centerX - 70 * scale, 450 * scale, centerX - 50 * scale, 480 * scale);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX + 20 * scale, 155 * scale);
+            ctx.quadraticCurveTo(centerX + 100 * scale, 165 * scale, centerX + 120 * scale, 200 * scale);
+            ctx.lineTo(centerX + 80 * scale, 400 * scale);
+            ctx.quadraticCurveTo(centerX + 70 * scale, 450 * scale, centerX + 50 * scale, 480 * scale);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+        }
+        
+        function drawOrgans(ctx, width, height) {
+            const centerX = width * 0.35;
+            const scale = height / 800;
+            
+            // Draw heart with pulse effect
+            const heartPulse = Math.sin(Date.now() / 200) * 5 + 1;
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+            ctx.beginPath();
+            ctx.ellipse(centerX - 20 * scale, 240 * scale, (35 + heartPulse) * scale, (40 + heartPulse) * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw lungs
+            ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
+            // Left lung
+            ctx.beginPath();
+            ctx.ellipse(centerX - 55 * scale, 230 * scale, 30 * scale, 60 * scale, 0.2, 0, Math.PI * 2);
+            ctx.fill();
+            // Right lung
+            ctx.beginPath();
+            ctx.ellipse(centerX + 35 * scale, 230 * scale, 35 * scale, 65 * scale, -0.2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw brain visualization
+            ctx.fillStyle = 'rgba(168, 85, 247, 0.1)';
+            ctx.beginPath();
+            ctx.ellipse(centerX, 55 * scale, 35 * scale, 30 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw stomach area
+            ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
+            ctx.beginPath();
+            ctx.ellipse(centerX + 10 * scale, 340 * scale, 40 * scale, 35 * scale, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // ============================================================================
+        // BMI CALCULATOR
+        // ============================================================================
+        
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('patient-height').value);
+            const weight = parseFloat(document.getElementById('patient-weight').value);
+            const bmiDisplay = document.getElementById('bmi-display');
+            const bmiValue = document.getElementById('bmi-value');
+            const bmiCategory = document.getElementById('bmi-category');
+            const bmiIndicator = document.getElementById('bmi-indicator');
+            
+            if (height && weight && height > 0 && weight > 0) {
+                const heightM = height / 100;
+                const bmi = weight / (heightM * heightM);
+                
+                bmiDisplay.classList.remove('hidden');
+                bmiValue.textContent = bmi.toFixed(1);
+                
+                let category, categoryClass, indicatorPos;
+                
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    categoryClass = 'underweight';
+                    indicatorPos = (bmi / 18.5) * 25;
+                } else if (bmi < 25) {
+                    category = 'Normal';
+                    categoryClass = 'normal';
+                    indicatorPos = 25 + ((bmi - 18.5) / 6.5) * 20;
+                } else if (bmi < 30) {
+                    category = 'Overweight';
+                    categoryClass = 'overweight';
+                    indicatorPos = 45 + ((bmi - 25) / 5) * 25;
+                } else {
+                    category = 'Obese';
+                    categoryClass = 'obese';
+                    indicatorPos = Math.min(70 + ((bmi - 30) / 10) * 30, 100);
+                }
+                
+                bmiCategory.textContent = category;
+                bmiCategory.className = 'bmi-category ' + categoryClass;
+                bmiIndicator.style.left = indicatorPos + '%';
+            } else {
+                bmiDisplay.classList.add('hidden');
+            }
+        }
+        
+        function updateAnatomyVisualization() {
+            // Update any anatomy-based visualizations based on patient profile
+            const gender = document.getElementById('patient-gender').value;
+            const age = document.getElementById('patient-age').value;
+            
+            // Could add gender-specific or age-specific visualization changes here
+            console.log('Profile updated:', { gender, age });
+        }
         
         // Step Navigation
         function goToStep(step) {
