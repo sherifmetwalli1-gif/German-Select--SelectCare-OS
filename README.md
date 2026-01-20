@@ -4,10 +4,103 @@
 - **Name**: SelectCareOS™
 - **Organization**: German Select
 - **Goal**: World-class digital health platform combining German medical excellence with Red Sea recovery
-- **Version**: 2.3.0 Enhanced (Instant Connect Telemedicine System)
+- **Version**: 2.4.0 Enhanced (Doctor Dashboard + Instant Connect Telemedicine)
 - **Launch**: Q1 2026 in Hurghada, Egypt
-- **Last Updated**: January 11, 2026
+- **Last Updated**: January 20, 2026
 - **New**: 🚀 Instant Connect Telemedicine - Connect to doctors in <2 minutes!
+- **New**: 👨‍⚕️ Enhanced Doctor Dashboard with Online Booking Calendar & Time Slot Management!
+
+## 🆕 What's New in v2.4.0 - Enhanced Doctor Dashboard
+
+### 👨‍⚕️ Doctor Dashboard Enhancements (MAJOR UPDATE)
+
+**Live URLs:**
+- **Doctor Dashboard**: [/doctor-dashboard](https://selectcareos-app.pages.dev/doctor-dashboard)
+- **German (DE)**: [/doctor-dashboard?lang=de](https://selectcareos-app.pages.dev/doctor-dashboard?lang=de)
+- **Arabic (AR)**: [/doctor-dashboard?lang=ar](https://selectcareos-app.pages.dev/doctor-dashboard?lang=ar)
+- **Specific Doctor**: [/doctor-dashboard?id=dr-metwalli](https://selectcareos-app.pages.dev/doctor-dashboard?id=dr-metwalli)
+
+**Features:**
+
+1. **📅 Online Booking Calendar**
+   - Full month calendar view with navigation
+   - Color-coded days (available, blocked, fully-booked)
+   - Slot count badges on each day
+   - Click-to-select slots for reservation
+   - Month/year navigation
+
+2. **⏰ Time Slot Reservation System**
+   - Reserve slots for external platforms (Doctolib, Zocdoc, Jameda)
+   - Bulk slot selection and reservation
+   - Visual slot management with drag selection
+   - Integration with external booking sites
+
+3. **🚫 Blocked Time Management**
+   - Block time for vacation, conferences, personal
+   - Date/time picker with reason selection
+   - Visual blocked time list with remove option
+   - Automatic slot unavailability during blocked periods
+
+4. **⚙️ Booking Settings Configuration**
+   - Slot duration: 15/30/45/60 minutes
+   - Buffer time between appointments: 0/5/10/15 minutes
+   - Booking window: 7/14/30/60 days ahead
+   - Consultation fee setting
+   - Enable/disable online booking toggle
+
+5. **📊 Enhanced Overview Tab**
+   - Real-time consultation stats (today, week, month)
+   - Earnings summary with trend indicators
+   - Patient queue with live updates
+   - Average rating display
+   - Recent activity feed
+
+6. **👥 Patient Queue Management**
+   - Real-time pending request display
+   - Patient card with symptoms, urgency, wait time
+   - Quick actions: Accept, Decline, View Profile
+   - Audio notification for new requests
+   - Auto-refresh every 5 seconds
+
+7. **💰 Earnings Analytics Tab**
+   - Monthly earnings chart (Chart.js)
+   - Consultation breakdown by type
+   - Payment status tracking
+   - Transaction history
+   - Export functionality
+
+8. **📋 Consultation History Tab**
+   - Filter by: All, Completed, Cancelled, No-Show
+   - Search by patient name
+   - Date range filtering
+   - Detailed consultation cards
+   - Notes and follow-up tracking
+
+9. **🌐 Multi-Language Support**
+   - English (EN) - default
+   - German (DE) - full translation
+   - Arabic (AR) - full RTL support
+   - URL parameter: ?lang=de or ?lang=ar
+
+10. **📱 Mobile-Responsive Design**
+    - Bottom navigation for mobile
+    - Touch-friendly buttons
+    - Collapsible sections
+    - Optimized for tablet/phone
+
+**Doctor Dashboard API Endpoints:**
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/instant-connect/doctor/:id/schedule` | GET | Get doctor's weekly schedule |
+| `/api/instant-connect/doctor/schedule` | POST | Save weekly schedule |
+| `/api/instant-connect/doctor/:id/blocked-time` | POST | Add blocked time |
+| `/api/instant-connect/doctor/:id/blocked-time/:blockId` | DELETE | Remove blocked time |
+| `/api/instant-connect/doctor/:id/available-slots` | GET | Get bookable time slots |
+| `/api/instant-connect/doctor/:id/requests` | GET | Get pending consultation requests |
+| `/api/instant-connect/doctor/:id/history` | GET | Get consultation history |
+| `/api/instant-connect/doctor/:id/earnings` | GET | Get earnings summary |
+
+---
 
 ## 🆕 What's New in v2.3.0 - Instant Connect Telemedicine System
 
@@ -140,7 +233,7 @@ Inspired by premium medical tourism sites, the new Services page includes:
 | **MediSense AI Pro** | [/medisense-pro](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/medisense-pro) | ⭐ v3.0 - Intelligent symptom analyzer |
 | **Care Packages** | [/packages](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/packages) | SELECTCARE™ packages |
 | **Wellness Add-ons** | [/wellness](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/wellness) | Programs, accommodations, excursions |
-| **Doctor Dashboard** | [/doctor-dashboard](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/doctor-dashboard) | Care provider view |
+| **Doctor Dashboard** | [/doctor-dashboard](https://selectcareos-app.pages.dev/doctor-dashboard) | ⭐ **ENHANCED** Care provider dashboard |
 | **Admin Dashboard** | [/admin/dashboard](https://3000-i9cq3f1z06ubch2vwmlpy-cc2fbc16.sandbox.novita.ai/admin/dashboard) | Platform administration |
 
 ---
