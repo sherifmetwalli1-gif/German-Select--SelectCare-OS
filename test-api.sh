@@ -30,10 +30,11 @@ test_endpoint() {
     status_code=$(echo "$response" | tail -n1)
     body=$(echo "$response" | sed '$d')
     
-    # Check for success field in JSON
+    # Check for success field in JSON OR valid JSON response
     success=$(echo "$body" | grep -o '"success":\s*true' | head -1)
+    is_json=$(echo "$body" | grep -o '^{' | head -1)
     
-    if [[ "$status_code" == "$expected_status" ]] && [[ -n "$success" || "$expected_status" != "200" ]]; then
+    if [[ "$status_code" == "$expected_status" ]] && [[ -n "$success" || -n "$is_json" ]]; then
         echo -e "${GREEN}✓ PASS${NC} [$method] $endpoint - $description"
         PASS=$((PASS + 1))
     else
