@@ -5263,6 +5263,21 @@ app.get('/telemedicine/enhanced', async (c) => {
   return c.html(telemedicineEnhancedPage(c))
 })
 
+// ============================================================================
+// TELEMEDICINE DASHBOARD - Premium Pre-Call Experience
+// ============================================================================
+// Features: Device testing, Virtual waiting room, Quality selection, Network monitoring
+app.get('/telemedicine/dashboard', async (c) => {
+  const { telemedicineDashboardPage } = await import('./pages/telemedicine-dashboard')
+  return c.html(telemedicineDashboardPage(c))
+})
+
+// Also serve at /telemedicine/prepare for intuitive access
+app.get('/telemedicine/prepare', async (c) => {
+  const { telemedicineDashboardPage } = await import('./pages/telemedicine-dashboard')
+  return c.html(telemedicineDashboardPage(c))
+})
+
 // Health Analytics Page
 app.get('/health-analytics', (c) => {
   const content = `
