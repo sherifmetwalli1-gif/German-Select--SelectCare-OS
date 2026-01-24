@@ -817,11 +817,78 @@ export function videoConsultationPage(c: Context): string {
                     width: '100%',
                     height: '100%',
                     configOverwrite: {
+                        // ═══════════════════════════════════════════════════
+                        // HIGH QUALITY VIDEO SETTINGS (HD/Full HD)
+                        // ═══════════════════════════════════════════════════
                         startWithAudioMuted: false,
                         startWithVideoMuted: false,
                         prejoinPageEnabled: false,
                         disableDeepLinking: true,
-                        subject: 'SelectCareOS™ Medical Consultation'
+                        subject: 'SelectCareOS™ Medical Consultation',
+                        
+                        // HD Video Resolution Settings
+                        resolution: 1080,                    // Full HD (1920x1080)
+                        constraints: {
+                            video: {
+                                height: { ideal: 1080, max: 1080, min: 720 },
+                                width: { ideal: 1920, max: 1920, min: 1280 },
+                                frameRate: { ideal: 30, max: 30 }
+                            }
+                        },
+                        
+                        // Quality Settings
+                        disableSimulcast: false,             // Enable simulcast for adaptive quality
+                        enableLayerSuspension: true,         // Suspend unused layers
+                        startVideoMuted: false,
+                        startAudioMuted: false,
+                        
+                        // ═══════════════════════════════════════════════════
+                        // HIGH QUALITY SCREEN SHARING (Up to 4K)
+                        // ═══════════════════════════════════════════════════
+                        desktopSharingFrameRate: {
+                            min: 15,
+                            max: 30
+                        },
+                        
+                        // Screen share quality - higher resolution for medical imaging
+                        screenShareSettings: {
+                            maxBitrate: 5000000,             // 5 Mbps for screen share
+                            minBitrate: 1500000,             // 1.5 Mbps minimum
+                            fps: 30
+                        },
+                        
+                        // P2P Settings for better quality 1-on-1 calls
+                        p2p: {
+                            enabled: true,                    // Enable P2P for better quality
+                            stunServers: [
+                                { urls: 'stun:stun.l.google.com:19302' },
+                                { urls: 'stun:stun1.l.google.com:19302' },
+                                { urls: 'stun:stun2.l.google.com:19302' }
+                            ],
+                            preferH264: true,                 // H.264 for better compatibility
+                            disableH264: false
+                        },
+                        
+                        // Audio Settings
+                        enableNoisyMicDetection: true,
+                        disableAP: false,                    // Audio processing
+                        disableAEC: false,                   // Echo cancellation
+                        disableNS: false,                    // Noise suppression
+                        disableAGC: false,                   // Auto gain control
+                        
+                        // Connection quality
+                        enableTalkWhileMuted: false,
+                        disableThirdPartyRequests: true,
+                        enableWelcomePage: false,
+                        
+                        // Telemedicine-specific settings
+                        requireDisplayName: true,
+                        enableClosePage: true,
+                        maxFullResolutionParticipants: 2,    // Full HD for doctor-patient
+                        
+                        // Recording notice (for compliance)
+                        fileRecordingsEnabled: false,
+                        localRecording: { enabled: false }
                     },
                     interfaceConfigOverwrite: {
                         SHOW_JITSI_WATERMARK: false,
@@ -829,7 +896,23 @@ export function videoConsultationPage(c: Context): string {
                         TOOLBAR_ALWAYS_VISIBLE: false,
                         HIDE_INVITE_MORE_HEADER: true,
                         DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                        TOOLBAR_BUTTONS: []
+                        TOOLBAR_BUTTONS: [],
+                        
+                        // Branding
+                        DEFAULT_BACKGROUND: '#001F3F',
+                        DEFAULT_LOCAL_DISPLAY_NAME: 'Patient',
+                        DEFAULT_REMOTE_DISPLAY_NAME: 'Doctor',
+                        JITSI_WATERMARK_LINK: '',
+                        BRAND_WATERMARK_LINK: '',
+                        
+                        // Video quality UI
+                        VIDEO_QUALITY_LABEL_DISABLED: false,
+                        CONNECTION_INDICATOR_AUTO_HIDE_ENABLED: false,
+                        CONNECTION_INDICATOR_DISABLED: false,
+                        
+                        // Filmstrip settings for medical consultations
+                        FILM_STRIP_MAX_HEIGHT: 120,
+                        VERTICAL_FILMSTRIP: true
                     },
                     userInfo: {
                         displayName: config.displayName

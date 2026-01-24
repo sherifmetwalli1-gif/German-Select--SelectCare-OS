@@ -160,7 +160,8 @@ class JitsiProvider {
   
   private generateEmbedCode(roomId: string, config: VideoRoomConfig): string {
     return `
-<!-- SelectCareOS™ Video Consultation - Jitsi Meet -->
+<!-- SelectCareOS™ Video Consultation - Jitsi Meet HD -->
+<!-- Zero-Cost Telemedicine with High Quality HD/Full HD Video & Screen Sharing -->
 <script src="https://meet.jit.si/external_api.js"></script>
 <div id="selectcareos-video" style="height: 100%; width: 100%;"></div>
 <script>
@@ -171,21 +172,74 @@ class JitsiProvider {
     height: '100%',
     parentNode: document.getElementById('selectcareos-video'),
     configOverwrite: {
+      // Basic Settings
       startWithAudioMuted: false,
       startWithVideoMuted: false,
       prejoinPageEnabled: true,
       disableDeepLinking: true,
-      subject: 'SelectCareOS™ Medical Consultation'
+      subject: 'SelectCareOS™ Medical Consultation',
+      
+      // ═══════════════════════════════════════════════════════════════════
+      // HD VIDEO QUALITY SETTINGS (1080p Full HD)
+      // ═══════════════════════════════════════════════════════════════════
+      resolution: 1080,
+      constraints: {
+        video: {
+          height: { ideal: 1080, max: 1080, min: 720 },
+          width: { ideal: 1920, max: 1920, min: 1280 },
+          frameRate: { ideal: 30, max: 30 }
+        }
+      },
+      
+      // P2P for better 1-on-1 quality
+      p2p: {
+        enabled: true,
+        stunServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' }
+        ],
+        preferH264: true
+      },
+      
+      // ═══════════════════════════════════════════════════════════════════
+      // HIGH RESOLUTION SCREEN SHARING (Up to 4K for Medical Imaging)
+      // ═══════════════════════════════════════════════════════════════════
+      desktopSharingFrameRate: { min: 15, max: 30 },
+      
+      // Quality optimizations
+      disableSimulcast: false,
+      enableLayerSuspension: true,
+      maxFullResolutionParticipants: 2,
+      
+      // Audio quality
+      enableNoisyMicDetection: true,
+      disableAP: false,
+      disableAEC: false,
+      disableNS: false,
+      disableAGC: false
     },
     interfaceConfigOverwrite: {
       SHOW_JITSI_WATERMARK: false,
       SHOW_WATERMARK_FOR_GUESTS: false,
-      TOOLBAR_BUTTONS: ['microphone', 'camera', 'desktop', 'fullscreen', 'chat', 'raisehand', 'hangup'],
-      HIDE_INVITE_MORE_HEADER: true
+      TOOLBAR_BUTTONS: ['microphone', 'camera', 'desktop', 'fullscreen', 'chat', 'settings', 'videoquality', 'hangup'],
+      HIDE_INVITE_MORE_HEADER: true,
+      DEFAULT_BACKGROUND: '#001F3F',
+      VIDEO_QUALITY_LABEL_DISABLED: false,
+      CONNECTION_INDICATOR_DISABLED: false,
+      VERTICAL_FILMSTRIP: true
+    },
+    userInfo: {
+      displayName: '${config.patientName || 'Patient'}'
     }
   };
   
   const api = new JitsiMeetExternalAPI(domain, options);
+  
+  // Track connection quality
+  api.addEventListener('videoQualityChanged', (quality) => {
+    console.log('[SelectCareOS] Video quality:', quality);
+    window.parent.postMessage({ type: 'QUALITY_CHANGED', quality }, '*');
+  });
   
   api.addEventListener('readyToClose', () => {
     window.parent.postMessage({ type: 'CONSULTATION_ENDED' }, '*');
@@ -193,6 +247,13 @@ class JitsiProvider {
   
   api.addEventListener('videoConferenceJoined', () => {
     window.parent.postMessage({ type: 'CONSULTATION_JOINED' }, '*');
+    // Request HD quality after joining
+    api.executeCommand('setVideoQuality', 1080);
+  });
+  
+  api.addEventListener('screenSharingStatusChanged', (status) => {
+    console.log('[SelectCareOS] Screen sharing:', status.on ? 'ON' : 'OFF');
+    window.parent.postMessage({ type: 'SCREEN_SHARE_CHANGED', sharing: status.on }, '*');
   });
 </script>
 `;

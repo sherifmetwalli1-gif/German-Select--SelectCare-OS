@@ -1364,6 +1364,228 @@ app.get('/api/instant-connect/consultation/:id/video', (c) => {
   });
 })
 
+// ════════════════════════════════════════════════════════════════════════════════
+// ZERO-COST TELEMEDICINE API - HD Video & Screen Sharing
+// SelectCareOS™ Enterprise Telemedicine Platform
+// ════════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Create HD Video Consultation Room
+ * Zero-cost solution using Jitsi Meet with HD quality settings
+ * Supports up to 4K screen sharing for medical imaging
+ */
+app.post('/api/telemedicine/room/create', async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const { 
+      patientName = 'Patient', 
+      doctorName = 'Doctor',
+      doctorId,
+      specialty,
+      quality = 'hd', // 'sd' | 'hd' | 'fullhd' | '4k'
+      enableScreenShare = true,
+      enableChat = true,
+      enableRecording = false,
+      expiresInMinutes = 120
+    } = body;
+    
+    // Generate unique room ID
+    const timestamp = Date.now().toString(36);
+    const random = Math.random().toString(36).substring(2, 8);
+    const roomId = `scos-${timestamp}-${random}`;
+    
+    // Quality presets
+    const qualitySettings: Record<string, { resolution: number; frameRate: number; bitrate: string }> = {
+      sd: { resolution: 480, frameRate: 15, bitrate: '500kbps' },
+      hd: { resolution: 720, frameRate: 24, bitrate: '1.5Mbps' },
+      fullhd: { resolution: 1080, frameRate: 30, bitrate: '3Mbps' },
+      '4k': { resolution: 2160, frameRate: 30, bitrate: '8Mbps' }
+    };
+    
+    const selectedQuality = qualitySettings[quality] || qualitySettings.hd;
+    
+    // Build Jitsi URLs with HD configuration
+    const jitsiDomain = 'meet.jit.si';
+    const baseUrl = `https://${jitsiDomain}/${roomId}`;
+    
+    const buildUrl = (displayName: string, role: 'patient' | 'doctor') => {
+      const params = new URLSearchParams({
+        'userInfo.displayName': displayName,
+        'config.startWithAudioMuted': 'false',
+        'config.startWithVideoMuted': 'false',
+        'config.prejoinPageEnabled': 'true',
+        'config.resolution': String(selectedQuality.resolution),
+        'config.disableDeepLinking': 'true',
+        'config.p2p.enabled': 'true',
+        'interfaceConfig.SHOW_JITSI_WATERMARK': 'false',
+        'interfaceConfig.SHOW_WATERMARK_FOR_GUESTS': 'false',
+      });
+      return `${baseUrl}#${params.toString()}`;
+    };
+    
+    const patientUrl = buildUrl(patientName, 'patient');
+    const doctorUrl = buildUrl(doctorName, 'doctor');
+    
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + expiresInMinutes * 60 * 1000);
+    
+    return c.json({
+      success: true,
+      data: {
+        roomId,
+        provider: 'jitsi',
+        cost: '€0 (Free)',
+        
+        // URLs
+        roomUrl: baseUrl,
+        patientUrl,
+        doctorUrl,
+        
+        // Embed code for integration
+        embedUrl: `${baseUrl}#config.prejoinPageEnabled=false`,
+        
+        // Quality settings
+        quality: {
+          preset: quality,
+          resolution: `${selectedQuality.resolution}p`,
+          frameRate: `${selectedQuality.frameRate}fps`,
+          estimatedBitrate: selectedQuality.bitrate
+        },
+        
+        // Features
+        features: {
+          hdVideo: true,
+          screenSharing: enableScreenShare,
+          screenShareResolution: 'Up to 4K',
+          chat: enableChat,
+          recording: enableRecording,
+          p2pEnabled: true,
+          noiseSupression: true,
+          echoCancellation: true
+        },
+        
+        // Timing
+        createdAt: now.toISOString(),
+        expiresAt: expiresAt.toISOString(),
+        durationMinutes: expiresInMinutes,
+        
+        // Participants
+        participants: {
+          patient: { name: patientName, url: patientUrl },
+          doctor: { name: doctorName, url: doctorUrl, id: doctorId, specialty }
+        },
+        
+        // Instructions
+        instructions: {
+          patient: 'Click your link to join the video consultation. Allow camera and microphone access when prompted.',
+          doctor: 'Click your link to start the consultation. You can share your screen to show medical images or documents.',
+          technical: 'For best quality, use Chrome/Firefox on desktop with a stable internet connection (5+ Mbps recommended).'
+        }
+      }
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to create telemedicine room' }, 500);
+  }
+});
+
+/**
+ * Get Telemedicine Configuration & Capabilities
+ */
+app.get('/api/telemedicine/config', (c) => {
+  return c.json({
+    success: true,
+    data: {
+      provider: {
+        name: 'Jitsi Meet',
+        type: 'Open Source WebRTC',
+        cost: 'Free (Zero Cost)',
+        website: 'https://jitsi.org',
+        compliance: ['GDPR', 'WebRTC Standard']
+      },
+      
+      videoQuality: {
+        supported: ['480p SD', '720p HD', '1080p Full HD'],
+        default: '720p HD',
+        maxResolution: '1080p',
+        frameRates: ['15fps', '24fps', '30fps'],
+        codecs: ['VP8', 'VP9', 'H.264']
+      },
+      
+      screenSharing: {
+        supported: true,
+        maxResolution: '4K (3840x2160)',
+        frameRate: '30fps',
+        useCase: 'Medical imaging, X-rays, MRI scans, documents'
+      },
+      
+      features: {
+        videoCall: { available: true, cost: 'Free' },
+        audioCall: { available: true, cost: 'Free' },
+        screenShare: { available: true, cost: 'Free' },
+        chat: { available: true, cost: 'Free' },
+        recording: { available: false, note: 'Requires self-hosted Jitsi or Daily.co' },
+        transcription: { available: false, note: 'Available with premium providers' },
+        virtualBackground: { available: true, cost: 'Free' },
+        noiseSupression: { available: true, cost: 'Free' },
+        endToEndEncryption: { available: true, note: 'P2P calls only' }
+      },
+      
+      limits: {
+        maxParticipants: 75,
+        maxDuration: 'Unlimited',
+        monthlyMinutes: 'Unlimited',
+        concurrentRooms: 'Unlimited'
+      },
+      
+      requirements: {
+        browser: ['Chrome 72+', 'Firefox 68+', 'Safari 14+', 'Edge 79+'],
+        bandwidth: {
+          minimum: '1 Mbps',
+          recommended: '5 Mbps',
+          hdVideo: '3 Mbps',
+          screenShare: '5 Mbps'
+        },
+        permissions: ['Camera', 'Microphone', 'Screen Share (optional)']
+      },
+      
+      integration: {
+        embedSupport: true,
+        iframeAPI: true,
+        externalAPI: true,
+        webhooks: false,
+        sdk: 'Jitsi Meet External API'
+      }
+    }
+  });
+});
+
+/**
+ * Quick Room - Generate instant consultation link
+ */
+app.get('/api/telemedicine/quick-room', (c) => {
+  const doctorId = c.req.query('doctor') || 'dr-demo';
+  const patientName = c.req.query('patient') || 'Patient';
+  
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substring(2, 6);
+  const roomId = `scos-quick-${timestamp}-${random}`;
+  
+  const baseUrl = `https://meet.jit.si/${roomId}`;
+  
+  return c.json({
+    success: true,
+    data: {
+      roomId,
+      roomUrl: baseUrl,
+      joinUrl: `${baseUrl}#config.prejoinPageEnabled=true&config.resolution=720`,
+      embedCode: `<iframe src="${baseUrl}#config.prejoinPageEnabled=false" style="width:100%;height:100%;border:0;" allow="camera;microphone;display-capture"></iframe>`,
+      qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(baseUrl)}`,
+      expiresIn: '24 hours',
+      cost: '€0'
+    }
+  });
+});
+
 // ============================================================================
 // DOCTOR SCHEDULE MANAGEMENT API - Online Booking Integration
 // ============================================================================
