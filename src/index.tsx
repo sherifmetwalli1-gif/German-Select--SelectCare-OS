@@ -1586,6 +1586,350 @@ app.get('/api/telemedicine/quick-room', (c) => {
   });
 });
 
+/**
+ * Pre-Call Device Check - Verify user's camera/mic/network before call
+ */
+app.post('/api/telemedicine/pre-call-check', async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const { 
+      cameraResolution,
+      microphoneActive,
+      speakerActive,
+      networkLatency,
+      networkBandwidth
+    } = body;
+    
+    // Analyze device readiness
+    const checks = {
+      camera: {
+        status: cameraResolution ? 'passed' : 'not_tested',
+        resolution: cameraResolution || null,
+        recommendation: !cameraResolution 
+          ? 'Please allow camera access for video consultation'
+          : cameraResolution.height >= 720 
+            ? 'HD quality available' 
+            : 'Consider improving lighting for better quality'
+      },
+      microphone: {
+        status: microphoneActive ? 'passed' : 'not_tested',
+        recommendation: !microphoneActive
+          ? 'Please allow microphone access'
+          : 'Microphone ready'
+      },
+      speaker: {
+        status: speakerActive ? 'passed' : 'not_tested',
+        recommendation: !speakerActive
+          ? 'Please test your speakers'
+          : 'Audio output ready'
+      },
+      network: {
+        status: networkLatency !== undefined ? 'tested' : 'not_tested',
+        latency: networkLatency,
+        bandwidth: networkBandwidth,
+        quality: networkLatency === undefined ? 'unknown'
+          : networkLatency < 50 ? 'excellent'
+          : networkLatency < 100 ? 'good'
+          : networkLatency < 200 ? 'fair'
+          : 'poor',
+        recommendation: networkLatency === undefined
+          ? 'Network test not performed'
+          : networkLatency < 100
+            ? 'Network quality is good for HD video'
+            : 'Consider using a wired connection for better quality'
+      }
+    };
+    
+    const allPassed = checks.camera.status === 'passed' && 
+                      checks.microphone.status === 'passed' &&
+                      checks.speaker.status === 'passed' &&
+                      checks.network.quality !== 'poor';
+    
+    return c.json({
+      success: true,
+      data: {
+        ready: allPassed,
+        checks,
+        overallStatus: allPassed ? 'ready' : 'issues_detected',
+        recommendations: Object.values(checks)
+          .map(c => c.recommendation)
+          .filter(r => r && !r.includes('ready')),
+        suggestedQuality: checks.network.quality === 'excellent' ? '1080p'
+          : checks.network.quality === 'good' ? '720p'
+          : '480p'
+      }
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Pre-call check failed' }, 500);
+  }
+});
+
+/**
+ * Connection Quality Analytics - Real-time monitoring endpoint
+ */
+app.post('/api/telemedicine/analytics/connection', async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const {
+      roomId,
+      participantId,
+      timestamp,
+      metrics: {
+        videoResolution,
+        frameRate,
+        packetLoss,
+        jitter,
+        roundTripTime,
+        bandwidth
+      } = {}
+    } = body;
+    
+    // Calculate quality score (0-100)
+    let qualityScore = 100;
+    
+    // Deduct for packet loss
+    if (packetLoss !== undefined) {
+      if (packetLoss > 5) qualityScore -= 30;
+      else if (packetLoss > 2) qualityScore -= 15;
+      else if (packetLoss > 1) qualityScore -= 5;
+    }
+    
+    // Deduct for high latency
+    if (roundTripTime !== undefined) {
+      if (roundTripTime > 300) qualityScore -= 25;
+      else if (roundTripTime > 150) qualityScore -= 10;
+      else if (roundTripTime > 100) qualityScore -= 5;
+    }
+    
+    // Deduct for jitter
+    if (jitter !== undefined) {
+      if (jitter > 50) qualityScore -= 20;
+      else if (jitter > 30) qualityScore -= 10;
+    }
+    
+    // Deduct for low resolution
+    if (videoResolution && videoResolution.height < 480) {
+      qualityScore -= 15;
+    }
+    
+    // Determine quality label
+    const qualityLabel = qualityScore >= 80 ? 'excellent'
+      : qualityScore >= 60 ? 'good'
+      : qualityScore >= 40 ? 'fair'
+      : 'poor';
+    
+    // Generate recommendations
+    const recommendations = [];
+    if (packetLoss > 2) {
+      recommendations.push('High packet loss detected. Consider closing other applications.');
+    }
+    if (roundTripTime > 150) {
+      recommendations.push('High latency detected. Use a wired connection if possible.');
+    }
+    if (jitter > 30) {
+      recommendations.push('Network instability detected. Video quality may fluctuate.');
+    }
+    
+    return c.json({
+      success: true,
+      data: {
+        roomId,
+        participantId,
+        timestamp: timestamp || new Date().toISOString(),
+        quality: {
+          score: Math.max(0, qualityScore),
+          label: qualityLabel,
+          metrics: {
+            videoResolution,
+            frameRate,
+            packetLoss,
+            jitter,
+            roundTripTime,
+            bandwidth
+          }
+        },
+        recommendations,
+        actions: {
+          suggestLowerQuality: qualityScore < 50,
+          suggestAudioOnly: qualityScore < 30,
+          showWarning: qualityScore < 60
+        }
+      }
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Analytics processing failed' }, 500);
+  }
+});
+
+/**
+ * Virtual Waiting Room - Queue Management
+ */
+app.post('/api/telemedicine/waiting-room/join', async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    const {
+      sessionId,
+      patientId,
+      patientName,
+      doctorId,
+      appointmentTime
+    } = body;
+    
+    // In production, this would interact with a database
+    const queueId = `wq-${Date.now().toString(36)}`;
+    const position = Math.floor(Math.random() * 3) + 1; // Demo: 1-3
+    const estimatedWaitMinutes = position * 5; // ~5 min per patient
+    
+    return c.json({
+      success: true,
+      data: {
+        queueId,
+        sessionId: sessionId || `session-${Date.now().toString(36)}`,
+        status: 'waiting',
+        position,
+        estimatedWaitMinutes,
+        joinedAt: new Date().toISOString(),
+        doctor: {
+          id: doctorId,
+          status: position === 1 ? 'ready' : 'busy',
+          currentPatient: position > 1 ? 'In consultation' : null
+        },
+        patient: {
+          id: patientId,
+          name: patientName
+        },
+        features: {
+          chat: true,
+          cancelable: true,
+          notifications: true
+        },
+        messages: [
+          {
+            type: 'system',
+            text: `Welcome! You are #${position} in the queue.`,
+            timestamp: new Date().toISOString()
+          }
+        ]
+      }
+    });
+  } catch (error) {
+    return c.json({ success: false, error: 'Failed to join waiting room' }, 500);
+  }
+});
+
+/**
+ * Check Waiting Room Status
+ */
+app.get('/api/telemedicine/waiting-room/:queueId/status', (c) => {
+  const queueId = c.req.param('queueId');
+  
+  // Demo: simulate decreasing queue position
+  const position = Math.max(1, Math.floor(Math.random() * 2) + 1);
+  const doctorReady = position === 1 && Math.random() > 0.5;
+  
+  return c.json({
+    success: true,
+    data: {
+      queueId,
+      status: doctorReady ? 'doctor_ready' : 'waiting',
+      position,
+      estimatedWaitMinutes: position * 3,
+      doctor: {
+        status: doctorReady ? 'ready' : 'busy',
+        message: doctorReady 
+          ? 'Dr. is ready for your consultation' 
+          : 'Dr. is finishing up with another patient'
+      },
+      action: doctorReady ? {
+        type: 'join_call',
+        roomId: `scos-${Date.now().toString(36)}`,
+        roomUrl: `https://meet.jit.si/scos-${Date.now().toString(36)}`
+      } : null
+    }
+  });
+});
+
+/**
+ * Leave Waiting Room
+ */
+app.post('/api/telemedicine/waiting-room/:queueId/leave', async (c) => {
+  const queueId = c.req.param('queueId');
+  
+  return c.json({
+    success: true,
+    data: {
+      queueId,
+      status: 'left',
+      leftAt: new Date().toISOString(),
+      message: 'You have left the waiting room'
+    }
+  });
+});
+
+/**
+ * Get Upcoming Telemedicine Sessions
+ */
+app.get('/api/telemedicine/sessions', (c) => {
+  const patientId = c.req.query('patient');
+  const doctorId = c.req.query('doctor');
+  
+  // Demo sessions
+  const sessions = [
+    {
+      id: 'session-cardio-001',
+      type: 'video_consultation',
+      status: 'scheduled',
+      scheduledFor: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours from now
+      duration: 30,
+      doctor: {
+        id: 'dr-mueller',
+        name: 'Dr. Klaus Müller',
+        specialty: 'Cardiology',
+        avatar: 'KM'
+      },
+      patient: {
+        id: patientId || 'patient-001',
+        name: 'Patient'
+      },
+      reason: 'Cardiology Follow-up',
+      notes: 'Review latest ECG results',
+      canJoin: true,
+      joinUrl: '/video-consultation/session-cardio-001?role=patient'
+    },
+    {
+      id: 'session-bariatric-002',
+      type: 'video_consultation',
+      status: 'scheduled',
+      scheduledFor: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // 4 days from now
+      duration: 45,
+      doctor: {
+        id: 'dr-metwalli',
+        name: 'Dr. Ahmed Metwalli',
+        specialty: 'Bariatric Surgery',
+        avatar: 'AM'
+      },
+      patient: {
+        id: patientId || 'patient-001',
+        name: 'Patient'
+      },
+      reason: 'Bariatric Surgery Consultation',
+      notes: 'Initial consultation for gastric sleeve',
+      location: 'Hurghada, Egypt',
+      canJoin: false,
+      joinUrl: '/video-consultation/session-bariatric-002?role=patient'
+    }
+  ];
+  
+  return c.json({
+    success: true,
+    data: {
+      sessions,
+      total: sessions.length,
+      upcoming: sessions.filter(s => s.status === 'scheduled').length
+    }
+  });
+});
+
 // ============================================================================
 // DOCTOR SCHEDULE MANAGEMENT API - Online Booking Integration
 // ============================================================================
@@ -4905,6 +5249,18 @@ app.get('/telemedicine', (c) => {
   `
   
   return c.html(appShell(content, 'Telemedicine', 'home'))
+})
+
+// Enhanced Telemedicine Hub - Full-Featured Video Consultation Platform
+app.get('/telemedicine-hub', async (c) => {
+  const { telemedicineEnhancedPage } = await import('./pages/telemedicine-enhanced')
+  return c.html(telemedicineEnhancedPage(c))
+})
+
+// Also serve at /telemedicine/enhanced for alternative access
+app.get('/telemedicine/enhanced', async (c) => {
+  const { telemedicineEnhancedPage } = await import('./pages/telemedicine-enhanced')
+  return c.html(telemedicineEnhancedPage(c))
 })
 
 // Health Analytics Page
