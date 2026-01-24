@@ -1812,6 +1812,398 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                 font-size: 14px;
             }
         }
+        /* ════════════════════════════════════════════════════════════════════════════════
+           DESIGN 2: LUXURY SPLIT-SCREEN SURGERY HERO
+           Premium Medical Tourism Aesthetic
+           ════════════════════════════════════════════════════════════════════════════════ */
+        
+        .surgery-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 70vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 1024px) {
+            .surgery-hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+        }
+        
+        .surgery-hero-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .surgery-hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.3) 0%, rgba(0, 51, 102, 0.5) 100%);
+            z-index: 1;
+        }
+        
+        .surgery-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        .surgery-hero-content {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--deep-navy) 50%, #000d1a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
+        }
+        
+        @media (max-width: 1024px) {
+            .surgery-hero-content {
+                padding: 40px 24px;
+                order: -1;
+            }
+        }
+        
+        .surgery-hero-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gold) 0%, var(--gold-champagne) 50%, var(--gold) 100%);
+        }
+        
+        @media (max-width: 1024px) {
+            .surgery-hero-content::before {
+                width: 100%;
+                height: 4px;
+                top: auto;
+                bottom: 0;
+            }
+        }
+        
+        .surgery-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+        }
+        
+        .surgery-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        
+        .surgery-title span {
+            color: var(--gold);
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .surgery-title {
+                font-size: 2rem;
+            }
+        }
+        
+        .surgery-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 32px;
+            max-width: 400px;
+        }
+        
+        .surgery-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px 0;
+        }
+        
+        .surgery-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .surgery-item:hover {
+            background: rgba(201, 162, 39, 0.05);
+            padding-left: 12px;
+            border-color: rgba(201, 162, 39, 0.3);
+        }
+        
+        .surgery-item:last-child {
+            border-bottom: none;
+        }
+        
+        .surgery-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .surgery-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(201, 162, 39, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+        
+        .surgery-price {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .surgery-price span {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.5);
+            margin-left: 4px;
+        }
+        
+        .surgery-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--gold-champagne) 0%, var(--gold) 50%, var(--gold-rose) 100%);
+            color: var(--navy);
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);
+        }
+        
+        .surgery-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(201, 162, 39, 0.5);
+        }
+        
+        .surgery-trust {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(201, 162, 39, 0.15);
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+        
+        .trust-badge i {
+            color: var(--gold);
+        }
+        
+        /* Floating Medical Elements */
+        .floating-pulse {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201, 162, 39, 0.3) 0%, transparent 70%);
+            animation: float-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes float-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.2; }
+        }
+        
+        /* Red Sea Recovery Badge */
+        .red-sea-badge {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 31, 63, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            padding: 16px 24px;
+            border-radius: 12px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .red-sea-badge-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .red-sea-badge-text {
+            color: white;
+        }
+        
+        .red-sea-badge-text h4 {
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0;
+            color: var(--gold);
+        }
+        
+        .red-sea-badge-text p {
+            font-size: 0.75rem;
+            margin: 4px 0 0;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .red-sea-badge {
+                display: none;
+            }
+        }
+        
+        /* Surgery Categories Quick Access */
+        .surgery-categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 32px;
+            background: linear-gradient(180deg, var(--cream) 0%, white 100%);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+        }
+        
+        @media (max-width: 1024px) {
+            .surgery-categories {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 24px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .surgery-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 31, 63, 0.05);
+        }
+        
+        .category-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(201, 162, 39, 0.15);
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover .category-icon {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
+            color: var(--navy);
+            transform: scale(1.1);
+        }
+        
+        .category-name {
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .category-price {
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+        
+        /* Section Divider */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 48px 24px;
+            background: var(--cream);
+        }
+        
+        .divider-line {
+            height: 1px;
+            flex: 1;
+            max-width: 200px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+        }
+        
+        .divider-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.4);
+        }
+        
+        .divider-text {
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body class="bg-cream min-h-screen">
@@ -1834,6 +2226,10 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                     <span class="hidden md:inline-block font-semibold" style="color: var(--gold-soft)">MediSense AI™ v4.0</span>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <a href="/booking" class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all" style="background: var(--gold); color: var(--navy);">
+                        <i class="fas fa-calendar-check"></i>
+                        Book Surgery
+                    </a>
                     <a href="/dashboard" class="transition-opacity hover:opacity-80" style="color: var(--gold-soft)">
                         <i class="fas fa-th-large mr-2"></i>
                         <span class="hidden sm:inline">Dashboard</span>
@@ -1843,7 +2239,152 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         </div>
     </header>
     
-    <!-- Hero Section - Premium Gold -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════
+         DESIGN 2: WORLD-CLASS SURGERIES - LUXURY SPLIT-SCREEN HERO
+         ═══════════════════════════════════════════════════════════════════════════════════ -->
+    <section class="surgery-hero">
+        <!-- Left Side: Hospital Corridor / Red Sea View Image -->
+        <div class="surgery-hero-image">
+            <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                 alt="World-Class Medical Facility" 
+                 loading="eager">
+            
+            <!-- Floating Pulse Effects -->
+            <div class="floating-pulse" style="top: 20%; right: 20%;"></div>
+            <div class="floating-pulse" style="bottom: 30%; left: 15%; animation-delay: 2s;"></div>
+            
+            <!-- Red Sea Recovery Badge -->
+            <div class="red-sea-badge">
+                <div class="red-sea-badge-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <div class="red-sea-badge-text">
+                    <h4>Red Sea Recovery</h4>
+                    <p>Hurghada, Egypt • Luxury Healing</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side: Surgery Information -->
+        <div class="surgery-hero-content">
+            <div class="surgery-label">
+                <i class="fas fa-award"></i>
+                German Medical Excellence
+            </div>
+            
+            <h1 class="surgery-title">
+                World-Class
+                <span>Surgeries</span>
+            </h1>
+            
+            <p class="surgery-subtitle">
+                Experience premium healthcare with German-trained surgeons, state-of-the-art facilities, and recovery by the Red Sea.
+            </p>
+            
+            <ul class="surgery-list">
+                <li class="surgery-item">
+                    <div class="surgery-name">
+                        <div class="surgery-icon">
+                            <i class="fas fa-weight-scale"></i>
+                        </div>
+                        Gastric Sleeve Surgery
+                    </div>
+                    <div class="surgery-price">€7,500 <span>all-inclusive</span></div>
+                </li>
+                <li class="surgery-item">
+                    <div class="surgery-name">
+                        <div class="surgery-icon">
+                            <i class="fas fa-bone"></i>
+                        </div>
+                        Hip Replacement
+                    </div>
+                    <div class="surgery-price">€13,500 <span>all-inclusive</span></div>
+                </li>
+                <li class="surgery-item">
+                    <div class="surgery-name">
+                        <div class="surgery-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        Laser Eye Surgery (LASIK)
+                    </div>
+                    <div class="surgery-price">€2,200 <span>both eyes</span></div>
+                </li>
+                <li class="surgery-item">
+                    <div class="surgery-name">
+                        <div class="surgery-icon">
+                            <i class="fas fa-tooth"></i>
+                        </div>
+                        Full Dental Implants
+                    </div>
+                    <div class="surgery-price">€6,000 <span>complete</span></div>
+                </li>
+            </ul>
+            
+            <a href="/booking" class="surgery-cta">
+                <i class="fas fa-calendar-check"></i>
+                Book Consultation
+            </a>
+            
+            <div class="surgery-trust">
+                <div class="trust-badge">
+                    <i class="fas fa-user-md"></i>
+                    German-Trained Surgeons
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-certificate"></i>
+                    TEMOS Certified
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    Full Insurance
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Surgery Categories Quick Access -->
+    <div class="surgery-categories">
+        <a href="/packages?category=bariatric" class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-weight-scale"></i>
+            </div>
+            <div class="category-name">Bariatric Surgery</div>
+            <div class="category-price">From €7,500</div>
+        </a>
+        <a href="/packages?category=orthopedic" class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-bone"></i>
+            </div>
+            <div class="category-name">Orthopedics</div>
+            <div class="category-price">From €8,000</div>
+        </a>
+        <a href="/packages?category=aesthetic" class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-spa"></i>
+            </div>
+            <div class="category-name">Plastic Surgery</div>
+            <div class="category-price">From €3,500</div>
+        </a>
+        <a href="/packages?category=cardiac" class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
+            <div class="category-name">Cardiology</div>
+            <div class="category-price">From €15,000</div>
+        </a>
+    </div>
+    
+    <!-- Section Divider - Transition to MediSense -->
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <div class="divider-icon">
+            <i class="fas fa-brain"></i>
+        </div>
+        <div class="divider-text">AI-Powered Symptom Analysis</div>
+        <div class="divider-line"></div>
+    </div>
+    
+    <!-- Hero Section - Premium Gold (Original MediSense Hero) -->
     <section class="gradient-medical py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-white">
             <div class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full mb-4 md:mb-6" style="background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%); box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);">
