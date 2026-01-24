@@ -320,33 +320,42 @@ export const subscriptionPage = () => `
             </div>
             
             <!-- Elite Tier -->
-            <div class="card p-6 bg-navy text-white">
-                <div class="absolute top-4 right-4">
-                    <span class="bg-gold text-navy text-xs font-bold px-3 py-1 rounded-full">BEST VALUE</span>
+            <div class="card p-6 bg-navy text-white relative overflow-visible">
+                <div class="absolute -top-3 right-4 z-10">
+                    <span class="bg-gradient-to-r from-yellow-400 to-yellow-500 text-navy text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">✨ BEST VALUE</span>
                 </div>
-                <div class="text-center mb-6">
-                    <h3 class="text-xl font-bold text-gold">Elite</h3>
+                <div class="text-center mb-6 pt-2">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-gold to-yellow-500 mb-3 shadow-lg">
+                        <i class="fas fa-crown text-navy text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gold">Elite</h3>
                     <div class="mt-4">
                         <span class="price-strike text-gray-400 text-lg">€349</span>
-                        <span class="text-4xl font-bold text-white ml-2 monthly-price">€199</span>
-                        <span class="text-4xl font-bold text-white ml-2 annual-price hidden">€166</span>
-                        <span class="text-gray-300">/month</span>
+                        <span class="text-5xl font-bold text-white ml-2 monthly-price">€199</span>
+                        <span class="text-5xl font-bold text-white ml-2 annual-price hidden">€166</span>
+                        <span class="text-gray-300 text-lg">/month</span>
                     </div>
-                    <p class="text-sm text-gray-300 mt-2">Ultimate care experience</p>
+                    <p class="text-sm text-gold mt-2 font-medium">Ultimate care experience</p>
+                    <p class="text-xs text-gray-400 mt-1">Billed annually: €1,990/year</p>
                 </div>
                 
                 <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i><strong>Unlimited</strong> Consultations</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>Dedicated Care Manager</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>24/7 Emergency Hotline</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>VIP Doctor Access</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>Global Second Opinions</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>Concierge Travel Planning</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>Premium Retreat Discounts</li>
-                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3"></i>SelectPoints 5x</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-crown text-gold mr-3 w-5"></i><strong class="text-gold">Unlimited</strong>&nbsp;Video Consultations</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-user-tie text-gold mr-3 w-5"></i>Dedicated Care Manager</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-phone-alt text-gold mr-3 w-5"></i>24/7 Emergency Hotline</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-star text-gold mr-3 w-5"></i>VIP Doctor Access</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-globe text-gold mr-3 w-5"></i>Global Second Opinions</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-plane text-gold mr-3 w-5"></i>Concierge Travel Planning</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-spa text-gold mr-3 w-5"></i>Premium Retreat Discounts</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-coins text-gold mr-3 w-5"></i>SelectPoints <strong class="text-gold">5x</strong> Earning</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-dna text-gold mr-3 w-5"></i>Genetic Testing Included</li>
+                    <li class="flex items-center text-sm text-white"><i class="fas fa-brain text-gold mr-3 w-5"></i>Mental Wellness Programs</li>
                 </ul>
                 
-                <button class="w-full bg-gold text-navy py-3 rounded-xl font-bold hover:bg-yellow-400 transition">Go Elite</button>
+                <button class="w-full bg-gradient-to-r from-gold to-yellow-500 text-navy py-4 rounded-xl font-bold hover:from-yellow-400 hover:to-yellow-500 transition shadow-lg transform hover:scale-[1.02]">
+                    <i class="fas fa-crown mr-2"></i>Go Elite
+                </button>
+                <p class="text-center text-xs text-gray-400 mt-3">30-day money-back guarantee</p>
             </div>
         </div>
         
