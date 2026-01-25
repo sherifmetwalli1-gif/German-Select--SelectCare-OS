@@ -1813,81 +1813,423 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             }
         }
         /* ════════════════════════════════════════════════════════════════════════════════
-           DESIGN 2: LUXURY SPLIT-SCREEN SURGERY HERO
-           Premium Medical Tourism Aesthetic
+           FUNCTION-INSPIRED PREMIUM TREATMENTS HERO
+           High-Quality Medical Tourism Aesthetic - Clean & Modern
            ════════════════════════════════════════════════════════════════════════════════ */
         
-        .surgery-hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 70vh;
+        /* Hero Container - Full-Width Immersive */
+        .treatments-hero {
             position: relative;
+            min-height: 85vh;
+            background: linear-gradient(165deg, #0a0f1a 0%, var(--navy) 40%, var(--deep-navy) 100%);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .treatments-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            opacity: 0.6;
         }
         
         @media (max-width: 1024px) {
-            .surgery-hero {
-                grid-template-columns: 1fr;
+            .treatments-hero {
                 min-height: auto;
+                padding: 80px 0 60px;
+            }
+            .treatments-hero::before {
+                width: 100%;
+                opacity: 0.25;
             }
         }
         
-        .surgery-hero-image {
+        .treatments-hero-content {
             position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 48px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            align-items: center;
+        }
+        
+        @media (max-width: 1024px) {
+            .treatments-hero-content {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 48px;
+            }
+        }
+        
+        /* Left Side - Headlines */
+        .treatments-hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+        
+        .treatments-hero-text h1 em {
+            font-style: italic;
+            color: var(--gold);
+            font-weight: 300;
+        }
+        
+        @media (max-width: 768px) {
+            .treatments-hero-text h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        .treatments-hero-text .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+        
+        .treatments-hero-text .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .treatments-hero-text .hero-stat {
+            text-align: left;
+        }
+        
+        .treatments-hero-text .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        
+        .treatments-hero-text .hero-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .treatments-hero-text .hero-stats {
+                gap: 24px;
+            }
+            .treatments-hero-text .hero-stat-value {
+                font-size: 1.75rem;
+            }
+        }
+        
+        /* Right Side - Surgery Cards */
+        .treatments-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .treatment-card {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 28px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .treatment-card:hover {
+            background: rgba(201, 162, 39, 0.1);
+            border-color: rgba(201, 162, 39, 0.4);
+            transform: translateX(8px);
+        }
+        
+        .treatment-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(201, 162, 39, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            transition: all 0.3s ease;
+        }
+        
+        .treatment-card:hover .treatment-card-icon {
+            background: linear-gradient(135deg, var(--gold), var(--gold-champagne));
+            color: var(--navy);
+            transform: scale(1.1);
+        }
+        
+        .treatment-card-info h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+        
+        .treatment-card-info p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .treatment-card-price {
+            text-align: right;
+        }
+        
+        .treatment-card-price .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        
+        .treatment-card-price .price-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        @media (max-width: 768px) {
+            .treatment-card {
+                grid-template-columns: 48px 1fr;
+                gap: 16px;
+            }
+            .treatment-card-price {
+                grid-column: span 2;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding-top: 12px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                margin-top: 8px;
+            }
+        }
+        
+        /* Premium CTA Button */
+        .treatments-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 50%, var(--gold-rose) 100%);
+            color: var(--navy);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 60px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(201, 162, 39, 0.4);
+        }
+        
+        .treatments-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px rgba(201, 162, 39, 0.5);
+        }
+        
+        .treatments-cta i {
+            transition: transform 0.3s ease;
+        }
+        
+        .treatments-cta:hover i {
+            transform: translateX(4px);
+        }
+        
+        /* Trust Badges Row */
+        .treatments-trust {
+            display: flex;
+            gap: 32px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        .trust-item i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .treatments-trust {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+        }
+        
+        /* ════════════════════════════════════════════════════════════════════════════════
+           FUNCTION-STYLE TREATMENT CATEGORIES
+           Clean Grid with Hover Effects
+           ════════════════════════════════════════════════════════════════════════════════ */
+        
+        .treatments-categories {
+            background: white;
+            padding: 80px 24px;
+        }
+        
+        .treatments-categories-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .treatments-categories-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        
+        .treatments-categories-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+        
+        .treatments-categories-header h2 em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--gold);
+        }
+        
+        .treatments-categories-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .treatments-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        
+        @media (max-width: 1024px) {
+            .treatments-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .treatments-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .treatment-category-card {
+            position: relative;
+            padding: 32px 24px;
+            background: white;
+            border: 2px solid #f1f5f9;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
             overflow: hidden;
         }
         
-        .surgery-hero-image::before {
+        .treatment-category-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 31, 63, 0.3) 0%, rgba(0, 51, 102, 0.5) 100%);
-            z-index: 1;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-champagne));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
         
-        .surgery-hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
+        .treatment-category-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 31, 63, 0.12);
         }
         
-        .surgery-hero-content {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--deep-navy) 50%, #000d1a 100%);
+        .treatment-category-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .treatment-category-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            padding: 60px;
-            position: relative;
+            font-size: 1.75rem;
+            color: var(--gold);
+            transition: all 0.4s ease;
         }
         
-        @media (max-width: 1024px) {
-            .surgery-hero-content {
-                padding: 40px 24px;
-                order: -1;
-            }
+        .treatment-category-card:hover .treatment-category-icon {
+            background: linear-gradient(135deg, var(--gold), var(--gold-champagne));
+            color: var(--navy);
+            transform: scale(1.1) rotate(5deg);
         }
         
-        .surgery-hero-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--gold) 0%, var(--gold-champagne) 50%, var(--gold) 100%);
+        .treatment-category-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
         }
         
-        @media (max-width: 1024px) {
-            .surgery-hero-content::before {
-                width: 100%;
-                height: 4px;
-                top: auto;
-                bottom: 0;
-            }
+        .treatment-category-card .price-tag {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        
+        .treatment-category-card .price-tag span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #94a3b8;
+        }
+        
+        /* ════════════════════════════════════════════════════════════════════════════════
+           LEGACY SURGERY HERO (kept for backward compatibility)
+           ════════════════════════════════════════════════════════════════════════════════ */
+        
+        .surgery-hero {
+            display: none; /* Hidden - replaced by treatments-hero */
+        }
+        
+        .surgery-categories {
+            display: none; /* Hidden - replaced by treatments-categories */
         }
         
         .surgery-label {
@@ -2240,139 +2582,208 @@ export const mediSenseV4Page = (lang: string = 'en') => {
     </header>
     
     <!-- ═══════════════════════════════════════════════════════════════════════════════════
-         DESIGN 2: WORLD-CLASS SURGERIES - LUXURY SPLIT-SCREEN HERO
+         FUNCTION-INSPIRED PREMIUM TREATMENTS & SURGERIES HERO
+         High-Quality Modern Medical Tourism Design
          ═══════════════════════════════════════════════════════════════════════════════════ -->
-    <section class="surgery-hero">
-        <!-- Left Side: Hospital Corridor / Red Sea View Image -->
-        <div class="surgery-hero-image">
-            <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                 alt="World-Class Medical Facility" 
-                 loading="eager">
-            
-            <!-- Floating Pulse Effects -->
-            <div class="floating-pulse" style="top: 20%; right: 20%;"></div>
-            <div class="floating-pulse" style="bottom: 30%; left: 15%; animation-delay: 2s;"></div>
-            
-            <!-- Red Sea Recovery Badge -->
-            <div class="red-sea-badge">
-                <div class="red-sea-badge-icon">
-                    <i class="fas fa-water"></i>
+    <section class="treatments-hero">
+        <div class="treatments-hero-content">
+            <!-- Left Side: Headlines & Stats -->
+            <div class="treatments-hero-text">
+                <h1>Onsite Treatments & <em>World-Class Surgeries</em></h1>
+                <p class="hero-subtitle">
+                    German-trained surgeons. State-of-the-art facilities. 
+                    Recovery by the Red Sea. Up to 70% savings compared to Western prices.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">2,500+</div>
+                        <div class="hero-stat-label">Procedures</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">98.7%</div>
+                        <div class="hero-stat-label">Success Rate</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">15+</div>
+                        <div class="hero-stat-label">Specialties</div>
+                    </div>
                 </div>
-                <div class="red-sea-badge-text">
-                    <h4>Red Sea Recovery</h4>
-                    <p>Hurghada, Egypt • Luxury Healing</p>
+                
+                <a href="/booking" class="treatments-cta">
+                    <i class="fas fa-calendar-check"></i>
+                    Book Free Consultation
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                
+                <div class="treatments-trust">
+                    <div class="trust-item">
+                        <i class="fas fa-user-md"></i>
+                        German Board-Certified
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-certificate"></i>
+                        TEMOS Accredited
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-shield-alt"></i>
+                        Full Insurance Coverage
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Right Side: Surgery Information -->
-        <div class="surgery-hero-content">
-            <div class="surgery-label">
-                <i class="fas fa-award"></i>
-                German Medical Excellence
-            </div>
             
-            <h1 class="surgery-title">
-                World-Class
-                <span>Surgeries</span>
-            </h1>
-            
-            <p class="surgery-subtitle">
-                Experience premium healthcare with German-trained surgeons, state-of-the-art facilities, and recovery by the Red Sea.
-            </p>
-            
-            <ul class="surgery-list">
-                <li class="surgery-item">
-                    <div class="surgery-name">
-                        <div class="surgery-icon">
-                            <i class="fas fa-weight-scale"></i>
-                        </div>
-                        Gastric Sleeve Surgery
+            <!-- Right Side: Treatment Cards -->
+            <div class="treatments-cards">
+                <a href="/packages?category=bariatric" class="treatment-card">
+                    <div class="treatment-card-icon">
+                        <i class="fas fa-weight-scale"></i>
                     </div>
-                    <div class="surgery-price">€7,500 <span>all-inclusive</span></div>
-                </li>
-                <li class="surgery-item">
-                    <div class="surgery-name">
-                        <div class="surgery-icon">
-                            <i class="fas fa-bone"></i>
-                        </div>
-                        Hip Replacement
+                    <div class="treatment-card-info">
+                        <h3>Gastric Sleeve Surgery</h3>
+                        <p>5-night all-inclusive program</p>
                     </div>
-                    <div class="surgery-price">€13,500 <span>all-inclusive</span></div>
-                </li>
-                <li class="surgery-item">
-                    <div class="surgery-name">
-                        <div class="surgery-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        Laser Eye Surgery (LASIK)
+                    <div class="treatment-card-price">
+                        <div class="price">€7,500</div>
+                        <div class="price-label">All-inclusive</div>
                     </div>
-                    <div class="surgery-price">€2,200 <span>both eyes</span></div>
-                </li>
-                <li class="surgery-item">
-                    <div class="surgery-name">
-                        <div class="surgery-icon">
-                            <i class="fas fa-tooth"></i>
-                        </div>
-                        Full Dental Implants
+                </a>
+                
+                <a href="/packages?category=orthopedic" class="treatment-card">
+                    <div class="treatment-card-icon">
+                        <i class="fas fa-bone"></i>
                     </div>
-                    <div class="surgery-price">€6,000 <span>complete</span></div>
-                </li>
-            </ul>
-            
-            <a href="/booking" class="surgery-cta">
-                <i class="fas fa-calendar-check"></i>
-                Book Consultation
-            </a>
-            
-            <div class="surgery-trust">
-                <div class="trust-badge">
-                    <i class="fas fa-user-md"></i>
-                    German-Trained Surgeons
-                </div>
-                <div class="trust-badge">
-                    <i class="fas fa-certificate"></i>
-                    TEMOS Certified
-                </div>
-                <div class="trust-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    Full Insurance
-                </div>
+                    <div class="treatment-card-info">
+                        <h3>Hip/Knee Replacement</h3>
+                        <p>German prosthetics & rehab</p>
+                    </div>
+                    <div class="treatment-card-price">
+                        <div class="price">€13,500</div>
+                        <div class="price-label">All-inclusive</div>
+                    </div>
+                </a>
+                
+                <a href="/packages?category=aesthetic" class="treatment-card">
+                    <div class="treatment-card-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <div class="treatment-card-info">
+                        <h3>Plastic & Aesthetic Surgery</h3>
+                        <p>Premium results, discreet recovery</p>
+                    </div>
+                    <div class="treatment-card-price">
+                        <div class="price">€3,500</div>
+                        <div class="price-label">Starting from</div>
+                    </div>
+                </a>
+                
+                <a href="/packages?category=dental" class="treatment-card">
+                    <div class="treatment-card-icon">
+                        <i class="fas fa-tooth"></i>
+                    </div>
+                    <div class="treatment-card-info">
+                        <h3>Dental & Implants</h3>
+                        <p>German precision dentistry</p>
+                    </div>
+                    <div class="treatment-card-price">
+                        <div class="price">€2,200</div>
+                        <div class="price-label">Per implant</div>
+                    </div>
+                </a>
+                
+                <a href="/packages?category=cardiac" class="treatment-card">
+                    <div class="treatment-card-icon">
+                        <i class="fas fa-heart-pulse"></i>
+                    </div>
+                    <div class="treatment-card-info">
+                        <h3>Cardiac Procedures</h3>
+                        <p>Advanced diagnostics & intervention</p>
+                    </div>
+                    <div class="treatment-card-price">
+                        <div class="price">€15,000</div>
+                        <div class="price-label">Starting from</div>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
     
-    <!-- Surgery Categories Quick Access -->
-    <div class="surgery-categories">
-        <a href="/packages?category=bariatric" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-weight-scale"></i>
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════
+         TREATMENT CATEGORIES GRID - Function-Style Clean Design
+         ═══════════════════════════════════════════════════════════════════════════════════ -->
+    <section class="treatments-categories">
+        <div class="treatments-categories-inner">
+            <div class="treatments-categories-header">
+                <h2>Explore All <em>Treatment Categories</em></h2>
+                <p>From same-day aesthetic treatments to complex surgeries, we offer comprehensive care with transparent pricing.</p>
             </div>
-            <div class="category-name">Bariatric Surgery</div>
-            <div class="category-price">From €7,500</div>
-        </a>
-        <a href="/packages?category=orthopedic" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-bone"></i>
+            
+            <div class="treatments-grid">
+                <a href="/packages?category=bariatric" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-weight-scale"></i>
+                    </div>
+                    <h3>Weight Loss Surgery</h3>
+                    <div class="price-tag"><span>From</span> €7,500</div>
+                </a>
+                
+                <a href="/packages?category=orthopedic" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-bone"></i>
+                    </div>
+                    <h3>Orthopedics</h3>
+                    <div class="price-tag"><span>From</span> €8,000</div>
+                </a>
+                
+                <a href="/packages?category=aesthetic" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3>Plastic Surgery</h3>
+                    <div class="price-tag"><span>From</span> €3,500</div>
+                </a>
+                
+                <a href="/packages?category=cardiac" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-heart-pulse"></i>
+                    </div>
+                    <h3>Cardiology</h3>
+                    <div class="price-tag"><span>From</span> €15,000</div>
+                </a>
+                
+                <a href="/packages?category=rejuvenation" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Anti-Aging & Wellness</h3>
+                    <div class="price-tag"><span>From</span> €1,200</div>
+                </a>
+                
+                <a href="/packages?category=dental" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-tooth"></i>
+                    </div>
+                    <h3>Dental Care</h3>
+                    <div class="price-tag"><span>From</span> €500</div>
+                </a>
+                
+                <a href="/packages?category=eye" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Eye & LASIK</h3>
+                    <div class="price-tag"><span>From</span> €2,200</div>
+                </a>
+                
+                <a href="/services" class="treatment-category-card">
+                    <div class="treatment-category-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3>View All Services</h3>
+                    <div class="price-tag"><span>20+</span> Categories</div>
+                </a>
             </div>
-            <div class="category-name">Orthopedics</div>
-            <div class="category-price">From €8,000</div>
-        </a>
-        <a href="/packages?category=aesthetic" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-spa"></i>
-            </div>
-            <div class="category-name">Plastic Surgery</div>
-            <div class="category-price">From €3,500</div>
-        </a>
-        <a href="/packages?category=cardiac" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-heart-pulse"></i>
-            </div>
-            <div class="category-name">Cardiology</div>
-            <div class="category-price">From €15,000</div>
-        </a>
-    </div>
+        </div>
+    </section>
     
     <!-- Section Divider - Transition to MediSense -->
     <div class="section-divider">

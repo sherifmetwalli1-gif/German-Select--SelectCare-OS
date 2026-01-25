@@ -4486,13 +4486,14 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
                 <i class="fas fa-brain"></i>
                 <span>MediSense</span>
             </a>
-            <a href="/dashboard" class="nav-item ${activeNav === 'dashboard' ? 'active' : ''}">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
+            <a href="/instant-connect" class="nav-item ${activeNav === 'instant-connect' ? 'active' : ''}" style="position: relative;">
+                <div style="position: absolute; top: 0; right: 50%; transform: translateX(50%); width: 8px; height: 8px; background: #22C55E; border-radius: 50%; border: 2px solid white;"></div>
+                <i class="fas fa-video"></i>
+                <span>Connect</span>
             </a>
             <a href="/care-team" class="nav-item ${activeNav === 'care-team' ? 'active' : ''}">
                 <i class="fas fa-user-md"></i>
-                <span>Care Team</span>
+                <span>Doctors</span>
             </a>
             <a href="/services" class="nav-item ${activeNav === 'services' ? 'active' : ''}">
                 <i class="fas fa-concierge-bell"></i>
@@ -4716,14 +4717,64 @@ app.get('/', (c) => {
         </a>
         
         <!-- Quick Actions -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-4 mb-6">
             <a href="/booking" class="btn-gold text-center flex items-center justify-center space-x-2">
                 <i class="fas fa-calendar-plus"></i>
                 <span>Book Consultation</span>
             </a>
-            <a href="/telemedicine" class="btn-navy text-center flex items-center justify-center space-x-2">
+            <a href="/instant-connect" class="btn-navy text-center flex items-center justify-center space-x-2">
                 <i class="fas fa-video"></i>
-                <span>Video Call</span>
+                <span>Instant Connect</span>
+            </a>
+        </div>
+        
+        <!-- Premium Features Section -->
+        <div class="space-y-3">
+            <h4 class="font-bold text-navy flex items-center">
+                <i class="fas fa-star text-gold mr-2"></i>
+                PREMIUM FEATURES
+            </h4>
+            
+            <div class="grid grid-cols-3 gap-3">
+                <a href="/telemedicine/dashboard" class="card p-3 text-center hover:shadow-lg transition-all">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-video text-blue-600"></i>
+                    </div>
+                    <p class="text-xs font-semibold text-navy">HD Video</p>
+                    <p class="text-xs text-gray-500">Consult</p>
+                </a>
+                
+                <a href="/medisense" class="card p-3 text-center hover:shadow-lg transition-all">
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-brain text-purple-600"></i>
+                    </div>
+                    <p class="text-xs font-semibold text-navy">AI Symptom</p>
+                    <p class="text-xs text-gray-500">Analysis</p>
+                </a>
+                
+                <a href="/subscription" class="card p-3 text-center hover:shadow-lg transition-all">
+                    <div class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-crown text-gold"></i>
+                    </div>
+                    <p class="text-xs font-semibold text-navy">Premium</p>
+                    <p class="text-xs text-gray-500">Plans</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+            <a href="/wellness-hub" class="flex-shrink-0 px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                <i class="fas fa-leaf mr-1"></i> Wellness
+            </a>
+            <a href="/family-hub" class="flex-shrink-0 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                <i class="fas fa-users mr-1"></i> Family
+            </a>
+            <a href="/rewards" class="flex-shrink-0 px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
+                <i class="fas fa-gift mr-1"></i> Rewards
+            </a>
+            <a href="/health-analytics" class="flex-shrink-0 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                <i class="fas fa-chart-line mr-1"></i> Analytics
             </a>
         </div>
     </main>
@@ -6649,6 +6700,12 @@ app.get('/doctor/:id', async (c) => {
 
 // Instant Doctor Access - 24/7 Emergency Consultation
 app.get('/instant-doctor', async (c) => {
+  const { instantDoctorPage } = await import('./pages/instant-doctor')
+  return c.html(instantDoctorPage(c))
+})
+
+// Main Instant Connect route - primary navigation
+app.get('/instant-connect', async (c) => {
   const { instantDoctorPage } = await import('./pages/instant-doctor')
   return c.html(instantDoctorPage(c))
 })
