@@ -1060,7 +1060,7 @@ const MEDICAL_RETREATS = [
     rating: 4.9,
     reviewCount: 127,
     popular: true,
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbec6d?w=800'
+    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800'
   },
   {
     id: 'weight-loss-transformation',
