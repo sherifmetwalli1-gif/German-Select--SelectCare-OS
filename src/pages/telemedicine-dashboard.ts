@@ -231,6 +231,9 @@ export function telemedicineDashboardPage(c: Context): string {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     
+    <!-- MediaPipe for AI-powered background segmentation -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+    
     <style>
         :root {
             --navy: #001F3F;
@@ -758,7 +761,8 @@ export function telemedicineDashboardPage(c: Context): string {
                         <!-- Video Preview -->
                         <div>
                             <div class="video-preview" id="video-preview">
-                                <video id="local-video" autoplay muted playsinline></video>
+                                <video id="local-video" autoplay muted playsinline style="display: block;"></video>
+                                <canvas id="output-canvas" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></canvas>
                                 <div class="video-preview-overlay" id="video-overlay">
                                     <i class="fas fa-video-slash text-4xl opacity-50"></i>
                                     <p>${t.allowCamera}</p>
@@ -766,6 +770,11 @@ export function telemedicineDashboardPage(c: Context): string {
                                         <i class="fas fa-camera"></i>
                                         ${t.retryPermission}
                                     </button>
+                                </div>
+                                <!-- Background effect indicator -->
+                                <div id="bg-effect-badge" class="absolute top-3 left-3 bg-black/50 text-white px-3 py-1 rounded-full text-xs hidden">
+                                    <i class="fas fa-magic mr-1"></i>
+                                    <span id="bg-effect-name">None</span>
                                 </div>
                             </div>
                             
@@ -897,7 +906,7 @@ export function telemedicineDashboardPage(c: Context): string {
                             ${t.virtualBackground}
                         </div>
                         
-                        <div class="bg-options flex gap-3">
+                        <div class="bg-options flex gap-3 flex-wrap">
                             <div class="bg-option selected" data-bg="none" onclick="selectBackground('none')">
                                 <div style="background: #E5E7EB; height: 100%; display: flex; align-items: center; justify-content: center;">
                                     <i class="fas fa-ban text-gray-400"></i>
@@ -906,7 +915,7 @@ export function telemedicineDashboardPage(c: Context): string {
                             </div>
                             
                             <div class="bg-option" data-bg="blur" onclick="selectBackground('blur')">
-                                <div style="background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%); height: 100%; filter: blur(3px);"></div>
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%;"></div>
                                 <span class="bg-label">${t.bgBlur}</span>
                             </div>
                             
@@ -919,11 +928,27 @@ export function telemedicineDashboardPage(c: Context): string {
                                 <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=160&h=120&fit=crop" alt="Nature">
                                 <span class="bg-label">${t.bgNature}</span>
                             </div>
+                            
+                            <div class="bg-option" data-bg="beach" onclick="selectBackground('beach')">
+                                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=160&h=120&fit=crop" alt="Beach">
+                                <span class="bg-label">Beach</span>
+                            </div>
+                            
+                            <div class="bg-option" data-bg="gradient" onclick="selectBackground('gradient')">
+                                <div style="background: linear-gradient(135deg, var(--navy) 0%, var(--gold) 100%); height: 100%;"></div>
+                                <span class="bg-label">Premium</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Background Status Indicator -->
+                        <div id="bg-status" class="mt-3 p-3 rounded-lg bg-blue-50 text-blue-700 text-sm hidden">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            <span id="bg-status-text">Loading background...</span>
                         </div>
                         
                         <p class="text-xs text-gray-500 mt-4">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            Virtual backgrounds require a modern browser with WebGL support.
+                            <i class="fas fa-magic mr-1"></i>
+                            AI-powered background segmentation using MediaPipe. Works best with good lighting.
                         </p>
                     </div>
                 </div>
@@ -1317,9 +1342,221 @@ export function telemedicineDashboardPage(c: Context): string {
                 }
             });
             
-            // Note: Virtual background implementation requires additional libraries
-            // like TensorFlow.js or MediaPipe for real-time segmentation
-            console.log('Selected background:', bg);
+            // Apply virtual background effect
+            applyVirtualBackground(bg);
+        }
+        
+        // ============================================
+        // VIRTUAL BACKGROUND IMPLEMENTATION
+        // ============================================
+        let selfieSegmentation = null;
+        let backgroundCanvas = null;
+        let backgroundCtx = null;
+        let backgroundImage = null;
+        let isSegmentationRunning = false;
+        let segmentationAnimationId = null;
+        
+        // Background image URLs
+        const backgroundImages = {
+            office: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1280&h=720&fit=crop',
+            nature: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1280&h=720&fit=crop',
+            beach: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1280&h=720&fit=crop'
+        };
+        
+        async function initSegmentation() {
+            if (selfieSegmentation) return;
+            
+            const statusDiv = document.getElementById('bg-status');
+            const statusText = document.getElementById('bg-status-text');
+            statusDiv.classList.remove('hidden');
+            statusText.textContent = 'Loading AI segmentation model...';
+            
+            try {
+                selfieSegmentation = new SelfieSegmentation({
+                    locateFile: (file) => {
+                        return \`https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/\${file}\`;
+                    }
+                });
+                
+                selfieSegmentation.setOptions({
+                    modelSelection: 1, // 1 = landscape model (better for webcams)
+                    selfieMode: true,
+                });
+                
+                selfieSegmentation.onResults(onSegmentationResults);
+                
+                statusText.textContent = 'AI model loaded successfully!';
+                statusDiv.classList.remove('bg-blue-50', 'text-blue-700');
+                statusDiv.classList.add('bg-green-50', 'text-green-700');
+                
+                setTimeout(() => {
+                    statusDiv.classList.add('hidden');
+                }, 2000);
+                
+                console.log('[VirtualBG] Segmentation model loaded');
+            } catch (error) {
+                console.error('[VirtualBG] Failed to load segmentation:', error);
+                statusText.textContent = 'Failed to load AI model. Using fallback effects.';
+                statusDiv.classList.remove('bg-blue-50', 'text-blue-700');
+                statusDiv.classList.add('bg-red-50', 'text-red-700');
+            }
+        }
+        
+        function onSegmentationResults(results) {
+            if (!backgroundCtx || !results.segmentationMask) return;
+            
+            const video = document.getElementById('local-video');
+            const canvas = document.getElementById('output-canvas');
+            
+            // Draw the background
+            backgroundCtx.save();
+            
+            // Clear canvas
+            backgroundCtx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background image or effect
+            if (selectedBackground === 'blur') {
+                // Draw blurred video as background
+                backgroundCtx.filter = 'blur(15px)';
+                backgroundCtx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                backgroundCtx.filter = 'none';
+            } else if (selectedBackground === 'gradient') {
+                // Draw gradient background
+                const gradient = backgroundCtx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#001F3F');
+                gradient.addColorStop(1, '#C9A227');
+                backgroundCtx.fillStyle = gradient;
+                backgroundCtx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (backgroundImage && (selectedBackground === 'office' || selectedBackground === 'nature' || selectedBackground === 'beach')) {
+                // Draw loaded background image
+                backgroundCtx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+            
+            // Apply segmentation mask
+            backgroundCtx.globalCompositeOperation = 'destination-out';
+            backgroundCtx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
+            
+            // Draw person on top
+            backgroundCtx.globalCompositeOperation = 'destination-over';
+            backgroundCtx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            backgroundCtx.restore();
+        }
+        
+        async function applyVirtualBackground(bg) {
+            const video = document.getElementById('local-video');
+            const canvas = document.getElementById('output-canvas');
+            const effectBadge = document.getElementById('bg-effect-badge');
+            const effectName = document.getElementById('bg-effect-name');
+            
+            // Update badge
+            const bgNames = {
+                none: 'None',
+                blur: 'Blur',
+                office: 'Medical Office',
+                nature: 'Nature',
+                beach: 'Beach',
+                gradient: 'Premium'
+            };
+            
+            if (bg === 'none') {
+                // Disable virtual background
+                stopSegmentation();
+                video.style.display = 'block';
+                canvas.style.display = 'none';
+                effectBadge.classList.add('hidden');
+                console.log('[VirtualBG] Disabled');
+                return;
+            }
+            
+            // Show effect badge
+            effectBadge.classList.remove('hidden');
+            effectName.textContent = bgNames[bg] || bg;
+            
+            // Initialize segmentation if not already done
+            await initSegmentation();
+            
+            if (!selfieSegmentation) {
+                // Fallback: Use CSS filter for blur if segmentation unavailable
+                if (bg === 'blur') {
+                    video.style.filter = 'blur(0px)';
+                    video.style.display = 'block';
+                    canvas.style.display = 'none';
+                    
+                    // Apply pseudo-blur effect via backdrop
+                    const previewContainer = document.getElementById('video-preview');
+                    previewContainer.style.setProperty('--blur-amount', '10px');
+                }
+                return;
+            }
+            
+            // Load background image if needed
+            if (['office', 'nature', 'beach'].includes(bg)) {
+                await loadBackgroundImage(bg);
+            }
+            
+            // Setup canvas
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            backgroundCanvas = canvas;
+            backgroundCtx = canvas.getContext('2d');
+            
+            // Show canvas, hide video
+            video.style.display = 'none';
+            canvas.style.display = 'block';
+            
+            // Start segmentation loop
+            startSegmentation();
+            
+            console.log('[VirtualBG] Applied:', bg);
+        }
+        
+        async function loadBackgroundImage(bg) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    backgroundImage = img;
+                    console.log('[VirtualBG] Background image loaded:', bg);
+                    resolve();
+                };
+                img.onerror = (e) => {
+                    console.error('[VirtualBG] Failed to load background:', e);
+                    reject(e);
+                };
+                img.src = backgroundImages[bg];
+            });
+        }
+        
+        function startSegmentation() {
+            if (isSegmentationRunning) return;
+            isSegmentationRunning = true;
+            
+            const video = document.getElementById('local-video');
+            
+            async function processFrame() {
+                if (!isSegmentationRunning || !selfieSegmentation) return;
+                
+                try {
+                    await selfieSegmentation.send({ image: video });
+                } catch (error) {
+                    console.error('[VirtualBG] Segmentation error:', error);
+                }
+                
+                segmentationAnimationId = requestAnimationFrame(processFrame);
+            }
+            
+            processFrame();
+            console.log('[VirtualBG] Segmentation started');
+        }
+        
+        function stopSegmentation() {
+            isSegmentationRunning = false;
+            if (segmentationAnimationId) {
+                cancelAnimationFrame(segmentationAnimationId);
+                segmentationAnimationId = null;
+            }
+            console.log('[VirtualBG] Segmentation stopped');
         }
         
         // ============================================
@@ -1460,14 +1697,22 @@ export function telemedicineDashboardPage(c: Context): string {
         // CLEANUP
         // ============================================
         window.addEventListener('beforeunload', () => {
+            // Stop media streams
             if (localStream) {
                 localStream.getTracks().forEach(track => track.stop());
             }
+            // Close audio context
             if (audioContext) {
                 audioContext.close();
             }
+            // Stop audio visualization
             if (animationId) {
                 cancelAnimationFrame(animationId);
+            }
+            // Stop virtual background segmentation
+            stopSegmentation();
+            if (selfieSegmentation) {
+                selfieSegmentation.close();
             }
         });
     </script>
