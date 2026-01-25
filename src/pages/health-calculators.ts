@@ -1253,6 +1253,171 @@ const getCalculatorsPage = () => {
     
     <main class="max-w-7xl mx-auto px-4 py-12 relative z-10" id="all-calculators">
         
+        <!-- My Health Metrics Summary (Persistent Profile) -->
+        <div class="bg-white rounded-3xl shadow-lg mb-10 overflow-hidden border border-gray-100" id="health-profile-card">
+            <div class="gradient-navy p-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-user text-navy text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-lg">My Health Profile</h3>
+                            <p class="text-white/60 text-sm">Your saved health metrics</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleHealthProfile()" class="px-4 py-2 bg-white/10 text-white rounded-full text-sm hover:bg-white/20 transition-colors">
+                        <i class="fas fa-chevron-down mr-2" id="profile-toggle-icon"></i>
+                        <span id="profile-toggle-text">Show Details</span>
+                    </button>
+                </div>
+                
+                <!-- Quick Metrics Row -->
+                <div class="grid grid-cols-4 gap-4 mt-6" id="quick-metrics">
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-3 text-center">
+                        <div class="text-2xl font-bold text-white" id="profile-bmi">--</div>
+                        <div class="text-xs text-white/60">BMI</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-3 text-center">
+                        <div class="text-2xl font-bold text-white" id="profile-weight">--</div>
+                        <div class="text-xs text-white/60">Weight (kg)</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-3 text-center">
+                        <div class="text-2xl font-bold text-white" id="profile-height">--</div>
+                        <div class="text-xs text-white/60">Height (cm)</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-3 text-center">
+                        <div class="text-2xl font-bold text-gold" id="profile-status">--</div>
+                        <div class="text-xs text-white/60">Status</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Expanded Profile Details (Hidden by default) -->
+            <div class="p-6 hidden" id="profile-details">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="space-y-4">
+                        <h4 class="font-semibold text-navy flex items-center gap-2">
+                            <i class="fas fa-chart-pie text-red-500"></i> Body Composition
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Body Fat</span>
+                                <span class="font-semibold text-navy" id="profile-bodyfat">Not calculated</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Ideal Weight</span>
+                                <span class="font-semibold text-navy" id="profile-ideal">Not calculated</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Excess Weight</span>
+                                <span class="font-semibold text-navy" id="profile-excess">Not calculated</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="font-semibold text-navy flex items-center gap-2">
+                            <i class="fas fa-fire text-orange-500"></i> Nutrition
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Daily Calories (TDEE)</span>
+                                <span class="font-semibold text-navy" id="profile-tdee">Not calculated</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Protein Goal</span>
+                                <span class="font-semibold text-navy" id="profile-protein">Not calculated</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Water Intake</span>
+                                <span class="font-semibold text-navy" id="profile-water">Not calculated</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="font-semibold text-navy flex items-center gap-2">
+                            <i class="fas fa-user-md text-purple-500"></i> Surgery Readiness
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Eligible</span>
+                                <span class="font-semibold" id="profile-eligible">Check BMI</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-600">Recommended</span>
+                                <span class="font-semibold text-navy" id="profile-recommended">--</span>
+                            </div>
+                            <div class="p-3 bg-gold/10 rounded-lg text-center">
+                                <a href="/instant-connect" class="text-gold font-semibold hover:underline">
+                                    <i class="fas fa-video mr-2"></i>Book Free Consultation
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t text-center">
+                    <button onclick="clearHealthProfile()" class="text-red-500 text-sm hover:underline">
+                        <i class="fas fa-trash-alt mr-2"></i>Clear My Health Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Calculator Widget - Inline BMI -->
+        <div class="bg-white rounded-3xl shadow-lg p-6 mb-10 border border-gray-100">
+            <div class="flex flex-col lg:flex-row gap-8 items-center">
+                <div class="lg:w-1/3">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-gold to-yellow-500 rounded-xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-bolt text-navy text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy text-lg">Quick BMI Check</h3>
+                            <p class="text-gray-500 text-sm">Get instant results</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">Enter your measurements for an instant BMI calculation and surgery eligibility assessment.</p>
+                </div>
+                <div class="lg:w-2/3">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Height (cm)</label>
+                            <input type="number" id="quick-height" placeholder="175" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-gold focus:ring-0 text-lg font-semibold text-navy" oninput="quickBMI()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Weight (kg)</label>
+                            <input type="number" id="quick-weight" placeholder="85" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-gold focus:ring-0 text-lg font-semibold text-navy" oninput="quickBMI()">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs font-medium text-gray-500 mb-1">Your BMI</div>
+                            <div class="text-4xl font-black text-navy" id="quick-bmi-value">--</div>
+                            <div class="text-xs font-semibold" id="quick-bmi-category">Enter your data</div>
+                        </div>
+                        <div>
+                            <button onclick="openCalculator('bmi')" class="w-full btn-primary py-3 text-sm">
+                                <i class="fas fa-expand mr-2"></i>Full Analysis
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Quick Surgery Eligibility Indicator -->
+                    <div id="quick-surgery-alert" class="mt-4 hidden">
+                        <div class="flex items-center gap-3 p-4 bg-purple-50 rounded-xl border border-purple-200">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-md text-purple-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-purple-900" id="quick-surgery-text">You may qualify for bariatric surgery</div>
+                                <div class="text-sm text-purple-700">Gastric Sleeve from <span class="font-bold">€5,500</span></div>
+                            </div>
+                            <a href="/instant-connect" class="px-4 py-2 bg-purple-600 text-white rounded-full text-sm font-medium hover:bg-purple-700 transition-colors">
+                                Free Consultation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Quick Stats with Interactive Counters -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-14">
             <div class="stat-card spotlight-card group hover:scale-105 transition-transform stagger-in stagger-delay-1" onmousemove="updateSpotlight(event, this)">
@@ -2438,6 +2603,343 @@ const getCalculatorsPage = () => {
         </div>
     </div>
     
+    <!-- TDEE Calculator Modal -->
+    <div id="modal-tdee" class="modal">
+        <div class="modal-content">
+            <div class="p-6 border-b bg-gradient-to-r from-orange-50 to-white">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fas fa-fire text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy">TDEE Calculator</h2>
+                            <p class="text-sm text-gray-500">Daily calorie needs</p>
+                        </div>
+                    </div>
+                    <button onclick="closeModal('tdee')" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                        <input type="number" id="tdee-age" placeholder="35" class="input-field" oninput="calculateTDEE()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                        <select id="tdee-gender" class="input-field" onchange="calculateTDEE()">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Height (cm)</label>
+                        <input type="number" id="tdee-height" placeholder="175" class="input-field" oninput="calculateTDEE()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
+                        <input type="number" id="tdee-weight" placeholder="80" class="input-field" oninput="calculateTDEE()">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Activity Level</label>
+                    <select id="tdee-activity" class="input-field" onchange="calculateTDEE()">
+                        <option value="1.2">Sedentary (office job, no exercise)</option>
+                        <option value="1.375">Light (1-3 days/week exercise)</option>
+                        <option value="1.55" selected>Moderate (3-5 days/week)</option>
+                        <option value="1.725">Very Active (6-7 days/week)</option>
+                        <option value="1.9">Extremely Active (athlete/physical job)</option>
+                    </select>
+                </div>
+                
+                <div id="tdee-result" class="hidden">
+                    <div class="result-card p-6 mb-4">
+                        <div class="grid grid-cols-2 gap-4 text-center mb-4">
+                            <div class="p-4 bg-white rounded-xl">
+                                <div class="text-xs text-gray-500 mb-1">BMR (Base)</div>
+                                <div class="text-2xl font-bold text-navy" id="tdee-bmr">--</div>
+                                <div class="text-xs text-gray-400">kcal/day</div>
+                            </div>
+                            <div class="p-4 bg-white rounded-xl border-2 border-gold">
+                                <div class="text-xs text-gold mb-1">TDEE (Total)</div>
+                                <div class="text-3xl font-bold text-gold" id="tdee-value">--</div>
+                                <div class="text-xs text-gray-400">kcal/day</div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between p-3 bg-white rounded-lg">
+                                <span class="text-gray-600"><i class="fas fa-arrow-down text-green-500 mr-2"></i>Weight Loss</span>
+                                <span class="font-bold text-green-600" id="tdee-loss">--</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-white rounded-lg">
+                                <span class="text-gray-600"><i class="fas fa-equals text-blue-500 mr-2"></i>Maintain</span>
+                                <span class="font-bold text-blue-600" id="tdee-maintain">--</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-white rounded-lg">
+                                <span class="text-gray-600"><i class="fas fa-arrow-up text-purple-500 mr-2"></i>Weight Gain</span>
+                                <span class="font-bold text-purple-600" id="tdee-gain">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-xl text-sm text-blue-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Uses Mifflin-St Jeor formula, the most accurate for general population.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Body Fat Calculator Modal -->
+    <div id="modal-body-fat" class="modal">
+        <div class="modal-content">
+            <div class="p-6 border-b bg-gradient-to-r from-purple-50 to-white">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fas fa-percent text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy">Body Fat %</h2>
+                            <p class="text-sm text-gray-500">U.S. Navy Method</p>
+                        </div>
+                    </div>
+                    <button onclick="closeModal('body-fat')" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                        <select id="bf-gender" class="input-field" onchange="calculateBodyFat()">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Height (cm)</label>
+                            <input type="number" id="bf-height" placeholder="175" class="input-field" oninput="calculateBodyFat()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Neck (cm)</label>
+                            <input type="number" id="bf-neck" placeholder="38" class="input-field" oninput="calculateBodyFat()">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Waist (cm)</label>
+                            <input type="number" id="bf-waist" placeholder="88" class="input-field" oninput="calculateBodyFat()">
+                        </div>
+                        <div id="bf-hip-field">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Hip (cm) <span class="text-purple-500">♀ only</span></label>
+                            <input type="number" id="bf-hip" placeholder="96" class="input-field" oninput="calculateBodyFat()">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="bf-result" class="mt-6 hidden">
+                    <div class="result-card p-6 text-center">
+                        <div class="text-5xl font-bold text-navy mb-2" id="bf-value">--</div>
+                        <div class="text-lg font-semibold mb-4" id="bf-category">--</div>
+                        <div class="flex gap-1 h-4 rounded-full overflow-hidden mb-4">
+                            <div class="bg-blue-500 flex-1" title="Essential"></div>
+                            <div class="bg-green-500 flex-1" title="Athletes"></div>
+                            <div class="bg-emerald-500 flex-1" title="Fitness"></div>
+                            <div class="bg-yellow-500 flex-1" title="Average"></div>
+                            <div class="bg-red-500 flex-1" title="Obese"></div>
+                        </div>
+                        <div class="range-marker">
+                            <div class="range-arrow" id="bf-arrow" style="left: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ideal Weight Calculator Modal -->
+    <div id="modal-ideal-weight" class="modal">
+        <div class="modal-content">
+            <div class="p-6 border-b bg-gradient-to-r from-emerald-50 to-white">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fas fa-bullseye text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy">Ideal Weight</h2>
+                            <p class="text-sm text-gray-500">Multiple formulas</p>
+                        </div>
+                    </div>
+                    <button onclick="closeModal('ideal-weight')" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                        <select id="iw-gender" class="input-field" onchange="calculateIdealWeight()">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Height (cm)</label>
+                        <input type="number" id="iw-height" placeholder="175" class="input-field" oninput="calculateIdealWeight()">
+                    </div>
+                </div>
+                
+                <div id="iw-result" class="hidden">
+                    <div class="result-card p-6">
+                        <h4 class="font-semibold text-navy mb-4 text-center">Your Ideal Weight Range</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+                                <div>
+                                    <span class="font-medium text-navy">Devine Formula</span>
+                                    <span class="text-xs text-gray-400 block">Most used clinically</span>
+                                </div>
+                                <span class="text-xl font-bold text-emerald-600" id="iw-devine">--</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+                                <div>
+                                    <span class="font-medium text-navy">Robinson Formula</span>
+                                    <span class="text-xs text-gray-400 block">Modified 1983</span>
+                                </div>
+                                <span class="text-xl font-bold text-blue-600" id="iw-robinson">--</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+                                <div>
+                                    <span class="font-medium text-navy">Miller Formula</span>
+                                    <span class="text-xs text-gray-400 block">For larger frames</span>
+                                </div>
+                                <span class="text-xl font-bold text-purple-600" id="iw-miller">--</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white rounded-lg border-2 border-gold">
+                                <div>
+                                    <span class="font-medium text-navy">Recommended Range</span>
+                                    <span class="text-xs text-gold block">Based on BMI 18.5-25</span>
+                                </div>
+                                <span class="text-xl font-bold text-gold" id="iw-range">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recovery Time Calculator Modal -->
+    <div id="modal-recovery-time" class="modal">
+        <div class="modal-content">
+            <div class="p-6 border-b bg-gradient-to-r from-teal-50 to-white">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fas fa-calendar-check text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy">Recovery Timeline</h2>
+                            <p class="text-sm text-gray-500">Personalized estimate</p>
+                        </div>
+                    </div>
+                    <button onclick="closeModal('recovery-time')" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Procedure</label>
+                        <select id="rec-procedure" class="input-field" onchange="calculateRecovery()">
+                            <option value="">Select procedure...</option>
+                            <option value="gastric-sleeve" data-initial="14" data-full="42">Gastric Sleeve</option>
+                            <option value="gastric-bypass" data-initial="21" data-full="56">Gastric Bypass</option>
+                            <option value="knee-replacement" data-initial="42" data-full="180">Knee Replacement</option>
+                            <option value="hip-replacement" data-initial="42" data-full="180">Hip Replacement</option>
+                            <option value="facelift" data-initial="14" data-full="56">Facelift</option>
+                            <option value="rhinoplasty" data-initial="10" data-full="90">Rhinoplasty</option>
+                            <option value="tummy-tuck" data-initial="21" data-full="84">Tummy Tuck</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Age</label>
+                            <input type="number" id="rec-age" placeholder="45" class="input-field" oninput="calculateRecovery()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Current BMI</label>
+                            <input type="number" id="rec-bmi" placeholder="32" class="input-field" oninput="calculateRecovery()">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Health Factors</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
+                                <input type="checkbox" id="rec-diabetes" class="mr-3" onchange="calculateRecovery()">
+                                <span class="text-sm">Diabetes</span>
+                            </label>
+                            <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
+                                <input type="checkbox" id="rec-smoking" class="mr-3" onchange="calculateRecovery()">
+                                <span class="text-sm">Smoker</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="rec-result" class="mt-6 hidden">
+                    <div class="result-card p-6">
+                        <h4 class="font-semibold text-navy mb-4 text-center">Your Recovery Timeline</h4>
+                        <div class="relative">
+                            <!-- Timeline -->
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="flex-1 h-2 bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 rounded-full"></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div class="p-4 bg-white rounded-xl">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-bed text-red-500"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mb-1">Initial Recovery</div>
+                                    <div class="text-xl font-bold text-navy" id="rec-initial">--</div>
+                                    <div class="text-xs text-gray-400">days</div>
+                                </div>
+                                <div class="p-4 bg-white rounded-xl">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-walking text-yellow-500"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mb-1">Light Activity</div>
+                                    <div class="text-xl font-bold text-navy" id="rec-light">--</div>
+                                    <div class="text-xs text-gray-400">days</div>
+                                </div>
+                                <div class="p-4 bg-white rounded-xl border-2 border-green-400">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-running text-green-500"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mb-1">Full Recovery</div>
+                                    <div class="text-xl font-bold text-green-600" id="rec-full">--</div>
+                                    <div class="text-xs text-gray-400">days</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rec-factors" class="mt-4 p-4 bg-yellow-50 rounded-xl text-sm text-yellow-800 hidden">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <span id="rec-factors-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Generic Modal for Other Calculators -->
     <div id="modal-generic" class="modal">
         <div class="modal-content">
@@ -2502,6 +3004,66 @@ const getCalculatorsPage = () => {
     </nav>
     
     <script>
+        // Health Profile Management (localStorage)
+        const PROFILE_KEY = 'selectcare_health_profile';
+        
+        function loadHealthProfile() {
+            const profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
+            if (profile.bmi) document.getElementById('profile-bmi').textContent = profile.bmi;
+            if (profile.weight) document.getElementById('profile-weight').textContent = profile.weight;
+            if (profile.height) document.getElementById('profile-height').textContent = profile.height;
+            if (profile.status) {
+                document.getElementById('profile-status').textContent = profile.status;
+                document.getElementById('profile-status').className = profile.statusColor || 'text-2xl font-bold text-gold';
+            }
+            if (profile.bodyfat) document.getElementById('profile-bodyfat').textContent = profile.bodyfat;
+            if (profile.ideal) document.getElementById('profile-ideal').textContent = profile.ideal;
+            if (profile.excess) document.getElementById('profile-excess').textContent = profile.excess;
+            if (profile.tdee) document.getElementById('profile-tdee').textContent = profile.tdee;
+            if (profile.protein) document.getElementById('profile-protein').textContent = profile.protein;
+            if (profile.water) document.getElementById('profile-water').textContent = profile.water;
+            if (profile.eligible) {
+                document.getElementById('profile-eligible').textContent = profile.eligible;
+                document.getElementById('profile-eligible').className = profile.eligibleColor || 'font-semibold';
+            }
+            if (profile.recommended) document.getElementById('profile-recommended').textContent = profile.recommended;
+        }
+        
+        function saveToProfile(key, value) {
+            const profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
+            profile[key] = value;
+            localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+            loadHealthProfile();
+        }
+        
+        function clearHealthProfile() {
+            if (confirm('Clear all your saved health data?')) {
+                localStorage.removeItem(PROFILE_KEY);
+                location.reload();
+            }
+        }
+        
+        function toggleHealthProfile() {
+            const details = document.getElementById('profile-details');
+            const icon = document.getElementById('profile-toggle-icon');
+            const text = document.getElementById('profile-toggle-text');
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+                text.textContent = 'Hide Details';
+            } else {
+                details.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+                text.textContent = 'Show Details';
+            }
+        }
+        
+        // Load profile on page load
+        document.addEventListener('DOMContentLoaded', loadHealthProfile);
+        
         // Spotlight effect for cards
         function updateSpotlight(e, element) {
             const rect = element.getBoundingClientRect();
@@ -2561,6 +3123,49 @@ const getCalculatorsPage = () => {
             });
         });
         
+        // Quick BMI Calculator (Inline Widget)
+        function quickBMI() {
+            const height = parseFloat(document.getElementById('quick-height').value);
+            const weight = parseFloat(document.getElementById('quick-weight').value);
+            
+            if (height && weight && height > 0) {
+                const heightM = height / 100;
+                const bmi = weight / (heightM * heightM);
+                
+                document.getElementById('quick-bmi-value').textContent = bmi.toFixed(1);
+                
+                let category, color;
+                if (bmi < 18.5) { category = 'Underweight'; color = '#3B82F6'; }
+                else if (bmi < 25) { category = 'Normal'; color = '#22C55E'; }
+                else if (bmi < 30) { category = 'Overweight'; color = '#F59E0B'; }
+                else if (bmi < 35) { category = 'Obese I'; color = '#EF4444'; }
+                else if (bmi < 40) { category = 'Obese II'; color = '#DC2626'; }
+                else { category = 'Obese III'; color = '#991B1B'; }
+                
+                const categoryEl = document.getElementById('quick-bmi-category');
+                categoryEl.textContent = category;
+                categoryEl.style.color = color;
+                
+                // Show surgery alert for BMI >= 35
+                const alertEl = document.getElementById('quick-surgery-alert');
+                const alertText = document.getElementById('quick-surgery-text');
+                if (bmi >= 40) {
+                    alertEl.classList.remove('hidden');
+                    alertText.textContent = 'You qualify for bariatric surgery';
+                } else if (bmi >= 35) {
+                    alertEl.classList.remove('hidden');
+                    alertText.textContent = 'You may qualify for bariatric surgery with comorbidities';
+                } else {
+                    alertEl.classList.add('hidden');
+                }
+            } else {
+                document.getElementById('quick-bmi-value').textContent = '--';
+                document.getElementById('quick-bmi-category').textContent = 'Enter your data';
+                document.getElementById('quick-bmi-category').style.color = '#6B7280';
+                document.getElementById('quick-surgery-alert').classList.add('hidden');
+            }
+        }
+        
         // Calculator Data
         const calculatorData = {
             'bmi': { title: 'BMI Calculator', icon: 'fa-weight', color: 'red' },
@@ -2591,7 +3196,7 @@ const getCalculatorsPage = () => {
         // Open Calculator Modal
         function openCalculator(id) {
             // Calculators with custom modals
-            const customModals = ['bmi', 'bariatric-eligibility', 'weight-loss-projection', 'cost-comparison'];
+            const customModals = ['bmi', 'bariatric-eligibility', 'weight-loss-projection', 'cost-comparison', 'tdee', 'body-fat', 'ideal-weight', 'recovery-time'];
             
             if (customModals.includes(id)) {
                 document.getElementById('modal-' + id).classList.add('active');
@@ -2601,6 +3206,159 @@ const getCalculatorsPage = () => {
                 document.getElementById('generic-title').textContent = data.title;
                 document.getElementById('generic-subtitle').textContent = 'Health Calculator';
                 document.getElementById('modal-generic').classList.add('active');
+            }
+        }
+        
+        // TDEE Calculator
+        function calculateTDEE() {
+            const age = parseFloat(document.getElementById('tdee-age').value);
+            const gender = document.getElementById('tdee-gender').value;
+            const height = parseFloat(document.getElementById('tdee-height').value);
+            const weight = parseFloat(document.getElementById('tdee-weight').value);
+            const activity = parseFloat(document.getElementById('tdee-activity').value);
+            
+            if (age && height && weight) {
+                // Mifflin-St Jeor Formula
+                let bmr;
+                if (gender === 'male') {
+                    bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+                } else {
+                    bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+                }
+                
+                const tdee = Math.round(bmr * activity);
+                
+                document.getElementById('tdee-result').classList.remove('hidden');
+                document.getElementById('tdee-bmr').textContent = Math.round(bmr);
+                document.getElementById('tdee-value').textContent = tdee;
+                document.getElementById('tdee-loss').textContent = (tdee - 500) + ' kcal';
+                document.getElementById('tdee-maintain').textContent = tdee + ' kcal';
+                document.getElementById('tdee-gain').textContent = (tdee + 500) + ' kcal';
+            }
+        }
+        
+        // Body Fat Calculator (Navy Method)
+        function calculateBodyFat() {
+            const gender = document.getElementById('bf-gender').value;
+            const height = parseFloat(document.getElementById('bf-height').value);
+            const neck = parseFloat(document.getElementById('bf-neck').value);
+            const waist = parseFloat(document.getElementById('bf-waist').value);
+            const hip = parseFloat(document.getElementById('bf-hip').value);
+            
+            // Show/hide hip field based on gender
+            document.getElementById('bf-hip-field').style.opacity = gender === 'female' ? '1' : '0.5';
+            
+            if (height && neck && waist) {
+                let bodyFat;
+                if (gender === 'male') {
+                    bodyFat = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+                } else if (hip) {
+                    bodyFat = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
+                } else {
+                    return;
+                }
+                
+                bodyFat = Math.max(0, Math.min(bodyFat, 60));
+                
+                document.getElementById('bf-result').classList.remove('hidden');
+                document.getElementById('bf-value').textContent = bodyFat.toFixed(1) + '%';
+                
+                // Determine category
+                let category, color, arrowPos;
+                if (gender === 'male') {
+                    if (bodyFat < 6) { category = 'Essential Fat'; color = '#3B82F6'; arrowPos = 10; }
+                    else if (bodyFat < 14) { category = 'Athletes'; color = '#22C55E'; arrowPos = 30; }
+                    else if (bodyFat < 18) { category = 'Fitness'; color = '#10B981'; arrowPos = 50; }
+                    else if (bodyFat < 25) { category = 'Average'; color = '#F59E0B'; arrowPos = 70; }
+                    else { category = 'Obese'; color = '#EF4444'; arrowPos = 90; }
+                } else {
+                    if (bodyFat < 14) { category = 'Essential Fat'; color = '#3B82F6'; arrowPos = 10; }
+                    else if (bodyFat < 21) { category = 'Athletes'; color = '#22C55E'; arrowPos = 30; }
+                    else if (bodyFat < 25) { category = 'Fitness'; color = '#10B981'; arrowPos = 50; }
+                    else if (bodyFat < 32) { category = 'Average'; color = '#F59E0B'; arrowPos = 70; }
+                    else { category = 'Obese'; color = '#EF4444'; arrowPos = 90; }
+                }
+                
+                document.getElementById('bf-category').textContent = category;
+                document.getElementById('bf-category').style.color = color;
+                document.getElementById('bf-arrow').style.left = arrowPos + '%';
+            }
+        }
+        
+        // Ideal Weight Calculator
+        function calculateIdealWeight() {
+            const gender = document.getElementById('iw-gender').value;
+            const heightCm = parseFloat(document.getElementById('iw-height').value);
+            
+            if (heightCm) {
+                const heightIn = heightCm / 2.54;
+                const heightOver5ft = heightIn - 60;
+                const heightM = heightCm / 100;
+                
+                let devine, robinson, miller;
+                
+                if (gender === 'male') {
+                    devine = 50 + 2.3 * heightOver5ft;
+                    robinson = 52 + 1.9 * heightOver5ft;
+                    miller = 56.2 + 1.41 * heightOver5ft;
+                } else {
+                    devine = 45.5 + 2.3 * heightOver5ft;
+                    robinson = 49 + 1.7 * heightOver5ft;
+                    miller = 53.1 + 1.36 * heightOver5ft;
+                }
+                
+                // BMI-based range
+                const minWeight = 18.5 * heightM * heightM;
+                const maxWeight = 25 * heightM * heightM;
+                
+                document.getElementById('iw-result').classList.remove('hidden');
+                document.getElementById('iw-devine').textContent = devine.toFixed(1) + ' kg';
+                document.getElementById('iw-robinson').textContent = robinson.toFixed(1) + ' kg';
+                document.getElementById('iw-miller').textContent = miller.toFixed(1) + ' kg';
+                document.getElementById('iw-range').textContent = minWeight.toFixed(0) + ' - ' + maxWeight.toFixed(0) + ' kg';
+            }
+        }
+        
+        // Recovery Time Calculator
+        function calculateRecovery() {
+            const procedureEl = document.getElementById('rec-procedure');
+            const age = parseFloat(document.getElementById('rec-age').value);
+            const bmi = parseFloat(document.getElementById('rec-bmi').value);
+            const diabetes = document.getElementById('rec-diabetes').checked;
+            const smoking = document.getElementById('rec-smoking').checked;
+            
+            if (procedureEl.value && age) {
+                const selectedOption = procedureEl.options[procedureEl.selectedIndex];
+                let initial = parseInt(selectedOption.dataset.initial);
+                let full = parseInt(selectedOption.dataset.full);
+                
+                // Adjustment factors
+                let factors = [];
+                let modifier = 1.0;
+                
+                if (age > 65) { modifier += 0.2; factors.push('Age over 65'); }
+                if (bmi && bmi > 35) { modifier += 0.15; factors.push('BMI over 35'); }
+                if (diabetes) { modifier += 0.2; factors.push('Diabetes'); }
+                if (smoking) { modifier += 0.3; factors.push('Smoking'); }
+                
+                initial = Math.round(initial * modifier);
+                const light = Math.round(initial * 1.5);
+                full = Math.round(full * modifier);
+                
+                document.getElementById('rec-result').classList.remove('hidden');
+                document.getElementById('rec-initial').textContent = initial;
+                document.getElementById('rec-light').textContent = light;
+                document.getElementById('rec-full').textContent = full;
+                
+                // Show factors warning
+                const factorsEl = document.getElementById('rec-factors');
+                const factorsText = document.getElementById('rec-factors-text');
+                if (factors.length > 0) {
+                    factorsEl.classList.remove('hidden');
+                    factorsText.textContent = 'Recovery extended due to: ' + factors.join(', ');
+                } else {
+                    factorsEl.classList.add('hidden');
+                }
             }
         }
         
@@ -2852,10 +3610,50 @@ const getCalculatorsPage = () => {
             }
         }
         
-        // Save BMI Result
+        // Save BMI Result to Health Profile
         function saveBMIResult() {
             const bmiValue = document.getElementById('bmi-value').textContent;
             const category = document.getElementById('bmi-category').textContent;
+            const categoryColor = document.getElementById('bmi-category').style.color;
+            const height = document.getElementById('bmi-height').value;
+            const weight = document.getElementById('bmi-weight').value;
+            const healthyRange = document.getElementById('bmi-healthy-range').textContent;
+            const toLose = document.getElementById('bmi-to-lose').textContent;
+            
+            if (bmiValue && bmiValue !== '--') {
+                // Save to profile
+                saveToProfile('bmi', bmiValue);
+                saveToProfile('weight', weight);
+                saveToProfile('height', height);
+                saveToProfile('status', category);
+                saveToProfile('statusColor', 'text-2xl font-bold ' + (parseFloat(bmiValue) < 25 ? 'text-green-400' : parseFloat(bmiValue) < 30 ? 'text-yellow-400' : 'text-red-400'));
+                saveToProfile('ideal', healthyRange);
+                saveToProfile('excess', toLose);
+                
+                // Set eligibility
+                const bmi = parseFloat(bmiValue);
+                if (bmi >= 40) {
+                    saveToProfile('eligible', 'Yes');
+                    saveToProfile('eligibleColor', 'font-semibold text-green-600');
+                    saveToProfile('recommended', 'Gastric Sleeve, Bypass');
+                } else if (bmi >= 35) {
+                    saveToProfile('eligible', 'Likely');
+                    saveToProfile('eligibleColor', 'font-semibold text-yellow-600');
+                    saveToProfile('recommended', 'Gastric Sleeve');
+                } else if (bmi >= 30) {
+                    saveToProfile('eligible', 'With conditions');
+                    saveToProfile('eligibleColor', 'font-semibold text-orange-600');
+                    saveToProfile('recommended', 'Consult required');
+                } else {
+                    saveToProfile('eligible', 'No');
+                    saveToProfile('eligibleColor', 'font-semibold text-gray-600');
+                    saveToProfile('recommended', 'Lifestyle changes');
+                }
+                
+                // Calculate protein and water automatically
+                saveToProfile('protein', Math.round(parseFloat(weight) * 0.8) + 'g');
+                saveToProfile('water', Math.round(parseFloat(weight) * 35) + 'ml');
+            }
             
             // Show toast notification
             const toast = document.createElement('div');
@@ -2863,7 +3661,13 @@ const getCalculatorsPage = () => {
             toast.innerHTML = '<i class="fas fa-check-circle mr-2"></i> BMI saved to your health profile!';
             document.body.appendChild(toast);
             
+            // Celebrate with confetti for good results
+            if (parseFloat(bmiValue) < 25) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
+            
             setTimeout(() => toast.remove(), 3000);
+            closeModal('bmi');
         }
     </script>
 </body>
