@@ -367,6 +367,9 @@ const getCalculatorsPage = () => {
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --navy: #001F3F;
@@ -374,24 +377,140 @@ const getCalculatorsPage = () => {
             --cream: #FDF8F0;
             --gold-light: rgba(201, 162, 39, 0.1);
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-        .gradient-navy { background: linear-gradient(135deg, #001F3F 0%, #003366 100%); }
-        .gradient-gold { background: linear-gradient(135deg, #C9A227 0%, #D4AF37 100%); }
+        * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-sizing: border-box; }
+        
+        /* Modern Gradient Backgrounds */
+        .gradient-navy { background: linear-gradient(135deg, #001F3F 0%, #003366 50%, #001F3F 100%); }
+        .gradient-gold { background: linear-gradient(135deg, #C9A227 0%, #D4AF37 50%, #E5C04B 100%); }
+        .gradient-mesh {
+            background: 
+                radial-gradient(at 40% 20%, rgba(201, 162, 39, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(0, 51, 102, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(201, 162, 39, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, rgba(0, 31, 63, 0.08) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(201, 162, 39, 0.12) 0px, transparent 50%);
+        }
+        .gradient-hero {
+            background: linear-gradient(135deg, #001F3F 0%, #0A2E4F 40%, #001F3F 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .gradient-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+            animation: pulse-glow 8s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
         .bg-cream { background-color: var(--cream); }
         .text-navy { color: var(--navy); }
         .text-gold { color: var(--gold); }
         .bg-gold-light { background-color: var(--gold-light); }
         
+        /* Noise texture overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+        
+        /* Glassmorphism Effects */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .glass-dark {
+            background: rgba(0, 31, 63, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: relative;
+            overflow: hidden;
+        }
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(201, 162, 39, 0.03), transparent 30%);
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+        .float { animation: float 6s ease-in-out infinite; }
+        .float-delay-1 { animation-delay: -2s; }
+        .float-delay-2 { animation-delay: -4s; }
+        
+        /* Glow Effects */
+        .glow-gold {
+            box-shadow: 0 0 40px rgba(201, 162, 39, 0.3), 0 0 80px rgba(201, 162, 39, 0.1);
+        }
+        .glow-blue {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Particle Animation */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particle-float 15s infinite;
+        }
+        @keyframes particle-float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        
         .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(201, 162, 39, 0.1);
         }
         
         .calculator-card {
@@ -406,13 +525,49 @@ const getCalculatorsPage = () => {
             left: 0;
             right: 0;
             height: 4px;
-            background: var(--gold);
+            background: linear-gradient(90deg, var(--gold), #E5C04B, var(--gold));
+            background-size: 200% 100%;
             transform: scaleX(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
+            animation: shimmer 2s infinite;
         }
         .calculator-card:hover::before {
             transform: scaleX(1);
         }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .calculator-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        .calculator-card:hover::after {
+            left: 100%;
+        }
+        
+        /* Icon Pulse Animation */
+        .icon-pulse {
+            animation: icon-pulse 2s ease-in-out infinite;
+        }
+        @keyframes icon-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Gradient Icon Background */
+        .icon-gradient-red { background: linear-gradient(135deg, #FEE2E2, #FECACA); }
+        .icon-gradient-purple { background: linear-gradient(135deg, #EDE9FE, #DDD6FE); }
+        .icon-gradient-blue { background: linear-gradient(135deg, #DBEAFE, #BFDBFE); }
+        .icon-gradient-green { background: linear-gradient(135deg, #DCFCE7, #BBF7D0); }
+        .icon-gradient-yellow { background: linear-gradient(135deg, #FEF3C7, #FDE68A); }
+        .icon-gradient-pink { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
         
         .category-tab {
             padding: 10px 20px;
@@ -550,20 +705,83 @@ const getCalculatorsPage = () => {
             right: 12px;
             background: linear-gradient(135deg, #F59E0B, #D97706);
             color: white;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            animation: badge-glow 2s ease-in-out infinite;
+        }
+        @keyframes badge-glow {
+            0%, 100% { box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(245, 158, 11, 0.6); }
         }
         
         .stat-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), #E5C04B);
+        }
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--navy), #003366);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* 3D Card Effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .card-3d:hover {
+            transform: rotateX(5deg) rotateY(-5deg) translateY(-8px);
+        }
+        
+        /* Animated Counter */
+        .counter {
+            display: inline-block;
+        }
+        
+        /* Lottie-like CSS Animation for Icons */
+        .animated-icon {
+            position: relative;
+        }
+        .animated-icon::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--gold);
+            animation: spin-border 3s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .calculator-card:hover .animated-icon::after {
+            opacity: 1;
+        }
+        @keyframes spin-border {
+            100% { transform: rotate(360deg); }
         }
         
         /* Bottom Navigation */
@@ -684,145 +902,675 @@ const getCalculatorsPage = () => {
             transform: translateX(-50%);
             transition: left 0.5s ease;
         }
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Typing Animation */
+        .typing {
+            overflow: hidden;
+            border-right: 2px solid var(--gold);
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--gold) }
+        }
+        
+        /* Modern Hero Image Container */
+        .hero-image-container {
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 31, 63, 0.3), 0 10px 30px rgba(201, 162, 39, 0.15);
+            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.5s ease;
+        }
+        .hero-image-container:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .hero-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.3) 0%, transparent 50%, rgba(201, 162, 39, 0.2) 100%);
+        }
+        
+        /* Morphing blob animation */
+        .morph-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: morph 20s ease-in-out infinite;
+        }
+        @keyframes morph {
+            0%, 100% { border-radius: 50% 30% 70% 40% / 60% 40% 30% 70%; }
+            25% { border-radius: 30% 60% 40% 70% / 50% 60% 30% 60%; }
+            50% { border-radius: 60% 40% 30% 60% / 70% 30% 50% 40%; }
+            75% { border-radius: 40% 70% 60% 30% / 40% 50% 60% 70%; }
+        }
+        
+        /* Category card with illustration */
+        .category-card-visual {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .category-card-visual:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(201, 162, 39, 0.1);
+        }
+        .category-card-visual .visual-bg {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        .category-card-visual .visual-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .category-card-visual:hover .visual-bg img {
+            transform: scale(1.1);
+        }
+        .category-card-visual .visual-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 31, 63, 0.9) 0%, rgba(0, 31, 63, 0.3) 50%, transparent 100%);
+        }
+        .category-card-visual .content {
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Animated progress ring */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        /* Stagger animation for cards */
+        .stagger-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: stagger-in 0.6s ease-out forwards;
+        }
+        @keyframes stagger-in {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stagger-delay-1 { animation-delay: 0.1s; }
+        .stagger-delay-2 { animation-delay: 0.2s; }
+        .stagger-delay-3 { animation-delay: 0.3s; }
+        .stagger-delay-4 { animation-delay: 0.4s; }
+        .stagger-delay-5 { animation-delay: 0.5s; }
+        .stagger-delay-6 { animation-delay: 0.6s; }
+        
+        /* Gradient border animation */
+        .gradient-border {
+            position: relative;
+            background: white;
+            border-radius: 24px;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, var(--gold), #E5C04B, var(--navy), var(--gold));
+            background-size: 400% 400%;
+            animation: gradient-shift 8s ease infinite;
+            z-index: -1;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Interactive stat counter */
+        .stat-counter {
+            display: inline-block;
+            position: relative;
+        }
+        .stat-counter::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            border-radius: 2px;
+        }
+        
+        /* Modern tag styles */
+        .modern-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .modern-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Skeleton loading animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Interactive hover spotlight */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201, 162, 39, 0.15), transparent 40%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="bg-cream">
-    <!-- Header -->
-    <header class="gradient-navy">
-        <div class="max-w-7xl mx-auto px-4 py-6">
+<body class="bg-cream animated-bg gradient-mesh">
+    <!-- Noise Overlay for Premium Feel -->
+    <div class="noise-overlay"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <!-- Modern Hero Header with Visual -->
+    <header class="gradient-hero relative overflow-hidden">
+        <!-- Morphing Blobs -->
+        <div class="morph-blob absolute top-0 right-0 w-96 h-96 bg-gold/20 opacity-30"></div>
+        <div class="morph-blob absolute bottom-0 left-1/4 w-64 h-64 bg-blue-500/20 opacity-20" style="animation-delay: -5s;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 py-6 relative z-10">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
-                    <a href="/" class="text-2xl font-bold text-white">
-                        SelectCare<span class="text-gold">OS</span>™
+                    <a href="/" class="text-2xl font-bold text-white group">
+                        SelectCare<span class="text-gold group-hover:text-yellow-300 transition-colors">OS</span>™
                     </a>
-                    <span class="px-3 py-1 bg-gold/20 text-gold text-sm rounded-full font-medium">
-                        <i class="fas fa-calculator mr-1"></i> Health Calculators
+                    <span class="px-4 py-1.5 glass-dark text-gold text-sm rounded-full font-medium flex items-center border border-gold/20">
+                        <i class="fas fa-calculator mr-2 icon-pulse"></i> Health Calculators
                     </span>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <a href="/dashboard" class="text-white/80 hover:text-white text-sm">
-                        <i class="fas fa-arrow-left mr-1"></i> Dashboard
+                    <a href="/dashboard" class="text-white/80 hover:text-white text-sm flex items-center gap-2 px-4 py-2 rounded-full hover:bg-white/10 transition-all border border-white/10">
+                        <i class="fas fa-arrow-left"></i> Dashboard
                     </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hero Content Inside Header -->
+        <div class="max-w-7xl mx-auto px-4 py-12 lg:py-20 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <!-- Text Content -->
+                <div class="lg:w-1/2 text-center lg:text-left">
+                    <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-gold text-sm font-medium mb-6 border border-gold/30 stagger-in">
+                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                        23 Calculators Available
+                        <span class="ml-2 px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">NEW</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight stagger-in stagger-delay-1">
+                        Health <span class="bg-gradient-to-r from-gold via-yellow-400 to-gold bg-clip-text text-transparent">Calculators</span> Hub
+                    </h1>
+                    <p class="text-white/70 text-lg max-w-xl mb-8 stagger-in stagger-delay-2">
+                        Precision medical tools designed by German board-certified physicians. 
+                        Make informed decisions about your health journey.
+                    </p>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start mb-8 stagger-in stagger-delay-3">
+                        <button onclick="openCalculator('bmi')" class="btn-primary group">
+                            <i class="fas fa-calculator mr-2 group-hover:rotate-12 transition-transform"></i>
+                            Try BMI Calculator
+                        </button>
+                        <a href="#all-calculators" class="px-6 py-3 border-2 border-white/30 text-white rounded-full hover:bg-white/10 transition-all font-medium">
+                            <i class="fas fa-th-large mr-2"></i>
+                            Browse All
+                        </a>
+                    </div>
+                    
+                    <!-- Trust Badges -->
+                    <div class="flex flex-wrap gap-3 justify-center lg:justify-start stagger-in stagger-delay-4">
+                        <div class="modern-tag bg-green-500/20 text-green-400 border border-green-500/30">
+                            <i class="fas fa-shield-check"></i>
+                            <span>MD Reviewed</span>
+                        </div>
+                        <div class="modern-tag bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                            <i class="fas fa-lock"></i>
+                            <span>HIPAA Compliant</span>
+                        </div>
+                        <div class="modern-tag bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                            <i class="fas fa-bolt"></i>
+                            <span>Instant Results</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hero Visual -->
+                <div class="lg:w-1/2 relative stagger-in stagger-delay-5">
+                    <div class="hero-image-container">
+                        <img src="https://www.genspark.ai/api/files/s/Vwshp9ux?cache_control=3600" 
+                             alt="Health Calculators Dashboard" 
+                             class="w-full"
+                             loading="eager">
+                        <div class="hero-image-overlay"></div>
+                        
+                        <!-- Floating Stats on Image -->
+                        <div class="absolute top-4 right-4 glass px-4 py-2 rounded-xl float">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">Accuracy Rate</div>
+                                    <div class="text-sm font-bold text-navy">99.2%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-4 left-4 glass px-4 py-2 rounded-xl float float-delay-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gold rounded-full flex items-center justify-center">
+                                    <i class="fas fa-users text-navy text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">Users Today</div>
+                                    <div class="text-sm font-bold text-navy">2,847</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Category Icons -->
+                    <div class="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl shadow-xl float flex items-center justify-center">
+                        <i class="fas fa-heartbeat text-white text-2xl"></i>
+                    </div>
+                    <div class="absolute top-1/3 -right-4 w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl shadow-xl float float-delay-1 flex items-center justify-center">
+                        <i class="fas fa-weight-scale text-white text-xl"></i>
+                    </div>
+                    <div class="absolute -bottom-4 left-1/3 w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl shadow-xl float float-delay-2 flex items-center justify-center">
+                        <i class="fas fa-apple-whole text-white text-lg"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
     
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Hero Section -->
-        <div class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl font-bold text-navy mb-3">
-                🧮 Health Calculators Hub
-            </h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-                Comprehensive suite of medical, wellness, and bariatric calculators designed for 
-                German Select patients. All calculations follow clinical guidelines and are reviewed by our medical team.
-            </p>
+    <main class="max-w-7xl mx-auto px-4 py-12 relative z-10" id="all-calculators">
+        
+        <!-- Quick Stats with Interactive Counters -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-14">
+            <div class="stat-card spotlight-card group hover:scale-105 transition-transform stagger-in stagger-delay-1" onmousemove="updateSpotlight(event, this)">
+                <div class="relative">
+                    <svg class="w-16 h-16 mx-auto mb-3" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="#E5E7EB" stroke-width="4"/>
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="url(#blueGrad)" stroke-width="4" 
+                                stroke-dasharray="163" stroke-dashoffset="0" class="progress-ring-circle"
+                                style="transform: rotate(-90deg); transform-origin: 50% 50%;"/>
+                        <defs><linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#60A5FA"/></linearGradient></defs>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fas fa-calculator text-blue-600 text-xl group-hover:scale-125 transition-transform"></i>
+                    </div>
+                </div>
+                <div class="stat-number stat-counter" data-target="23">23</div>
+                <div class="text-sm text-gray-500 font-medium">Calculators</div>
+            </div>
+            <div class="stat-card spotlight-card group hover:scale-105 transition-transform stagger-in stagger-delay-2" onmousemove="updateSpotlight(event, this)">
+                <div class="relative">
+                    <svg class="w-16 h-16 mx-auto mb-3" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="#E5E7EB" stroke-width="4"/>
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="url(#purpleGrad)" stroke-width="4" 
+                                stroke-dasharray="163" stroke-dashoffset="40" class="progress-ring-circle"/>
+                        <defs><linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#A78BFA"/></linearGradient></defs>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fas fa-layer-group text-purple-600 text-xl group-hover:scale-125 transition-transform"></i>
+                    </div>
+                </div>
+                <div class="stat-number" style="background: linear-gradient(135deg, #7C3AED, #A855F7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">6</div>
+                <div class="text-sm text-gray-500 font-medium">Categories</div>
+            </div>
+            <div class="stat-card spotlight-card group hover:scale-105 transition-transform stagger-in stagger-delay-3" onmousemove="updateSpotlight(event, this)">
+                <div class="relative">
+                    <svg class="w-16 h-16 mx-auto mb-3" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="#E5E7EB" stroke-width="4"/>
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="url(#greenGrad)" stroke-width="4" 
+                                stroke-dasharray="163" stroke-dashoffset="0" class="progress-ring-circle"/>
+                        <defs><linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#22C55E"/><stop offset="100%" stop-color="#4ADE80"/></linearGradient></defs>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fas fa-hand-holding-heart text-green-600 text-xl group-hover:scale-125 transition-transform"></i>
+                    </div>
+                </div>
+                <div class="stat-number" style="background: linear-gradient(135deg, #16A34A, #22C55E); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">100%</div>
+                <div class="text-sm text-gray-500 font-medium">Free to Use</div>
+            </div>
+            <div class="stat-card spotlight-card group hover:scale-105 transition-transform stagger-in stagger-delay-4" onmousemove="updateSpotlight(event, this)">
+                <div class="relative">
+                    <svg class="w-16 h-16 mx-auto mb-3" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="#E5E7EB" stroke-width="4"/>
+                        <circle cx="30" cy="30" r="26" fill="none" stroke="url(#goldGrad)" stroke-width="4" 
+                                stroke-dasharray="163" stroke-dashoffset="0" class="progress-ring-circle"/>
+                        <defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A227"/><stop offset="100%" stop-color="#E5C04B"/></linearGradient></defs>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fas fa-user-md text-gold text-xl group-hover:scale-125 transition-transform"></i>
+                    </div>
+                </div>
+                <div class="stat-number" style="background: linear-gradient(135deg, #C9A227, #E5C04B); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MD</div>
+                <div class="text-sm text-gray-500 font-medium">Reviewed</div>
+            </div>
         </div>
         
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="stat-card">
-                <div class="text-3xl font-bold text-navy">20+</div>
-                <div class="text-sm text-gray-500">Calculators</div>
+        <!-- Category Tabs with Modern Styling -->
+        <div class="relative mb-8">
+            <div class="flex overflow-x-auto gap-3 pb-4 scrollbar-hide" style="-webkit-overflow-scrolling: touch;">
+                <button class="category-tab active group" onclick="filterCategory('all')" data-category="all">
+                    <div class="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-th-large text-gray-600"></i>
+                    </div>
+                    All Calculators
+                    <span class="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded-full">23</span>
+                </button>
+                <button class="category-tab group" onclick="filterCategory('essential')" data-category="essential">
+                    <div class="w-8 h-8 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-heart-pulse text-red-500"></i>
+                    </div>
+                    Essential
+                    <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-600 text-xs rounded-full">4</span>
+                </button>
+                <button class="category-tab group" onclick="filterCategory('bariatric')" data-category="bariatric">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-weight-scale text-purple-500"></i>
+                    </div>
+                    Bariatric
+                    <span class="ml-2 px-2 py-0.5 bg-purple-100 text-purple-600 text-xs rounded-full">4</span>
+                </button>
+                <button class="category-tab group" onclick="filterCategory('surgical')" data-category="surgical">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-user-doctor text-blue-500"></i>
+                    </div>
+                    Surgical
+                    <span class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-600 text-xs rounded-full">4</span>
+                </button>
+                <button class="category-tab group" onclick="filterCategory('nutrition')" data-category="nutrition">
+                    <div class="w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-apple-whole text-green-500"></i>
+                    </div>
+                    Nutrition
+                    <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-600 text-xs rounded-full">4</span>
+                </button>
+                <button class="category-tab group" onclick="filterCategory('wellness')" data-category="wellness">
+                    <div class="w-8 h-8 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-spa text-pink-500"></i>
+                    </div>
+                    Wellness
+                    <span class="ml-2 px-2 py-0.5 bg-pink-100 text-pink-600 text-xs rounded-full">4</span>
+                </button>
+                <button class="category-tab group" onclick="filterCategory('financial')" data-category="financial">
+                    <div class="w-8 h-8 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-piggy-bank text-yellow-600"></i>
+                    </div>
+                    Financial
+                    <span class="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">3</span>
+                </button>
             </div>
-            <div class="stat-card">
-                <div class="text-3xl font-bold text-purple-600">6</div>
-                <div class="text-sm text-gray-500">Categories</div>
+            <!-- Scroll indicator -->
+            <div class="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-cream to-transparent pointer-events-none md:hidden"></div>
+        </div>
+        
+        <!-- Popular Calculators - Featured with AI-Generated Images -->
+        <div id="popular-section" class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-navy flex items-center">
+                    <span class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-200">
+                        <i class="fas fa-fire text-white text-xl"></i>
+                    </span>
+                    Most Popular
+                </h2>
+                <div class="flex items-center gap-3">
+                    <span class="text-sm text-gray-500 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+                        <i class="fas fa-users mr-2 text-gold"></i> 
+                        <span class="font-semibold text-navy">10,000+</span> patients
+                    </span>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="text-3xl font-bold text-green-600">100%</div>
-                <div class="text-sm text-gray-500">Free to Use</div>
-            </div>
-            <div class="stat-card">
-                <div class="text-3xl font-bold text-gold">MD</div>
-                <div class="text-sm text-gray-500">Reviewed</div>
+            
+            <!-- Featured Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- BMI Calculator - Featured Card with Visual -->
+                <div class="category-card-visual spotlight-card cursor-pointer stagger-in stagger-delay-1" onclick="openCalculator('bmi')" data-category="essential" onmousemove="updateSpotlight(event, this)">
+                    <div class="popular-badge z-20"><i class="fas fa-crown mr-1"></i> #1</div>
+                    <div class="visual-bg">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400" alt="BMI Health" loading="lazy">
+                        <div class="visual-overlay"></div>
+                        <div class="absolute bottom-3 left-3 text-white">
+                            <div class="text-xs opacity-75">Essential Health</div>
+                            <div class="text-xl font-bold">BMI Calculator</div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-weight text-white text-lg"></i>
+                            </div>
+                            <div class="flex items-center gap-1 text-green-600 text-xs bg-green-50 px-2 py-1 rounded-full">
+                                <i class="fas fa-bolt"></i>
+                                <span>30 sec</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Calculate your Body Mass Index and get surgery recommendations</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-full font-medium">Essential</span>
+                            <span class="text-gold font-medium text-sm group-hover:translate-x-1 transition-transform">
+                                Try Now <i class="fas fa-arrow-right ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Surgery Eligibility - Featured Card with Visual -->
+                <div class="category-card-visual spotlight-card cursor-pointer stagger-in stagger-delay-2" onclick="openCalculator('bariatric-eligibility')" data-category="bariatric" onmousemove="updateSpotlight(event, this)">
+                    <div class="popular-badge z-20"><i class="fas fa-medal mr-1"></i> #2</div>
+                    <div class="visual-bg">
+                        <img src="https://www.genspark.ai/api/files/s/KglrOtfO?cache_control=3600" alt="Bariatric Surgery" loading="lazy">
+                        <div class="visual-overlay"></div>
+                        <div class="absolute bottom-3 left-3 text-white">
+                            <div class="text-xs opacity-75">Bariatric</div>
+                            <div class="text-xl font-bold">Surgery Eligibility</div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-clipboard-check text-white text-lg"></i>
+                            </div>
+                            <div class="flex items-center gap-1 text-purple-600 text-xs bg-purple-50 px-2 py-1 rounded-full">
+                                <i class="fas fa-user-md"></i>
+                                <span>Pre-Op</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Check if you qualify for weight loss surgery procedures</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full font-medium">Bariatric</span>
+                            <span class="text-gold font-medium text-sm">Try Now <i class="fas fa-arrow-right ml-1"></i></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weight Loss Projection - Featured Card with Visual -->
+                <div class="category-card-visual spotlight-card cursor-pointer stagger-in stagger-delay-3" onclick="openCalculator('weight-loss-projection')" data-category="bariatric" onmousemove="updateSpotlight(event, this)">
+                    <div class="popular-badge z-20"><i class="fas fa-award mr-1"></i> #3</div>
+                    <div class="visual-bg">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400" alt="Weight Loss" loading="lazy">
+                        <div class="visual-overlay"></div>
+                        <div class="absolute bottom-3 left-3 text-white">
+                            <div class="text-xs opacity-75">Forecast</div>
+                            <div class="text-xl font-bold">Weight Projection</div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-chart-line text-white text-lg"></i>
+                            </div>
+                            <div class="flex items-center gap-1 text-green-600 text-xs bg-green-50 px-2 py-1 rounded-full">
+                                <i class="fas fa-calendar"></i>
+                                <span>6-18 mo</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Project your weight loss journey at 6, 12, and 18 months</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-medium">Forecast</span>
+                            <span class="text-gold font-medium text-sm">Try Now <i class="fas fa-arrow-right ml-1"></i></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cost Comparison - Featured Card with Visual -->
+                <div class="category-card-visual spotlight-card cursor-pointer stagger-in stagger-delay-4" onclick="openCalculator('cost-comparison')" data-category="financial" onmousemove="updateSpotlight(event, this)">
+                    <div class="popular-badge z-20"><i class="fas fa-star mr-1"></i> #4</div>
+                    <div class="visual-bg">
+                        <img src="https://www.genspark.ai/api/files/s/EiFgGIrI?cache_control=3600" alt="Cost Savings" loading="lazy">
+                        <div class="visual-overlay"></div>
+                        <div class="absolute bottom-3 left-3 text-white">
+                            <div class="text-xs opacity-75">Financial</div>
+                            <div class="text-xl font-bold">Cost Comparison</div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-gold to-yellow-500 rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-euro-sign text-navy text-lg"></i>
+                            </div>
+                            <div class="flex items-center gap-1 text-gold text-xs bg-gold/10 px-2 py-1 rounded-full">
+                                <i class="fas fa-piggy-bank"></i>
+                                <span>Save 75%</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Compare costs: Germany vs Turkey vs German Select</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-medium">Savings</span>
+                            <span class="text-gold font-medium text-sm">Try Now <i class="fas fa-arrow-right ml-1"></i></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <!-- Category Tabs -->
-        <div class="flex overflow-x-auto gap-2 pb-4 mb-6 scrollbar-hide">
-            <button class="category-tab active" onclick="filterCategory('all')" data-category="all">
-                <i class="fas fa-th-large mr-2"></i>All Calculators
-            </button>
-            <button class="category-tab" onclick="filterCategory('essential')" data-category="essential">
-                <i class="fas fa-heart-pulse mr-2 text-red-500"></i>Essential
-            </button>
-            <button class="category-tab" onclick="filterCategory('bariatric')" data-category="bariatric">
-                <i class="fas fa-weight-scale mr-2 text-purple-500"></i>Bariatric
-            </button>
-            <button class="category-tab" onclick="filterCategory('surgical')" data-category="surgical">
-                <i class="fas fa-user-doctor mr-2 text-blue-500"></i>Surgical
-            </button>
-            <button class="category-tab" onclick="filterCategory('nutrition')" data-category="nutrition">
-                <i class="fas fa-apple-whole mr-2 text-green-500"></i>Nutrition
-            </button>
-            <button class="category-tab" onclick="filterCategory('wellness')" data-category="wellness">
-                <i class="fas fa-spa mr-2 text-pink-500"></i>Wellness
-            </button>
-            <button class="category-tab" onclick="filterCategory('financial')" data-category="financial">
-                <i class="fas fa-piggy-bank mr-2 text-yellow-500"></i>Financial
-            </button>
-        </div>
-        
-        <!-- Popular Calculators -->
-        <div id="popular-section" class="mb-10">
-            <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                <i class="fas fa-fire text-orange-500 mr-2"></i> Most Popular
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- BMI Calculator -->
-                <div class="card calculator-card p-5" onclick="openCalculator('bmi')" data-category="essential">
-                    <div class="popular-badge">Popular</div>
-                    <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mb-4">
-                        <i class="fas fa-weight text-red-600 text-2xl"></i>
+        <!-- Visual Divider with Animation -->
+        <div class="relative my-16">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+            </div>
+            <div class="relative flex justify-center">
+                <span class="bg-cream px-8 py-3 text-navy font-semibold text-sm flex items-center gap-3 rounded-full border border-gray-200 shadow-sm">
+                    <div class="w-8 h-8 bg-gradient-to-br from-navy to-blue-800 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-th-large text-white text-xs"></i>
                     </div>
-                    <h3 class="font-bold text-navy mb-1">BMI Calculator</h3>
-                    <p class="text-sm text-gray-500">Body Mass Index</p>
-                </div>
-                
-                <!-- Surgery Eligibility -->
-                <div class="card calculator-card p-5" onclick="openCalculator('bariatric-eligibility')" data-category="bariatric">
-                    <div class="popular-badge">Popular</div>
-                    <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-4">
-                        <i class="fas fa-clipboard-check text-purple-600 text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-navy mb-1">Surgery Eligibility</h3>
-                    <p class="text-sm text-gray-500">Check qualification</p>
-                </div>
-                
-                <!-- Weight Loss Projection -->
-                <div class="card calculator-card p-5" onclick="openCalculator('weight-loss-projection')" data-category="bariatric">
-                    <div class="popular-badge">Popular</div>
-                    <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
-                        <i class="fas fa-chart-line text-green-600 text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-navy mb-1">Weight Loss Projection</h3>
-                    <p class="text-sm text-gray-500">Post-surgery forecast</p>
-                </div>
-                
-                <!-- Cost Comparison -->
-                <div class="card calculator-card p-5" onclick="openCalculator('cost-comparison')" data-category="financial">
-                    <div class="popular-badge">Popular</div>
-                    <div class="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4">
-                        <i class="fas fa-euro-sign text-yellow-600 text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-navy mb-1">Cost Comparison</h3>
-                    <p class="text-sm text-gray-500">Compare prices</p>
-                </div>
+                    All Calculators by Category
+                </span>
             </div>
         </div>
         
         <!-- All Calculators Grid -->
         <div id="calculators-grid">
-            <!-- Essential Health -->
-            <div class="category-section mb-8" data-category="essential">
-                <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                    <span class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-heart-pulse text-red-500"></i>
-                    </span>
-                    Essential Health
-                </h2>
+            <!-- Essential Health with Visual Header -->
+            <div class="category-section mb-12" data-category="essential">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <!-- Category Visual Card -->
+                    <div class="md:w-1/3">
+                        <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600" alt="Essential Health" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-red-900/50 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-heart-pulse text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white">Essential Health</h2>
+                                        <p class="text-white/70 text-sm">Core metrics every patient should know</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category Description -->
+                    <div class="md:w-2/3 flex items-center">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-info-circle text-red-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-navy mb-2">Why These Matter</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Essential health calculators help you understand your body's baseline metrics. 
+                                        BMI, body fat percentage, and blood pressure are fundamental indicators that 
+                                        our German board-certified physicians use to assess your overall health status.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="card calculator-card p-5" onclick="openCalculator('bmi')">
                         <div class="flex items-start justify-between mb-3">
@@ -868,14 +1616,46 @@ const getCalculatorsPage = () => {
                 </div>
             </div>
             
-            <!-- Bariatric & Weight Loss -->
-            <div class="category-section mb-8" data-category="bariatric">
-                <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                    <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-weight-scale text-purple-500"></i>
-                    </span>
-                    Bariatric & Weight Loss
-                </h2>
+            <!-- Bariatric & Weight Loss with Visual Header -->
+            <div class="category-section mb-12" data-category="bariatric">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <!-- Category Visual Card -->
+                    <div class="md:w-1/3">
+                        <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="https://www.genspark.ai/api/files/s/KglrOtfO?cache_control=3600" alt="Bariatric Surgery" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-purple-900/90 via-purple-900/50 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-weight-scale text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white">Bariatric & Weight Loss</h2>
+                                        <p class="text-white/70 text-sm">Specialized surgery planning tools</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category Description -->
+                    <div class="md:w-2/3 flex items-center">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-stethoscope text-purple-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-navy mb-2">Your Weight Loss Journey</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Our bariatric calculators help you determine if you're a candidate for weight loss surgery 
+                                        and project your expected outcomes. With <strong>Gastric Sleeve starting at €5,500</strong>, 
+                                        we make your transformation journey accessible with German-quality care.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="card calculator-card p-5" onclick="openCalculator('bariatric-eligibility')">
                         <div class="flex items-start justify-between mb-3">
@@ -921,14 +1701,46 @@ const getCalculatorsPage = () => {
                 </div>
             </div>
             
-            <!-- Surgical Planning -->
-            <div class="category-section mb-8" data-category="surgical">
-                <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                    <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-user-doctor text-blue-500"></i>
-                    </span>
-                    Surgical Planning
-                </h2>
+            <!-- Surgical Planning with Visual Header -->
+            <div class="category-section mb-12" data-category="surgical">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <!-- Category Visual Card -->
+                    <div class="md:w-1/3">
+                        <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="https://www.genspark.ai/api/files/s/EgXOsjkU?cache_control=3600" alt="Surgical Planning" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/50 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-user-doctor text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white">Surgical Planning</h2>
+                                        <p class="text-white/70 text-sm">Pre-operative assessment tools</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category Description -->
+                    <div class="md:w-2/3 flex items-center">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-clipboard-list text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-navy mb-2">Prepare for Success</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Surgical planning calculators help assess your readiness and potential risks. 
+                                        Our ASA classification, recovery timeline, and pre-op checklist ensure you're 
+                                        fully prepared for your procedure with our German board-certified surgeons.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="card calculator-card p-5" onclick="openCalculator('asa-score')">
                         <div class="flex items-start justify-between mb-3">
@@ -973,14 +1785,46 @@ const getCalculatorsPage = () => {
                 </div>
             </div>
             
-            <!-- Nutrition & Fitness -->
-            <div class="category-section mb-8" data-category="nutrition">
-                <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                    <span class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-apple-whole text-green-500"></i>
-                    </span>
-                    Nutrition & Fitness
-                </h2>
+            <!-- Nutrition & Fitness with Visual Header -->
+            <div class="category-section mb-12" data-category="nutrition">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <!-- Category Visual Card -->
+                    <div class="md:w-1/3">
+                        <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="https://www.genspark.ai/api/files/s/zRm0Nav1?cache_control=3600" alt="Nutrition Wellness" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-green-900/90 via-green-900/50 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-apple-whole text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white">Nutrition & Fitness</h2>
+                                        <p class="text-white/70 text-sm">Diet & exercise optimization</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category Description -->
+                    <div class="md:w-2/3 flex items-center">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-salad text-green-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-navy mb-2">Fuel Your Recovery</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Proper nutrition is essential before and after surgery. Calculate your TDEE, 
+                                        macros, protein needs, and hydration requirements to optimize your body for 
+                                        the best surgical outcomes and fastest recovery.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="card calculator-card p-5" onclick="openCalculator('tdee')">
                         <div class="flex items-start justify-between mb-3">
@@ -1024,14 +1868,46 @@ const getCalculatorsPage = () => {
                 </div>
             </div>
             
-            <!-- Wellness & Lifestyle -->
-            <div class="category-section mb-8" data-category="wellness">
-                <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                    <span class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-spa text-pink-500"></i>
-                    </span>
-                    Wellness & Lifestyle
-                </h2>
+            <!-- Wellness & Lifestyle with Visual Header -->
+            <div class="category-section mb-12" data-category="wellness">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <!-- Category Visual Card -->
+                    <div class="md:w-1/3">
+                        <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="https://www.genspark.ai/api/files/s/AZTf4NnD?cache_control=3600" alt="Wellness Lifestyle" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-pink-900/90 via-pink-900/50 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-spa text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white">Wellness & Lifestyle</h2>
+                                        <p class="text-white/70 text-sm">Holistic health assessment</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category Description -->
+                    <div class="md:w-2/3 flex items-center">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-heart text-pink-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-navy mb-2">Beyond Physical Health</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        True wellness encompasses sleep quality, stress levels, and your body's biological age. 
+                                        These calculators help you understand the full picture of your health, supporting 
+                                        not just surgical outcomes but your overall quality of life.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="card calculator-card p-5" onclick="openCalculator('metabolic-age')">
                         <div class="flex items-start justify-between mb-3">
@@ -1075,14 +1951,46 @@ const getCalculatorsPage = () => {
                 </div>
             </div>
             
-            <!-- Financial -->
-            <div class="category-section mb-8" data-category="financial">
-                <h2 class="text-xl font-bold text-navy mb-4 flex items-center">
-                    <span class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-piggy-bank text-yellow-500"></i>
-                    </span>
-                    Cost & Savings
-                </h2>
+            <!-- Financial with Visual Header -->
+            <div class="category-section mb-12" data-category="financial">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <!-- Category Visual Card -->
+                    <div class="md:w-1/3">
+                        <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+                            <img src="https://www.genspark.ai/api/files/s/EiFgGIrI?cache_control=3600" alt="Cost Savings" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-yellow-900/90 via-yellow-900/50 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-piggy-bank text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white">Cost & Savings</h2>
+                                        <p class="text-white/70 text-sm">Medical tourism value calculator</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category Description -->
+                    <div class="md:w-2/3 flex items-center">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-euro-sign text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-navy mb-2">Smart Healthcare Investment</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">
+                                        Compare costs across Germany, Turkey, and German Select. Our medical tourism model 
+                                        delivers <strong>up to 75% savings vs. German prices</strong> while maintaining 
+                                        German-quality standards with board-certified surgeons.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="card calculator-card p-5" onclick="openCalculator('cost-comparison')">
                         <div class="flex items-start justify-between mb-3">
@@ -1117,20 +2025,57 @@ const getCalculatorsPage = () => {
             </div>
         </div>
         
-        <!-- CTA Section -->
-        <div class="card p-8 text-center gradient-gold mt-8">
-            <h3 class="text-2xl font-bold text-navy mb-3">Ready to Start Your Journey?</h3>
-            <p class="text-navy/80 mb-6 max-w-xl mx-auto">
-                Get a personalized health assessment from our German board-certified surgeons.
-                Free video consultation included.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/instant-connect" class="btn-secondary">
-                    <i class="fas fa-video mr-2"></i> Free Consultation
-                </a>
-                <a href="/services" class="btn-primary">
-                    <i class="fas fa-calendar mr-2"></i> Book Appointment
-                </a>
+        <!-- Modern CTA Section -->
+        <div class="relative mt-16 mb-8 overflow-hidden rounded-3xl">
+            <!-- Background with gradient -->
+            <div class="absolute inset-0 gradient-navy"></div>
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-gold rounded-full filter blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+            </div>
+            
+            <div class="relative z-10 p-10 md:p-16 text-center">
+                <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-gold text-sm font-medium mb-6 border border-gold/30">
+                    <i class="fas fa-gift mr-2"></i>
+                    Limited Time Offer
+                </div>
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Start Your Journey?</h3>
+                <p class="text-white/70 mb-8 max-w-2xl mx-auto text-lg">
+                    Get a personalized health assessment from our German board-certified surgeons.
+                    <span class="text-gold font-semibold">Free video consultation included.</span>
+                </p>
+                
+                <!-- Stats Row -->
+                <div class="flex flex-wrap justify-center gap-8 mb-10">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gold">€5,500</div>
+                        <div class="text-white/60 text-sm">Gastric Sleeve from</div>
+                    </div>
+                    <div class="w-px h-12 bg-white/20 hidden md:block"></div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gold">75%</div>
+                        <div class="text-white/60 text-sm">Savings vs Germany</div>
+                    </div>
+                    <div class="w-px h-12 bg-white/20 hidden md:block"></div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gold">5★</div>
+                        <div class="text-white/60 text-sm">Resort Recovery</div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/instant-connect" class="inline-flex items-center justify-center px-8 py-4 bg-white text-navy rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
+                        <i class="fas fa-video mr-3"></i> Free Video Consultation
+                    </a>
+                    <a href="/services" class="inline-flex items-center justify-center px-8 py-4 bg-gold text-navy rounded-full font-bold hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-xl">
+                        <i class="fas fa-calendar-check mr-3"></i> Book Your Surgery
+                    </a>
+                </div>
+                
+                <p class="text-white/50 text-sm mt-6">
+                    <i class="fas fa-shield-check mr-1"></i>
+                    No commitment required • Results in 24 hours
+                </p>
             </div>
         </div>
     </main>
@@ -1557,6 +2502,65 @@ const getCalculatorsPage = () => {
     </nav>
     
     <script>
+        // Spotlight effect for cards
+        function updateSpotlight(e, element) {
+            const rect = element.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            element.style.setProperty('--mouse-x', x + '%');
+            element.style.setProperty('--mouse-y', y + '%');
+        }
+        
+        // Animated counter
+        function animateCounters() {
+            const counters = document.querySelectorAll('[data-target]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const start = 0;
+                const startTime = performance.now();
+                
+                function updateCounter(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                    const current = Math.floor(start + (target - start) * easeOutQuart);
+                    counter.textContent = current;
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    }
+                }
+                requestAnimationFrame(updateCounter);
+            });
+        }
+        
+        // Intersection Observer for scroll animations
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.classList.contains('stat-card')) {
+                        animateCounters();
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.fade-in, .stagger-in, .stat-card').forEach(el => {
+            fadeObserver.observe(el);
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
         // Calculator Data
         const calculatorData = {
             'bmi': { title: 'BMI Calculator', icon: 'fa-weight', color: 'red' },
