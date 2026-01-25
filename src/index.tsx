@@ -6808,6 +6808,38 @@ app.get('/wellness-hub', async (c) => {
   return c.html(dailyWellnessPage())
 })
 
+// Wellness Programs Pages - Exercise & Nutrition Browsing
+app.get('/wellness/exercises', async (c) => {
+  const { exerciseProgramsPage } = await import('./pages/wellness-pages')
+  const lang = c.req.query('lang') || 'en'
+  return c.html(exerciseProgramsPage(lang))
+})
+
+app.get('/wellness/nutrition', async (c) => {
+  const { nutritionPlansPage } = await import('./pages/wellness-pages')
+  const lang = c.req.query('lang') || 'en'
+  return c.html(nutritionPlansPage(lang))
+})
+
+// Alias routes for meal plans
+app.get('/wellness/meal-plans', async (c) => {
+  const { nutritionPlansPage } = await import('./pages/wellness-pages')
+  const lang = c.req.query('lang') || 'en'
+  return c.html(nutritionPlansPage(lang))
+})
+
+app.get('/meal-plans', async (c) => {
+  const { nutritionPlansPage } = await import('./pages/wellness-pages')
+  const lang = c.req.query('lang') || 'en'
+  return c.html(nutritionPlansPage(lang))
+})
+
+app.get('/exercise-programs', async (c) => {
+  const { exerciseProgramsPage } = await import('./pages/wellness-pages')
+  const lang = c.req.query('lang') || 'en'
+  return c.html(exerciseProgramsPage(lang))
+})
+
 // Mindfulness & Breathing Exercises
 app.get('/mindfulness', async (c) => {
   const { mindfulnessPage } = await import('./pages/mindfulness')

@@ -3653,12 +3653,12 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                     </div>
                     
                     <!-- Explore More -->
-                    <div class="mt-6 pt-4 border-t border-gray-200">
-                        <a href="/api/wellness/exercises" target="_blank" class="inline-flex items-center text-navy hover:text-gold mr-6">
-                            <i class="fas fa-dumbbell mr-2"></i>View All Exercise Programs
+                    <div class="mt-6 pt-4 border-t border-gray-200 flex flex-wrap gap-4">
+                        <a href="/wellness/exercises" class="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors">
+                            <i class="fas fa-dumbbell mr-2"></i>Browse All Exercise Programs
                         </a>
-                        <a href="/api/wellness/nutrition" target="_blank" class="inline-flex items-center text-navy hover:text-gold">
-                            <i class="fas fa-apple-alt mr-2"></i>View All Nutrition Plans
+                        <a href="/wellness/nutrition" class="inline-flex items-center px-4 py-2 bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fas fa-utensils mr-2"></i>Browse All Meal Plans
                         </a>
                     </div>
                 </div>
