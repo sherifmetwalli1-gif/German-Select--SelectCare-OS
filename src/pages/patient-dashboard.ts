@@ -938,6 +938,12 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                 <button class="tab-button" onclick="showTab('journey')">
                     <i class="fas fa-road ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.journey', lang)}
                 </button>
+                <button class="tab-button" onclick="showTab('treatments')">
+                    <i class="fas fa-stethoscope ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.treatments', lang)}
+                </button>
+                <button class="tab-button" onclick="showTab('retreats')">
+                    <i class="fas fa-spa ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.retreats', lang)}
+                </button>
                 <button class="tab-button" onclick="showTab('vitals')">
                     <i class="fas fa-heartbeat ${dir === 'rtl' ? 'ml-2' : 'mr-2'}"></i>${t('nav.vitals', lang)}
                 </button>
@@ -2423,6 +2429,398 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
             </div>
         </div>
         
+        <!-- TREATMENTS TAB -->
+        <div id="tab-treatments" class="tab-content hidden">
+            <h1 class="text-2xl font-bold text-navy mb-6">
+                <i class="fas fa-stethoscope text-gold mr-3"></i>
+                Medical Treatments
+            </h1>
+            
+            <!-- Treatment Categories -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Bariatric Surgery -->
+                <div class="card p-6 hover:shadow-xl transition-all cursor-pointer" onclick="window.location.href='/services#bariatric'">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-weight text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy">Bariatric Surgery</h3>
+                            <p class="text-sm text-gray-500">Weight loss procedures</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gastric Sleeve</span>
+                            <span class="font-semibold text-navy">from €4,900</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gastric Bypass</span>
+                            <span class="font-semibold text-navy">from €6,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gastric Balloon</span>
+                            <span class="font-semibold text-navy">from €2,200</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Save up to 75%</span>
+                        <i class="fas fa-arrow-right text-gold"></i>
+                    </div>
+                </div>
+                
+                <!-- Orthopedic -->
+                <div class="card p-6 hover:shadow-xl transition-all cursor-pointer" onclick="window.location.href='/services#orthopedic'">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                            <i class="fas fa-bone text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy">Orthopedic Surgery</h3>
+                            <p class="text-sm text-gray-500">Joint & bone procedures</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Knee Replacement</span>
+                            <span class="font-semibold text-navy">from €8,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Hip Replacement</span>
+                            <span class="font-semibold text-navy">from €9,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Spine Surgery</span>
+                            <span class="font-semibold text-navy">from €12,500</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Save up to 80%</span>
+                        <i class="fas fa-arrow-right text-gold"></i>
+                    </div>
+                </div>
+                
+                <!-- Plastic Surgery -->
+                <div class="card p-6 hover:shadow-xl transition-all cursor-pointer" onclick="window.location.href='/services#plastic'">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                            <i class="fas fa-star text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy">Plastic & Cosmetic</h3>
+                            <p class="text-sm text-gray-500">Body contouring & aesthetics</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Tummy Tuck</span>
+                            <span class="font-semibold text-navy">from €4,200</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Facelift</span>
+                            <span class="font-semibold text-navy">from €5,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Rhinoplasty</span>
+                            <span class="font-semibold text-navy">from €3,900</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Save up to 70%</span>
+                        <i class="fas fa-arrow-right text-gold"></i>
+                    </div>
+                </div>
+                
+                <!-- Cardiology -->
+                <div class="card p-6 hover:shadow-xl transition-all cursor-pointer" onclick="window.location.href='/services#cardiology'">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
+                            <i class="fas fa-heart-pulse text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy">Cardiology</h3>
+                            <p class="text-sm text-gray-500">Heart care & diagnostics</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Cardiac Checkup</span>
+                            <span class="font-semibold text-navy">from €750</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Angiography</span>
+                            <span class="font-semibold text-navy">from €520</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Pacemaker</span>
+                            <span class="font-semibold text-navy">from €5,500</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Save up to 78%</span>
+                        <i class="fas fa-arrow-right text-gold"></i>
+                    </div>
+                </div>
+                
+                <!-- Dental -->
+                <div class="card p-6 hover:shadow-xl transition-all cursor-pointer" onclick="window.location.href='/services#dental'">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
+                            <i class="fas fa-tooth text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy">Dental Care</h3>
+                            <p class="text-sm text-gray-500">Complete dental services</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Dental Implant</span>
+                            <span class="font-semibold text-navy">from €650</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">All-on-4</span>
+                            <span class="font-semibold text-navy">from €5,200</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Veneers (each)</span>
+                            <span class="font-semibold text-navy">from €280</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Save up to 80%</span>
+                        <i class="fas fa-arrow-right text-gold"></i>
+                    </div>
+                </div>
+                
+                <!-- Anti-Aging -->
+                <div class="card p-6 hover:shadow-xl transition-all cursor-pointer" onclick="window.location.href='/services#antiaging'">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                            <i class="fas fa-clock text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-navy">Anti-Aging & Longevity</h3>
+                            <p class="text-sm text-gray-500">Regenerative medicine</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Executive Checkup</span>
+                            <span class="font-semibold text-navy">from €1,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Stem Cell Therapy</span>
+                            <span class="font-semibold text-navy">from €7,900</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">PRP Therapy</span>
+                            <span class="font-semibold text-navy">from €650</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Save up to 77%</span>
+                        <i class="fas fa-arrow-right text-gold"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="card-premium p-8 text-center">
+                <h3 class="text-xl font-bold text-navy mb-2">Need Help Choosing?</h3>
+                <p class="text-gray-600 mb-4">Get a free consultation with our German medical team</p>
+                <a href="/booking" class="btn-primary inline-flex items-center gap-2">
+                    <i class="fas fa-video"></i>
+                    Book Free Consultation
+                </a>
+            </div>
+        </div>
+        
+        <!-- RETREATS TAB -->
+        <div id="tab-retreats" class="tab-content hidden">
+            <h1 class="text-2xl font-bold text-navy mb-6">
+                <i class="fas fa-spa text-gold mr-3"></i>
+                Red Sea Recovery Retreats
+            </h1>
+            
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden mb-8" style="background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 50%, #0369A1 100%);">
+                <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M30 0L60 30L30 60L0 30z\" fill=\"white\" fill-opacity=\"0.1\"/%3E%3C/svg%3E');"></div>
+                <div class="relative p-8 text-white">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-sun text-yellow-300"></i>
+                        <span class="text-sm font-medium">300+ Sunny Days Per Year</span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Heal by the Red Sea</h2>
+                    <p class="text-white/80 mb-4 max-w-xl">Combine world-class German medical care with a luxury recovery experience at Egypt's premier Red Sea resorts.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg backdrop-blur-sm">
+                            <i class="fas fa-water text-cyan-200"></i>
+                            <span class="text-sm">Therapeutic Waters</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg backdrop-blur-sm">
+                            <i class="fas fa-fish text-cyan-200"></i>
+                            <span class="text-sm">World-Class Diving</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg backdrop-blur-sm">
+                            <i class="fas fa-hotel text-cyan-200"></i>
+                            <span class="text-sm">5-Star Resorts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Retreat Packages -->
+            <h3 class="text-lg font-bold text-navy mb-4">Recovery Packages</h3>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <!-- Essential -->
+                <div class="card p-6 border-2 border-transparent hover:border-gold transition-all">
+                    <div class="text-center mb-4">
+                        <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-semibold">ESSENTIAL</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy text-center mb-2">SelectCare™</h4>
+                    <p class="text-sm text-gray-500 text-center mb-4">Quality care at great value</p>
+                    <div class="text-center mb-4">
+                        <span class="text-3xl font-bold text-navy">€4,900</span>
+                        <span class="text-gray-500">+</span>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>4-Star Beach Resort (7 nights)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>JCI Hospital Stay (3 nights)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Airport Transfers
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>1-Year Follow-up
+                        </li>
+                    </ul>
+                    <button class="w-full btn-outline py-3">Learn More</button>
+                </div>
+                
+                <!-- Premium -->
+                <div class="card-premium p-6 border-2 border-gold relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <span class="bg-gradient-to-r from-gold to-yellow-400 text-navy text-xs px-4 py-1 rounded-full font-bold shadow-lg">MOST POPULAR</span>
+                    </div>
+                    <div class="text-center mb-4 mt-2">
+                        <span class="text-xs bg-gold/20 text-gold-warm px-3 py-1 rounded-full font-semibold">PREMIUM</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy text-center mb-2">SelectCare+™</h4>
+                    <p class="text-sm text-gray-500 text-center mb-4">Luxury recovery experience</p>
+                    <div class="text-center mb-4">
+                        <span class="text-3xl font-bold text-navy">€7,900</span>
+                        <span class="text-gray-500">+</span>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>5-Star Resort (14 nights)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>VIP Hospital Suite (5 nights)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Private Transfers
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Daily Spa Treatments
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Family Room Included
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>2-Year Follow-up
+                        </li>
+                    </ul>
+                    <button class="w-full btn-primary py-3">Book Now</button>
+                </div>
+                
+                <!-- Crown -->
+                <div class="card p-6 border-2 border-transparent hover:border-gold transition-all">
+                    <div class="text-center mb-4">
+                        <span class="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-semibold">ULTIMATE</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy text-center mb-2">SelectCrown™</h4>
+                    <p class="text-sm text-gray-500 text-center mb-4">Ultimate luxury & privacy</p>
+                    <div class="text-center mb-4">
+                        <span class="text-3xl font-bold text-navy">€14,500</span>
+                        <span class="text-gray-500">+</span>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Private Villa (21 nights)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>VIP Suite (7 nights)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Helicopter Transfer
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Private Chef
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Private Nurse 12h/day
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 mr-2"></i>Lifetime Follow-up
+                        </li>
+                    </ul>
+                    <button class="w-full btn-outline py-3">Learn More</button>
+                </div>
+            </div>
+            
+            <!-- Recovery Activities -->
+            <h3 class="text-lg font-bold text-navy mb-4">Recovery Activities</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="card p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-cyan-100 flex items-center justify-center">
+                        <i class="fas fa-water text-cyan-600 text-xl"></i>
+                    </div>
+                    <h5 class="font-semibold text-navy text-sm">Snorkeling & Diving</h5>
+                    <p class="text-xs text-gray-500 mt-1">Week 3+</p>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 flex items-center justify-center">
+                        <i class="fas fa-spa text-pink-600 text-xl"></i>
+                    </div>
+                    <h5 class="font-semibold text-navy text-sm">Spa Treatments</h5>
+                    <p class="text-xs text-gray-500 mt-1">Daily</p>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fas fa-utensils text-green-600 text-xl"></i>
+                    </div>
+                    <h5 class="font-semibold text-navy text-sm">Healthy Dining</h5>
+                    <p class="text-xs text-gray-500 mt-1">All Meals</p>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-yellow-100 flex items-center justify-center">
+                        <i class="fas fa-umbrella-beach text-yellow-600 text-xl"></i>
+                    </div>
+                    <h5 class="font-semibold text-navy text-sm">Beach Access</h5>
+                    <p class="text-xs text-gray-500 mt-1">Unlimited</p>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-orange-100 flex items-center justify-center">
+                        <i class="fas fa-dumbbell text-orange-600 text-xl"></i>
+                    </div>
+                    <h5 class="font-semibold text-navy text-sm">Physiotherapy</h5>
+                    <p class="text-xs text-gray-500 mt-1">2x Daily</p>
+                </div>
+                <div class="card p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center">
+                        <i class="fas fa-om text-purple-600 text-xl"></i>
+                    </div>
+                    <h5 class="font-semibold text-navy text-sm">Meditation</h5>
+                    <p class="text-xs text-gray-500 mt-1">Morning/Evening</p>
+                </div>
+            </div>
+        </div>
+        
         <!-- VITALS TAB -->
         <div id="tab-vitals" class="tab-content hidden">
             <h1 class="text-2xl font-bold text-navy mb-6">
@@ -2893,6 +3291,509 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                 </div>
             </div>
         </div>
+        
+        <!-- TREATMENTS TAB -->
+        <div id="tab-treatments" class="tab-content hidden">
+            <h1 class="text-2xl font-bold text-navy mb-6">
+                <i class="fas fa-procedures text-gold mr-3"></i>
+                Treatments
+            </h1>
+            
+            <!-- Featured Treatments Banner -->
+            <div class="bg-gradient-to-r from-navy to-navy-light rounded-2xl p-6 mb-8 text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div class="relative z-10">
+                    <h2 class="text-xl font-bold mb-2">German Excellence in Medical Care</h2>
+                    <p class="text-gray-300 mb-4">World-class treatments by German board-certified specialists at a fraction of the cost.</p>
+                    <div class="flex items-center gap-4">
+                        <span class="px-3 py-1 bg-gold/20 text-gold rounded-full text-sm font-semibold">
+                            <i class="fas fa-certificate mr-1"></i>JCI Accredited
+                        </span>
+                        <span class="px-3 py-1 bg-gold/20 text-gold rounded-full text-sm font-semibold">
+                            <i class="fas fa-shield-halved mr-1"></i>German Quality
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Treatment Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Bariatric Surgery -->
+                <div class="treatment-card card p-6 hover:shadow-xl transition-all cursor-pointer border-l-4 border-gold" data-treatment="bariatric">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-gold to-gold-bright rounded-xl flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-weight-scale text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-navy text-lg">Bariatric Surgery</h3>
+                            <p class="text-sm text-gray-500">Weight Loss Solutions</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gastric Sleeve</span>
+                            <span class="font-semibold text-gold">from €4,900</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gastric Bypass</span>
+                            <span class="font-semibold text-gold">from €6,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gastric Band</span>
+                            <span class="font-semibold text-gold">from €4,200</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-xs text-green-600 font-semibold">Save up to 75%</span>
+                        <span class="text-gold text-sm font-semibold">View Details →</span>
+                    </div>
+                </div>
+                
+                <!-- Orthopedic Surgery -->
+                <div class="treatment-card card p-6 hover:shadow-xl transition-all cursor-pointer border-l-4 border-blue-500" data-treatment="orthopedic">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-bone text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-navy text-lg">Orthopedic Surgery</h3>
+                            <p class="text-sm text-gray-500">Joint & Spine Care</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Knee Replacement</span>
+                            <span class="font-semibold text-blue-600">from €8,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Hip Replacement</span>
+                            <span class="font-semibold text-blue-600">from €9,200</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Spinal Fusion</span>
+                            <span class="font-semibold text-blue-600">from €12,000</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-xs text-green-600 font-semibold">Save up to 65%</span>
+                        <span class="text-blue-600 text-sm font-semibold">View Details →</span>
+                    </div>
+                </div>
+                
+                <!-- Cardiology -->
+                <div class="treatment-card card p-6 hover:shadow-xl transition-all cursor-pointer border-l-4 border-red-500" data-treatment="cardiology">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-heart-pulse text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-navy text-lg">Cardiology</h3>
+                            <p class="text-sm text-gray-500">Heart & Vascular Care</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Angioplasty</span>
+                            <span class="font-semibold text-red-500">from €5,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Heart Valve Surgery</span>
+                            <span class="font-semibold text-red-500">from €18,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Pacemaker</span>
+                            <span class="font-semibold text-red-500">from €7,500</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-xs text-green-600 font-semibold">Save up to 60%</span>
+                        <span class="text-red-500 text-sm font-semibold">View Details →</span>
+                    </div>
+                </div>
+                
+                <!-- Plastic Surgery -->
+                <div class="treatment-card card p-6 hover:shadow-xl transition-all cursor-pointer border-l-4 border-purple-500" data-treatment="plastic">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-spa text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-navy text-lg">Plastic Surgery</h3>
+                            <p class="text-sm text-gray-500">Aesthetic & Reconstructive</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Tummy Tuck</span>
+                            <span class="font-semibold text-purple-600">from €3,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Body Contouring</span>
+                            <span class="font-semibold text-purple-600">from €4,200</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Facelift</span>
+                            <span class="font-semibold text-purple-600">from €5,800</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-xs text-green-600 font-semibold">Save up to 70%</span>
+                        <span class="text-purple-600 text-sm font-semibold">View Details →</span>
+                    </div>
+                </div>
+                
+                <!-- Dental Care -->
+                <div class="treatment-card card p-6 hover:shadow-xl transition-all cursor-pointer border-l-4 border-cyan-500" data-treatment="dental">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-tooth text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-navy text-lg">Dental Care</h3>
+                            <p class="text-sm text-gray-500">Complete Dental Solutions</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Dental Implants</span>
+                            <span class="font-semibold text-cyan-600">from €950</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Full Smile Makeover</span>
+                            <span class="font-semibold text-cyan-600">from €4,500</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Veneers (per tooth)</span>
+                            <span class="font-semibold text-cyan-600">from €350</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-xs text-green-600 font-semibold">Save up to 80%</span>
+                        <span class="text-cyan-600 text-sm font-semibold">View Details →</span>
+                    </div>
+                </div>
+                
+                <!-- Oncology -->
+                <div class="treatment-card card p-6 hover:shadow-xl transition-all cursor-pointer border-l-4 border-orange-500" data-treatment="oncology">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                            <i class="fas fa-ribbon text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-navy text-lg">Oncology</h3>
+                            <p class="text-sm text-gray-500">Cancer Treatment</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Chemotherapy</span>
+                            <span class="font-semibold text-orange-500">Custom Quote</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Radiation Therapy</span>
+                            <span class="font-semibold text-orange-500">Custom Quote</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Immunotherapy</span>
+                            <span class="font-semibold text-orange-500">Custom Quote</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-xs text-green-600 font-semibold">Personalized Care</span>
+                        <span class="text-orange-500 text-sm font-semibold">Request Quote →</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Why Choose Our Treatments -->
+            <div class="card p-6 bg-gradient-to-br from-cream to-white">
+                <h2 class="text-lg font-bold text-navy mb-4">Why Choose SelectCareOS Treatments?</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-user-md text-gold text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">German Surgeons</h4>
+                        <p class="text-xs text-gray-500">Board-certified specialists</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-hospital text-gold text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">JCI Hospitals</h4>
+                        <p class="text-xs text-gray-500">International standards</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-piggy-bank text-gold text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">Up to 80% Savings</h4>
+                        <p class="text-xs text-gray-500">vs. EU/US prices</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-headset text-gold text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">24/7 Support</h4>
+                        <p class="text-xs text-gray-500">Lifetime follow-up</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- RETREATS TAB -->
+        <div id="tab-retreats" class="tab-content hidden">
+            <h1 class="text-2xl font-bold text-navy mb-6">
+                <i class="fas fa-umbrella-beach text-gold mr-3"></i>
+                Red Sea Retreats
+            </h1>
+            
+            <!-- Hero Banner -->
+            <div class="relative rounded-2xl overflow-hidden mb-8 h-64">
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/90 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=400&fit=crop" alt="Red Sea Resort" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex items-center p-8">
+                    <div class="text-white max-w-lg">
+                        <h2 class="text-2xl font-bold mb-2">Heal by the Red Sea</h2>
+                        <p class="text-gray-200 mb-4">Experience world-class medical care combined with luxury recovery in Egypt's most beautiful coastal resorts.</p>
+                        <div class="flex gap-3">
+                            <span class="px-3 py-1 bg-gold/20 text-gold rounded-full text-sm font-semibold">
+                                <i class="fas fa-sun mr-1"></i>300+ Sunny Days
+                            </span>
+                            <span class="px-3 py-1 bg-gold/20 text-gold rounded-full text-sm font-semibold">
+                                <i class="fas fa-water mr-1"></i>Therapeutic Waters
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Retreat Packages -->
+            <h2 class="text-lg font-bold text-navy mb-4">Recovery Retreat Packages</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- SELECTCARE Essential -->
+                <div class="retreat-card card overflow-hidden hover:shadow-xl transition-all cursor-pointer" data-retreat="essential">
+                    <div class="bg-gradient-to-r from-navy to-navy-light p-4 text-white">
+                        <h3 class="font-bold text-lg">SELECTCARE Essential</h3>
+                        <p class="text-sm text-gray-300">14-Day Recovery Package</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-3xl font-bold text-navy">€4,900</span>
+                            <span class="text-sm text-gray-500 ml-2">starting from</span>
+                        </div>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                4-Star Beach Resort (7 nights)
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                JCI-Accredited Hospital
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Airport VIP Transfer
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Daily Medical Check-ups
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Healthy Meal Plan
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                12-Month Digital Follow-up
+                            </li>
+                        </ul>
+                        <button class="w-full btn-primary">
+                            <i class="fas fa-calendar-check mr-2"></i>Book Package
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- SELECTCARE+ (Most Popular) -->
+                <div class="retreat-card card overflow-hidden hover:shadow-xl transition-all cursor-pointer border-2 border-gold relative" data-retreat="plus">
+                    <div class="absolute top-4 right-4 bg-gold text-white text-xs font-bold px-3 py-1 rounded-full">
+                        MOST POPULAR
+                    </div>
+                    <div class="bg-gradient-to-r from-gold to-gold-bright p-4 text-white">
+                        <h3 class="font-bold text-lg">SELECTCARE+</h3>
+                        <p class="text-sm text-white/80">21-Day Premium Recovery</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-3xl font-bold text-navy">€7,900</span>
+                            <span class="text-sm text-gray-500 ml-2">starting from</span>
+                        </div>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-gold mr-2"></i>
+                                5-Star Red Sea Resort (14 nights)
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-gold mr-2"></i>
+                                Private Hospital Suite
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-gold mr-2"></i>
+                                24/7 Dedicated Case Manager
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-gold mr-2"></i>
+                                Daily Spa & Physiotherapy
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-gold mr-2"></i>
+                                Red Sea Excursions
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-gold mr-2"></i>
+                                Lifetime Digital Follow-up
+                            </li>
+                        </ul>
+                        <button class="w-full bg-gradient-to-r from-gold to-gold-bright text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                            <i class="fas fa-star mr-2"></i>Book Premium
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- SELECTCROWN -->
+                <div class="retreat-card card overflow-hidden hover:shadow-xl transition-all cursor-pointer" data-retreat="crown">
+                    <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-4 text-white">
+                        <h3 class="font-bold text-lg">SELECTCROWN</h3>
+                        <p class="text-sm text-gray-300">28-Day VIP Experience</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-baseline mb-4">
+                            <span class="text-3xl font-bold text-navy">€14,500</span>
+                            <span class="text-sm text-gray-500 ml-2">starting from</span>
+                        </div>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-crown text-gray-800 mr-2"></i>
+                                Private Beachfront Villa (21 nights)
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-crown text-gray-800 mr-2"></i>
+                                Helicopter Transfer
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-crown text-gray-800 mr-2"></i>
+                                Private Chef & Nutritionist
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-crown text-gray-800 mr-2"></i>
+                                Private Nurse (12hrs/day)
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-crown text-gray-800 mr-2"></i>
+                                Luxury Yacht Excursion
+                            </li>
+                            <li class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-crown text-gray-800 mr-2"></i>
+                                SelectCareOS Elite Access
+                            </li>
+                        </ul>
+                        <button class="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                            <i class="fas fa-crown mr-2"></i>Book VIP
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Red Sea Benefits -->
+            <div class="card p-6 mb-8 bg-gradient-to-br from-blue-50 to-white">
+                <h2 class="text-lg font-bold text-navy mb-4">
+                    <i class="fas fa-water text-blue-500 mr-2"></i>
+                    Why the Red Sea?
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 bg-white rounded-xl shadow-sm">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-sun text-yellow-500"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">Perfect Climate</h4>
+                        <p class="text-xs text-gray-500">300+ sunny days/year, ideal for recovery</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-sm">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-water text-blue-500"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">Therapeutic Waters</h4>
+                        <p class="text-xs text-gray-500">35% salinity, natural healing properties</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-sm">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-leaf text-green-500"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">Stress-Free</h4>
+                        <p class="text-xs text-gray-500">Up to 40% cortisol reduction</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl shadow-sm">
+                        <div class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center mb-3">
+                            <i class="fas fa-clock text-gold"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-sm">Faster Recovery</h4>
+                        <p class="text-xs text-gray-500">Optimal conditions for healing</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recovery Activities -->
+            <div class="card p-6 bg-gradient-to-br from-cream to-white">
+                <h2 class="text-lg font-bold text-navy mb-4">
+                    <i class="fas fa-spa text-gold mr-2"></i>
+                    Recovery Activities
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-swimming-pool text-blue-500 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-xs">Pool Therapy</h4>
+                        <p class="text-xs text-gray-500">Week 2+</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-spa text-purple-500 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-xs">Luxury Spa</h4>
+                        <p class="text-xs text-gray-500">Daily</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-utensils text-green-500 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-xs">Gourmet Dining</h4>
+                        <p class="text-xs text-gray-500">All Meals</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-umbrella-beach text-yellow-500 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-xs">Private Beach</h4>
+                        <p class="text-xs text-gray-500">Unlimited</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-dumbbell text-orange-500 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-xs">Physiotherapy</h4>
+                        <p class="text-xs text-gray-500">2x Daily</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-brain text-pink-500 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-navy text-xs">Mindfulness</h4>
+                        <p class="text-xs text-gray-500">AM/PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     
     <!-- Footer - Premium Gold Design -->
@@ -2948,6 +3849,30 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
             if (tabId === 'vitals') {
                 initWeightChart();
             }
+            
+            // Initialize treatments tab
+            if (tabId === 'treatments') {
+                initTreatmentsInteractions();
+            }
+            
+            // Initialize retreats tab
+            if (tabId === 'retreats') {
+                initRetreatsInteractions();
+            }
+        }
+        
+        // Treatments tab interactions
+        function initTreatmentsInteractions() {
+            document.querySelectorAll('.treatment-card').forEach(card => {
+                card.style.cursor = 'pointer';
+            });
+        }
+        
+        // Retreats tab interactions
+        function initRetreatsInteractions() {
+            document.querySelectorAll('.retreat-card').forEach(card => {
+                card.style.cursor = 'pointer';
+            });
         }
         
         // BMI Calculator
