@@ -373,9 +373,15 @@ const getCalculatorsPage = () => {
     <style>
         :root {
             --navy: #001F3F;
-            --gold: #C9A227;
-            --cream: #FDF8F0;
-            --gold-light: rgba(201, 162, 39, 0.1);
+            --navy-light: #003366;
+            --navy-dark: #001529;
+            --gold: #D4A843;
+            --gold-bright: #E8C158;
+            --gold-light: #F5E6C0;
+            --gold-warm: #B8941F;
+            --gold-glow: rgba(212, 168, 67, 0.4);
+            --cream: #FDFBF7;
+            --cream-warm: #FDF8EC;
         }
         * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-sizing: border-box; }
         
@@ -784,62 +790,97 @@ const getCalculatorsPage = () => {
             100% { transform: rotate(360deg); }
         }
         
-        /* Bottom Navigation */
+        /* ════════════════════════════════════════════════════════════════
+           UNIFIED BOTTOM NAVIGATION - SelectCareOS Branding (Navy/Gold)
+           Consistent across all viewports - Healthcare-First Design
+           ════════════════════════════════════════════════════════════════ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
-            border-top: 1px solid #E5E7EB;
-            padding: 8px 0 max(12px, env(safe-area-inset-bottom));
+            background: linear-gradient(180deg, #FFFFFF 0%, #FEFDFB 100%);
+            border-top: 2px solid transparent;
+            border-image: linear-gradient(90deg, transparent 10%, var(--gold) 50%, transparent 90%) 1;
+            padding: 10px 0 max(14px, env(safe-area-inset-bottom));
             z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 -4px 20px rgba(0, 31, 63, 0.08), 0 -1px 4px rgba(212, 168, 67, 0.1);
         }
         .bottom-nav-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 0 8px;
+            padding: 0 12px;
         }
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 6px 12px;
-            color: #9CA3AF;
-            font-size: 10px;
-            font-weight: 500;
+            padding: 8px 14px;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            min-width: 56px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            min-width: 60px;
             position: relative;
         }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; transition: transform 0.2s ease; }
-        .nav-item:hover { color: #6B7280; background: rgba(0,0,0,0.02); }
-        .nav-item.active { color: #C9A227; }
+        .nav-item i { 
+            font-size: 22px; 
+            margin-bottom: 5px; 
+            transition: all 0.3s ease;
+        }
+        .nav-item span { white-space: nowrap; letter-spacing: 0.3px; }
+        .nav-item:hover { 
+            color: var(--navy); 
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.1) 0%, rgba(232, 193, 88, 0.05) 100%);
+            transform: translateY(-2px);
+        }
+        .nav-item:hover i { transform: scale(1.15); color: var(--gold); }
+        .nav-item.active { 
+            color: var(--navy); 
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.2) 0%, rgba(232, 193, 88, 0.1) 100%);
+            box-shadow: 0 4px 12px rgba(212, 168, 67, 0.2);
+        }
+        .nav-item.active i { 
+            transform: scale(1.15); 
+            color: var(--gold-bright);
+            filter: drop-shadow(0 2px 4px rgba(212, 168, 67, 0.4));
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+            border-radius: 2px;
+        }
+        .nav-item.connect-btn { position: relative; }
         .nav-item.connect-btn .live-dot {
             position: absolute;
-            top: 4px;
-            right: 12px;
-            width: 8px;
-            height: 8px;
-            background: #22C55E;
+            top: 6px;
+            right: 14px;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #22C55E, #10B981);
             border-radius: 50%;
             border: 2px solid white;
             animation: pulse-dot 2s infinite;
+            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
         }
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
+            0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { opacity: 0.9; transform: scale(1.1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
         }
-        
         .floating-emergency {
             position: fixed;
-            bottom: 90px;
+            bottom: 100px;
             right: 16px;
             width: 56px;
             height: 56px;
@@ -856,7 +897,7 @@ const getCalculatorsPage = () => {
             text-decoration: none;
             border: 3px solid white;
         }
-        .floating-emergency:hover { transform: scale(1.08); }
+        .floating-emergency:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(220, 38, 38, 0.5); }
         .floating-emergency::before {
             content: '';
             position: absolute;
@@ -871,12 +912,56 @@ const getCalculatorsPage = () => {
             0% { transform: scale(1); opacity: 0.5; }
             100% { transform: scale(1.5); opacity: 0; }
         }
-        
-        @media (min-width: 768px) {
-            .bottom-nav { display: none; }
-            .floating-emergency { bottom: 24px; right: 24px; }
+        @media (max-width: 360px) {
+            .nav-item { padding: 6px 10px; min-width: 52px; }
+            .nav-item i { font-size: 20px; }
+            .nav-item span { font-size: 10px; }
         }
-        main { padding-bottom: 100px; }
+        /* Desktop: Show bottom nav as sidebar-style footer nav */
+        @media (min-width: 768px) {
+            .bottom-nav { 
+                background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 100%);
+                border-top: none;
+                border-image: none;
+                padding: 12px 0;
+                box-shadow: 0 -4px 30px rgba(0, 31, 63, 0.15);
+            }
+            .bottom-nav-container {
+                max-width: 800px;
+                padding: 0 24px;
+            }
+            .nav-item {
+                flex-direction: row;
+                gap: 8px;
+                padding: 10px 20px;
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 13px;
+                border-radius: 30px;
+            }
+            .nav-item i { 
+                font-size: 18px; 
+                margin-bottom: 0;
+            }
+            .nav-item:hover {
+                color: white;
+                background: rgba(212, 168, 67, 0.2);
+                transform: translateY(0);
+            }
+            .nav-item:hover i { color: var(--gold-bright); }
+            .nav-item.active {
+                color: var(--navy);
+                background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+                box-shadow: 0 4px 15px rgba(212, 168, 67, 0.4);
+            }
+            .nav-item.active i { color: var(--navy); filter: none; }
+            .nav-item.active::after { display: none; }
+            .floating-emergency { bottom: 100px; right: 24px; width: 64px; height: 64px; font-size: 26px; }
+        }
+        @media (min-width: 1024px) {
+            .bottom-nav-container { max-width: 900px; }
+            .nav-item { padding: 12px 24px; font-size: 14px; }
+        }
+        main { padding-bottom: 110px; }
         
         .range-indicator {
             display: flex;
