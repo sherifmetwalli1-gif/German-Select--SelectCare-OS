@@ -1,6 +1,8 @@
 /**
  * 🏆 MediSense AI™ v4.0 - World-Class UI
  * Interactive Patient Interface
+ * 
+ * Updated: Uses unified branding system
  */
 
 import { 
@@ -12,6 +14,8 @@ import {
   type PatientProfile,
   type MediSenseResultV4
 } from './medisense-v4';
+
+import { UNIFIED_CSS, getUnifiedBottomNav } from '../styles/brand';
 
 // ════════════════════════════════════════════════════════════════════════════════
 // 🎨 COMPREHENSIVE SYMPTOM DATABASE FOR UI
@@ -409,23 +413,27 @@ export const mediSenseV4Page = (lang: string = 'en') => {
            ============================================================================ */
         
         :root {
-            /* SelectCareOS™ Brand Colors */
+            /* SelectCareOS™ Unified Brand Colors */
             --navy: #001F3F;
             --navy-light: #003366;
+            --navy-dark: #001529;
             --deep-navy: #001530;
             --midnight-blue: #003366;
             
-            /* Luxurious Gold Spectrum */
-            --gold: #C9A227;
-            --gold-primary: #C9A227;
-            --gold-champagne: #D4AF37;
-            --gold-soft: #E8D5A3;
-            --gold-light: #E8D5A3;
-            --gold-bright: #F4D03F;
-            --gold-rose: #B8860B;
+            /* Luxurious Gold Spectrum - Unified */
+            --gold: #D4A843;
+            --gold-bright: #E8C158;
+            --gold-light: #F5E6C0;
+            --gold-warm: #B8941F;
+            --gold-glow: rgba(212, 168, 67, 0.4);
+            --gold-primary: #D4A843;
+            --gold-champagne: #E8C158;
+            --gold-soft: #F5E6C0;
+            --gold-rose: #B8941F;
             
-            /* Warm Neutrals */
-            --cream: #faf8f5;
+            /* Warm Neutrals - Unified */
+            --cream: #FDFBF7;
+            --cream-warm: #FDF8EC;
             --warm-ivory: #F5F0E8;
             --pearl: #FFFDF7;
             --soft-beige: #F0EBE3;
@@ -437,12 +445,45 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             --warning: #f59e0b;
             --danger: #ef4444;
             
-            /* Premium Shadows */
-            --shadow-gold-sm: 0 2px 8px rgba(201, 162, 39, 0.2);
-            --shadow-gold-md: 0 4px 15px rgba(201, 162, 39, 0.3);
-            --shadow-gold-lg: 0 8px 30px rgba(201, 162, 39, 0.4);
-            --shadow-navy-md: 0 4px 15px rgba(26, 26, 46, 0.15);
-            --shadow-navy-lg: 0 12px 40px rgba(26, 26, 46, 0.2);
+            /* Unified Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            /* Unified Shadow System */
+            --shadow-xs: 0 1px 2px rgba(0, 31, 63, 0.04);
+            --shadow-sm: 0 2px 8px rgba(0, 31, 63, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 31, 63, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 31, 63, 0.12);
+            --shadow-xl: 0 16px 48px rgba(0, 31, 63, 0.16);
+            --shadow-glow: 0 0 24px rgba(212, 168, 67, 0.25);
+            --shadow-gold: 0 8px 24px rgba(212, 168, 67, 0.35);
+            
+            /* Premium Shadows (legacy) */
+            --shadow-gold-sm: 0 2px 8px rgba(212, 168, 67, 0.2);
+            --shadow-gold-md: 0 4px 15px rgba(212, 168, 67, 0.3);
+            --shadow-gold-lg: 0 8px 30px rgba(212, 168, 67, 0.4);
+            --shadow-navy-md: 0 4px 15px rgba(0, 31, 63, 0.15);
+            --shadow-navy-lg: 0 12px 40px rgba(0, 31, 63, 0.2);
+            
+            /* Unified Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Unified Transitions */
+            --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-fast: 150ms var(--ease-smooth);
+            --transition: 200ms var(--ease-smooth);
+            --transition-slow: 300ms var(--ease-smooth);
+            --transition-spring: 350ms var(--ease-spring);
         }
         
         * { box-sizing: border-box; }
@@ -1159,7 +1200,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         }
         
         /* ════════════════════════════════════════════════════════════════
-           UNIFIED BOTTOM NAVIGATION - Healthcare-First (Option A)
+           UNIFIED BOTTOM NAVIGATION - SelectCareOS Branding (Navy/Gold)
+           Consistent across all viewports - Healthcare-First Design
            ════════════════════════════════════════════════════════════════ */
         
         .bottom-nav {
@@ -1167,62 +1209,82 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
-            border-top: 1px solid #E5E7EB;
-            padding: 8px 0 max(12px, env(safe-area-inset-bottom));
+            background: linear-gradient(180deg, #FFFFFF 0%, #FEFDFB 100%);
+            border-top: 2px solid transparent;
+            border-image: linear-gradient(90deg, transparent 10%, var(--gold) 50%, transparent 90%) 1;
+            padding: 10px 0 max(14px, env(safe-area-inset-bottom));
             z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 -4px 20px rgba(0, 31, 63, 0.08), 0 -1px 4px rgba(212, 168, 67, 0.1);
         }
         
         .bottom-nav-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 0 8px;
+            padding: 0 12px;
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 6px 12px;
-            color: #9CA3AF;
-            font-size: 10px;
-            font-weight: 500;
+            padding: 8px 14px;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            min-width: 56px;
+            transition: all 0.3s var(--ease-spring);
+            border-radius: 12px;
+            min-width: 60px;
             position: relative;
         }
         
         .nav-item i {
-            font-size: 20px;
-            margin-bottom: 4px;
-            transition: transform 0.2s ease;
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
         }
         
         .nav-item span {
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
         
         .nav-item:hover {
-            color: #6B7280;
-            background: rgba(0, 0, 0, 0.02);
+            color: var(--navy);
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.1) 0%, rgba(232, 193, 88, 0.05) 100%);
+            transform: translateY(-2px);
         }
         
         .nav-item:hover i {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            color: var(--gold);
         }
         
         .nav-item.active {
-            color: #C9A227;
+            color: var(--navy);
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.2) 0%, rgba(232, 193, 88, 0.1) 100%);
+            box-shadow: 0 4px 12px rgba(212, 168, 67, 0.2);
         }
         
         .nav-item.active i {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            color: var(--gold-bright);
+            filter: drop-shadow(0 2px 4px rgba(212, 168, 67, 0.4));
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+            border-radius: 2px;
         }
         
         /* Connect button with live indicator */
@@ -1232,24 +1294,25 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .nav-item.connect-btn .live-dot {
             position: absolute;
-            top: 4px;
-            right: 12px;
-            width: 8px;
-            height: 8px;
-            background: #22C55E;
+            top: 6px;
+            right: 14px;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #22C55E, #10B981);
             border-radius: 50%;
             border: 2px solid white;
             animation: pulse-dot 2s infinite;
+            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
         }
         
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
+            50% { opacity: 0.9; transform: scale(1.1); }
         }
         
         /* Add padding to body for bottom nav */
-        body {
-            padding-bottom: 100px;
+        main {
+            padding-bottom: 110px;
         }
         
         /* ════════════════════════════════════════════════════════════════
@@ -1317,18 +1380,64 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             }
         }
         
+        /* Desktop Bottom Nav - Navy bar with gold accents */
         @media (min-width: 768px) {
-            .bottom-nav {
-                display: none; /* Hide on desktop - use header nav instead */
+            .bottom-nav { 
+                background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 100%);
+                border-top: none;
+                border-image: none;
+                padding: 12px 0;
+                box-shadow: 0 -4px 30px rgba(0, 31, 63, 0.15);
             }
             
-            .floating-emergency {
-                bottom: 24px;
-                right: 24px;
-                width: 64px;
-                height: 64px;
-                font-size: 26px;
+            .bottom-nav-container {
+                max-width: 800px;
+                padding: 0 24px;
             }
+            
+            .nav-item {
+                flex-direction: row;
+                gap: 8px;
+                padding: 10px 20px;
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 13px;
+                border-radius: 30px;
+            }
+            
+            .nav-item i { 
+                font-size: 18px; 
+                margin-bottom: 0;
+            }
+            
+            .nav-item:hover {
+                color: white;
+                background: rgba(212, 168, 67, 0.2);
+                transform: translateY(0);
+            }
+            
+            .nav-item:hover i { color: var(--gold-bright); }
+            
+            .nav-item.active {
+                color: var(--navy);
+                background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+                box-shadow: 0 4px 15px rgba(212, 168, 67, 0.4);
+            }
+            
+            .nav-item.active i { color: var(--navy); filter: none; }
+            .nav-item.active::after { display: none; }
+            
+            .floating-emergency { 
+                bottom: 100px; 
+                right: 24px; 
+                width: 64px; 
+                height: 64px; 
+                font-size: 26px; 
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .bottom-nav-container { max-width: 900px; }
+            .nav-item { padding: 12px 24px; font-size: 14px; }
         }
         
         /* Gold Accent AI Floating Button */

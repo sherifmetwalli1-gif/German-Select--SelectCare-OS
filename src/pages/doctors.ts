@@ -1,33 +1,25 @@
 /**
  * Doctors Page - SelectCareOS™ Premium Design
- * Inspired by German Select SurgeryBridge design
+ * Unified branding with patient dashboard and health calculators
  */
 import { Context } from 'hono'
+import { UNIFIED_CSS, BRAND_HEAD } from '../styles/brand'
 
 export function doctorsPage(c: Context): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    ${BRAND_HEAD}
     <title>Our Medical Specialists - SelectCareOS™</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        ${UNIFIED_CSS}
+        
+        /* Page-specific styles */
         :root {
-            /* SelectCareOS™ Brand Colors */
-            --navy: #001F3F;
-            --navy-light: #003366;
-            --primary: #001F3F;
-            --primary-light: #003366;
-            --gold: #C9A227;
-            --gold-light: #E8D5A3;
+            --primary: var(--navy);
+            --primary-light: var(--navy-light);
             --coral: #FF6B35;
             --success: #22C55E;
-            --cream: #F8F6F0;
             --green: #22C55E;
         }
         

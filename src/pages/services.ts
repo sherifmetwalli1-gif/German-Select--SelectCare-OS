@@ -11,7 +11,11 @@
  * - Patient success stories
  * - Trust badges and certifications
  * - Call-to-action sections
+ * 
+ * Updated: Unified branding with UNIFIED_CSS from brand.ts
  */
+
+import { UNIFIED_CSS, BRAND_HEAD, getUnifiedBottomNav } from '../styles/brand'
 
 // Static data for services page - Market-researched pricing (2025)
 export const JOURNEY_STEPS = [
@@ -438,116 +442,73 @@ export const RECOVERY_ITINERARY = {
 export const servicesPage = () => `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    ${BRAND_HEAD}
     <title>Our Services - SelectCareOS™ | German Select Medical Tourism</title>
     <meta name="description" content="German-quality healthcare in Egypt. German trained surgeons, Red Sea recovery, complete digital guidance. Save up to 70% compared to German hospitals.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --navy: #001F3F;
-            --navy-light: #003366;
-            --gold: #C9A227;
-            --gold-light: #E8D5A3;
-            --cream: #F8F6F0;
-        }
+        ${UNIFIED_CSS}
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--cream);
-        }
-        
-        .bg-navy { background-color: var(--navy); }
-        .bg-navy-light { background-color: var(--navy-light); }
-        .bg-gold { background-color: var(--gold); }
-        .bg-gold-light { background-color: var(--gold-light); }
-        .bg-cream { background-color: var(--cream); }
-        .text-navy { color: var(--navy); }
-        .text-gold { color: var(--gold); }
-        .border-gold { border-color: var(--gold); }
-        .border-navy { border-color: var(--navy); }
-        
-        .gradient-gold {
-            background: linear-gradient(135deg, var(--gold) 0%, #D4AF37 50%, var(--gold-light) 100%);
-        }
-        
-        .gradient-navy {
-            background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
-        }
-        
+        /* Page-specific hero enhancement */
         .gradient-hero {
-            background: linear-gradient(135deg, var(--navy) 0%, #001530 50%, #002040 100%);
+            background: linear-gradient(135deg, var(--navy) 0%, #0A2E4F 40%, var(--navy) 100%);
+            position: relative;
+            overflow: hidden;
         }
         
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 31, 63, 0.08);
+        .gradient-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(212, 168, 67, 0.15) 0%, transparent 70%);
+            animation: pulse-glow 8s ease-in-out infinite;
         }
         
-        .card:hover {
-            box-shadow: 0 8px 30px rgba(0, 31, 63, 0.12);
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
         }
         
         .card-gold {
-            background: linear-gradient(135deg, var(--gold) 0%, #D4AF37 100%);
-            border-radius: 16px;
-        }
-        
-        .btn-gold {
-            background: var(--gold);
-            color: var(--navy);
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-block;
-            text-decoration: none;
-        }
-        
-        .btn-gold:hover {
-            background: #B8922A;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(201, 162, 39, 0.4);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+            border-radius: var(--radius-xl);
         }
         
         .btn-navy {
-            background: var(--navy);
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
             color: white;
             padding: 14px 28px;
-            border-radius: 12px;
+            border-radius: var(--radius-full);
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all var(--transition-spring);
             display: inline-block;
             text-decoration: none;
+            box-shadow: var(--shadow-md);
         }
         
         .btn-navy:hover {
-            background: var(--navy-light);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
         
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--gold);
-            color: var(--gold);
-            padding: 12px 26px;
-            border-radius: 12px;
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+            color: var(--navy);
+            padding: 14px 28px;
+            border-radius: var(--radius-full);
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all var(--transition-spring);
             display: inline-block;
             text-decoration: none;
+            box-shadow: var(--shadow-sm);
         }
         
-        .btn-outline:hover {
-            background: var(--gold);
-            color: var(--navy);
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--gold-warm), var(--gold));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
         }
         
         .btn-outline-white {
@@ -555,9 +516,9 @@ export const servicesPage = () => `<!DOCTYPE html>
             border: 2px solid white;
             color: white;
             padding: 12px 26px;
-            border-radius: 12px;
+            border-radius: var(--radius-full);
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all var(--transition-spring);
             display: inline-block;
             text-decoration: none;
         }
@@ -570,7 +531,7 @@ export const servicesPage = () => `<!DOCTYPE html>
         .step-number {
             width: 60px;
             height: 60px;
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
             color: var(--navy);
             border-radius: 50%;
             display: flex;
@@ -580,6 +541,7 @@ export const servicesPage = () => `<!DOCTYPE html>
             font-weight: 700;
             position: relative;
             z-index: 10;
+            box-shadow: var(--shadow-gold);
         }
         
         .step-line {
@@ -593,11 +555,19 @@ export const servicesPage = () => `<!DOCTYPE html>
         }
         
         .testimonial-card {
-            background: white;
-            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(253, 251, 247, 0.95) 100%);
+            border-radius: var(--radius-xl);
             padding: 24px;
-            box-shadow: 0 4px 20px rgba(0, 31, 63, 0.08);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(212, 168, 67, 0.08);
             position: relative;
+            transition: all var(--transition-spring);
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            border-color: rgba(212, 168, 67, 0.2);
         }
         
         .testimonial-card::before {
@@ -613,19 +583,19 @@ export const servicesPage = () => `<!DOCTYPE html>
         }
         
         .price-tag {
-            background: var(--navy);
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
             color: white;
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             font-weight: 700;
             display: inline-block;
         }
         
         .savings-tag {
-            background: #22C55E;
+            background: linear-gradient(135deg, #22C55E, #16A34A);
             color: white;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: var(--radius-full);
             font-size: 12px;
             font-weight: 600;
         }
@@ -731,108 +701,8 @@ export const servicesPage = () => `<!DOCTYPE html>
             .btn-gold, .btn-outline-white { width: 100%; text-align: center; }
         }
         
-        /* ════════════════════════════════════════════════════════════════
-           UNIFIED BOTTOM NAVIGATION - Healthcare-First (Option A)
-           ════════════════════════════════════════════════════════════════ */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #E5E7EB;
-            padding: 8px 0 max(12px, env(safe-area-inset-bottom));
-            z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .bottom-nav-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 0 8px;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 6px 12px;
-            color: #9CA3AF;
-            font-size: 10px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            min-width: 56px;
-            position: relative;
-        }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; transition: transform 0.2s ease; }
-        .nav-item span { white-space: nowrap; }
-        .nav-item:hover { color: #6B7280; background: rgba(0, 0, 0, 0.02); }
-        .nav-item:hover i { transform: scale(1.1); }
-        .nav-item.active { color: #C9A227; }
-        .nav-item.active i { transform: scale(1.1); }
-        .nav-item.connect-btn { position: relative; }
-        .nav-item.connect-btn .live-dot {
-            position: absolute;
-            top: 4px;
-            right: 12px;
-            width: 8px;
-            height: 8px;
-            background: #22C55E;
-            border-radius: 50%;
-            border: 2px solid white;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
-        }
-        .floating-emergency {
-            position: fixed;
-            bottom: 90px;
-            right: 16px;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #DC2626, #B91C1C);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 22px;
-            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
-            z-index: 999;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border: 3px solid white;
-        }
-        .floating-emergency:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(220, 38, 38, 0.5); }
-        .floating-emergency::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: rgba(220, 38, 38, 0.3);
-            animation: emergency-pulse 2s infinite;
-            z-index: -1;
-        }
-        @keyframes emergency-pulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        @media (max-width: 360px) {
-            .nav-item { padding: 6px 8px; min-width: 48px; }
-            .nav-item i { font-size: 18px; }
-            .nav-item span { font-size: 9px; }
-        }
-        @media (min-width: 768px) {
-            .bottom-nav { display: none; }
-            .floating-emergency { bottom: 24px; right: 24px; width: 64px; height: 64px; font-size: 26px; }
-        }
-        main { padding-bottom: 100px; }
+        /* Bottom nav and emergency button are now provided by UNIFIED_CSS */
+        
         footer { padding-bottom: 100px; }
     </style>
 </head>
@@ -1814,36 +1684,7 @@ export const servicesPage = () => `<!DOCTYPE html>
         }
     </script>
     
-    <!-- Emergency Call Button -->
-    <a href="tel:112" class="floating-emergency" title="Emergency Call 112">
-        <i class="fas fa-phone-alt"></i>
-    </a>
-    
-    <!-- Bottom Navigation - Healthcare-First (Option A) -->
-    <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
-        <div class="bottom-nav-container">
-            <a href="/" class="nav-item" aria-label="Home">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-            <a href="/medisense" class="nav-item" aria-label="MediSense AI">
-                <i class="fas fa-brain"></i>
-                <span>MediSense</span>
-            </a>
-            <a href="/instant-connect" class="nav-item connect-btn" aria-label="Instant Connect">
-                <span class="live-dot"></span>
-                <i class="fas fa-video"></i>
-                <span>Connect</span>
-            </a>
-            <a href="/care-team" class="nav-item" aria-label="Doctors">
-                <i class="fas fa-user-md"></i>
-                <span>Doctors</span>
-            </a>
-            <a href="/dashboard" class="nav-item" aria-label="My Profile">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
-            </a>
-        </div>
-    </nav>
+    <!-- Unified Bottom Navigation -->
+    ${getUnifiedBottomNav('home')}
 </body>
 </html>`;
