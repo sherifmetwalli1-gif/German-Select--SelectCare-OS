@@ -382,6 +382,24 @@ const getCalculatorsPage = () => {
             --gold-glow: rgba(212, 168, 67, 0.4);
             --cream: #FDFBF7;
             --cream-warm: #FDF8EC;
+            /* UX Enhancement: Improved spacing system */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            /* UX Enhancement: Visual depth layers */
+            --shadow-sm: 0 2px 8px rgba(0, 31, 63, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 31, 63, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 31, 63, 0.12);
+            --shadow-xl: 0 16px 48px rgba(0, 31, 63, 0.16);
+            --shadow-glow: 0 0 24px rgba(212, 168, 67, 0.25);
+            /* UX Enhancement: Transition presets */
+            --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-sizing: border-box; }
         
@@ -506,23 +524,54 @@ const getCalculatorsPage = () => {
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
         
+        /* ═══════════════════════════════════════════════════════════════
+           ENHANCED CARD SYSTEM - Improved Visual Hierarchy & Affordance
+           ═══════════════════════════════════════════════════════════════ */
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.35s var(--ease-spring);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+            transform: scaleX(0);
+            transition: transform 0.4s var(--ease-spring);
+            transform-origin: left;
         }
         .card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(201, 162, 39, 0.1);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            border-color: rgba(212, 168, 67, 0.2);
+        }
+        .card:hover::after {
+            transform: scaleX(1);
+        }
+        .card:active {
+            transform: translateY(-3px) scale(0.99);
         }
         
+        /* ═══════════════════════════════════════════════════════════════
+           CALCULATOR CARDS - Enhanced Affordance & Interactive Feedback
+           ═══════════════════════════════════════════════════════════════ */
         .calculator-card {
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            padding: 24px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
         }
         .calculator-card::before {
             content: '';
@@ -531,11 +580,12 @@ const getCalculatorsPage = () => {
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--gold), #E5C04B, var(--gold));
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
             background-size: 200% 100%;
             transform: scaleX(0);
-            transition: transform 0.4s ease;
-            animation: shimmer 2s infinite;
+            transition: transform 0.4s var(--ease-spring);
+            animation: shimmer 3s linear infinite;
+            transform-origin: left;
         }
         .calculator-card:hover::before {
             transform: scaleX(1);
@@ -544,18 +594,76 @@ const getCalculatorsPage = () => {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
-        .calculator-card::after {
-            content: '';
+        /* Shine effect on hover */
+        .calculator-card .card-shine {
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s var(--ease-smooth);
+            pointer-events: none;
         }
-        .calculator-card:hover::after {
+        .calculator-card:hover .card-shine {
             left: 100%;
+        }
+        /* Icon container enhancement */
+        .calculator-card .icon-container {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s var(--ease-spring);
+            position: relative;
+        }
+        .calculator-card .icon-container::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 18px;
+            border: 2px dashed transparent;
+            transition: all 0.35s var(--ease-spring);
+        }
+        .calculator-card:hover .icon-container {
+            transform: scale(1.1) rotate(-3deg);
+        }
+        .calculator-card:hover .icon-container::after {
+            border-color: var(--gold);
+            animation: dash-rotate 8s linear infinite;
+        }
+        @keyframes dash-rotate {
+            to { transform: rotate(360deg); }
+        }
+        /* CTA indicator */
+        .calculator-card .cta-arrow {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-light), rgba(212, 168, 67, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.35s var(--ease-spring);
+        }
+        .calculator-card:hover .cta-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .calculator-card .cta-arrow i {
+            color: var(--gold-warm);
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+        .calculator-card:hover .cta-arrow i {
+            transform: translateX(2px);
         }
         
         /* Icon Pulse Animation */
@@ -575,20 +683,100 @@ const getCalculatorsPage = () => {
         .icon-gradient-yellow { background: linear-gradient(135deg, #FEF3C7, #FDE68A); }
         .icon-gradient-pink { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
         
+        /* ═══════════════════════════════════════════════════════════════
+           CATEGORY TABS - Enhanced Navigation UX
+           ═══════════════════════════════════════════════════════════════ */
+        .category-tabs-container {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--cream) 80%, transparent 100%);
+            padding: 16px 0 24px;
+            margin: 0 -16px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        .category-tabs-inner {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .category-tabs-inner::-webkit-scrollbar {
+            display: none;
+        }
         .category-tab {
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 14px;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: all 0.3s var(--ease-spring);
             cursor: pointer;
             border: 2px solid transparent;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .category-tab::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--gold-light), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         .category-tab:hover {
-            background: rgba(201, 162, 39, 0.1);
+            background: white;
+            border-color: rgba(212, 168, 67, 0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md), 0 0 16px rgba(212, 168, 67, 0.1);
+        }
+        .category-tab:hover::before {
+            opacity: 1;
         }
         .category-tab.active {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+            color: var(--navy);
+            border-color: var(--gold-warm);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+        .category-tab.active::before {
+            opacity: 0;
+        }
+        .category-tab .tab-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s var(--ease-spring);
+            position: relative;
+            z-index: 1;
+        }
+        .category-tab:hover .tab-icon {
+            transform: scale(1.1);
+        }
+        .category-tab .tab-count {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .category-tab.active .tab-count {
+            background: rgba(0, 31, 63, 0.15);
             color: var(--navy);
         }
         
@@ -705,36 +893,73 @@ const getCalculatorsPage = () => {
             transition: width 0.5s ease;
         }
         
+        /* ═══════════════════════════════════════════════════════════════
+           BADGES & LABELS - Visual Priority Indicators
+           ═══════════════════════════════════════════════════════════════ */
         .popular-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 16px;
+            right: 16px;
             background: linear-gradient(135deg, #F59E0B, #D97706);
             color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 10px;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-            animation: badge-glow 2s ease-in-out infinite;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+            animation: badge-float 3s ease-in-out infinite;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
-        @keyframes badge-glow {
-            0%, 100% { box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
-            50% { box-shadow: 0 4px 25px rgba(245, 158, 11, 0.6); }
+        @keyframes badge-float {
+            0%, 100% { transform: translateY(0); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35); }
+            50% { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.45); }
+        }
+        /* Category badges */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s var(--ease-spring);
+        }
+        .category-badge:hover {
+            transform: scale(1.05);
+        }
+        /* Time indicator */
+        .time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16A34A;
         }
         
+        /* ═══════════════════════════════════════════════════════════════
+           STAT CARDS - Enhanced Visual Impact & Data Display
+           ═══════════════════════════════════════════════════════════════ */
         .stat-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 24px 20px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(253, 251, 247, 0.9));
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 28px 24px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             position: relative;
             overflow: hidden;
+            transition: all 0.4s var(--ease-spring);
         }
         .stat-card::before {
             content: '';
@@ -742,16 +967,52 @@ const getCalculatorsPage = () => {
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--gold), #E5C04B);
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+            background-size: 200% 100%;
+            animation: shimmer 4s linear infinite;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(212, 168, 67, 0.08) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+        }
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+        .stat-card .stat-icon-ring {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
         }
         .stat-card .stat-number {
-            font-size: 2.5rem;
+            font-size: 2.75rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--navy), #003366);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.1;
+        }
+        .stat-card .stat-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6B7280;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
         }
         
         /* 3D Card Effect */
@@ -962,6 +1223,216 @@ const getCalculatorsPage = () => {
             .nav-item { padding: 12px 24px; font-size: 14px; }
         }
         main { padding-bottom: 110px; }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           SECTION HEADERS - Enhanced Visual Hierarchy & Spacing
+           ═══════════════════════════════════════════════════════════════ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(0, 31, 63, 0.06);
+            position: relative;
+        }
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+            border-radius: 2px;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .section-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s var(--ease-spring);
+        }
+        .section-icon:hover {
+            transform: rotate(-5deg) scale(1.1);
+        }
+        .section-text h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0;
+        }
+        .section-text p {
+            font-size: 14px;
+            color: #6B7280;
+            margin: 4px 0 0 0;
+        }
+        .section-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Category section cards */
+        .category-section {
+            margin-bottom: 48px;
+            position: relative;
+        }
+        .category-section::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--gold) 0%, transparent 100%);
+            border-radius: 2px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .category-section:hover::before {
+            opacity: 1;
+        }
+        
+        /* Visual dividers */
+        .visual-divider {
+            position: relative;
+            height: 1px;
+            margin: 48px 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 31, 63, 0.08), transparent);
+        }
+        .visual-divider::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--cream);
+            border-radius: 50%;
+        }
+        .visual-divider .divider-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            z-index: 1;
+        }
+        .visual-divider .divider-icon i {
+            color: white;
+            font-size: 16px;
+        }
+        
+        /* Info cards within category descriptions */
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 31, 63, 0.04);
+            transition: all 0.3s var(--ease-spring);
+        }
+        .info-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .info-card .info-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        /* Quick BMI Widget Enhancement */
+        .quick-widget {
+            background: linear-gradient(145deg, white, var(--cream));
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 31, 63, 0.04);
+            overflow: hidden;
+        }
+        .quick-widget-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: white;
+        }
+        .quick-widget-body {
+            padding: 24px;
+        }
+        
+        /* Health Profile Card Enhancement */
+        .profile-card {
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s var(--ease-spring);
+        }
+        .profile-card:hover {
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+        }
+        .profile-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .profile-metric {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s var(--ease-spring);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .profile-metric:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .profile-metric .metric-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .profile-metric .metric-label {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .section-meta {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
         
         .range-indicator {
             display: flex;
@@ -1568,76 +2039,84 @@ const getCalculatorsPage = () => {
             </div>
         </div>
         
-        <!-- Category Tabs with Modern Styling -->
-        <div class="relative mb-8">
-            <div class="flex overflow-x-auto gap-3 pb-4 scrollbar-hide" style="-webkit-overflow-scrolling: touch;">
-                <button class="category-tab active group" onclick="filterCategory('all')" data-category="all">
-                    <div class="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-th-large text-gray-600"></i>
+        <!-- Enhanced Category Tabs with Sticky Navigation -->
+        <div class="category-tabs-container">
+            <div class="category-tabs-inner">
+                <button class="category-tab active" onclick="filterCategory('all')" data-category="all">
+                    <div class="tab-icon bg-gradient-to-br from-gray-100 to-gray-200">
+                        <i class="fas fa-th-large text-gray-600 text-sm"></i>
                     </div>
-                    All Calculators
-                    <span class="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded-full">23</span>
+                    <span>All</span>
+                    <span class="tab-count bg-gray-100 text-gray-600">23</span>
                 </button>
-                <button class="category-tab group" onclick="filterCategory('essential')" data-category="essential">
-                    <div class="w-8 h-8 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-heart-pulse text-red-500"></i>
+                <button class="category-tab" onclick="filterCategory('essential')" data-category="essential">
+                    <div class="tab-icon bg-gradient-to-br from-red-100 to-red-200">
+                        <i class="fas fa-heart-pulse text-red-500 text-sm"></i>
                     </div>
-                    Essential
-                    <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-600 text-xs rounded-full">4</span>
+                    <span>Essential</span>
+                    <span class="tab-count bg-red-50 text-red-600">4</span>
                 </button>
-                <button class="category-tab group" onclick="filterCategory('bariatric')" data-category="bariatric">
-                    <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-weight-scale text-purple-500"></i>
+                <button class="category-tab" onclick="filterCategory('bariatric')" data-category="bariatric">
+                    <div class="tab-icon bg-gradient-to-br from-purple-100 to-purple-200">
+                        <i class="fas fa-weight-scale text-purple-500 text-sm"></i>
                     </div>
-                    Bariatric
-                    <span class="ml-2 px-2 py-0.5 bg-purple-100 text-purple-600 text-xs rounded-full">4</span>
+                    <span>Bariatric</span>
+                    <span class="tab-count bg-purple-50 text-purple-600">4</span>
                 </button>
-                <button class="category-tab group" onclick="filterCategory('surgical')" data-category="surgical">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-user-doctor text-blue-500"></i>
+                <button class="category-tab" onclick="filterCategory('surgical')" data-category="surgical">
+                    <div class="tab-icon bg-gradient-to-br from-blue-100 to-blue-200">
+                        <i class="fas fa-user-doctor text-blue-500 text-sm"></i>
                     </div>
-                    Surgical
-                    <span class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-600 text-xs rounded-full">4</span>
+                    <span>Surgical</span>
+                    <span class="tab-count bg-blue-50 text-blue-600">4</span>
                 </button>
-                <button class="category-tab group" onclick="filterCategory('nutrition')" data-category="nutrition">
-                    <div class="w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-apple-whole text-green-500"></i>
+                <button class="category-tab" onclick="filterCategory('nutrition')" data-category="nutrition">
+                    <div class="tab-icon bg-gradient-to-br from-green-100 to-green-200">
+                        <i class="fas fa-apple-whole text-green-500 text-sm"></i>
                     </div>
-                    Nutrition
-                    <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-600 text-xs rounded-full">4</span>
+                    <span>Nutrition</span>
+                    <span class="tab-count bg-green-50 text-green-600">4</span>
                 </button>
-                <button class="category-tab group" onclick="filterCategory('wellness')" data-category="wellness">
-                    <div class="w-8 h-8 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-spa text-pink-500"></i>
+                <button class="category-tab" onclick="filterCategory('wellness')" data-category="wellness">
+                    <div class="tab-icon bg-gradient-to-br from-pink-100 to-pink-200">
+                        <i class="fas fa-spa text-pink-500 text-sm"></i>
                     </div>
-                    Wellness
-                    <span class="ml-2 px-2 py-0.5 bg-pink-100 text-pink-600 text-xs rounded-full">4</span>
+                    <span>Wellness</span>
+                    <span class="tab-count bg-pink-50 text-pink-600">4</span>
                 </button>
-                <button class="category-tab group" onclick="filterCategory('financial')" data-category="financial">
-                    <div class="w-8 h-8 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-piggy-bank text-yellow-600"></i>
+                <button class="category-tab" onclick="filterCategory('financial')" data-category="financial">
+                    <div class="tab-icon bg-gradient-to-br from-yellow-100 to-yellow-200">
+                        <i class="fas fa-piggy-bank text-yellow-600 text-sm"></i>
                     </div>
-                    Financial
-                    <span class="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">3</span>
+                    <span>Financial</span>
+                    <span class="tab-count bg-yellow-50 text-yellow-700">3</span>
                 </button>
             </div>
-            <!-- Scroll indicator -->
-            <div class="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-cream to-transparent pointer-events-none md:hidden"></div>
+            <!-- Enhanced scroll fade indicators -->
+            <div class="absolute right-0 top-4 bottom-8 w-16 bg-gradient-to-l from-cream via-cream/90 to-transparent pointer-events-none md:hidden"></div>
         </div>
         
-        <!-- Popular Calculators - Featured with AI-Generated Images -->
-        <div id="popular-section" class="mb-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-2xl font-bold text-navy flex items-center">
-                    <span class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mr-4 shadow-lg shadow-orange-200">
+        <!-- Popular Calculators - Enhanced Section with Visual Hierarchy -->
+        <div id="popular-section" class="mb-20">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon bg-gradient-to-br from-orange-400 to-red-500 shadow-lg shadow-orange-200/50">
                         <i class="fas fa-fire text-white text-xl"></i>
+                    </div>
+                    <div class="section-text">
+                        <h2>Most Popular</h2>
+                        <p>Top calculators used by our patients</p>
+                    </div>
+                </div>
+                <div class="section-meta">
+                    <span class="inline-flex items-center gap-2 text-sm bg-white px-4 py-2.5 rounded-xl shadow-sm border border-gray-100">
+                        <i class="fas fa-users text-gold"></i>
+                        <span class="font-semibold text-navy">10,000+</span>
+                        <span class="text-gray-500">patients</span>
                     </span>
-                    Most Popular
-                </h2>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm text-gray-500 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
-                        <i class="fas fa-users mr-2 text-gold"></i> 
-                        <span class="font-semibold text-navy">10,000+</span> patients
+                    <span class="inline-flex items-center gap-2 text-sm bg-green-50 text-green-700 px-4 py-2.5 rounded-xl border border-green-100">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="font-medium">Updated today</span>
                     </span>
                 </div>
             </div>
@@ -1764,19 +2243,21 @@ const getCalculatorsPage = () => {
             </div>
         </div>
         
-        <!-- Visual Divider with Animation -->
-        <div class="relative my-16">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+        <!-- Enhanced Visual Divider -->
+        <div class="visual-divider my-20">
+            <div class="divider-icon">
+                <i class="fas fa-th-large"></i>
             </div>
-            <div class="relative flex justify-center">
-                <span class="bg-cream px-8 py-3 text-navy font-semibold text-sm flex items-center gap-3 rounded-full border border-gray-200 shadow-sm">
-                    <div class="w-8 h-8 bg-gradient-to-br from-navy to-blue-800 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-th-large text-white text-xs"></i>
-                    </div>
-                    All Calculators by Category
-                </span>
-            </div>
+        </div>
+        
+        <!-- Section Title for All Calculators -->
+        <div class="text-center mb-12">
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 text-gold-warm rounded-full text-sm font-medium mb-4">
+                <i class="fas fa-layer-group"></i>
+                6 Categories
+            </span>
+            <h2 class="text-3xl font-bold text-navy mb-3">All Calculators by Category</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">Browse our comprehensive collection of medical calculators, organized by category for easy navigation</p>
         </div>
         
         <!-- All Calculators Grid -->
@@ -1821,47 +2302,81 @@ const getCalculatorsPage = () => {
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="card calculator-card p-5" onclick="openCalculator('bmi')">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="card calculator-card" onclick="openCalculator('bmi')">
+                        <div class="card-shine"></div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="icon-container bg-gradient-to-br from-red-100 to-red-200">
                                 <i class="fas fa-weight text-red-600 text-xl"></i>
                             </div>
-                            <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">Essential</span>
+                            <span class="category-badge bg-red-50 text-red-600 border border-red-100">Essential</span>
                         </div>
-                        <h3 class="font-bold text-navy mb-1">BMI Calculator</h3>
-                        <p class="text-sm text-gray-500">Calculate Body Mass Index and weight category</p>
+                        <h3 class="font-bold text-navy text-lg mb-2">BMI Calculator</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Calculate Body Mass Index and weight category</p>
+                        <div class="time-badge">
+                            <i class="fas fa-clock"></i>
+                            <span>~30 sec</span>
+                        </div>
+                        <div class="cta-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
                     </div>
                     
-                    <div class="card calculator-card p-5" onclick="openCalculator('body-fat')">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <div class="card calculator-card" onclick="openCalculator('body-fat')">
+                        <div class="card-shine"></div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="icon-container bg-gradient-to-br from-purple-100 to-purple-200">
                                 <i class="fas fa-percent text-purple-600 text-xl"></i>
                             </div>
-                            <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">Navy Method</span>
+                            <span class="category-badge bg-purple-50 text-purple-600 border border-purple-100">Navy Method</span>
                         </div>
-                        <h3 class="font-bold text-navy mb-1">Body Fat %</h3>
-                        <p class="text-sm text-gray-500">Estimate body fat percentage</p>
+                        <h3 class="font-bold text-navy text-lg mb-2">Body Fat %</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Estimate body fat using scientific Navy method</p>
+                        <div class="time-badge">
+                            <i class="fas fa-clock"></i>
+                            <span>~45 sec</span>
+                        </div>
+                        <div class="cta-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
                     </div>
                     
-                    <div class="card calculator-card p-5" onclick="openCalculator('blood-pressure')">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+                    <div class="card calculator-card" onclick="openCalculator('blood-pressure')">
+                        <div class="card-shine"></div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="icon-container bg-gradient-to-br from-pink-100 to-pink-200">
                                 <i class="fas fa-heart text-pink-600 text-xl"></i>
                             </div>
+                            <span class="category-badge bg-pink-50 text-pink-600 border border-pink-100">Vital</span>
                         </div>
-                        <h3 class="font-bold text-navy mb-1">Blood Pressure</h3>
-                        <p class="text-sm text-gray-500">Interpret BP readings</p>
+                        <h3 class="font-bold text-navy text-lg mb-2">Blood Pressure</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Interpret BP readings with health insights</p>
+                        <div class="time-badge">
+                            <i class="fas fa-clock"></i>
+                            <span>~15 sec</span>
+                        </div>
+                        <div class="cta-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
                     </div>
                     
-                    <div class="card calculator-card p-5" onclick="openCalculator('heart-rate-zones')">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center">
+                    <div class="card calculator-card" onclick="openCalculator('heart-rate-zones')">
+                        <div class="card-shine"></div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="icon-container bg-gradient-to-br from-rose-100 to-rose-200">
                                 <i class="fas fa-heartbeat text-rose-600 text-xl"></i>
                             </div>
+                            <span class="category-badge bg-rose-50 text-rose-600 border border-rose-100">Fitness</span>
                         </div>
-                        <h3 class="font-bold text-navy mb-1">Heart Rate Zones</h3>
-                        <p class="text-sm text-gray-500">Training heart rate targets</p>
+                        <h3 class="font-bold text-navy text-lg mb-2">Heart Rate Zones</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Optimize training with personalized targets</p>
+                        <div class="time-badge">
+                            <i class="fas fa-clock"></i>
+                            <span>~20 sec</span>
+                        </div>
+                        <div class="cta-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3461,28 +3976,75 @@ const getCalculatorsPage = () => {
             });
         });
         
-        // Filter by Category
+        // Enhanced Filter by Category with Smooth Animations
         function filterCategory(category) {
-            // Update tabs
+            // Update tabs with smooth transition
             document.querySelectorAll('.category-tab').forEach(tab => {
                 tab.classList.remove('active');
                 if (tab.dataset.category === category) {
                     tab.classList.add('active');
+                    // Smooth scroll tab into view on mobile
+                    tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 }
             });
             
-            // Show/hide sections
+            // Show/hide sections with fade animation
             const sections = document.querySelectorAll('.category-section');
             const popularSection = document.getElementById('popular-section');
+            const divider = document.querySelector('.visual-divider');
+            const sectionTitle = divider?.nextElementSibling;
+            
+            // Add transition classes
+            const fadeOut = (el) => {
+                if (el) {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(10px)';
+                    setTimeout(() => { el.style.display = 'none'; }, 200);
+                }
+            };
+            const fadeIn = (el) => {
+                if (el) {
+                    el.style.display = 'block';
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, 50);
+                }
+            };
+            
+            // Apply CSS transitions to all sections
+            [...sections, popularSection, divider, sectionTitle].forEach(el => {
+                if (el) {
+                    el.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                }
+            });
             
             if (category === 'all') {
-                sections.forEach(s => s.style.display = 'block');
-                popularSection.style.display = 'block';
+                sections.forEach(s => fadeIn(s));
+                fadeIn(popularSection);
+                fadeIn(divider);
+                fadeIn(sectionTitle);
             } else {
-                popularSection.style.display = 'none';
+                fadeOut(popularSection);
+                fadeOut(divider);
+                fadeOut(sectionTitle);
                 sections.forEach(s => {
-                    s.style.display = s.dataset.category === category ? 'block' : 'none';
+                    if (s.dataset.category === category) {
+                        fadeIn(s);
+                    } else {
+                        fadeOut(s);
+                    }
                 });
+            }
+            
+            // Scroll to category section smoothly
+            if (category !== 'all') {
+                setTimeout(function() {
+                    var targetSection = document.querySelector('.category-section[data-category="' + category + '"]');
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 300);
             }
         }
         
