@@ -8872,6 +8872,7 @@ import medisenseApiRouter from './routes/medisense-api'
 import medisenseProRouter from './pages/medisense-pro'
 import { notificationsRouter } from './routes/notifications'
 import { retreatsHotelsPage } from './pages/retreats-hotels'
+import healthCalculatorsRouter from './pages/health-calculators'
 
 // Mount route handlers
 app.route('/api/payments', payments)
@@ -8887,6 +8888,10 @@ app.get('/retreats-hotels', (c) => c.html(retreatsHotelsPage(c)))
 app.get('/hotels', (c) => c.html(retreatsHotelsPage(c)))
 app.get('/resorts', (c) => c.html(retreatsHotelsPage(c)))
 app.get('/medical-retreats', (c) => c.html(retreatsHotelsPage(c)))
+
+// Health Calculators Hub
+app.route('/calculators', healthCalculatorsRouter)
+app.get('/health-calculators', (c) => c.redirect('/calculators'))
 
 // ============================================================================
 // CONVERSION OPTIMIZATION ENDPOINTS
