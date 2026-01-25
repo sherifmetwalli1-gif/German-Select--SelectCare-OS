@@ -98,10 +98,11 @@ export class SmartMatchingService {
   
   /**
    * Get all available doctors
+   * Note: In demo mode, we relax the heartbeat requirement to show doctors
    */
   getAvailableDoctors(): InstantDoctor[] {
     const now = new Date();
-    const heartbeatThreshold = 60 * 1000; // 60 seconds
+    const heartbeatThreshold = 24 * 60 * 60 * 1000; // 24 hours for demo (production: 60 seconds)
     
     return Array.from(this.doctors.values()).filter(doctor => 
       doctor.status === 'available' &&
