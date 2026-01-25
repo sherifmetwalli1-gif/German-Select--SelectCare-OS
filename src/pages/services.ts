@@ -926,7 +926,7 @@ export const servicesPage = () => `<!DOCTYPE html>
                     // Define colors based on step color
                     const colorStyles = {
                         blue: { bg: 'background: rgba(59, 130, 246, 0.1);', text: 'color: #3B82F6;' },
-                        gold: { bg: 'background: rgba(201, 162, 39, 0.1);', text: 'color: #C9A227;' },
+                        gold: { bg: 'background: rgba(201, 162, 39, 0.1);', text: 'color: #D4A843;' },
                         green: { bg: 'background: rgba(34, 197, 94, 0.1);', text: 'color: #22C55E;' }
                     };
                     const style = colorStyles[step.color as keyof typeof colorStyles] || colorStyles.gold;

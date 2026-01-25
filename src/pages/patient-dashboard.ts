@@ -3325,7 +3325,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                     datasets: [{
                         label: 'Weight (kg)',
                         data: data,
-                        borderColor: '#C9A227',
+                        borderColor: '#D4A843',
                         backgroundColor: 'rgba(201, 162, 39, 0.1)',
                         tension: 0.4,
                         fill: true
@@ -4076,15 +4076,15 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
     <title>SelectCareOS™ - Personalized Meal Plan</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #1a1a2e; }
-        .header { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 20px; margin-bottom: 30px; }
+        .header { text-align: center; border-bottom: 3px solid #D4A843; padding-bottom: 20px; margin-bottom: 30px; }
         .header h1 { color: #1a1a2e; margin: 0; }
-        .header .subtitle { color: #C9A227; font-size: 18px; }
+        .header .subtitle { color: #D4A843; font-size: 18px; }
         .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
         .summary-card { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; border-radius: 10px; text-align: center; }
-        .summary-card .value { font-size: 28px; font-weight: bold; color: #C9A227; }
+        .summary-card .value { font-size: 28px; font-weight: bold; color: #D4A843; }
         .summary-card .label { font-size: 12px; color: #666; }
         .meal { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-        .meal h3 { color: #1a1a2e; margin-top: 0; border-bottom: 2px solid #C9A227; padding-bottom: 10px; }
+        .meal h3 { color: #1a1a2e; margin-top: 0; border-bottom: 2px solid #D4A843; padding-bottom: 10px; }
         .suggestion { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; }
         .suggestion .name { font-weight: bold; color: #1a1a2e; }
         .macros { display: flex; gap: 15px; margin-top: 10px; font-size: 12px; }
@@ -4093,7 +4093,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         .carbs { background: #fff3e0; color: #f57c00; }
         .fat { background: #e8f5e9; color: #388e3c; }
         .tips { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-top: 30px; }
-        .tips h3 { color: #C9A227; margin-top: 0; }
+        .tips h3 { color: #D4A843; margin-top: 0; }
         .tips ul { margin: 0; padding-left: 20px; }
         .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #666; font-size: 12px; }
         @media print { body { padding: 0; } .no-print { display: none; } }
@@ -4195,7 +4195,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
     </div>
     
     <div class="no-print" style="text-align: center; margin-top: 20px;">
-        <button onclick="window.print()" style="padding: 10px 30px; background: #C9A227; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+        <button onclick="window.print()" style="padding: 10px 30px; background: #D4A843; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
             🖨️ Print / Save as PDF
         </button>
     </div>

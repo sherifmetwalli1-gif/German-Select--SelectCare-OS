@@ -504,8 +504,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .gradient-navy {
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, var(--deep-navy) 100%);
-            border-bottom: 2px solid rgba(201, 162, 39, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(201, 162, 39, 0.2) inset;
+            border-bottom: 2px solid rgba(212, 168, 67, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(212, 168, 67, 0.2) inset;
         }
         
         .gradient-medical {
@@ -525,15 +525,15 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .card {
             background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
-            border: 1px solid rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.1);
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(26, 26, 46, 0.08);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .card:hover {
-            box-shadow: 0 12px 40px rgba(26, 26, 46, 0.12), 0 4px 12px rgba(201, 162, 39, 0.08);
-            border-color: rgba(201, 162, 39, 0.2);
+            box-shadow: 0 12px 40px rgba(26, 26, 46, 0.12), 0 4px 12px rgba(212, 168, 67, 0.08);
+            border-color: rgba(212, 168, 67, 0.2);
         }
         
         /* Premium Anatomical Body Map Styles - Visible Body Inspired */
@@ -545,9 +545,9 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             padding: 0;
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
             border-radius: 24px;
-            border: 2px solid rgba(201, 162, 39, 0.3);
+            border: 2px solid rgba(212, 168, 67, 0.3);
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(201, 162, 39, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(212, 168, 67, 0.2);
         }
         
         .anatomy-image-wrapper {
@@ -593,23 +593,23 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .body-region {
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            fill: rgba(201, 162, 39, 0.05);
-            stroke: rgba(201, 162, 39, 0.15);
+            fill: rgba(212, 168, 67, 0.05);
+            stroke: rgba(212, 168, 67, 0.15);
             stroke-width: 1;
             opacity: 0.6;
         }
         
         .body-region:hover {
-            fill: rgba(201, 162, 39, 0.35);
+            fill: rgba(212, 168, 67, 0.35);
             stroke: var(--gold);
             stroke-width: 2.5;
             opacity: 1;
-            filter: drop-shadow(0 0 15px rgba(201, 162, 39, 0.7));
+            filter: drop-shadow(0 0 15px rgba(212, 168, 67, 0.7));
             transform: scale(1.02);
         }
         
         .body-region:active {
-            fill: rgba(201, 162, 39, 0.5);
+            fill: rgba(212, 168, 67, 0.5);
             stroke: var(--gold-bright);
             stroke-width: 3;
             filter: drop-shadow(0 0 20px rgba(244, 208, 63, 0.9));
@@ -617,7 +617,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         }
         
         .body-region.selected {
-            fill: rgba(201, 162, 39, 0.4);
+            fill: rgba(212, 168, 67, 0.4);
             stroke: var(--gold-champagne);
             stroke-width: 2.5;
             opacity: 1;
@@ -652,7 +652,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .body-outline {
             fill: none;
-            stroke: rgba(201, 162, 39, 0.15);
+            stroke: rgba(212, 168, 67, 0.15);
             stroke-width: 0.5;
             pointer-events: none;
         }
@@ -684,7 +684,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
-            border: 1px solid rgba(201, 162, 39, 0.4);
+            border: 1px solid rgba(212, 168, 67, 0.4);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 9px;
@@ -704,7 +704,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             background: linear-gradient(145deg, var(--soft-beige) 0%, #E8E8E8 100%);
             padding: 4px;
             border-radius: 25px;
-            border: 1px solid rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.1);
         }
         
         .view-toggle button {
@@ -727,7 +727,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .view-toggle button:hover:not(.active) {
             color: var(--navy);
-            background: rgba(201, 162, 39, 0.15);
+            background: rgba(212, 168, 67, 0.15);
         }
         
         /* Gender Toggle - Premium Gold */
@@ -760,7 +760,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .gender-toggle button:hover:not(.active) {
             border-color: var(--gold);
-            background: rgba(201, 162, 39, 0.08);
+            background: rgba(212, 168, 67, 0.08);
         }
         
         /* Symptom Tags - Premium Gold */
@@ -780,7 +780,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .symptom-tag:hover {
             border-color: var(--gold);
-            background: linear-gradient(145deg, var(--pearl) 0%, rgba(201, 162, 39, 0.08) 100%);
+            background: linear-gradient(145deg, var(--pearl) 0%, rgba(212, 168, 67, 0.08) 100%);
             transform: translateY(-2px);
             box-shadow: var(--shadow-gold-sm);
         }
@@ -901,7 +901,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         }
         
         .category-tab:not(.active):hover {
-            background: linear-gradient(145deg, var(--pearl) 0%, rgba(201, 162, 39, 0.1) 100%);
+            background: linear-gradient(145deg, var(--pearl) 0%, rgba(212, 168, 67, 0.1) 100%);
             border-color: var(--gold);
         }
         
@@ -925,7 +925,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             outline: none;
             border-color: var(--gold);
             background: #FFFFFF;
-            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15), 0 4px 12px rgba(201, 162, 39, 0.1);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.15), 0 4px 12px rgba(212, 168, 67, 0.1);
         }
         
         /* Buttons - Premium Gold */
@@ -942,7 +942,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(212, 168, 67, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -950,12 +950,12 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .btn-primary:hover:not(:disabled) {
             background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold-champagne) 50%, var(--gold) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(212, 168, 67, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
         
         .btn-primary:active:not(:disabled) {
             transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(201, 162, 39, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(212, 168, 67, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .btn-primary:disabled {
@@ -1053,13 +1053,13 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .step.active {
             background: linear-gradient(135deg, var(--gold-champagne) 0%, var(--gold) 100%);
             color: var(--navy);
-            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2), 0 4px 15px rgba(201, 162, 39, 0.4);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.2), 0 4px 15px rgba(212, 168, 67, 0.4);
             animation: pulse-gold-step 2s infinite;
         }
         
         @keyframes pulse-gold-step {
-            0%, 100% { box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2), 0 4px 15px rgba(201, 162, 39, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(201, 162, 39, 0.1), 0 4px 20px rgba(201, 162, 39, 0.5); }
+            0%, 100% { box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.2), 0 4px 15px rgba(212, 168, 67, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(212, 168, 67, 0.1), 0 4px 20px rgba(212, 168, 67, 0.5); }
         }
         
         .step.completed {
@@ -1136,7 +1136,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         /* Specialist Card - Premium Gold */
         .specialist-card {
             background: linear-gradient(145deg, #FFFFFF 0%, var(--pearl) 100%);
-            border: 2px solid rgba(201, 162, 39, 0.15);
+            border: 2px solid rgba(212, 168, 67, 0.15);
             border-radius: 16px;
             padding: 20px;
             text-align: center;
@@ -1159,8 +1159,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .specialist-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(26, 26, 46, 0.1), 0 4px 12px rgba(201, 162, 39, 0.1);
-            border-color: rgba(201, 162, 39, 0.3);
+            box-shadow: 0 12px 30px rgba(26, 26, 46, 0.1), 0 4px 12px rgba(212, 168, 67, 0.1);
+            border-color: rgba(212, 168, 67, 0.3);
         }
         
         .specialist-card:hover::before {
@@ -1686,7 +1686,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             height: 10px;
             background: var(--gold);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(201, 162, 39, 0.5);
+            box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(212, 168, 67, 0.5);
         }
         
         .label-dot.pulse-red {
@@ -1733,8 +1733,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                 0deg,
                 transparent,
                 transparent 10px,
-                rgba(201, 162, 39, 0.3) 10px,
-                rgba(201, 162, 39, 0.3) 12px
+                rgba(212, 168, 67, 0.3) 10px,
+                rgba(212, 168, 67, 0.3) 12px
             );
             animation: dna-rotate 8s linear infinite;
             transform-style: preserve-3d;
@@ -1789,8 +1789,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .profile-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(201, 162, 39, 0.2);
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 40px rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 40px rgba(212, 168, 67, 0.1);
             max-width: 900px;
             margin: 0 auto;
         }
@@ -1831,16 +1831,16 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .input-animated:focus {
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15), 0 4px 12px rgba(201, 162, 39, 0.1);
+            box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15), 0 4px 12px rgba(212, 168, 67, 0.1);
             transform: translateY(-2px);
         }
         
         /* Lifestyle Cards */
         .lifestyle-section {
-            background: linear-gradient(135deg, rgba(201, 162, 39, 0.05) 0%, rgba(201, 162, 39, 0.02) 100%);
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.05) 0%, rgba(212, 168, 67, 0.02) 100%);
             border-radius: 16px;
             padding: 20px;
-            border: 1px solid rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.1);
         }
         
         .lifestyle-card {
@@ -1854,7 +1854,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         
         .lifestyle-card:hover {
             border-color: var(--gold);
-            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.15);
+            box-shadow: 0 8px 25px rgba(212, 168, 67, 0.15);
             transform: translateY(-3px);
         }
         
@@ -1884,7 +1884,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .input-field-small:focus {
             border-color: var(--gold);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.1);
+            box-shadow: 0 0 0 2px rgba(212, 168, 67, 0.1);
         }
         
         /* BMI Calculator */
@@ -2158,7 +2158,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             gap: 20px;
             padding: 24px 28px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(212, 168, 67, 0.15);
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2166,8 +2166,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         }
         
         .treatment-card:hover {
-            background: rgba(201, 162, 39, 0.1);
-            border-color: rgba(201, 162, 39, 0.4);
+            background: rgba(212, 168, 67, 0.1);
+            border-color: rgba(212, 168, 67, 0.4);
             transform: translateX(8px);
         }
         
@@ -2175,7 +2175,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             width: 60px;
             height: 60px;
             border-radius: 12px;
-            background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(201, 162, 39, 0.1));
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.2), rgba(212, 168, 67, 0.1));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2251,12 +2251,12 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             text-decoration: none;
             border-radius: 60px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 32px rgba(201, 162, 39, 0.4);
+            box-shadow: 0 8px 32px rgba(212, 168, 67, 0.4);
         }
         
         .treatments-cta:hover {
             transform: translateY(-3px);
-            box-shadow: 0 16px 48px rgba(201, 162, 39, 0.5);
+            box-shadow: 0 16px 48px rgba(212, 168, 67, 0.5);
         }
         
         .treatments-cta i {
@@ -2445,8 +2445,8 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(201, 162, 39, 0.15);
-            border: 1px solid rgba(201, 162, 39, 0.3);
+            background: rgba(212, 168, 67, 0.15);
+            border: 1px solid rgba(212, 168, 67, 0.3);
             padding: 8px 16px;
             border-radius: 30px;
             font-size: 12px;
@@ -2494,14 +2494,14 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             justify-content: space-between;
             align-items: center;
             padding: 16px 0;
-            border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+            border-bottom: 1px solid rgba(212, 168, 67, 0.15);
             transition: all 0.3s ease;
         }
         
         .surgery-item:hover {
-            background: rgba(201, 162, 39, 0.05);
+            background: rgba(212, 168, 67, 0.05);
             padding-left: 12px;
-            border-color: rgba(201, 162, 39, 0.3);
+            border-color: rgba(212, 168, 67, 0.3);
         }
         
         .surgery-item:last-child {
@@ -2520,7 +2520,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: rgba(201, 162, 39, 0.15);
+            background: rgba(212, 168, 67, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2554,12 +2554,12 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);
+            box-shadow: 0 8px 30px rgba(212, 168, 67, 0.4);
         }
         
         .surgery-cta:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(201, 162, 39, 0.5);
+            box-shadow: 0 12px 40px rgba(212, 168, 67, 0.5);
         }
         
         .surgery-trust {
@@ -2567,7 +2567,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             gap: 24px;
             margin-top: 32px;
             padding-top: 24px;
-            border-top: 1px solid rgba(201, 162, 39, 0.15);
+            border-top: 1px solid rgba(212, 168, 67, 0.15);
         }
         
         .trust-badge {
@@ -2588,7 +2588,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(201, 162, 39, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212, 168, 67, 0.3) 0%, transparent 70%);
             animation: float-pulse 4s ease-in-out infinite;
         }
         
@@ -2604,7 +2604,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             left: 30px;
             background: rgba(0, 31, 63, 0.9);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(201, 162, 39, 0.3);
+            border: 1px solid rgba(212, 168, 67, 0.3);
             padding: 16px 24px;
             border-radius: 12px;
             z-index: 2;
@@ -2655,7 +2655,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             gap: 16px;
             padding: 32px;
             background: linear-gradient(180deg, var(--cream) 0%, white 100%);
-            border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+            border-bottom: 1px solid rgba(212, 168, 67, 0.1);
         }
         
         @media (max-width: 1024px) {
@@ -2685,7 +2685,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         .category-card:hover {
             border-color: var(--gold);
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(201, 162, 39, 0.15);
+            box-shadow: 0 12px 30px rgba(212, 168, 67, 0.15);
         }
         
         .category-icon {
@@ -2693,7 +2693,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             height: 60px;
             margin: 0 auto 16px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.15) 0%, rgba(212, 168, 67, 0.05) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2747,7 +2747,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             justify-content: center;
             color: var(--navy);
             font-size: 1.5rem;
-            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.4);
+            box-shadow: 0 8px 25px rgba(212, 168, 67, 0.4);
         }
         
         .divider-text {
@@ -2773,7 +2773,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                         <i class="fas fa-hospital mr-2" style="color: var(--gold)"></i>
                         SelectCare<span class="text-gold">OS</span>™
                     </a>
-                    <span class="hidden md:inline-block" style="color: rgba(201, 162, 39, 0.4)">|</span>
+                    <span class="hidden md:inline-block" style="color: rgba(212, 168, 67, 0.4)">|</span>
                     <span class="hidden md:inline-block font-semibold" style="color: var(--gold-soft)">MediSense AI™ v4.0</span>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -3007,7 +3007,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
     <!-- Hero Section - Premium Gold (Original MediSense Hero) -->
     <section class="gradient-medical py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-white">
-            <div class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full mb-4 md:mb-6" style="background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%); box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);">
+            <div class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full mb-4 md:mb-6" style="background: linear-gradient(135deg, var(--gold) 0%, var(--gold-champagne) 100%); box-shadow: 0 8px 30px rgba(212, 168, 67, 0.4);">
                 <i class="fas fa-brain text-3xl md:text-4xl" style="color: var(--navy)"></i>
             </div>
             <h1 class="text-3xl md:text-5xl font-bold mb-3 md:mb-4">
@@ -3018,19 +3018,19 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                 Powered by advanced medical AI • Bayesian inference engine • 300+ ICD-11 conditions • 6-level triage
             </p>
             <div class="flex justify-center flex-wrap gap-4 md:gap-8 mt-6 md:mt-8">
-                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                <div class="text-center p-3 rounded-xl" style="background: rgba(212, 168, 67, 0.15); border: 1px solid rgba(212, 168, 67, 0.3);">
                     <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">600+</div>
                     <div class="text-xs md:text-sm opacity-75">Symptoms</div>
                 </div>
-                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                <div class="text-center p-3 rounded-xl" style="background: rgba(212, 168, 67, 0.15); border: 1px solid rgba(212, 168, 67, 0.3);">
                     <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">300+</div>
                     <div class="text-xs md:text-sm opacity-75">Conditions</div>
                 </div>
-                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                <div class="text-center p-3 rounded-xl" style="background: rgba(212, 168, 67, 0.15); border: 1px solid rgba(212, 168, 67, 0.3);">
                     <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">98.5%</div>
                     <div class="text-xs md:text-sm opacity-75">Triage Accuracy</div>
                 </div>
-                <div class="text-center p-3 rounded-xl" style="background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3);">
+                <div class="text-center p-3 rounded-xl" style="background: rgba(212, 168, 67, 0.15); border: 1px solid rgba(212, 168, 67, 0.3);">
                     <div class="text-2xl md:text-3xl font-bold" style="color: var(--gold)">50+</div>
                     <div class="text-xs md:text-sm opacity-75">Red Flags</div>
                 </div>
@@ -4067,7 +4067,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                     speedX: (Math.random() - 0.5) * 0.5,
                     speedY: (Math.random() - 0.5) * 0.5,
                     opacity: Math.random() * 0.5 + 0.2,
-                    color: Math.random() > 0.7 ? '#C9A227' : (Math.random() > 0.5 ? '#3b82f6' : '#10b981'),
+                    color: Math.random() > 0.7 ? '#D4A843' : (Math.random() > 0.5 ? '#3b82f6' : '#10b981'),
                     pulse: Math.random() * Math.PI * 2
                 });
             }
@@ -4133,7 +4133,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
                 });
                 
                 // Draw connecting lines between close particles
-                ctx.strokeStyle = 'rgba(201, 162, 39, 0.1)';
+                ctx.strokeStyle = 'rgba(212, 168, 67, 0.1)';
                 ctx.lineWidth = 0.5;
                 for (let i = 0; i < anatomyParticles.length; i++) {
                     for (let j = i + 1; j < anatomyParticles.length; j++) {
@@ -4188,7 +4188,7 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             const { centerX, scale } = points;
             
             // Draw subtle body silhouette
-            ctx.strokeStyle = 'rgba(201, 162, 39, 0.15)';
+            ctx.strokeStyle = 'rgba(212, 168, 67, 0.15)';
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 10]);
             

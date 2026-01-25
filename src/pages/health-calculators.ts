@@ -405,14 +405,14 @@ const getCalculatorsPage = () => {
         
         /* Modern Gradient Backgrounds */
         .gradient-navy { background: linear-gradient(135deg, #001F3F 0%, #003366 50%, #001F3F 100%); }
-        .gradient-gold { background: linear-gradient(135deg, #C9A227 0%, #D4AF37 50%, #E5C04B 100%); }
+        .gradient-gold { background: linear-gradient(135deg, #D4A843 0%, #D4AF37 50%, #E5C04B 100%); }
         .gradient-mesh {
             background: 
-                radial-gradient(at 40% 20%, rgba(201, 162, 39, 0.15) 0px, transparent 50%),
+                radial-gradient(at 40% 20%, rgba(212, 168, 67, 0.15) 0px, transparent 50%),
                 radial-gradient(at 80% 0%, rgba(0, 51, 102, 0.1) 0px, transparent 50%),
-                radial-gradient(at 0% 50%, rgba(201, 162, 39, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(212, 168, 67, 0.1) 0px, transparent 50%),
                 radial-gradient(at 80% 50%, rgba(0, 31, 63, 0.08) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(201, 162, 39, 0.12) 0px, transparent 50%);
+                radial-gradient(at 0% 100%, rgba(212, 168, 67, 0.12) 0px, transparent 50%);
         }
         .gradient-hero {
             background: linear-gradient(135deg, #001F3F 0%, #0A2E4F 40%, #001F3F 100%);
@@ -426,7 +426,7 @@ const getCalculatorsPage = () => {
             right: -20%;
             width: 80%;
             height: 150%;
-            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(212, 168, 67, 0.15) 0%, transparent 70%);
             animation: pulse-glow 8s ease-in-out infinite;
         }
         @keyframes pulse-glow {
@@ -476,7 +476,7 @@ const getCalculatorsPage = () => {
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(201, 162, 39, 0.03), transparent 30%);
+            background: conic-gradient(from 0deg, transparent, rgba(212, 168, 67, 0.03), transparent 30%);
             animation: rotate 20s linear infinite;
         }
         @keyframes rotate {
@@ -494,7 +494,7 @@ const getCalculatorsPage = () => {
         
         /* Glow Effects */
         .glow-gold {
-            box-shadow: 0 0 40px rgba(201, 162, 39, 0.3), 0 0 80px rgba(201, 162, 39, 0.1);
+            box-shadow: 0 0 40px rgba(212, 168, 67, 0.3), 0 0 80px rgba(212, 168, 67, 0.1);
         }
         .glow-blue {
             box-shadow: 0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
@@ -792,7 +792,7 @@ const getCalculatorsPage = () => {
         .input-field:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.15);
         }
         
         .result-card {
@@ -814,7 +814,7 @@ const getCalculatorsPage = () => {
         .btn-primary:hover {
             background: #B8922B;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(201, 162, 39, 0.3);
+            box-shadow: 0 8px 20px rgba(212, 168, 67, 0.3);
         }
         
         .btn-secondary {
@@ -1490,7 +1490,7 @@ const getCalculatorsPage = () => {
             position: relative;
             border-radius: 32px;
             overflow: hidden;
-            box-shadow: 0 25px 80px rgba(0, 31, 63, 0.3), 0 10px 30px rgba(201, 162, 39, 0.15);
+            box-shadow: 0 25px 80px rgba(0, 31, 63, 0.3), 0 10px 30px rgba(212, 168, 67, 0.15);
             transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
             transition: transform 0.5s ease;
         }
@@ -1505,7 +1505,7 @@ const getCalculatorsPage = () => {
         .hero-image-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 31, 63, 0.3) 0%, transparent 50%, rgba(201, 162, 39, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.3) 0%, transparent 50%, rgba(212, 168, 67, 0.2) 100%);
         }
         
         /* Morphing blob animation */
@@ -1533,7 +1533,7 @@ const getCalculatorsPage = () => {
         }
         .category-card-visual:hover {
             transform: translateY(-12px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(201, 162, 39, 0.1);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(212, 168, 67, 0.1);
         }
         .category-card-visual .visual-bg {
             height: 180px;
@@ -1661,7 +1661,7 @@ const getCalculatorsPage = () => {
             left: -100%;
             width: 300%;
             height: 300%;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201, 162, 39, 0.15), transparent 40%);
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 168, 67, 0.15), transparent 40%);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -2028,13 +2028,13 @@ const getCalculatorsPage = () => {
                         <circle cx="30" cy="30" r="26" fill="none" stroke="#E5E7EB" stroke-width="4"/>
                         <circle cx="30" cy="30" r="26" fill="none" stroke="url(#goldGrad)" stroke-width="4" 
                                 stroke-dasharray="163" stroke-dashoffset="0" class="progress-ring-circle"/>
-                        <defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A227"/><stop offset="100%" stop-color="#E5C04B"/></linearGradient></defs>
+                        <defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D4A843"/><stop offset="100%" stop-color="#E5C04B"/></linearGradient></defs>
                     </svg>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <i class="fas fa-user-md text-gold text-xl group-hover:scale-125 transition-transform"></i>
                     </div>
                 </div>
-                <div class="stat-number" style="background: linear-gradient(135deg, #C9A227, #E5C04B); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MD</div>
+                <div class="stat-number" style="background: linear-gradient(135deg, #D4A843, #E5C04B); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MD</div>
                 <div class="text-sm text-gray-500 font-medium">Reviewed</div>
             </div>
         </div>
