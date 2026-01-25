@@ -1158,77 +1158,177 @@ export const mediSenseV4Page = (lang: string = 'en') => {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         
-        /* Bottom Navigation - Premium Gold */
+        /* ════════════════════════════════════════════════════════════════
+           UNIFIED BOTTOM NAVIGATION - Healthcare-First (Option A)
+           ════════════════════════════════════════════════════════════════ */
+        
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(180deg, #FFFFFF 0%, var(--pearl) 100%);
-            border-top: 2px solid rgba(201, 162, 39, 0.15);
-            padding: 8px 0 max(20px, env(safe-area-inset-bottom));
-            z-index: 100;
-            box-shadow: 0 -4px 20px rgba(26, 26, 46, 0.08);
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 0 max(12px, env(safe-area-inset-bottom));
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .bottom-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 8px;
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 12px;
+            padding: 6px 12px;
             color: #9CA3AF;
-            text-decoration: none;
             font-size: 10px;
-            transition: all 0.2s;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            min-width: 56px;
+            position: relative;
         }
         
         .nav-item i {
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 4px;
+            transition: transform 0.2s ease;
+        }
+        
+        .nav-item span {
+            white-space: nowrap;
         }
         
         .nav-item:hover {
-            color: var(--navy);
+            color: #6B7280;
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        .nav-item:hover i {
+            transform: scale(1.1);
         }
         
         .nav-item.active {
-            color: var(--gold);
+            color: #C9A227;
         }
         
         .nav-item.active i {
-            color: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        /* Connect button with live indicator */
+        .nav-item.connect-btn {
+            position: relative;
+        }
+        
+        .nav-item.connect-btn .live-dot {
+            position: absolute;
+            top: 4px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            background: #22C55E;
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: pulse-dot 2s infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
         }
         
         /* Add padding to body for bottom nav */
         body {
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
         
-        /* Floating Emergency Button - Premium */
+        /* ════════════════════════════════════════════════════════════════
+           FLOATING EMERGENCY BUTTON
+           ════════════════════════════════════════════════════════════════ */
+        
         .floating-emergency {
             position: fixed;
             bottom: 90px;
-            right: 20px;
+            right: 16px;
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, #DC2626, #EF4444);
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
-            z-index: 99;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-size: 22px;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+            z-index: 999;
+            transition: all 0.2s ease;
             text-decoration: none;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid white;
         }
         
         .floating-emergency:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+            transform: scale(1.08);
+            box-shadow: 0 6px 24px rgba(220, 38, 38, 0.5);
+        }
+        
+        .floating-emergency:active {
+            transform: scale(0.95);
+        }
+        
+        /* Pulse animation for emergency button */
+        .floating-emergency::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(220, 38, 38, 0.3);
+            animation: emergency-pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes emergency-pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        @media (max-width: 360px) {
+            .nav-item {
+                padding: 6px 8px;
+                min-width: 48px;
+            }
+            
+            .nav-item i {
+                font-size: 18px;
+            }
+            
+            .nav-item span {
+                font-size: 9px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none; /* Hide on desktop - use header nav instead */
+            }
+            
+            .floating-emergency {
+                bottom: 24px;
+                right: 24px;
+                width: 64px;
+                height: 64px;
+                font-size: 26px;
+            }
         }
         
         /* Gold Accent AI Floating Button */
@@ -3725,36 +3825,37 @@ export const mediSenseV4Page = (lang: string = 'en') => {
         </div>
     </footer>
     
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="nav-item">
+    <!-- Emergency Call Button -->
+    <a href="tel:112" class="floating-emergency" title="Emergency Call 112">
+        <i class="fas fa-phone-alt"></i>
+    </a>
+    
+    <!-- Bottom Navigation - Healthcare-First (Option A) -->
+    <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+        <div class="bottom-nav-container">
+            <a href="/" class="nav-item" aria-label="Home">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
-            <a href="/medisense" class="nav-item active">
+            <a href="/medisense" class="nav-item active" aria-label="MediSense AI">
                 <i class="fas fa-brain"></i>
-                <span>AI Symptom</span>
+                <span>MediSense</span>
             </a>
-            <a href="/dashboard" class="nav-item">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
+            <a href="/instant-connect" class="nav-item connect-btn" aria-label="Instant Connect">
+                <span class="live-dot"></span>
+                <i class="fas fa-video"></i>
+                <span>Connect</span>
             </a>
-            <a href="/care-team" class="nav-item">
+            <a href="/care-team" class="nav-item" aria-label="Doctors">
                 <i class="fas fa-user-md"></i>
-                <span>Care Team</span>
+                <span>Doctors</span>
             </a>
-            <a href="/services" class="nav-item">
-                <i class="fas fa-concierge-bell"></i>
-                <span>Services</span>
+            <a href="/dashboard" class="nav-item" aria-label="My Profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
             </a>
         </div>
     </nav>
-    
-    <!-- Floating Emergency Button -->
-    <a href="tel:112" class="floating-emergency" title="Emergency Call">
-        <i class="fas fa-phone-alt"></i>
-    </a>
     
     <script>
         // Toast Notification System

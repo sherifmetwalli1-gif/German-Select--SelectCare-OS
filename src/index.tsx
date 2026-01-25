@@ -4288,6 +4288,10 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
             justify-content: center;
         }
         
+        /* ════════════════════════════════════════════════════════════════
+           UNIFIED BOTTOM NAVIGATION - Healthcare-First (Option A)
+           ════════════════════════════════════════════════════════════════ */
+        
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -4295,27 +4299,135 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
             right: 0;
             background: white;
             border-top: 1px solid #E5E7EB;
-            padding: 8px 0 20px;
-            z-index: 100;
+            padding: 8px 0 max(12px, env(safe-area-inset-bottom));
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .bottom-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 8px;
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 12px;
+            padding: 6px 12px;
             color: #9CA3AF;
             font-size: 10px;
-            transition: all 0.2s;
-        }
-        
-        .nav-item.active {
-            color: var(--gold);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            min-width: 56px;
+            position: relative;
         }
         
         .nav-item i {
             font-size: 20px;
             margin-bottom: 4px;
+            transition: transform 0.2s ease;
+        }
+        
+        .nav-item span {
+            white-space: nowrap;
+        }
+        
+        .nav-item:hover {
+            color: #6B7280;
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        .nav-item:hover i {
+            transform: scale(1.1);
+        }
+        
+        .nav-item.active {
+            color: #C9A227;
+        }
+        
+        .nav-item.active i {
+            transform: scale(1.1);
+        }
+        
+        /* Connect button with live indicator */
+        .nav-item.connect-btn {
+            position: relative;
+        }
+        
+        .nav-item.connect-btn .live-dot {
+            position: absolute;
+            top: 4px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            background: #22C55E;
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: pulse-dot 2s infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+        
+        /* Floating Emergency Button */
+        .floating-emergency {
+            position: fixed;
+            bottom: 90px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+            z-index: 999;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: 3px solid white;
+        }
+        
+        .floating-emergency:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 24px rgba(220, 38, 38, 0.5);
+        }
+        
+        .floating-emergency::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(220, 38, 38, 0.3);
+            animation: emergency-pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes emergency-pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        @media (max-width: 360px) {
+            .nav-item { padding: 6px 8px; min-width: 48px; }
+            .nav-item i { font-size: 18px; }
+            .nav-item span { font-size: 9px; }
+        }
+        
+        @media (min-width: 768px) {
+            .bottom-nav { display: none; }
+            .floating-emergency { bottom: 24px; right: 24px; width: 64px; height: 64px; font-size: 26px; }
         }
         
         .status-badge {
@@ -4475,29 +4587,34 @@ const appShell = (content: string, title: string, activeNav: string = 'home') =>
 <body class="bg-cream">
     ${content}
     
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="nav-item ${activeNav === 'home' ? 'active' : ''}">
+    <!-- Emergency Call Button -->
+    <a href="tel:112" class="floating-emergency" title="Emergency Call 112">
+        <i class="fas fa-phone-alt"></i>
+    </a>
+    
+    <!-- Bottom Navigation - Healthcare-First (Option A) -->
+    <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+        <div class="bottom-nav-container">
+            <a href="/" class="nav-item ${activeNav === 'home' ? 'active' : ''}" aria-label="Home">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
-            <a href="/medisense" class="nav-item ${activeNav === 'medisense' ? 'active' : ''}">
+            <a href="/medisense" class="nav-item ${activeNav === 'medisense' ? 'active' : ''}" aria-label="MediSense AI">
                 <i class="fas fa-brain"></i>
                 <span>MediSense</span>
             </a>
-            <a href="/instant-connect" class="nav-item ${activeNav === 'instant-connect' ? 'active' : ''}" style="position: relative;">
-                <div style="position: absolute; top: 0; right: 50%; transform: translateX(50%); width: 8px; height: 8px; background: #22C55E; border-radius: 50%; border: 2px solid white;"></div>
+            <a href="/instant-connect" class="nav-item connect-btn ${activeNav === 'connect' ? 'active' : ''}" aria-label="Instant Connect">
+                <span class="live-dot"></span>
                 <i class="fas fa-video"></i>
                 <span>Connect</span>
             </a>
-            <a href="/care-team" class="nav-item ${activeNav === 'care-team' ? 'active' : ''}">
+            <a href="/care-team" class="nav-item ${activeNav === 'doctors' ? 'active' : ''}" aria-label="Doctors">
                 <i class="fas fa-user-md"></i>
                 <span>Doctors</span>
             </a>
-            <a href="/services" class="nav-item ${activeNav === 'services' ? 'active' : ''}">
-                <i class="fas fa-concierge-bell"></i>
-                <span>Services</span>
+            <a href="/dashboard" class="nav-item ${activeNav === 'profile' ? 'active' : ''}" aria-label="My Profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
             </a>
         </div>
     </nav>
