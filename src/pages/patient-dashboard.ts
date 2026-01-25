@@ -948,39 +948,85 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                 </div>
             </div>
             
-            <!-- Quick Stats -->
+            <!-- Quick Stats - Premium Gold Tint Design -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="card p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <i class="fas fa-heartbeat text-red-500 text-xl"></i>
-                        <span class="text-xs text-green-600 font-semibold">${t('stats.normal', lang)}</span>
+                <div class="card-premium p-5 stagger-item group cursor-pointer" onclick="openTrackingChart('heartRate')">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fas fa-heartbeat text-red-500 text-xl"></i>
+                        </div>
+                        <span class="px-2.5 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-xs font-bold rounded-full border border-green-200">
+                            <i class="fas fa-check-circle mr-1"></i>${t('stats.normal', lang)}
+                        </span>
                     </div>
-                    <div class="text-2xl font-bold text-navy" id="heart-rate">72</div>
-                    <div class="text-sm text-gray-500">${t('stats.heartRate', lang)}</div>
+                    <div class="text-3xl font-bold text-navy" id="heart-rate">72</div>
+                    <div class="text-sm text-gray-500 flex items-center justify-between">
+                        <span>${t('stats.heartRate', lang)}</span>
+                        <span class="text-xs text-gray-400">bpm</span>
+                    </div>
+                    <div class="mt-2 h-1 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full w-3/4 bg-gradient-to-r from-green-400 to-green-500 rounded-full"></div>
+                    </div>
                 </div>
-                <div class="card p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <i class="fas fa-weight text-purple-500 text-xl"></i>
-                        <span class="text-xs text-green-600 font-semibold">-8.4 kg</span>
+                
+                <div class="card-premium p-5 stagger-item group cursor-pointer" onclick="openTrackingChart('weight')">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fas fa-weight text-purple-500 text-xl"></i>
+                        </div>
+                        <span class="px-2.5 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-xs font-bold rounded-full border border-green-200">
+                            <i class="fas fa-arrow-down mr-1"></i>-8.4 kg
+                        </span>
                     </div>
-                    <div class="text-2xl font-bold text-navy">82.4</div>
-                    <div class="text-sm text-gray-500">${t('stats.weight', lang)}</div>
+                    <div class="text-3xl font-bold text-navy">82.4</div>
+                    <div class="text-sm text-gray-500 flex items-center justify-between">
+                        <span>${t('stats.weight', lang)}</span>
+                        <span class="text-xs text-gray-400">kg</span>
+                    </div>
+                    <div class="mt-2 flex items-center gap-1">
+                        <div class="flex-1 h-1 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full w-2/3 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full"></div>
+                        </div>
+                        <span class="text-xs text-purple-500 font-medium">→75kg</span>
+                    </div>
                 </div>
-                <div class="card p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <i class="fas fa-walking text-green-500 text-xl"></i>
-                        <span class="text-xs text-yellow-600 font-semibold">70%</span>
+                
+                <div class="card-premium p-5 stagger-item group cursor-pointer" onclick="openTrackingChart('steps')">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fas fa-walking text-green-500 text-xl"></i>
+                        </div>
+                        <span class="px-2.5 py-1 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 text-xs font-bold rounded-full border border-amber-200">
+                            <i class="fas fa-chart-line mr-1"></i>70%
+                        </span>
                     </div>
-                    <div class="text-2xl font-bold text-navy" id="steps-today">5,240</div>
-                    <div class="text-sm text-gray-500">${t('stats.stepsToday', lang)}</div>
+                    <div class="text-3xl font-bold text-navy" id="steps-today">5,240</div>
+                    <div class="text-sm text-gray-500 flex items-center justify-between">
+                        <span>${t('stats.stepsToday', lang)}</span>
+                        <span class="text-xs text-gray-400">/7,500</span>
+                    </div>
+                    <div class="mt-2 h-1 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[70%] bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"></div>
+                    </div>
                 </div>
-                <div class="card p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <i class="fas fa-lungs text-blue-500 text-xl"></i>
-                        <span class="text-xs text-green-600 font-semibold">Optimal</span>
+                
+                <div class="card-premium p-5 stagger-item group cursor-pointer" onclick="openTrackingChart('oxygen')">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fas fa-lungs text-blue-500 text-xl"></i>
+                        </div>
+                        <span class="px-2.5 py-1 bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 text-xs font-bold rounded-full border border-blue-200">
+                            <i class="fas fa-star mr-1"></i>Optimal
+                        </span>
                     </div>
-                    <div class="text-2xl font-bold text-navy">98%</div>
-                    <div class="text-sm text-gray-500">SpO2</div>
+                    <div class="text-3xl font-bold text-navy">98<span class="text-lg">%</span></div>
+                    <div class="text-sm text-gray-500 flex items-center justify-between">
+                        <span>SpO2</span>
+                        <span class="text-xs text-green-500">Excellent</span>
+                    </div>
+                    <div class="mt-2 h-1 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full w-[98%] bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full"></div>
+                    </div>
                 </div>
             </div>
             
@@ -1029,44 +1075,64 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                         </div>
                     </div>
                     
-                    <!-- Health Calculators Quick Access -->
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 class="text-lg font-bold text-navy">
-                                <i class="fas fa-calculator text-gold mr-2"></i>
-                                Health Calculators
-                            </h2>
-                            <button onclick="showTab('calculators')" class="text-gold font-semibold text-sm">View All →</button>
+                    <!-- Health Calculators Quick Access - Enhanced Premium Design -->
+                    <div class="card-premium p-6">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center">
+                                    <i class="fas fa-calculator text-gold text-lg"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-navy">Health Calculators</h2>
+                                    <p class="text-xs text-gray-500">Track & optimize your health metrics</p>
+                                </div>
+                            </div>
+                            <a href="/calculators" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gold/10 to-gold/5 text-gold font-semibold text-sm rounded-xl hover:from-gold/20 hover:to-gold/10 transition-all border border-gold/20">
+                                View All <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            <div class="calculator-card p-4 bg-cream rounded-xl text-center" onclick="openCalculator('bmi')">
-                                <i class="fas fa-weight text-3xl text-navy mb-2"></i>
-                                <div class="font-semibold text-navy">BMI</div>
+                            <div class="calculator-card p-5 bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-2xl text-center border border-blue-100/50 group" onclick="openCalculator('bmi')">
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-weight text-2xl text-white"></i>
+                                </div>
+                                <div class="font-bold text-navy">BMI</div>
                                 <div class="text-xs text-gray-500">Body Mass Index</div>
                             </div>
-                            <div class="calculator-card p-4 bg-cream rounded-xl text-center" onclick="openCalculator('body-fat')">
-                                <i class="fas fa-percent text-3xl text-navy mb-2"></i>
-                                <div class="font-semibold text-navy">Body Fat</div>
+                            <div class="calculator-card p-5 bg-gradient-to-br from-purple-50 to-pink-50/50 rounded-2xl text-center border border-purple-100/50 group" onclick="openCalculator('body-fat')">
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-percent text-2xl text-white"></i>
+                                </div>
+                                <div class="font-bold text-navy">Body Fat</div>
                                 <div class="text-xs text-gray-500">Fat Percentage</div>
                             </div>
-                            <div class="calculator-card p-4 bg-cream rounded-xl text-center" onclick="openCalculator('asa')">
-                                <i class="fas fa-hospital text-3xl text-navy mb-2"></i>
-                                <div class="font-semibold text-navy">ASA Risk</div>
+                            <div class="calculator-card p-5 bg-gradient-to-br from-red-50 to-orange-50/50 rounded-2xl text-center border border-red-100/50 group" onclick="openCalculator('asa')">
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-hospital text-2xl text-white"></i>
+                                </div>
+                                <div class="font-bold text-navy">ASA Risk</div>
                                 <div class="text-xs text-gray-500">Anesthesia Risk</div>
                             </div>
-                            <div class="calculator-card p-4 bg-cream rounded-xl text-center" onclick="openCalculator('recovery')">
-                                <i class="fas fa-calendar-check text-3xl text-navy mb-2"></i>
-                                <div class="font-semibold text-navy">Recovery</div>
+                            <div class="calculator-card p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-2xl text-center border border-green-100/50 group" onclick="openCalculator('recovery')">
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-calendar-check text-2xl text-white"></i>
+                                </div>
+                                <div class="font-bold text-navy">Recovery</div>
                                 <div class="text-xs text-gray-500">Time Estimate</div>
                             </div>
-                            <div class="calculator-card p-4 bg-cream rounded-xl text-center" onclick="openCalculator('cost')">
-                                <i class="fas fa-euro-sign text-3xl text-navy mb-2"></i>
-                                <div class="font-semibold text-navy">Savings</div>
+                            <div class="calculator-card p-5 bg-gradient-to-br from-amber-50 to-yellow-50/50 rounded-2xl text-center border border-amber-100/50 group relative" onclick="openCalculator('cost')">
+                                <span class="absolute -top-2 -right-2 px-2 py-0.5 bg-gradient-to-r from-gold to-gold-bright text-navy text-[10px] font-bold rounded-full shadow">SAVE 75%</span>
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-gold to-amber-500 flex items-center justify-center shadow-lg shadow-gold/30 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-euro-sign text-2xl text-white"></i>
+                                </div>
+                                <div class="font-bold text-navy">Savings</div>
                                 <div class="text-xs text-gray-500">Cost Calculator</div>
                             </div>
-                            <div class="calculator-card p-4 bg-cream rounded-xl text-center" onclick="openCalculator('ideal-weight')">
-                                <i class="fas fa-bullseye text-3xl text-navy mb-2"></i>
-                                <div class="font-semibold text-navy">Ideal Weight</div>
+                            <div class="calculator-card p-5 bg-gradient-to-br from-cyan-50 to-blue-50/50 rounded-2xl text-center border border-cyan-100/50 group" onclick="openCalculator('ideal-weight')">
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-bullseye text-2xl text-white"></i>
+                                </div>
+                                <div class="font-bold text-navy">Ideal Weight</div>
                                 <div class="text-xs text-gray-500">Goal Setting</div>
                             </div>
                         </div>
@@ -1125,109 +1191,193 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                 
                 <!-- Right Column -->
                 <div class="space-y-6">
-                    <!-- Upcoming Appointments -->
-                    <div class="card p-6">
-                        <h2 class="text-lg font-bold text-navy mb-4">
-                            <i class="fas fa-calendar text-gold mr-2"></i>
-                            Upcoming Appointments
-                        </h2>
+                    <!-- Upcoming Appointments - Premium Gold Design -->
+                    <div class="card-premium p-6">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center">
+                                <i class="fas fa-calendar-alt text-gold text-lg"></i>
+                            </div>
+                            <h2 class="text-lg font-bold text-navy">Upcoming Appointments</h2>
+                        </div>
                         <div class="space-y-4">
-                            <div class="p-4 bg-navy rounded-xl text-white">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-gold text-xs font-semibold">NEXT APPOINTMENT</span>
-                                    <span class="text-xs bg-white/20 px-2 py-1 rounded">Video Call</span>
-                                </div>
-                                <div class="font-bold">Cardiology Follow-up</div>
-                                <div class="text-gold text-sm mb-3">Oct 22, 10:00 AM</div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-navy text-xs font-bold">KM</div>
-                                    <div>
-                                        <div class="text-sm">Dr. K. Müller</div>
-                                        <div class="text-xs text-gray-300">Cardiologist</div>
+                            <!-- Next Appointment - Highlighted -->
+                            <div class="relative p-5 bg-gradient-to-br from-navy via-navy to-navy-light rounded-2xl text-white overflow-hidden group cursor-pointer hover:shadow-xl transition-all">
+                                <!-- Decorative gold accents -->
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-gold/20 to-transparent rounded-bl-full"></div>
+                                <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-gold/10 to-transparent rounded-tr-full"></div>
+                                
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="px-3 py-1 bg-gradient-to-r from-gold to-gold-bright text-navy text-xs font-bold rounded-full flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 bg-navy rounded-full animate-pulse"></span>
+                                            NEXT APPOINTMENT
+                                        </span>
+                                        <span class="text-xs bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                                            <i class="fas fa-video text-green-400"></i>Video Call
+                                        </span>
+                                    </div>
+                                    <div class="font-bold text-lg mb-1">Cardiology Follow-up</div>
+                                    <div class="flex items-center gap-2 text-gold text-sm mb-4">
+                                        <i class="fas fa-clock"></i>
+                                        <span class="font-semibold">Oct 22, 10:00 AM</span>
+                                        <span class="text-white/50">•</span>
+                                        <span class="text-white/70">In 3 days</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-gold to-gold-bright rounded-xl flex items-center justify-center text-navy text-sm font-bold shadow-lg">KM</div>
+                                            <div>
+                                                <div class="font-medium">Dr. K. Müller</div>
+                                                <div class="text-xs text-gray-300 flex items-center gap-1">
+                                                    <i class="fas fa-stethoscope text-gold/70"></i>Cardiologist
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button onclick="joinVideoCall('appt_001')" class="px-4 py-2 bg-gradient-to-r from-gold to-gold-bright text-navy font-bold text-sm rounded-xl hover:shadow-lg hover:shadow-gold/30 transition-all">
+                                            Join <i class="fas fa-arrow-right ml-1"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="p-4 bg-cream rounded-xl">
+                            <!-- Upcoming Appointment -->
+                            <div class="p-4 bg-gradient-to-br from-cream-warm to-cream rounded-2xl border border-gold/10 hover:border-gold/30 transition-all cursor-pointer">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-navy text-xs font-semibold">UPCOMING</span>
-                                    <span class="text-xs bg-white px-2 py-1 rounded">In Person</span>
+                                    <span class="text-navy/70 text-xs font-semibold">UPCOMING</span>
+                                    <span class="text-xs bg-white px-2 py-1 rounded-full border border-gray-200 flex items-center gap-1">
+                                        <i class="fas fa-user text-navy/60"></i>In Person
+                                    </span>
                                 </div>
                                 <div class="font-bold text-navy">Nutrition Review</div>
-                                <div class="text-gold text-sm mb-3">Nov 5, 2:00 PM</div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-8 h-8 bg-navy rounded-full flex items-center justify-center text-white text-xs font-bold">AS</div>
+                                <div class="flex items-center gap-2 text-gold text-sm mb-3">
+                                    <i class="fas fa-clock text-xs"></i>
+                                    <span>Nov 5, 2:00 PM</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 bg-gradient-to-br from-navy to-navy-light rounded-xl flex items-center justify-center text-white text-xs font-bold">AS</div>
                                     <div>
-                                        <div class="text-sm text-navy">Dr. A. Schmidt</div>
+                                        <div class="text-sm font-medium text-navy">Dr. A. Schmidt</div>
                                         <div class="text-xs text-gray-500">Nutritionist</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="w-full mt-4 py-3 border-2 border-gold text-gold rounded-xl font-semibold hover:bg-gold hover:text-navy transition">
-                            Book New Appointment
+                        <button class="w-full mt-5 py-3.5 border-2 border-gold text-gold rounded-xl font-bold hover:bg-gradient-to-r hover:from-gold hover:to-gold-bright hover:text-navy hover:border-transparent transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-plus"></i>Book New Appointment
                         </button>
                     </div>
                     
-                    <!-- Care Team -->
-                    <div class="card p-6">
-                        <h2 class="text-lg font-bold text-navy mb-4">
-                            <i class="fas fa-user-md text-gold mr-2"></i>
-                            Your Care Team
-                        </h2>
+                    <!-- Care Team - Enhanced Premium Design -->
+                    <div class="card-premium p-6">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center">
+                                    <i class="fas fa-user-md text-gold text-lg"></i>
+                                </div>
+                                <h2 class="text-lg font-bold text-navy">Your Care Team</h2>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                Available
+                            </span>
+                        </div>
                         <div class="space-y-3">
-                            <div class="flex items-center space-x-3 p-3 bg-cream rounded-xl">
-                                <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white text-sm font-bold">HF</div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-navy">Dr. H. Fischer</div>
-                                    <div class="text-xs text-gray-500">Lead Surgeon</div>
+                            <!-- Lead Surgeon -->
+                            <div class="flex items-center gap-3 p-4 bg-gradient-to-r from-navy/5 to-transparent rounded-2xl border border-navy/10 hover:border-gold/30 hover:bg-gradient-to-r hover:from-gold/5 hover:to-transparent transition-all group cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-navy to-navy-light rounded-xl flex items-center justify-center text-white font-bold shadow-lg">HF</div>
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></span>
                                 </div>
-                                <button class="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-navy">
-                                    <i class="fas fa-comment text-sm"></i>
+                                <div class="flex-1">
+                                    <div class="font-bold text-navy flex items-center gap-2">
+                                        Dr. H. Fischer
+                                        <span class="px-1.5 py-0.5 bg-gold/20 text-gold text-[10px] font-bold rounded">LEAD</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500 flex items-center gap-1">
+                                        <i class="fas fa-scalpel text-navy/40"></i>Bariatric Surgeon
+                                    </div>
+                                </div>
+                                <button class="w-10 h-10 bg-gradient-to-br from-gold to-gold-bright rounded-xl flex items-center justify-center text-navy shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                                    <i class="fas fa-comment"></i>
                                 </button>
                             </div>
-                            <div class="flex items-center space-x-3 p-3 bg-cream rounded-xl">
-                                <div class="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-white text-sm font-bold">AS</div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-navy">Dr. A. Schmidt</div>
-                                    <div class="text-xs text-gray-500">Nutritionist</div>
+                            
+                            <!-- Nutritionist -->
+                            <div class="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50/50 to-transparent rounded-2xl border border-green-100/50 hover:border-gold/30 hover:bg-gradient-to-r hover:from-gold/5 hover:to-transparent transition-all group cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">AS</div>
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></span>
                                 </div>
-                                <button class="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-navy">
-                                    <i class="fas fa-comment text-sm"></i>
+                                <div class="flex-1">
+                                    <div class="font-bold text-navy">Dr. A. Schmidt</div>
+                                    <div class="text-xs text-gray-500 flex items-center gap-1">
+                                        <i class="fas fa-apple-alt text-green-400"></i>Nutritionist
+                                    </div>
+                                </div>
+                                <button class="w-10 h-10 bg-gradient-to-br from-gold to-gold-bright rounded-xl flex items-center justify-center text-navy shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                                    <i class="fas fa-comment"></i>
                                 </button>
                             </div>
-                            <div class="flex items-center space-x-3 p-3 bg-cream rounded-xl">
-                                <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center text-navy text-sm font-bold">CC</div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-navy">Sarah M.</div>
-                                    <div class="text-xs text-gray-500">Care Coordinator</div>
+                            
+                            <!-- Care Coordinator -->
+                            <div class="flex items-center gap-3 p-4 bg-gradient-to-r from-gold/5 to-transparent rounded-2xl border border-gold/10 hover:border-gold/30 transition-all group cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-gold to-gold-bright rounded-xl flex items-center justify-center text-navy font-bold shadow-lg">SM</div>
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></span>
                                 </div>
-                                <button class="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-navy">
-                                    <i class="fas fa-comment text-sm"></i>
+                                <div class="flex-1">
+                                    <div class="font-bold text-navy">Sarah M.</div>
+                                    <div class="text-xs text-gray-500 flex items-center gap-1">
+                                        <i class="fas fa-headset text-gold"></i>Care Coordinator • 24/7
+                                    </div>
+                                </div>
+                                <button class="w-10 h-10 bg-gradient-to-br from-gold to-gold-bright rounded-xl flex items-center justify-center text-navy shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                                    <i class="fas fa-comment"></i>
                                 </button>
                             </div>
                         </div>
+                        <a href="/care-team" class="block mt-4 text-center text-sm text-gold font-semibold hover:text-gold-warm transition">
+                            View Full Care Team <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
                     </div>
                     
-                    <!-- Quick Actions -->
-                    <div class="card p-6">
-                        <h2 class="text-lg font-bold text-navy mb-4">Quick Actions</h2>
+                    <!-- Quick Actions - Premium Gold Design -->
+                    <div class="card-premium p-6">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center">
+                                <i class="fas fa-bolt text-gold text-lg"></i>
+                            </div>
+                            <h2 class="text-lg font-bold text-navy">Quick Actions</h2>
+                        </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <button onclick="openVideoCall()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
-                                <i class="fas fa-video text-navy text-xl mb-2 group-hover:text-gold"></i>
-                                <div class="text-sm font-semibold text-navy">Video Call</div>
+                            <button onclick="openVideoCall()" class="p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-2xl text-center hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group border border-green-100/50 relative overflow-hidden">
+                                <div class="absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-video text-white text-lg"></i>
+                                </div>
+                                <div class="text-sm font-bold text-navy">Video Call</div>
+                                <div class="text-xs text-gray-500">Connect Now</div>
                             </button>
-                            <button onclick="openDocuments()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
-                                <i class="fas fa-file-medical text-navy text-xl mb-2 group-hover:text-gold"></i>
-                                <div class="text-sm font-semibold text-navy">Documents</div>
+                            <button onclick="openDocuments()" class="p-5 bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-2xl text-center hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group border border-blue-100/50">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-file-medical text-white text-lg"></i>
+                                </div>
+                                <div class="text-sm font-bold text-navy">Documents</div>
+                                <div class="text-xs text-gray-500">5 Files</div>
                             </button>
-                            <button onclick="openMedications()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
-                                <i class="fas fa-pills text-navy text-xl mb-2 group-hover:text-gold"></i>
-                                <div class="text-sm font-semibold text-navy">Medications</div>
+                            <button onclick="openMedications()" class="p-5 bg-gradient-to-br from-purple-50 to-pink-50/50 rounded-2xl text-center hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group border border-purple-100/50">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-pills text-white text-lg"></i>
+                                </div>
+                                <div class="text-sm font-bold text-navy">Medications</div>
+                                <div class="text-xs text-gray-500">4 Active</div>
                             </button>
-                            <button onclick="openMealPlan()" class="p-4 bg-cream rounded-xl text-center hover:bg-gold-light hover:scale-105 transition-all duration-200 group">
-                                <i class="fas fa-utensils text-navy text-xl mb-2 group-hover:text-gold"></i>
-                                <div class="text-sm font-semibold text-navy">Meal Plan</div>
+                            <button onclick="openMealPlan()" class="p-5 bg-gradient-to-br from-amber-50 to-orange-50/50 rounded-2xl text-center hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group border border-amber-100/50">
+                                <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-gold to-amber-500 flex items-center justify-center shadow-lg shadow-gold/20 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-utensils text-white text-lg"></i>
+                                </div>
+                                <div class="text-sm font-bold text-navy">Meal Plan</div>
+                                <div class="text-xs text-gray-500">Today's Menu</div>
                             </button>
                         </div>
                     </div>
@@ -2675,12 +2825,41 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         </div>
     </main>
     
-    <!-- Footer -->
-    <footer class="bg-navy text-white py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="text-xl font-bold mb-2">SelectCare<span class="text-gold">OS</span>™</div>
-            <p class="text-gray-400 text-sm">German Excellence. Red Sea Recovery. Lifetime Support.</p>
-            <p class="text-gray-500 text-xs mt-4">© 2024 German Select. All rights reserved.</p>
+    <!-- Footer - Premium Gold Design -->
+    <footer class="bg-gradient-to-b from-navy via-navy to-navy-dark text-white py-12 mt-12 relative overflow-hidden">
+        <!-- Decorative gold accents -->
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
+        <div class="absolute top-0 left-1/4 w-48 h-48 bg-gold/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-gold/5 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <div class="text-2xl font-bold mb-3">
+                SelectCare<span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-bright">OS</span>™
+            </div>
+            <p class="text-gray-400 text-sm mb-4">German Excellence. Red Sea Recovery. Lifetime Support.</p>
+            
+            <div class="flex justify-center gap-4 mb-6">
+                <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-gold/20 flex items-center justify-center text-gray-400 hover:text-gold transition-all">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-gold/20 flex items-center justify-center text-gray-400 hover:text-gold transition-all">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-gold/20 flex items-center justify-center text-gray-400 hover:text-gold transition-all">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-gold/20 flex items-center justify-center text-gray-400 hover:text-gold transition-all">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            
+            <div class="flex justify-center gap-6 text-xs text-gray-500 mb-4">
+                <a href="#" class="hover:text-gold transition">Privacy Policy</a>
+                <a href="#" class="hover:text-gold transition">Terms of Service</a>
+                <a href="#" class="hover:text-gold transition">HIPAA Compliance</a>
+            </div>
+            
+            <p class="text-gray-500 text-xs">© 2024 German Select Healthcare GmbH. All rights reserved.</p>
         </div>
     </footer>
     
