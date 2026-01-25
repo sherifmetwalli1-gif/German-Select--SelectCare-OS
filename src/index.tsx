@@ -1022,6 +1022,479 @@ const EXCURSIONS = [
 ]
 
 // ============================================================================
+// MEDICALLY SUPERVISED RETREATS & SELECT HOTELS
+// ============================================================================
+
+const MEDICAL_RETREATS = [
+  {
+    id: 'longevity-reset',
+    name: 'Longevity Reset Retreat',
+    tagline: 'Science-Based Anti-Aging & Rejuvenation',
+    category: 'anti-aging',
+    duration: { nights: 7, days: 8 },
+    priceRange: { min: 8500, max: 12000 },
+    currency: 'EUR',
+    medicalSupervision: 'Full-time physician + nursing staff',
+    description: 'A comprehensive 7-night medical retreat combining cutting-edge longevity science with Red Sea relaxation. Includes full health assessment, personalized treatment plan, and ongoing support.',
+    highlights: [
+      'Comprehensive health & longevity assessment',
+      'Personalized IV therapy protocols (NAD+, Vitamins)',
+      'Stem cell & exosome treatments',
+      'Hormone optimization consultation',
+      'Daily physiotherapy & wellness sessions',
+      'Nutritionist-designed meal plan',
+      'Stress reduction & sleep optimization',
+      'Post-retreat follow-up program'
+    ],
+    medicalProgram: [
+      { day: 1, activities: ['Arrival & Welcome', 'Initial health assessment', 'Blood work & diagnostics', 'Consultation with longevity physician'] },
+      { day: 2, activities: ['Review of results', 'Personalized treatment plan', 'First IV therapy session', 'Physiotherapy assessment'] },
+      { day: 3, activities: ['Stem cell / exosome therapy', 'Nutritionist consultation', 'Spa relaxation'] },
+      { day: 4, activities: ['Hormone panel review', 'IV therapy', 'Yoga & meditation', 'Beach relaxation'] },
+      { day: 5, activities: ['PRP treatments', 'Advanced diagnostics review', 'Personalized fitness session'] },
+      { day: 6, activities: ['Final treatments', 'Wellness coaching', 'Spa day'] },
+      { day: 7, activities: ['Follow-up consultation', 'Take-home protocol review', 'Departure preparation'] }
+    ],
+    inclusions: ['All medical treatments', 'Luxury accommodation', 'All meals (nutritionist-designed)', 'Airport transfers', 'Daily spa access', 'Personal concierge'],
+    accommodation: 'Steigenberger Pure Lifestyle or equivalent 5-star',
+    rating: 4.9,
+    reviewCount: 127,
+    popular: true,
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbec6d?w=800'
+  },
+  {
+    id: 'weight-loss-transformation',
+    name: 'Weight Loss Transformation',
+    tagline: 'Medically Supervised Weight Management',
+    category: 'weight-management',
+    duration: { nights: 14, days: 15 },
+    priceRange: { min: 6500, max: 9500 },
+    currency: 'EUR',
+    medicalSupervision: 'Bariatric physician + dietitian + fitness coach',
+    description: 'A 2-week intensive medical weight loss program with physician supervision, personalized nutrition, and fitness training. Ideal pre or post bariatric surgery support.',
+    highlights: [
+      'Complete metabolic assessment',
+      'Medically supervised diet protocol',
+      'Daily fitness & movement sessions',
+      'Behavioral therapy for eating habits',
+      'Optional GLP-1 medication support',
+      'Body composition analysis',
+      'Cooking & nutrition classes',
+      'Lifetime support community access'
+    ],
+    medicalProgram: [
+      { day: 1, activities: ['Health screening', 'Metabolic testing', 'Fitness assessment', 'Goal setting'] },
+      { day: '2-7', activities: ['Morning fitness', 'Medical check-ins', 'Nutrition workshops', 'Evening relaxation'] },
+      { day: '8-13', activities: ['Intensified training', 'Cooking classes', 'Behavioral therapy', 'Progress reviews'] },
+      { day: 14, activities: ['Final assessment', 'Home program creation', 'Follow-up scheduling'] }
+    ],
+    inclusions: ['All medical supervision', 'Fitness sessions', 'Calorie-controlled meals', 'Accommodation', 'Supplements', 'Take-home program'],
+    accommodation: 'Baron Palace Sahl Hasheesh or equivalent 5-star',
+    rating: 4.8,
+    reviewCount: 89,
+    popular: true,
+    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800'
+  },
+  {
+    id: 'post-surgery-recovery',
+    name: 'Post-Surgery Recovery Retreat',
+    tagline: 'Premium Medical Recovery Experience',
+    category: 'recovery',
+    duration: { nights: 10, days: 11 },
+    priceRange: { min: 4500, max: 7500 },
+    currency: 'EUR',
+    medicalSupervision: '24/7 nursing + daily physician visits',
+    description: 'Specialized recovery program for patients after surgery. Combines medical monitoring with therapeutic activities in a 5-star resort environment.',
+    highlights: [
+      '24/7 medical nursing care',
+      'Daily physician rounds',
+      'Physical rehabilitation sessions',
+      'Wound care & monitoring',
+      'Pain management protocols',
+      'Nutritional support for healing',
+      'Lymphatic drainage massage',
+      'Psychological support'
+    ],
+    medicalProgram: [
+      { day: '1-3', activities: ['Intensive monitoring', 'Wound care', 'Pain management', 'Gentle mobilization'] },
+      { day: '4-7', activities: ['Increased activity', 'Physiotherapy', 'Scar treatment', 'Nutrition optimization'] },
+      { day: '8-10', activities: ['Advanced rehabilitation', 'Independence building', 'Discharge planning', 'Follow-up coordination'] }
+    ],
+    inclusions: ['All medical care', 'Private room', 'Special recovery meals', 'Rehabilitation equipment', 'Compression garments', 'Airport wheelchair service'],
+    accommodation: 'Medical-adjacent luxury suite',
+    rating: 4.9,
+    reviewCount: 156,
+    popular: true,
+    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800'
+  },
+  {
+    id: 'stress-burnout-recovery',
+    name: 'Stress & Burnout Recovery',
+    tagline: 'Executive Wellness & Mental Reset',
+    category: 'mental-wellness',
+    duration: { nights: 5, days: 6 },
+    priceRange: { min: 5500, max: 8000 },
+    currency: 'EUR',
+    medicalSupervision: 'Psychiatrist + psychologist + wellness coaches',
+    description: 'A medically-guided retreat for executives and professionals experiencing burnout. Combines mental health support with physical wellness in a secluded luxury environment.',
+    highlights: [
+      'Psychiatric assessment & support',
+      'Daily therapy sessions',
+      'Stress hormone testing',
+      'Sleep study & optimization',
+      'Meditation & mindfulness training',
+      'Digital detox protocol',
+      'Spa & relaxation therapies',
+      'Executive coaching sessions'
+    ],
+    medicalProgram: [
+      { day: 1, activities: ['Psychiatric assessment', 'Stress biomarker testing', 'Goal setting', 'Digital detox begins'] },
+      { day: 2, activities: ['Therapy session', 'Yoga & meditation', 'Massage therapy', 'Beach relaxation'] },
+      { day: 3, activities: ['Sleep optimization', 'Breathing exercises', 'Journaling workshop', 'Spa treatments'] },
+      { day: 4, activities: ['Cognitive therapy', 'Fitness session', 'Art therapy', 'Sunset meditation'] },
+      { day: 5, activities: ['Integration session', 'Home protocol creation', 'Follow-up scheduling', 'Graduation ceremony'] }
+    ],
+    inclusions: ['All therapy sessions', 'Luxury suite', 'Wellness meals', 'Spa treatments', 'Meditation app subscription', 'Follow-up teleconsultations'],
+    accommodation: 'Oberoi Sahl Hasheesh or equivalent 5-star',
+    rating: 4.7,
+    reviewCount: 64,
+    popular: false,
+    image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800'
+  },
+  {
+    id: 'detox-cleanse',
+    name: 'Medical Detox & Cleanse',
+    tagline: 'Deep Cellular Cleansing Program',
+    category: 'detox',
+    duration: { nights: 7, days: 8 },
+    priceRange: { min: 4000, max: 6000 },
+    currency: 'EUR',
+    medicalSupervision: 'Physician + nutritionist + naturopath',
+    description: 'A physician-supervised detoxification program combining medical protocols with natural therapies. Designed to reset your body at the cellular level.',
+    highlights: [
+      'Pre-detox medical assessment',
+      'Liver & kidney function monitoring',
+      'Customized juice & cleanse protocols',
+      'Colon hydrotherapy (optional)',
+      'IV nutrient support',
+      'Infrared sauna sessions',
+      'Lymphatic drainage',
+      'Reintroduction meal plan'
+    ],
+    medicalProgram: [
+      { day: 1, activities: ['Medical assessment', 'Baseline bloodwork', 'Detox protocol introduction', 'First cleanse meal'] },
+      { day: '2-3', activities: ['Juice cleanse phase', 'Daily medical check', 'Spa therapies', 'Gentle movement'] },
+      { day: '4-5', activities: ['Deep cleanse phase', 'IV support', 'Colon therapy', 'Rest & rejuvenation'] },
+      { day: '6-7', activities: ['Reintroduction phase', 'Final bloodwork', 'Home protocol', 'Meal planning'] }
+    ],
+    inclusions: ['All detox protocols', 'Organic juices & meals', 'Spa therapies', 'Accommodation', 'Supplements', 'Recipe book'],
+    accommodation: 'Wellness-focused 5-star resort',
+    rating: 4.6,
+    reviewCount: 78,
+    popular: false,
+    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800'
+  },
+  {
+    id: 'fertility-wellness',
+    name: 'Fertility Wellness Retreat',
+    tagline: 'Holistic Fertility Support',
+    category: 'fertility',
+    duration: { nights: 10, days: 11 },
+    priceRange: { min: 7000, max: 11000 },
+    currency: 'EUR',
+    medicalSupervision: 'Fertility specialist + acupuncturist + nutritionist',
+    description: 'A comprehensive fertility support program combining medical assessment with holistic therapies. Suitable for couples or individuals preparing for conception or IVF.',
+    highlights: [
+      'Fertility assessment (both partners)',
+      'Hormone panel & optimization',
+      'Acupuncture protocols',
+      'Fertility nutrition program',
+      'Stress reduction focus',
+      'Couples counseling',
+      'Supplement optimization',
+      'Coordination with home fertility clinic'
+    ],
+    medicalProgram: [
+      { day: 1, activities: ['Comprehensive fertility assessment', 'Hormone testing', 'Ultrasound', 'Nutrition assessment'] },
+      { day: '2-5', activities: ['Daily acupuncture', 'Fertility yoga', 'Couples activities', 'Medical consultations'] },
+      { day: '6-9', activities: ['Treatment adjustments', 'Relaxation focus', 'Bonding activities', 'Supplement protocols'] },
+      { day: 10, activities: ['Final consultation', 'Home protocol', 'Clinic coordination', 'Follow-up scheduling'] }
+    ],
+    inclusions: ['All medical assessments', 'Acupuncture sessions', 'Couples accommodation', 'Fertility-focused meals', 'Supplements', 'Follow-up support'],
+    accommodation: 'Romantic 5-star resort suite',
+    rating: 4.8,
+    reviewCount: 42,
+    popular: false,
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800'
+  }
+]
+
+const SELECT_HOTELS = [
+  {
+    id: 'steigenberger-pure',
+    name: 'Steigenberger Pure Lifestyle',
+    category: 'luxury',
+    starRating: 5,
+    location: 'El Gouna, Red Sea',
+    distanceToClinic: '15 min',
+    pricePerNight: { min: 180, max: 350 },
+    currency: 'EUR',
+    description: 'Adults-only luxury resort with contemporary design, private beach, and world-class spa. Ideal for recovery in a sophisticated atmosphere.',
+    features: [
+      'Adults Only (16+)',
+      'Private Beach',
+      '3 Restaurants, 4 Bars',
+      'Infinity Pool',
+      'Spa & Wellness Center',
+      'Fitness Center',
+      'Free Wi-Fi',
+      'Airport Transfer Available'
+    ],
+    medicalAmenities: [
+      'In-room medical equipment available',
+      'Wheelchair accessible rooms',
+      'Special dietary menus',
+      'Nurse call service (on request)',
+      'Pharmacy nearby'
+    ],
+    roomTypes: [
+      { type: 'Lagoon View Room', price: 180, size: '42m²' },
+      { type: 'Sea View Suite', price: 280, size: '65m²' },
+      { type: 'Presidential Suite', price: 550, size: '120m²' }
+    ],
+    rating: 4.8,
+    reviewCount: 1247,
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+    popular: true
+  },
+  {
+    id: 'oberoi-sahl-hasheesh',
+    name: 'The Oberoi Sahl Hasheesh',
+    category: 'ultra-luxury',
+    starRating: 5,
+    location: 'Sahl Hasheesh, Red Sea',
+    distanceToClinic: '20 min',
+    pricePerNight: { min: 350, max: 800 },
+    currency: 'EUR',
+    description: 'Ultra-luxury beachfront resort with stunning architecture, private pools, and exceptional service. Perfect for discerning patients seeking the finest recovery experience.',
+    features: [
+      'Private Beach',
+      'Butler Service',
+      'Private Pool Villas',
+      'Award-winning Spa',
+      'Fine Dining Restaurants',
+      'Yoga & Meditation',
+      'Water Sports',
+      'Helicopter Transfer Available'
+    ],
+    medicalAmenities: [
+      'In-villa medical setup possible',
+      '24/7 concierge for medical needs',
+      'Private nurse arrangement',
+      'Customized recovery meals',
+      'Quiet recovery-focused wing'
+    ],
+    roomTypes: [
+      { type: 'Superior Suite', price: 350, size: '85m²' },
+      { type: 'Premier Suite with Pool', price: 550, size: '110m²' },
+      { type: 'Royal Suite', price: 1200, size: '250m²' }
+    ],
+    rating: 4.9,
+    reviewCount: 892,
+    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800',
+    popular: true
+  },
+  {
+    id: 'baron-palace',
+    name: 'Baron Palace Sahl Hasheesh',
+    category: 'luxury',
+    starRating: 5,
+    location: 'Sahl Hasheesh, Red Sea',
+    distanceToClinic: '18 min',
+    pricePerNight: { min: 150, max: 300 },
+    currency: 'EUR',
+    description: 'Majestic palace-style resort with extensive grounds, multiple pools, and excellent value. Great choice for extended recovery stays.',
+    features: [
+      'Palatial Architecture',
+      'Private Beach',
+      '9 Restaurants & Bars',
+      'Multiple Pools',
+      'Aqua Park',
+      'Full-Service Spa',
+      'Kids Club',
+      'Evening Entertainment'
+    ],
+    medicalAmenities: [
+      'Ground floor rooms available',
+      'Wheelchair accessible',
+      'Diet-friendly menu options',
+      'Quiet wing on request',
+      'Medical transport coordination'
+    ],
+    roomTypes: [
+      { type: 'Superior Room', price: 150, size: '45m²' },
+      { type: 'Family Suite', price: 220, size: '75m²' },
+      { type: 'Royal Suite', price: 400, size: '140m²' }
+    ],
+    rating: 4.6,
+    reviewCount: 2134,
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
+    popular: true
+  },
+  {
+    id: 'kempinski-soma-bay',
+    name: 'Kempinski Hotel Soma Bay',
+    category: 'ultra-luxury',
+    starRating: 5,
+    location: 'Soma Bay, Red Sea',
+    distanceToClinic: '45 min',
+    pricePerNight: { min: 280, max: 600 },
+    currency: 'EUR',
+    description: 'Secluded luxury resort with championship golf, world-renowned spa, and pristine diving. Ideal for patients seeking privacy and exceptional amenities.',
+    features: [
+      'Championship Golf Course',
+      'The Spa by Clarins',
+      'Diving & Snorkeling Center',
+      'Private Beach',
+      'Multiple Restaurants',
+      'Tennis Courts',
+      'Kids Club',
+      'Water Sports'
+    ],
+    medicalAmenities: [
+      'Spa with therapeutic treatments',
+      'Physiotherapy arrangements',
+      'Healthy cuisine options',
+      'Secluded recovery-friendly location',
+      'VIP transfer service'
+    ],
+    roomTypes: [
+      { type: 'Deluxe Sea View', price: 280, size: '55m²' },
+      { type: 'Grand Deluxe Suite', price: 450, size: '90m²' },
+      { type: 'Imperial Suite', price: 900, size: '200m²' }
+    ],
+    rating: 4.7,
+    reviewCount: 756,
+    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+    popular: false
+  },
+  {
+    id: 'sheraton-soma-bay',
+    name: 'Sheraton Soma Bay Resort',
+    category: 'premium',
+    starRating: 5,
+    location: 'Soma Bay, Red Sea',
+    distanceToClinic: '40 min',
+    pricePerNight: { min: 120, max: 250 },
+    currency: 'EUR',
+    description: 'All-inclusive resort with excellent facilities and family-friendly atmosphere. Great value for comfortable recovery stays.',
+    features: [
+      'All-Inclusive Option',
+      'Private Beach',
+      'Multiple Pools',
+      'Spa Center',
+      '6 Restaurants',
+      'Water Sports',
+      'Animation Team',
+      'Free Wi-Fi'
+    ],
+    medicalAmenities: [
+      'Accessible rooms',
+      'Diet menu available',
+      'Pharmacy on-site',
+      'Medical transport',
+      'Extended stay discounts'
+    ],
+    roomTypes: [
+      { type: 'Standard Room', price: 120, size: '38m²' },
+      { type: 'Club Room', price: 180, size: '45m²' },
+      { type: 'Junior Suite', price: 250, size: '65m²' }
+    ],
+    rating: 4.4,
+    reviewCount: 1876,
+    image: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+    popular: false
+  },
+  {
+    id: 'private-villa-collection',
+    name: 'German Select Private Villas',
+    category: 'exclusive',
+    starRating: 5,
+    location: 'Various Red Sea Locations',
+    distanceToClinic: 'Custom',
+    pricePerNight: { min: 500, max: 2500 },
+    currency: 'EUR',
+    description: 'Exclusive collection of private villas with personalized services. Includes option for in-villa medical care, private chef, and complete privacy.',
+    features: [
+      'Complete Privacy',
+      'Private Pool',
+      'Personal Chef',
+      'Butler Service',
+      'Private Beach Access',
+      'Customizable Services',
+      'In-Villa Spa Treatments',
+      'Security Team'
+    ],
+    medicalAmenities: [
+      'In-villa nursing available',
+      'Medical equipment setup',
+      'Private physician visits',
+      'Recovery-optimized environment',
+      'Direct clinic communication'
+    ],
+    roomTypes: [
+      { type: '2-Bedroom Villa', price: 500, size: '200m²' },
+      { type: '3-Bedroom Villa with Pool', price: 900, size: '350m²' },
+      { type: 'Beachfront Estate', price: 2500, size: '600m²' }
+    ],
+    rating: 5.0,
+    reviewCount: 47,
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800',
+    popular: true
+  }
+]
+
+// Combined retreat + hotel packages
+const RETREAT_PACKAGES = [
+  {
+    id: 'longevity-oberoi',
+    name: 'Ultimate Longevity Experience',
+    retreatId: 'longevity-reset',
+    hotelId: 'oberoi-sahl-hasheesh',
+    duration: { nights: 7, days: 8 },
+    totalPrice: 15000,
+    savings: 2500,
+    currency: 'EUR',
+    description: 'Our flagship longevity retreat at the ultra-luxurious Oberoi',
+    popular: true
+  },
+  {
+    id: 'recovery-steigenberger',
+    name: 'Premium Recovery Package',
+    retreatId: 'post-surgery-recovery',
+    hotelId: 'steigenberger-pure',
+    duration: { nights: 10, days: 11 },
+    totalPrice: 8500,
+    savings: 1500,
+    currency: 'EUR',
+    description: 'Post-surgery recovery in adults-only luxury environment',
+    popular: true
+  },
+  {
+    id: 'weight-loss-baron',
+    name: 'Transformation Journey',
+    retreatId: 'weight-loss-transformation',
+    hotelId: 'baron-palace',
+    duration: { nights: 14, days: 15 },
+    totalPrice: 9500,
+    savings: 2000,
+    currency: 'EUR',
+    description: '2-week weight loss program with all-inclusive luxury',
+    popular: true
+  }
+]
+
+// ============================================================================
 // API ROUTES
 // ============================================================================
 
@@ -3723,6 +4196,109 @@ app.get('/api/aesthetic-packages/:id', (c) => {
   const pkg = AESTHETIC_PACKAGES.find(p => p.id === id)
   if (!pkg) return c.json({ success: false, error: 'Aesthetic package not found' }, 404)
   return c.json({ success: true, data: pkg })
+})
+
+// ============================================================================
+// MEDICAL RETREATS & HOTELS API
+// ============================================================================
+
+// Medical Retreats
+app.get('/api/retreats', (c) => {
+  const category = c.req.query('category')
+  let retreats = MEDICAL_RETREATS
+  
+  if (category) {
+    retreats = MEDICAL_RETREATS.filter(r => r.category === category)
+  }
+  
+  return c.json({ 
+    success: true, 
+    data: retreats, 
+    total: retreats.length,
+    categories: [...new Set(MEDICAL_RETREATS.map(r => r.category))]
+  })
+})
+
+app.get('/api/retreats/:id', (c) => {
+  const id = c.req.param('id')
+  const retreat = MEDICAL_RETREATS.find(r => r.id === id)
+  if (!retreat) return c.json({ success: false, error: 'Retreat not found' }, 404)
+  
+  // Get recommended hotels for this retreat
+  const recommendedHotels = SELECT_HOTELS.filter(h => 
+    retreat.category === 'anti-aging' ? h.category === 'ultra-luxury' || h.category === 'luxury' :
+    retreat.category === 'recovery' ? h.medicalAmenities.length > 3 :
+    true
+  ).slice(0, 3)
+  
+  return c.json({ success: true, data: { ...retreat, recommendedHotels } })
+})
+
+// Select Hotels
+app.get('/api/hotels', (c) => {
+  const category = c.req.query('category')
+  const minPrice = c.req.query('minPrice')
+  const maxPrice = c.req.query('maxPrice')
+  
+  let hotels = SELECT_HOTELS
+  
+  if (category) {
+    hotels = hotels.filter(h => h.category === category)
+  }
+  if (minPrice) {
+    hotels = hotels.filter(h => h.pricePerNight.min >= parseInt(minPrice))
+  }
+  if (maxPrice) {
+    hotels = hotels.filter(h => h.pricePerNight.max <= parseInt(maxPrice))
+  }
+  
+  return c.json({ 
+    success: true, 
+    data: hotels, 
+    total: hotels.length,
+    categories: [...new Set(SELECT_HOTELS.map(h => h.category))]
+  })
+})
+
+app.get('/api/hotels/:id', (c) => {
+  const id = c.req.param('id')
+  const hotel = SELECT_HOTELS.find(h => h.id === id)
+  if (!hotel) return c.json({ success: false, error: 'Hotel not found' }, 404)
+  return c.json({ success: true, data: hotel })
+})
+
+// Combined Retreat + Hotel Packages
+app.get('/api/retreat-packages', (c) => {
+  const packages = RETREAT_PACKAGES.map(pkg => {
+    const retreat = MEDICAL_RETREATS.find(r => r.id === pkg.retreatId)
+    const hotel = SELECT_HOTELS.find(h => h.id === pkg.hotelId)
+    return { ...pkg, retreat, hotel }
+  })
+  
+  return c.json({ success: true, data: packages, total: packages.length })
+})
+
+app.get('/api/retreat-packages/:id', (c) => {
+  const id = c.req.param('id')
+  const pkg = RETREAT_PACKAGES.find(p => p.id === id)
+  if (!pkg) return c.json({ success: false, error: 'Package not found' }, 404)
+  
+  const retreat = MEDICAL_RETREATS.find(r => r.id === pkg.retreatId)
+  const hotel = SELECT_HOTELS.find(h => h.id === pkg.hotelId)
+  
+  return c.json({ success: true, data: { ...pkg, retreat, hotel } })
+})
+
+// Accommodations (existing + enhanced)
+app.get('/api/accommodations', (c) => {
+  return c.json({ 
+    success: true, 
+    data: { 
+      basicOptions: ACCOMMODATIONS,
+      selectHotels: SELECT_HOTELS,
+      total: ACCOMMODATIONS.length + SELECT_HOTELS.length
+    }
+  })
 })
 
 // Telemedicine Specifications API
@@ -8295,6 +8871,7 @@ import { wellness } from './routes/wellness'
 import medisenseApiRouter from './routes/medisense-api'
 import medisenseProRouter from './pages/medisense-pro'
 import { notificationsRouter } from './routes/notifications'
+import { retreatsHotelsPage } from './pages/retreats-hotels'
 
 // Mount route handlers
 app.route('/api/payments', payments)
@@ -8303,6 +8880,13 @@ app.route('/api/wellness', wellness)
 app.route('/api/medisense-pro', medisenseApiRouter)
 app.route('/medisense-pro', medisenseProRouter)
 app.route('/api/notifications', notificationsRouter)
+
+// Retreats & Hotels Page Routes
+app.get('/retreats', (c) => c.html(retreatsHotelsPage(c)))
+app.get('/retreats-hotels', (c) => c.html(retreatsHotelsPage(c)))
+app.get('/hotels', (c) => c.html(retreatsHotelsPage(c)))
+app.get('/resorts', (c) => c.html(retreatsHotelsPage(c)))
+app.get('/medical-retreats', (c) => c.html(retreatsHotelsPage(c)))
 
 // ============================================================================
 // CONVERSION OPTIMIZATION ENDPOINTS
