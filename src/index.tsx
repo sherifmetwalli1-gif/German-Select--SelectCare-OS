@@ -7567,6 +7567,17 @@ app.get('/dashboard-v2', async (c) => {
   return c.html(premiumHomePage('plus', lang))
 })
 
+// Enterprise Dashboard (admin/analytics view)
+app.get('/enterprise', async (c) => {
+  const { dashboardPage } = await import('./pages/dashboard')
+  return c.html(dashboardPage(c))
+})
+
+app.get('/enterprise-dashboard', async (c) => {
+  const { dashboardPage } = await import('./pages/dashboard')
+  return c.html(dashboardPage(c))
+})
+
 // Family Health Hub
 app.get('/family', async (c) => {
   const { familyHubPage } = await import('./pages/family-hub')

@@ -280,14 +280,19 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         :root {
             --navy: #001F3F;
             --navy-light: #003366;
-            --gold: #C9A227;
-            --gold-light: #E8D5A3;
-            --cream: #F8F6F0;
+            --navy-dark: #001529;
+            --gold: #D4A843;
+            --gold-bright: #E8C158;
+            --gold-light: #F5E6C0;
+            --gold-warm: #B8941F;
+            --gold-glow: rgba(212, 168, 67, 0.4);
+            --cream: #FDFBF7;
+            --cream-warm: #FDF8EC;
         }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--cream);
+            background: linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 50%, #F5F0E6 100%);
             min-height: 100vh;
         }
         
@@ -295,100 +300,285 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         .bg-navy-light { background-color: var(--navy-light); }
         .bg-gold { background-color: var(--gold); }
         .bg-gold-light { background-color: var(--gold-light); }
+        .bg-gold-bright { background-color: var(--gold-bright); }
         .bg-cream { background-color: var(--cream); }
+        .bg-cream-warm { background-color: var(--cream-warm); }
         .text-navy { color: var(--navy); }
         .text-gold { color: var(--gold); }
+        .text-gold-bright { color: var(--gold-bright); }
         .border-gold { border-color: var(--gold); }
         .border-navy { border-color: var(--navy); }
         
+        /* Premium Gold Gradient Variations */
         .gradient-navy {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%);
         }
         
         .gradient-gold {
-            background: linear-gradient(135deg, var(--gold) 0%, #D4AF37 100%);
+            background: linear-gradient(135deg, var(--gold-warm) 0%, var(--gold) 50%, var(--gold-bright) 100%);
+        }
+        
+        .gradient-gold-subtle {
+            background: linear-gradient(135deg, rgba(212, 168, 67, 0.08) 0%, rgba(232, 193, 88, 0.15) 100%);
+        }
+        
+        .gradient-gold-radial {
+            background: radial-gradient(ellipse at top right, rgba(232, 193, 88, 0.2) 0%, transparent 50%);
+        }
+        
+        /* Gold Shimmer Animation */
+        @keyframes goldShimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .shimmer-gold {
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 25%, #F7E199 50%, var(--gold-bright) 75%, var(--gold) 100%);
+            background-size: 200% 100%;
+            animation: goldShimmer 3s ease infinite;
+        }
+        
+        /* Gold Glow Effect */
+        .glow-gold {
+            box-shadow: 0 0 20px var(--gold-glow), 0 0 40px rgba(212, 168, 67, 0.2);
+        }
+        
+        .glow-gold-subtle {
+            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.15), 0 0 30px rgba(212, 168, 67, 0.1);
+        }
+        
+        /* Glassmorphism with Gold Tint */
+        .glass-gold {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 248, 236, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+        }
+        
+        .glass-navy {
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.95) 0%, rgba(0, 51, 102, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 168, 67, 0.3);
         }
         
         .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 31, 63, 0.08);
+            background: linear-gradient(180deg, #FFFFFF 0%, #FEFDFB 100%);
+            border-radius: 20px;
+            box-shadow: 
+                0 4px 20px rgba(0, 31, 63, 0.06),
+                0 1px 3px rgba(0, 31, 63, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(212, 168, 67, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            box-shadow: 
+                0 8px 30px rgba(0, 31, 63, 0.1),
+                0 2px 8px rgba(212, 168, 67, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border-color: rgba(212, 168, 67, 0.2);
+        }
+        
+        .card-premium {
+            background: linear-gradient(145deg, #FFFFFF 0%, var(--cream-warm) 100%);
+            border-radius: 24px;
+            box-shadow: 
+                0 8px 32px rgba(0, 31, 63, 0.08),
+                0 2px 8px rgba(212, 168, 67, 0.08);
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-warm), var(--gold), var(--gold-bright));
         }
         
         .calculator-card {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(212, 168, 67, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .calculator-card:hover::before {
+            opacity: 1;
         }
         
         .calculator-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 31, 63, 0.15);
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 
+                0 20px 40px rgba(0, 31, 63, 0.12),
+                0 8px 16px rgba(212, 168, 67, 0.1);
+            border-color: var(--gold);
         }
         
         .metric-card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--cream-warm) 100%);
+            border-radius: 16px;
+            padding: 20px;
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .metric-card:hover {
-            background: var(--cream);
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--gold-light) 100%);
+            border-color: rgba(212, 168, 67, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212, 168, 67, 0.15);
+        }
+        
+        .metric-card:hover::after {
+            opacity: 1;
         }
         
         .progress-ring {
             transform: rotate(-90deg);
+            filter: drop-shadow(0 2px 4px rgba(212, 168, 67, 0.3));
         }
         
         .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .timeline-connector {
             position: absolute;
-            left: 20px;
-            top: 40px;
-            bottom: -20px;
-            width: 2px;
-            background: linear-gradient(180deg, var(--gold) 0%, var(--gold-light) 100%);
+            left: 23px;
+            top: 48px;
+            bottom: -16px;
+            width: 3px;
+            background: linear-gradient(180deg, var(--gold) 0%, var(--gold-light) 50%, rgba(212, 168, 67, 0.2) 100%);
+            border-radius: 2px;
         }
         
         .phase-dot {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
         
-        .phase-completed { background: #10B981; color: white; }
-        .phase-in-progress { background: var(--gold); color: var(--navy); animation: pulse 2s infinite; }
-        .phase-pending { background: #E5E7EB; color: #9CA3AF; }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(201, 162, 39, 0); }
+        .phase-completed { 
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%); 
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
+        
+        .phase-in-progress { 
+            background: linear-gradient(135deg, var(--gold-warm) 0%, var(--gold-bright) 100%);
+            color: var(--navy); 
+            animation: pulseGold 2s infinite;
+            box-shadow: 0 4px 20px var(--gold-glow);
+        }
+        
+        .phase-pending { 
+            background: linear-gradient(135deg, #E5E7EB 0%, #F3F4F6 100%); 
+            color: #9CA3AF;
+        }
+        
+        @keyframes pulseGold {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 var(--gold-glow), 0 4px 20px var(--gold-glow);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 0 12px rgba(212, 168, 67, 0), 0 4px 25px var(--gold-glow);
+                transform: scale(1.05);
+            }
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Stagger Animation */
+        @keyframes staggerFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stagger-item {
+            animation: staggerFadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+        .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+        .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+        .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+        .stagger-item:nth-child(5) { animation-delay: 0.5s; }
+        .stagger-item:nth-child(6) { animation-delay: 0.6s; }
         
         .tab-button {
-            padding: 12px 24px;
+            padding: 12px 28px;
             border-radius: 30px;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         
         .tab-button.active {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
             color: var(--navy);
+            box-shadow: 0 4px 15px var(--gold-glow);
         }
         
         .tab-button:not(.active) {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tab-button:not(.active):hover {
+            background: rgba(212, 168, 67, 0.2);
+            border-color: var(--gold);
+            color: var(--gold-bright);
         }
         
         .gauge-container {
@@ -413,44 +603,65 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         
         .input-field {
             width: 100%;
-            padding: 12px 16px;
+            padding: 14px 18px;
             border: 2px solid #E5E7EB;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(180deg, #FFFFFF 0%, #FEFDFB 100%);
         }
         
         .input-field:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+            box-shadow: 0 0 0 4px rgba(212, 168, 67, 0.15), 0 4px 12px rgba(212, 168, 67, 0.1);
+            background: #FFFFFF;
+        }
+        
+        .input-field:hover:not(:focus) {
+            border-color: rgba(212, 168, 67, 0.4);
         }
         
         .btn-primary {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
             color: var(--navy);
-            padding: 14px 28px;
+            padding: 14px 32px;
             border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 15px var(--gold-glow);
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-primary:hover {
-            background: #B8922B;
-            transform: scale(1.02);
+            background: linear-gradient(135deg, var(--gold-warm) 0%, var(--gold) 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px var(--gold-glow);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
         }
         
         .btn-secondary {
-            background: var(--navy);
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
             color: white;
-            padding: 14px 28px;
+            padding: 14px 32px;
             border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.2s;
-            border: none;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            box-shadow: 0 8px 25px rgba(0, 31, 63, 0.4);
+            transform: translateY(-2px);
         }
         
         .modal {
@@ -484,9 +695,22 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
         .risk-moderate { background: #FEF3C7; color: #92400E; }
         .risk-high { background: #FEE2E2; color: #991B1B; }
         
-        .status-completed { background: #DCFCE7; color: #166534; }
-        .status-in-progress { background: var(--gold-light); color: var(--navy); }
-        .status-pending { background: #F3F4F6; color: #6B7280; }
+        .status-completed { 
+            background: linear-gradient(135deg, #DCFCE7 0%, #D1FAE5 100%); 
+            color: #166534;
+            border: 1px solid rgba(22, 101, 52, 0.2);
+        }
+        .status-in-progress { 
+            background: linear-gradient(135deg, var(--gold-light) 0%, rgba(232, 193, 88, 0.3) 100%); 
+            color: var(--navy);
+            border: 1px solid var(--gold);
+            box-shadow: 0 2px 8px var(--gold-glow);
+        }
+        .status-pending { 
+            background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%); 
+            color: #6B7280;
+            border: 1px solid rgba(156, 163, 175, 0.2);
+        }
         
         /* ════════════════════════════════════════════════════════════════
            UNIFIED BOTTOM NAVIGATION - Healthcare-First (Option A)
@@ -593,29 +817,41 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
     </style>
 </head>
 <body class="bg-cream">
-    <!-- Header -->
-    <header class="gradient-navy">
-        <div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Header - Premium Gold Tint Design -->
+    <header class="gradient-navy relative overflow-hidden">
+        <!-- Decorative gold accent lines -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-60"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+        <!-- Radial gold glow effect -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-gold/10 to-transparent rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-1/4 w-64 h-64 bg-gradient-to-tr from-gold/5 to-transparent rounded-full blur-2xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 py-6 relative z-10">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
-                    <a href="/" class="text-2xl font-bold text-white">
-                        SelectCare<span class="text-gold">OS</span>™
+                    <a href="/" class="group flex items-center">
+                        <span class="text-2xl font-bold text-white group-hover:text-gold-light transition-colors">
+                            SelectCare<span class="text-gold group-hover:text-gold-bright transition-colors">OS</span>™
+                        </span>
                     </a>
-                    <span class="px-3 py-1 bg-gold/20 text-gold text-sm rounded-full">${t('header.patientPortal', lang)}</span>
+                    <span class="px-4 py-1.5 bg-gradient-to-r from-gold/20 to-gold/10 text-gold text-sm rounded-full border border-gold/30 backdrop-blur-sm">
+                        <i class="fas fa-user-shield mr-1.5 text-xs"></i>${t('header.patientPortal', lang)}
+                    </span>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-3">
                     <!-- Language Selector -->
                     <select id="languageSelect" onchange="changeLanguage(this.value)" 
-                            class="appearance-none bg-white/10 text-white px-3 py-1.5 pr-8 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition border border-white/20">
+                            class="appearance-none bg-white/10 text-white px-4 py-2 pr-8 rounded-xl text-sm cursor-pointer hover:bg-gold/20 hover:border-gold/50 transition-all border border-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-gold/50">
                         ${langOptions}
                     </select>
-                    <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white" title="${t('header.notifications', lang)}">
+                    <button class="relative w-11 h-11 bg-white/10 hover:bg-gold/20 rounded-xl flex items-center justify-center text-white hover:text-gold transition-all border border-white/10 hover:border-gold/30" title="${t('header.notifications', lang)}">
                         <i class="fas fa-bell"></i>
+                        <span id="notification-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg hidden">3</span>
                     </button>
-                    <button class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white" title="${t('header.settings', lang)}">
+                    <button class="w-11 h-11 bg-white/10 hover:bg-gold/20 rounded-xl flex items-center justify-center text-white hover:text-gold transition-all border border-white/10 hover:border-gold/30" title="${t('header.settings', lang)}">
                         <i class="fas fa-cog"></i>
                     </button>
-                    <div class="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-navy font-bold">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold to-gold-bright flex items-center justify-center text-navy font-bold shadow-lg shadow-gold/30 border-2 border-gold-light/50">
                         SM
                     </div>
                 </div>
@@ -645,23 +881,68 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- OVERVIEW TAB -->
         <div id="tab-overview" class="tab-content">
-            <!-- Welcome Banner -->
-            <div class="gradient-gold rounded-2xl p-6 mb-8">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <!-- Welcome Banner - Premium Gold Design -->
+            <div class="relative rounded-3xl p-8 mb-8 overflow-hidden" style="background: linear-gradient(135deg, #D4A843 0%, #E8C158 50%, #F5E6C0 100%);">
+                <!-- Decorative elements -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/15 rounded-full translate-y-1/3 -translate-x-1/4 blur-xl"></div>
+                <div class="absolute top-1/2 right-1/4 w-32 h-32 bg-gradient-to-br from-white/30 to-transparent rounded-full blur-lg float-animation"></div>
+                
+                <!-- Pattern overlay -->
+                <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23001F3F\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 class="text-2xl font-bold text-navy mb-2">${t('welcome.back', lang)} Sherif!</h1>
-                        <p class="text-navy/80">${t('welcome.nextAppointment', lang)} 3 ${t('welcome.days', lang)}</p>
-                    </div>
-                    <div class="mt-4 md:mt-0 flex items-center space-x-6">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-navy">35%</div>
-                            <div class="text-sm text-navy/70">${t('welcome.journeyProgress', lang)}</div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="px-3 py-1 bg-navy/10 text-navy text-xs font-semibold rounded-full backdrop-blur-sm">
+                                <i class="fas fa-shield-alt mr-1"></i>VERIFIED PATIENT
+                            </span>
+                            <span class="px-3 py-1 bg-white/30 text-navy text-xs font-semibold rounded-full backdrop-blur-sm">
+                                <i class="fas fa-award mr-1"></i>SELECTCARE+
+                            </span>
                         </div>
-                        <div class="w-24 h-24">
-                            <svg class="progress-ring" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(0,31,63,0.2)" stroke-width="8"/>
-                                <circle class="progress-ring-circle" cx="50" cy="50" r="40" fill="none" stroke="var(--navy)" stroke-width="8" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="163"/>
+                        <h1 class="text-3xl md:text-4xl font-bold text-navy mb-2">${t('welcome.back', lang)} Sherif! 👋</h1>
+                        <p class="text-navy/80 text-lg flex items-center gap-2">
+                            <i class="fas fa-calendar-check"></i>
+                            ${t('welcome.nextAppointment', lang)} <span class="font-bold text-navy">3 ${t('welcome.days', lang)}</span>
+                        </p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <a href="/instant-connect" class="inline-flex items-center gap-2 px-5 py-2.5 bg-navy text-gold rounded-xl font-semibold text-sm hover:bg-navy-light transition-all shadow-lg">
+                                <i class="fas fa-video"></i>Quick Consult
+                            </a>
+                            <a href="/medisense" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white/40 text-navy rounded-xl font-semibold text-sm hover:bg-white/60 transition-all backdrop-blur-sm border border-navy/10">
+                                <i class="fas fa-brain"></i>Ask MediSense AI
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-6 md:mt-0 flex items-center gap-8">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-navy">35<span class="text-2xl">%</span></div>
+                            <div class="text-sm text-navy/70 font-medium">${t('welcome.journeyProgress', lang)}</div>
+                            <div class="mt-2 flex items-center gap-1 text-xs text-navy/60">
+                                <i class="fas fa-arrow-up text-green-600"></i>
+                                <span>+5% this week</span>
+                            </div>
+                        </div>
+                        <div class="relative w-28 h-28">
+                            <!-- Glow effect behind ring -->
+                            <div class="absolute inset-2 bg-navy/10 rounded-full blur-md"></div>
+                            <svg class="progress-ring relative z-10" viewBox="0 0 100 100">
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#001F3F;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#003366;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(0,31,63,0.15)" stroke-width="10"/>
+                                <circle class="progress-ring-circle" cx="50" cy="50" r="40" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="163"/>
                             </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-xs text-navy/60">Phase</div>
+                                    <div class="text-sm font-bold text-navy">2/6</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
