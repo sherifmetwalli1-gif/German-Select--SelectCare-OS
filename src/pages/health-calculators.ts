@@ -403,6 +403,59 @@ const getCalculatorsPage = () => {
         }
         * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-sizing: border-box; }
         
+        /* ═══════════════════════════════════════════════════════════════
+           MOBILE SCROLLING FIX - v2.5.1
+           Ensures proper scrolling on mobile devices
+           ═══════════════════════════════════════════════════════════════ */
+        html {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 100%;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        body {
+            min-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Prevent body scroll locking on mobile */
+        main {
+            position: relative;
+            z-index: 1;
+            overflow: visible;
+        }
+        
+        /* Mobile-specific fixes */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100vh;
+            }
+            
+            /* Ensure content doesn't get cut off */
+            .animated-bg::before {
+                position: absolute;
+            }
+            
+            /* Fix any fixed position overlays blocking scroll */
+            .particles {
+                position: fixed;
+                pointer-events: none;
+            }
+            
+            /* Ensure proper touch scrolling */
+            .category-tabs-inner,
+            .top-tabs-container {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
         /* Modern Gradient Backgrounds */
         .gradient-navy { background: linear-gradient(135deg, #001F3F 0%, #003366 50%, #001F3F 100%); }
         .gradient-gold { background: linear-gradient(135deg, #D4A843 0%, #D4AF37 50%, #E5C04B 100%); }
