@@ -60,6 +60,15 @@ webapp/
 │   ├── index.tsx              # Main entry point - all routes registered here
 │   ├── renderer.tsx           # JSX renderer configuration
 │   │
+│   ├── data/                  # Static data modules (NEW - Refactored)
+│   │   ├── index.ts           # Central export point for all data
+│   │   ├── doctors.ts         # German Select Medical Team
+│   │   ├── packages.ts        # Care packages (HealBridge, VitaCare, etc.)
+│   │   ├── treatments.ts      # Treatment categories & procedures
+│   │   ├── retreats.ts        # Medical retreats & SELECT hotels
+│   │   ├── accommodations.ts  # Hotels, excursions, wellness services
+│   │   └── aesthetic-packages.ts # Aesthetic tourism packages
+│   │
 │   ├── components/            # Reusable UI components
 │   │   ├── bottom-nav.ts      # Unified bottom navigation
 │   │   └── shared-ui.ts       # Shared header, page wrapper
@@ -153,6 +162,16 @@ const BRAND_COLORS = {
   navy: '#001F3F',
   gold: '#D4A843',
 } as const
+```
+
+3. **Import static data from centralized modules**
+```typescript
+// ✅ Good - Import from data module
+import { DOCTORS, getDoctorById } from '../data'
+import { CARE_PACKAGES, TREATMENT_CATEGORIES } from '../data'
+
+// ❌ Bad - Don't define large data objects inline
+const DOCTORS = [...] // Move to src/data/doctors.ts
 ```
 
 3. **Export types alongside implementations**
