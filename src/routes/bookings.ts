@@ -4,6 +4,7 @@
  */
 
 import { Hono } from 'hono'
+import { logger } from '../utils/logger'
 import { DatabaseService } from '../services/database'
 import { createStripeService } from '../services/stripe'
 import type { Bindings, Variables, Booking, BookingType, ConsultationType, Currency } from '../types'
@@ -144,7 +145,7 @@ bookingRoutes.post('/', async (c) => {
       timestamp: new Date().toISOString(),
     })
   } catch (error: any) {
-    console.error('Booking creation error:', error)
+    logger.error('Booking creation error:', error)
     return c.json({ success: false, error: error.message }, 500)
   }
 })

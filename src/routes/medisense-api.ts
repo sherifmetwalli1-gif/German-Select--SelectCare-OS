@@ -14,6 +14,7 @@
  */
 
 import { Hono } from 'hono'
+import { logger } from '../utils/logger'
 import { SYMPTOM_DATABASE, getTotalSymptomCount, getAllSymptoms, searchSymptoms } from '../services/medisense-pro'
 import { CONDITIONS_DATABASE, ALL_CONDITIONS_DATABASE, getTotalConditionCount, getConditionsByUrgency, getConditionsByCategory, CONDITION_PREVALENCE_WEIGHTS } from '../services/conditions-database'
 import { MEDICATIONS_DATABASE, checkDrugInteractions, checkMedicationWarnings, searchMedications } from '../services/drug-interactions'
@@ -87,7 +88,7 @@ medisenseApiRouter.post('/analyze', async (c) => {
     return c.json(result)
     
   } catch (error) {
-    console.error('Analysis error:', error)
+    logger.error('Analysis error:', error)
     return c.json({
       error: 'Analysis failed',
       message: error instanceof Error ? error.message : 'Unknown error'

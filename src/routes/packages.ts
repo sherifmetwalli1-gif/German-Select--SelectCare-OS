@@ -4,6 +4,7 @@
  */
 
 import { Hono } from 'hono'
+import { logger } from '../utils/logger'
 import { createStripeService } from '../services/stripe'
 import type { Bindings, Variables, CarePackage, PackageCategory } from '../types'
 
@@ -519,7 +520,7 @@ packageRoutes.post('/:id/purchase', async (c) => {
       timestamp: new Date().toISOString(),
     })
   } catch (error: any) {
-    console.error('Package purchase error:', error)
+    logger.error('Package purchase error:', error)
     return c.json({ success: false, error: error.message }, 500)
   }
 })

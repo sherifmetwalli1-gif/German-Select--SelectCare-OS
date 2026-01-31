@@ -4,6 +4,7 @@
  */
 
 import { Hono } from 'hono'
+import { logger } from '../utils/logger'
 import { createStripeService } from '../services/stripe'
 import { PREMIUM_TIERS, PremiumTier } from '../types'
 import type { Bindings, Variables } from '../types'
@@ -167,7 +168,7 @@ subscriptionRoutes.post('/create', async (c) => {
       timestamp: new Date().toISOString(),
     })
   } catch (error: any) {
-    console.error('Subscription creation error:', error)
+    logger.error('Subscription creation error:', error)
     return c.json({ success: false, error: error.message }, 500)
   }
 })

@@ -4,6 +4,7 @@
  */
 
 import { Hono } from 'hono'
+import { logger } from '../utils/logger'
 import type { Bindings, Variables } from '../types'
 
 export const webhookRoutes = new Hono<{ Bindings: Bindings; Variables: Variables }>()
@@ -22,7 +23,7 @@ webhookRoutes.post('/stripe', async (c) => {
     const eventType = event.type
     const data = event.data?.object
 
-    console.log(`Stripe webhook received: ${eventType}`)
+    logger.info('Stripe webhook received', { eventType })
 
     switch (eventType) {
       case 'payment_intent.succeeded':
@@ -31,7 +32,7 @@ webhookRoutes.post('/stripe', async (c) => {
         // 2. Confirm booking
         // 3. Send confirmation emails
         // 4. Update doctor/platform revenue
-        console.log('Payment succeeded:', data?.id)
+        logger.info('Payment succeeded', { id: data?.id })
         break
 
       case 'payment_intent.payment_failed':
@@ -39,7 +40,7 @@ webhookRoutes.post('/stripe', async (c) => {
         // 1. Update booking payment status
         // 2. Send failure notification
         // 3. Offer retry options
-        console.log('Payment failed:', data?.id)
+        logger.warn('Payment failed', { id: data?.id })
         break
 
       case 'customer.subscription.created':
@@ -47,14 +48,14 @@ webhookRoutes.post('/stripe', async (c) => {
         // 1. Activate doctor premium status
         // 2. Grant premium features
         // 3. Send welcome email
-        console.log('Subscription created:', data?.id)
+        logger.info('Subscription created', { id: data?.id })
         break
 
       case 'customer.subscription.updated':
         // Subscription changed (upgrade/downgrade)
         // 1. Update doctor premium tier
         // 2. Adjust features
-        console.log('Subscription updated:', data?.id)
+        logger.info('Subscription updated', { id: data?.id })
         break
 
       case 'customer.subscription.deleted':
@@ -62,14 +63,14 @@ webhookRoutes.post('/stripe', async (c) => {
         // 1. Remove premium status
         // 2. Revoke premium features
         // 3. Send cancellation confirmation
-        console.log('Subscription deleted:', data?.id)
+        logger.info('Subscription deleted', { id: data?.id })
         break
 
       case 'invoice.paid':
         // Subscription invoice paid
         // 1. Extend subscription period
         // 2. Send receipt
-        console.log('Invoice paid:', data?.id)
+        logger.info('Invoice paid', { id: data?.id })
         break
 
       case 'invoice.payment_failed':
@@ -77,7 +78,7 @@ webhookRoutes.post('/stripe', async (c) => {
         // 1. Notify doctor
         // 2. Retry payment
         // 3. Grace period handling
-        console.log('Invoice payment failed:', data?.id)
+        logger.warn('Invoice payment failed', { id: data?.id })
         break
 
       case 'charge.refunded':
@@ -85,7 +86,7 @@ webhookRoutes.post('/stripe', async (c) => {
         // 1. Update booking status
         // 2. Adjust revenue records
         // 3. Notify parties
-        console.log('Charge refunded:', data?.id)
+        logger.info('Charge refunded', { id: data?.id })
         break
 
       case 'checkout.session.completed':
@@ -93,17 +94,17 @@ webhookRoutes.post('/stripe', async (c) => {
         // 1. Process order
         // 2. Create booking
         // 3. Send confirmations
-        console.log('Checkout completed:', data?.id)
+        logger.info('Checkout completed', { id: data?.id })
         break
 
       default:
-        console.log(`Unhandled event type: ${eventType}`)
+        logger.debug('Unhandled event type', { eventType })
     }
 
     return c.json({ received: true })
-  } catch (error: any) {
-    console.error('Stripe webhook error:', error)
-    return c.json({ error: error.message }, 400)
+  } catch (error: unknown) {
+    logger.error('Stripe webhook error', error)
+    return c.json({ error: 'Webhook processing failed' }, 400)
   }
 })
 
@@ -112,7 +113,7 @@ webhookRoutes.post('/test', async (c) => {
   try {
     const body = await c.req.json()
     
-    console.log('Test webhook received:', JSON.stringify(body, null, 2))
+    logger.debug('Test webhook received', body)
 
     return c.json({
       success: true,
@@ -120,8 +121,8 @@ webhookRoutes.post('/test', async (c) => {
       data: body,
       timestamp: new Date().toISOString(),
     })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 400)
+  } catch (error: unknown) {
+    return c.json({ success: false, error: 'Invalid webhook data' }, 400)
   }
 })
 
@@ -134,38 +135,38 @@ webhookRoutes.post('/email', async (c) => {
     for (const event of events) {
       switch (event.event || event.type) {
         case 'delivered':
-          console.log('Email delivered:', event.email || event.recipient)
+          logger.debug('Email delivered:', event.email || event.recipient)
           break
         case 'opened':
-          console.log('Email opened:', event.email || event.recipient)
+          logger.debug('Email opened:', event.email || event.recipient)
           break
         case 'clicked':
-          console.log('Email link clicked:', event.url)
+          logger.debug('Email link clicked:', event.url)
           break
         case 'bounced':
         case 'bounce':
           // Handle bounced emails
           // Mark email as invalid
-          console.log('Email bounced:', event.email || event.recipient)
+          logger.debug('Email bounced:', event.email || event.recipient)
           break
         case 'spam':
         case 'complained':
           // Handle spam complaints
           // Unsubscribe user
-          console.log('Spam complaint:', event.email || event.recipient)
+          logger.debug('Spam complaint:', event.email || event.recipient)
           break
         case 'unsubscribed':
           // Update user preferences
-          console.log('User unsubscribed:', event.email || event.recipient)
+          logger.debug('User unsubscribed:', event.email || event.recipient)
           break
         default:
-          console.log('Email event:', event.event || event.type)
+          logger.debug('Email event:', event.event || event.type)
       }
     }
 
     return c.json({ received: true })
   } catch (error: any) {
-    console.error('Email webhook error:', error)
+    logger.error('Email webhook error:', error)
     return c.json({ error: error.message }, 400)
   }
 })
@@ -179,7 +180,7 @@ webhookRoutes.post('/sms', async (c) => {
     const to = body.To || body.to
     const messageId = body.MessageSid || body.message_id
 
-    console.log(`SMS ${status}: ${to} (${messageId})`)
+    logger.debug(`SMS ${status}: ${to} (${messageId})`)
 
     switch (status) {
       case 'delivered':
@@ -198,7 +199,7 @@ webhookRoutes.post('/sms', async (c) => {
 
     return c.json({ received: true })
   } catch (error: any) {
-    console.error('SMS webhook error:', error)
+    logger.error('SMS webhook error:', error)
     return c.json({ error: error.message }, 400)
   }
 })
@@ -208,7 +209,7 @@ webhookRoutes.post('/calendar', async (c) => {
   try {
     const body = await c.req.json()
 
-    console.log('Calendar webhook:', body)
+    logger.debug('Calendar webhook:', body)
 
     // Handle calendar events
     // - Appointment updates
@@ -217,7 +218,7 @@ webhookRoutes.post('/calendar', async (c) => {
 
     return c.json({ received: true })
   } catch (error: any) {
-    console.error('Calendar webhook error:', error)
+    logger.error('Calendar webhook error:', error)
     return c.json({ error: error.message }, 400)
   }
 })
@@ -228,7 +229,7 @@ webhookRoutes.post('/video', async (c) => {
     const body = await c.req.json()
     const event = body.event
 
-    console.log('Video platform webhook:', event)
+    logger.debug('Video platform webhook:', event)
 
     switch (event) {
       case 'meeting.started':
@@ -248,7 +249,7 @@ webhookRoutes.post('/video', async (c) => {
 
     return c.json({ received: true })
   } catch (error: any) {
-    console.error('Video webhook error:', error)
+    logger.error('Video webhook error:', error)
     return c.json({ error: error.message }, 400)
   }
 })

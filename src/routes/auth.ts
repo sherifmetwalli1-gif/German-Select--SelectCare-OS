@@ -5,6 +5,8 @@
 
 import { Hono } from 'hono'
 import { DatabaseService } from '../services/database'
+import { isValidEmail, sanitizeString } from '../utils/validation'
+import { logger } from '../utils/logger'
 import type { Bindings, Variables, User } from '../types'
 
 export const authRoutes = new Hono<{ Bindings: Bindings; Variables: Variables }>()
@@ -12,7 +14,7 @@ export const authRoutes = new Hono<{ Bindings: Bindings; Variables: Variables }>
 // Generate secure fallback secret (should never be used in production)
 function getSecureSecret(envSecret: string | undefined): string {
   if (!envSecret) {
-    console.warn('⚠️ WARNING: JWT_SECRET not configured. Using generated fallback. Set JWT_SECRET in production!');
+    logger.warn('JWT_SECRET not configured. Using generated fallback. Set JWT_SECRET in production!');
     // Generate a deterministic but unique secret based on timestamp seed
     // This is still insecure for production but better than hardcoded string
     return `fallback-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
@@ -74,9 +76,13 @@ authRoutes.post('/register', async (c) => {
     const body = await c.req.json()
     const { email, firstName, lastName, phone, role = 'patient', language = 'en', currency = 'EUR' } = body
 
-    if (!email) {
-      return c.json({ success: false, error: 'Email is required' }, 400)
+    // Input validation
+    if (!email || !isValidEmail(email)) {
+      return c.json({ success: false, error: 'Valid email is required' }, 400)
     }
+    
+    const sanitizedFirstName = firstName ? sanitizeString(firstName, 100) : undefined;
+    const sanitizedLastName = lastName ? sanitizeString(lastName, 100) : undefined;
 
     const db = new DatabaseService(c.env.DB)
     
@@ -117,8 +123,9 @@ authRoutes.post('/register', async (c) => {
       },
       timestamp: new Date().toISOString(),
     })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
+  } catch (error: unknown) {
+    logger.error('Registration error', error);
+    return c.json({ success: false, error: 'Registration failed. Please try again.' }, 500)
   }
 })
 
@@ -159,8 +166,9 @@ authRoutes.post('/login', async (c) => {
       },
       timestamp: new Date().toISOString(),
     })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 500)
+  } catch (error: unknown) {
+    logger.error('Login error', error);
+    return c.json({ success: false, error: 'Login failed. Please try again.' }, 500)
   }
 })
 
@@ -187,8 +195,9 @@ authRoutes.get('/me', async (c) => {
       data: user,
       timestamp: new Date().toISOString(),
     })
-  } catch (error: any) {
-    return c.json({ success: false, error: error.message }, 401)
+  } catch (error: unknown) {
+    logger.error('Auth verification error', error);
+    return c.json({ success: false, error: 'Authentication failed' }, 401)
   }
 })
 
@@ -209,10 +218,10 @@ authRoutes.post('/verify', async (c) => {
       data: { valid: true, payload },
       timestamp: new Date().toISOString(),
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     return c.json({
       success: true,
-      data: { valid: false, error: error.message },
+      data: { valid: false, error: 'Token validation failed' },
       timestamp: new Date().toISOString(),
     })
   }

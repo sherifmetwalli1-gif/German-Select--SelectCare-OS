@@ -1,5 +1,6 @@
 /**
  * SelectCareOS™ Engagement & Conversion Optimization Routes
+import { logger } from '../utils/logger'
  * Smart upsells, social proof, urgency, and retention features
  */
 
@@ -335,7 +336,7 @@ engagement.post('/track', async (c) => {
     }
     
     // In production, store in analytics database
-    console.log('Engagement event:', { userId, eventType, eventData, pageUrl, sessionId, timestamp: new Date().toISOString() });
+    logger.debug('Engagement event:', { userId, eventType, eventData, pageUrl, sessionId, timestamp: new Date().toISOString() });
     
     return c.json({
       success: true,

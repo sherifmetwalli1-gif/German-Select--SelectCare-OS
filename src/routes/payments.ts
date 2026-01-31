@@ -4,6 +4,7 @@
  */
 
 import { Hono } from 'hono';
+import { logger } from '../utils/logger';
 
 const payments = new Hono();
 
@@ -341,37 +342,37 @@ payments.post('/webhook', async (c) => {
     switch (eventType) {
       case 'checkout.session.completed':
         // Handle successful checkout
-        console.log('Checkout completed:', event.data.object);
+        logger.info('Checkout completed', { id: event.data.object?.id });
         break;
         
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
         // Update user subscription in database
-        console.log('Subscription updated:', event.data.object);
+        logger.info('Subscription updated', { id: event.data.object?.id });
         break;
         
       case 'customer.subscription.deleted':
         // Handle subscription cancellation
-        console.log('Subscription canceled:', event.data.object);
+        logger.info('Subscription canceled', { id: event.data.object?.id });
         break;
         
       case 'invoice.payment_succeeded':
         // Handle successful payment
-        console.log('Payment succeeded:', event.data.object);
+        logger.info('Payment succeeded', { id: event.data.object?.id });
         break;
         
       case 'invoice.payment_failed':
         // Handle failed payment
-        console.log('Payment failed:', event.data.object);
+        logger.warn('Payment failed', { id: event.data.object?.id });
         break;
         
       default:
-        console.log('Unhandled event type:', eventType);
+        logger.debug('Unhandled event type', { eventType });
     }
     
     return c.json({ received: true });
   } catch (error) {
-    console.error('Webhook error:', error);
+    logger.error('Webhook error', error);
     return c.json({ error: 'Webhook handler failed' }, 500);
   }
 });
