@@ -1543,7 +1543,7 @@ export const patientDashboardPage = (lang: SupportedLanguage = 'en') => {
                                 </button>
                             </div>
                         </div>
-                        <a href="/care-team" class="block mt-4 text-center text-sm text-gold font-semibold hover:text-gold-warm transition">
+                        <a href="/doctors" class="block mt-4 text-center text-sm text-gold font-semibold hover:text-gold-warm transition">
                             View Full Care Team <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>

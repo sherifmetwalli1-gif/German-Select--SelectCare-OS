@@ -717,7 +717,7 @@ export const servicesPage = () => `<!DOCTYPE html>
                 <a href="/" class="text-white/80 hover:text-white transition">Home</a>
                 <a href="/services" class="text-gold font-semibold">Services</a>
                 <a href="/packages" class="text-white/80 hover:text-white transition">Packages</a>
-                <a href="/care-team" class="text-white/80 hover:text-white transition">Doctors</a>
+                <a href="/doctors" class="text-white/80 hover:text-white transition">Doctors</a>
                 <a href="/booking" class="btn-gold text-sm py-2 px-4">Book Consultation</a>
             </div>
             <button id="mobile-menu-btn" class="md:hidden text-white text-xl" onclick="toggleMobileMenu()">
@@ -734,7 +734,7 @@ export const servicesPage = () => `<!DOCTYPE html>
         <a href="/">Home</a>
         <a href="/services" class="active">Services</a>
         <a href="/packages">Packages</a>
-        <a href="/care-team">Doctors</a>
+        <a href="/doctors">Doctors</a>
         <a href="/wellness">Wellness</a>
         <a href="/subscription">Subscription Plans</a>
         <a href="/booking" class="btn-gold mt-6 text-center" style="border-radius: 12px;">Book Consultation</a>
@@ -1572,7 +1572,7 @@ export const servicesPage = () => `<!DOCTYPE html>
                 <div>
                     <h4 class="text-gold font-semibold mb-4">Company</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="/care-team" class="text-white/60 hover:text-white">Our Doctors</a></li>
+                        <li><a href="/doctors" class="text-white/60 hover:text-white">Our Doctors</a></li>
                         <li><a href="https://www.germanselect.org" class="text-white/60 hover:text-white" target="_blank">German Select</a></li>
                         <li><a href="/subscription" class="text-white/60 hover:text-white">Subscription Plans</a></li>
                     </ul>

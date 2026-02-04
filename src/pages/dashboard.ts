@@ -605,7 +605,7 @@ export function dashboardPage(c: Context): string {
                 <i class="fas fa-chart-line"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="/care-team" class="nav-item">
+            <a href="/doctors" class="nav-item">
                 <i class="fas fa-user-md"></i>
                 <span>Care Team</span>
             </a>
@@ -840,7 +840,7 @@ export function dashboardPage(c: Context): string {
                             <i class="fas fa-trophy text-gold mr-2"></i>
                             Top Performing Doctors
                         </h3>
-                        <a href="/care-team" class="text-gold text-sm font-semibold hover:underline">View All →</a>
+                        <a href="/doctors" class="text-gold text-sm font-semibold hover:underline">View All →</a>
                     </div>
                     
                     <div class="space-y-3">
@@ -1186,7 +1186,7 @@ export function dashboardPage(c: Context): string {
                 <i class="fas fa-video"></i>
                 <span>Connect</span>
             </a>
-            <a href="/care-team" class="bottom-nav-item" aria-label="Doctors">
+            <a href="/doctors" class="bottom-nav-item" aria-label="Doctors">
                 <i class="fas fa-user-md"></i>
                 <span>Doctors</span>
             </a>

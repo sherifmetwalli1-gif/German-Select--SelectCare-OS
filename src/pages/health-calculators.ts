@@ -3645,7 +3645,7 @@ const getCalculatorsPage = () => {
                 <span class="live-dot"></span>
                 <span>Connect</span>
             </a>
-            <a href="/care-team" class="nav-item">
+            <a href="/doctors" class="nav-item">
                 <i class="fas fa-user-doctor"></i>
                 <span>Doctors</span>
             </a>

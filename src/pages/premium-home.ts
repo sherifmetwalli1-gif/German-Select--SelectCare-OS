@@ -820,7 +820,7 @@ export const premiumHomePage = (userTier: string = 'plus', lang: SupportedLangua
                 <h2 class="font-bold text-navy text-lg">
                     <i class="fas fa-user-md text-gold mr-2"></i>Your Care Team
                 </h2>
-                <a href="/care-team" class="text-gold text-sm font-bold">View All</a>
+                <a href="/doctors" class="text-gold text-sm font-bold">View All</a>
             </div>
             
             <div class="flex gap-3 overflow-x-auto pb-2 hide-scrollbar -mx-5 px-5">
@@ -858,7 +858,7 @@ export const premiumHomePage = (userTier: string = 'plus', lang: SupportedLangua
                 </div>
                 
                 <!-- Add Specialist -->
-                <a href="/care-team" class="card flex-shrink-0 w-32 p-4 text-center border-2 border-dashed border-gold/50">
+                <a href="/doctors" class="card flex-shrink-0 w-32 p-4 text-center border-2 border-dashed border-gold/50">
                     <div class="w-14 h-14 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fas fa-plus text-gold text-xl"></i>
                     </div>

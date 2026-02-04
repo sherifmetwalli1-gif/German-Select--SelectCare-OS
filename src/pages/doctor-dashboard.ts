@@ -1508,6 +1508,207 @@ export function doctorDashboardPage(c: Context): string {
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* ════════════════════════════════════════════════════════════════
+           UNIFIED BOTTOM NAVIGATION v3.0 - Doctor Dashboard
+           ════════════════════════════════════════════════════════════════ */
+        
+        .quick-access-bar {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 31, 63, 0.95) 100%);
+            padding: 8px 16px 4px;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .quick-access-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--navy);
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(201, 162, 39, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .quick-access-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.5);
+        }
+        
+        .quick-access-pill.retreats {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+        }
+        
+        .unified-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid rgba(0, 31, 63, 0.08);
+            padding: 6px 0 max(8px, env(safe-area-inset-bottom));
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0, 31, 63, 0.08);
+        }
+        
+        .unified-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 4px;
+        }
+        
+        .unified-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 10px;
+            color: #6B7280;
+            font-size: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border-radius: 10px;
+            min-width: 52px;
+        }
+        
+        .unified-nav-item i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        .unified-nav-item:hover {
+            color: var(--navy);
+            background: rgba(201, 162, 39, 0.08);
+        }
+        
+        .unified-nav-item:hover i {
+            color: var(--gold);
+        }
+        
+        .unified-nav-item.active {
+            color: var(--navy);
+            background: rgba(201, 162, 39, 0.15);
+        }
+        
+        .unified-nav-item.active i {
+            color: var(--gold);
+        }
+        
+        .unified-nav-item .live-dot {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: live-pulse 2s infinite;
+        }
+        
+        @keyframes live-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .floating-emergency {
+            position: fixed;
+            bottom: 140px;
+            left: 16px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.35);
+            z-index: 998;
+            text-decoration: none;
+            border: 2px solid white;
+        }
+        
+        .floating-connect {
+            position: fixed;
+            bottom: 140px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 22px;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+            z-index: 998;
+            text-decoration: none;
+            border: 3px solid white;
+        }
+        
+        .floating-connect .live-indicator {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: live-pulse 2s infinite;
+        }
+        
+        .main-content {
+            padding-bottom: 130px !important;
+        }
+        
+        @media (max-width: 360px) {
+            .unified-nav-item { padding: 5px 8px; min-width: 46px; }
+            .unified-nav-item i { font-size: 18px; }
+            .unified-nav-item span { font-size: 9px; }
+        }
+        
+        @media (min-width: 768px) {
+            .quick-access-bar { bottom: 75px; }
+            .unified-bottom-nav {
+                background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 100%);
+            }
+            .unified-nav-container { max-width: 600px; }
+            .unified-nav-item {
+                flex-direction: row;
+                gap: 8px;
+                padding: 10px 18px;
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 12px;
+                border-radius: 20px;
+            }
+            .unified-nav-item i { font-size: 18px; margin-bottom: 0; }
+            .unified-nav-item:hover { color: white; background: rgba(201, 162, 39, 0.2); }
+            .unified-nav-item.active {
+                color: var(--navy);
+                background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            }
+        }
     </style>
 </head>
 <body>
@@ -2909,6 +3110,56 @@ export function doctorDashboardPage(c: Context): string {
             if (pollTimer) clearInterval(pollTimer);
         });
     </script>
+    
+    <!-- Emergency Call Button (Left) -->
+    <a href="tel:112" class="floating-emergency" title="Emergency Call 112">
+        <i class="fas fa-phone-alt"></i>
+    </a>
+    
+    <!-- Instant Connect Button (Right) -->
+    <a href="/instant-connect" class="floating-connect" title="Connect with Doctor Now">
+        <span class="live-indicator"></span>
+        <i class="fas fa-video"></i>
+    </a>
+    
+    <!-- Quick Access Bar -->
+    <div class="quick-access-bar">
+        <a href="/dashboard?tab=treatments" class="quick-access-pill">
+            <i class="fas fa-procedures"></i>
+            <span>${t.treatments || 'Treatments'}</span>
+        </a>
+        <a href="/retreats" class="quick-access-pill retreats">
+            <i class="fas fa-umbrella-beach"></i>
+            <span>Retreats</span>
+        </a>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="unified-bottom-nav">
+        <div class="unified-nav-container">
+            <a href="/" class="unified-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/dashboard" class="unified-nav-item">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/medisense" class="unified-nav-item">
+                <i class="fas fa-brain"></i>
+                <span>MediSense</span>
+            </a>
+            <a href="/instant-connect" class="unified-nav-item" style="position: relative;">
+                <span class="live-dot"></span>
+                <i class="fas fa-video"></i>
+                <span>Connect</span>
+            </a>
+            <a href="/doctors" class="unified-nav-item">
+                <i class="fas fa-user-md"></i>
+                <span>Doctors</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>`;
 }

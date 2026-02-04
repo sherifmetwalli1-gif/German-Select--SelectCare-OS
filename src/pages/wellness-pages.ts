@@ -86,7 +86,7 @@ const getBottomNavHTML = (activePage: 'exercises' | 'nutrition' | 'wellness') =>
         <i class="fas fa-video"></i>
         <span>Connect</span>
       </a>
-      <a href="/care-team" class="nav-item" aria-label="Doctors">
+      <a href="/doctors" class="nav-item" aria-label="Doctors">
         <i class="fas fa-user-md"></i>
         <span>Doctors</span>
       </a>
