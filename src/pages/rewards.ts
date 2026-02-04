@@ -38,6 +38,7 @@ export const REWARDS_CONFIG = {
 };
 
 import { LANGUAGE_CONFIG, t, getDir, type SupportedLanguage } from '../services/app-i18n'
+import { bottomNavStyles, getUnifiedBottomNav } from '../components/bottom-nav'
 
 export const rewardsPage = (lang: SupportedLanguage = 'en') => {
   const dir = getDir(lang)
@@ -378,36 +379,9 @@ export const rewardsPage = (lang: SupportedLanguage = 'en') => {
         }
     </script>
     
-    <!-- Floating AI Button -->
-    <a href="/ai-concierge?lang=${lang}" class="fixed bottom-24 ${dir === 'rtl' ? 'left-5' : 'right-5'} w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center text-navy text-2xl shadow-lg z-50 hover:scale-105 transition-transform" title="${t('ai.title', lang)}">
-        <i class="fas fa-robot"></i>
-    </a>
-    
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-40">
-        <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
-                <i class="fas fa-home text-xl mb-1"></i>
-                <span class="text-xs">${t('nav.home', lang)}</span>
-            </a>
-            <a href="/daily-wellness?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
-                <i class="fas fa-heart text-xl mb-1"></i>
-                <span class="text-xs">${t('nav.wellness', lang)}</span>
-            </a>
-            <a href="/medisense?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
-                <i class="fas fa-stethoscope text-xl mb-1"></i>
-                <span class="text-xs">MediSense</span>
-            </a>
-            <a href="/rewards?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-yellow-600">
-                <i class="fas fa-coins text-xl mb-1"></i>
-                <span class="text-xs">${t('nav.rewards', lang)}</span>
-            </a>
-            <a href="/marketplace?lang=${lang}" class="flex flex-col items-center py-2 px-3 text-gray-400 hover:text-gray-600 transition-colors">
-                <i class="fas fa-store text-xl mb-1"></i>
-                <span class="text-xs">${t('nav.shop', lang)}</span>
-            </a>
-        </div>
-    </nav>
+    <!-- Unified Bottom Navigation v4.0 -->
+    <style>${bottomNavStyles}</style>
+    ${getUnifiedBottomNav('rewards')}
 </body>
 </html>
 `

@@ -14,6 +14,7 @@
  */
 
 import type { Context } from 'hono';
+import { getFloatingButtons } from '../components/bottom-nav';
 
 export function videoConsultationPage(c: Context): string {
   const consultationId = c.req.param('id') || '';

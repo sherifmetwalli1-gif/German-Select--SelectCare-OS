@@ -14,6 +14,7 @@
  */
 
 import type { Context } from 'hono';
+import { bottomNavStyles, getUnifiedBottomNav } from '../components/bottom-nav';
 
 // Translations for multi-language support
 const translations: Record<string, Record<string, string>> = {
@@ -1819,6 +1820,10 @@ export function telemedicineEnhancedPage(c: Context): string {
             }
         });
     </script>
+    
+    <!-- Unified Bottom Navigation v4.0 -->
+    <style>${bottomNavStyles}</style>
+    ${getUnifiedBottomNav('telemedicine')}
 </body>
 </html>`;
 }

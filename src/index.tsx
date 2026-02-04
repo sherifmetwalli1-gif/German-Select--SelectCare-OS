@@ -8748,6 +8748,8 @@ import medisenseProRouter from './pages/medisense-pro'
 import { notificationsRouter } from './routes/notifications'
 import { retreatsHotelsPage } from './pages/retreats-hotels'
 import healthCalculatorsRouter from './pages/health-calculators'
+import docsRouter from './routes/documentation'
+import { documentationPortalPage, documentViewPage } from './pages/documentation'
 
 // Mount route handlers
 app.route('/api/payments', payments)
@@ -8767,6 +8769,12 @@ app.get('/medical-retreats', (c) => c.html(retreatsHotelsPage(c)))
 // Health Calculators Hub
 app.route('/calculators', healthCalculatorsRouter)
 app.get('/health-calculators', (c) => c.redirect('/calculators'))
+
+// Documentation Portal & PDF Downloads
+app.route('/api/docs', docsRouter)
+app.get('/documentation', (c) => c.html(documentationPortalPage()))
+app.get('/docs', (c) => c.redirect('/documentation'))
+app.get('/docs/:docType', (c) => c.html(documentViewPage(c.req.param('docType'))))
 
 // ============================================================================
 // CONVERSION OPTIMIZATION ENDPOINTS

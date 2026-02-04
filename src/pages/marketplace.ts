@@ -3,6 +3,8 @@
  * Commission-Based Partner Monetization
  */
 
+import { bottomNavStyles, getUnifiedBottomNav } from '../components/bottom-nav'
+
 export const MARKETPLACE_PRODUCTS = {
   categories: [
     { id: 'devices', name: 'Health Devices', icon: 'heartbeat', commission: 15 },
@@ -372,27 +374,9 @@ export const marketplacePage = () => `
         </div>
     </main>
     
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4">
-        <div class="flex justify-around items-center max-w-md mx-auto">
-            <a href="/" class="text-center text-gray-400 py-2 px-3">
-                <i class="fas fa-home text-xl"></i>
-                <p class="text-xs mt-1">Home</p>
-            </a>
-            <a href="/rewards" class="text-center text-gray-400 py-2 px-3">
-                <i class="fas fa-coins text-xl"></i>
-                <p class="text-xs mt-1">Rewards</p>
-            </a>
-            <a href="/marketplace" class="text-center text-gold py-2 px-3">
-                <i class="fas fa-store text-xl"></i>
-                <p class="text-xs mt-1">Shop</p>
-            </a>
-            <a href="/profile" class="text-center text-gray-400 py-2 px-3">
-                <i class="fas fa-user text-xl"></i>
-                <p class="text-xs mt-1">Profile</p>
-            </a>
-        </div>
-    </nav>
+    <!-- Unified Bottom Navigation v4.0 -->
+    <style>${bottomNavStyles}</style>
+    ${getUnifiedBottomNav('marketplace')}
 </body>
 </html>
 `;

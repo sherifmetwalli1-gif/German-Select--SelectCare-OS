@@ -833,38 +833,15 @@ export const BRAND_HEAD = `
 `;
 
 // ============================================================================
-// UNIFIED BOTTOM NAVIGATION COMPONENT
+// UNIFIED BOTTOM NAVIGATION COMPONENT v4.0
 // ============================================================================
 
-export function getUnifiedBottomNav(activePage: string = 'home'): string {
-  const navItems = [
-    { href: '/', icon: 'fa-home', label: 'Home', id: 'home' },
-    { href: '/medisense', icon: 'fa-brain', label: 'MediSense', id: 'medisense' },
-    { href: '/instant-connect', icon: 'fa-video', label: 'Connect', id: 'connect', hasLiveDot: true },
-    { href: '/care-team', icon: 'fa-user-doctor', label: 'Doctors', id: 'doctors' },
-    { href: '/dashboard', icon: 'fa-user', label: 'Profile', id: 'profile' },
-  ];
-  
-  const navItemsHtml = navItems.map(item => {
-    const activeClass = activePage === item.id ? 'active' : '';
-    const connectClass = item.hasLiveDot ? 'connect-btn' : '';
-    const liveDot = item.hasLiveDot ? '<span class="live-dot"></span>' : '';
-    return '<a href="' + item.href + '" class="nav-item ' + activeClass + ' ' + connectClass + '">' +
-           '<i class="fas ' + item.icon + '"></i>' +
-           liveDot +
-           '<span>' + item.label + '</span>' +
-           '</a>';
-  }).join('');
-  
-  return '<a href="tel:112" class="floating-emergency" title="Emergency: 112">' +
-         '<i class="fas fa-phone"></i>' +
-         '</a>' +
-         '<nav class="bottom-nav" role="navigation" aria-label="Main navigation">' +
-         '<div class="bottom-nav-container">' +
-         navItemsHtml +
-         '</div>' +
-         '</nav>';
-}
+// Import from dedicated bottom-nav component
+import { getUnifiedBottomNav as getNavFromComponent, bottomNavStyles, getBottomNavOnly, getFloatingButtons, getQuickAccessBar } from '../components/bottom-nav';
+
+// Re-export the navigation function
+export const getUnifiedBottomNav = getNavFromComponent;
+export { bottomNavStyles, getBottomNavOnly, getFloatingButtons, getQuickAccessBar };
 
 // ============================================================================
 // UNIFIED HEADER COMPONENT
